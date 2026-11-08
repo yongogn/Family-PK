@@ -1,5 +1,5 @@
 // Quest PK offline cache: everything the game needs is stored on the device.
-const CACHE = "questpk-v1";
+const CACHE = "questpk-v2";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => {
