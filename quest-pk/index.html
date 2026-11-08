@@ -174,7 +174,9 @@ h2{margin:0 0 10px}
 .opts.one .opt,.opts.two .opt{font-size:20px;padding:16px 10px;line-height:1.25}
 .pad{position:relative;margin:4px 0 16px;border-radius:18px;overflow:hidden;border:3px solid #dfe3ff;
   background-color:#fff;background-image:linear-gradient(#eef1ff 1px,transparent 1px),linear-gradient(90deg,#eef1ff 1px,transparent 1px);background-size:24px 24px}
-.pad canvas{display:block;width:100%;height:230px;touch-action:none;cursor:crosshair}
+.pad canvas{display:block;width:100%;height:clamp(220px,34vh,320px);touch-action:none;cursor:crosshair}
+@media (min-width:700px){.pad canvas{height:max(360px,44vh)}}
+.pad.big canvas{height:68vh}
 .pad .padbar{position:absolute;top:8px;right:8px;display:flex;gap:6px}
 .pad .padbar button{background:rgba(255,255,255,.95);border:2px solid #e2e3f5;border-radius:12px;padding:6px 10px;font-size:15px;font-weight:600;color:var(--ink)}
 .pad .padhint{position:absolute;left:12px;top:10px;font-size:13px;color:#a3a6c9;pointer-events:none}
@@ -193,230 +195,370 @@ h2{margin:0 0 10px}
 .agebar .tr{height:14px;background:#eef0ff;border-radius:999px;position:relative;overflow:visible}
 .agebar .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:999px}
 .agebar .tr b{position:absolute;top:-4px;width:3px;height:22px;background:var(--ink);border-radius:2px}
-@media (max-width:480px){.qtext.txt{font-size:22px}.qvis{font-size:76px}.pad canvas{height:190px}.agebar{grid-template-columns:96px 1fr 44px;font-size:13px}}
+@media (max-width:480px){.qtext.txt{font-size:22px}.qvis{font-size:76px}.agebar{grid-template-columns:96px 1fr 44px;font-size:13px}}
+
+.qvis.many{font-size:40px;letter-spacing:2px;line-height:1.3}
+.listen{background:#efeaff;color:var(--ink);border-radius:16px;padding:10px 18px;font-size:18px;font-weight:700;margin:4px 0 14px}
+.opts.zh .opt{font-size:34px}
+.explain{background:#f3f6ff;border-radius:14px;padding:12px 14px;margin-top:10px;text-align:left;font-size:17px;line-height:1.45;font-weight:500}
+.verdict-line{font-size:19px}
+.fb{min-height:0}
+.review{margin-top:18px;text-align:left;background:#f8f8ff;border-radius:16px;padding:10px 14px}
+.review summary{font-weight:700;cursor:pointer;padding:4px 0}
+.rv{border-top:1px solid #e6e7f7;padding:10px 0;font-size:15px;line-height:1.4}
+.rv.no .rq{color:#b91c1c}
+.rq{font-weight:600;margin-bottom:2px}
+.pad .padexp{display:inline-block}
+/* iPad landscape: question & answers on the left, big working paper on the right */
+@media (min-width:900px) and (orientation:landscape){
+  #app{max-width:1180px}
+  .qcard.haspad{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);grid-template-areas:"q pad" "opts pad" "fb pad";column-gap:22px;align-items:start}
+  .qcard.haspad .qhead{grid-area:q}.qcard.haspad .pad{grid-area:pad;margin:0}.qcard.haspad .opts{grid-area:opts}.qcard.haspad .fb{grid-area:fb}
+  .qcard.haspad .pad canvas{height:calc(100vh - 150px)}
+  .qcard.haspad .pad .padexp{display:none}
+}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <div id="layer"></div>
 <script>
-/* ===== QUESTION BANKS — format: year|question|answer|wrong1|wrong2|wrong3|optional passage =====
-   Year = UK school year (1–6). 7 = secondary / grown-up Boss level. */
+/* ===== QUESTION BANKS =====
+   Format: year|question|answer|wrong1|wrong2|wrong3|passage (may be empty)|explanation
+   Year = UK school year (1–6). 7 = secondary / grown-up Boss level only (never shown to children). */
 const BANK_LANG=`
-1|Which word rhymes with "cat"?|hat|cup|dog|sun
-1|Which word rhymes with "bee"?|tree|bed|cow|pin
-1|Which word starts with "sh"?|ship|chip|slip|tip
-1|Which word is a colour?|green|grass|jump|happy
-1|What goes at the end of a sentence?|a full stop|a comma|a capital letter|a space
-1|Which word means more than one dog?|dogs|doges|dog|dogies
-1|The cat sat on the ___.|mat|sing|blue|ran
-1|Which word has the "ee" sound?|green|grin|gran|grown
-1|Which one is a day of the week?|Monday|March|Morning|Mango
-1|Which letter is a capital?|G|g|q|j
-1|What colour is the ball?|red|blue|green|yellow|Sam has a red ball. He kicks it to his dog, Max.
-1|Who is Max?|a dog|a boy|a cat|a ball|Sam has a red ball. He kicks it to his dog, Max.
-2|More than one box is…|boxes|boxs|boxies|box
-2|More than one baby is…|babies|babys|babyes|babis
-2|Today I run. Yesterday I…|ran|runned|runs|running
-2|Today I go. Yesterday I…|went|goed|gone|going
-2|Which word is spelt correctly?|because|becuase|becos|beacause
-2|Which word is spelt correctly?|people|peeple|pepole|peopel
-2|What is the opposite of "hot"?|cold|warm|sunny|fire
-2|What is the opposite of "happy"?|sad|glad|funny|kind
-2|Which word is a verb (doing word)?|jump|table|blue|soft
-2|Which sentence is a question?|Where is my hat?|My hat is red.|Put on your hat.|What a lovely hat!
-2|I was hungry ___ I ate an apple.|so|but|or|if
-2|care + ful =|careful|carefull|carful|careing
-2|How often did Mia water the seed?|every day|once a week|never|every two weeks|Mia planted a seed in a pot. She watered it every day. After two weeks, a tiny green shoot appeared.
-2|What appeared after two weeks?|a green shoot|a flower|an apple|a bug|Mia planted a seed in a pot. She watered it every day. After two weeks, a tiny green shoot appeared.
-3|More than one leaf is…|leaves|leafs|leafes|leavs
-3|More than one child is…|children|childs|childrens|childes
-3|Yesterday I ___ the ball. (catch)|caught|catched|cought|catches
-3|Yesterday she ___ a letter. (write)|wrote|writed|written|writes
-3|Which word is spelt correctly?|friend|freind|frend|freand
-3|Which word means the same as "big"?|large|tiny|thin|quick
-3|Which prefix makes "happy" mean the opposite?|un|dis|re|pre
-3|Which word is an adjective (describing word)?|fluffy|run|quickly|table
-3|Which word sounds the same as "sea"?|see|say|sigh|saw
-3|___ dog is very fluffy.|Their|There|They're|Thier
-3|Which words need capital letters? "we visited paris in may."|we, paris, may|visited, in|paris only|in, may
-3|What was the fox probably doing?|hunting|sleeping|playing|swimming|The fox crept silently through the long grass. Its ears twitched as it listened for the rustle of a mouse.
-3|Which word tells us the fox moved quietly?|silently|long|twitched|listened|The fox crept silently through the long grass. Its ears twitched as it listened for the rustle of a mouse.
-4|More than one tooth is…|teeth|tooths|teeths|toothes
-4|More than one mouse is…|mice|mouses|meese|mices
-4|Yesterday we ___ some sweets. (buy)|bought|buyed|brought|buy
-4|I ___ my homework yesterday. (bring)|brought|bringed|brang|bought
-4|Which word is spelt correctly?|believe|beleive|belive|beleave
-4|Which word is an adverb?|quickly|quick|quiet|quilt
-4|One dog owns a bone. Which is correct?|the dog's bone|the dogs bone|the dog,s bone|the dogs's bone
-4|Which word means the same as "brave"?|courageous|scared|careful|lazy
-4|Which word is a conjunction?|because|beautiful|below|bounce
-4|Which uses inverted commas correctly?|"Come here," said Mum.|Come here, "said Mum."|"Come here, said Mum."|Come "here," said Mum.
-4|Which sentence starts with a fronted adverbial?|After lunch, we played chess.|We played chess after lunch.|We played chess.|Chess is fun.
-4|How did Leo feel?|comfortable|frightened|angry|bored|Despite the rain hammering on the roof, Leo felt cosy wrapped in his blanket, a mug of cocoa warming his hands.
-4|"Hammering" suggests the rain was…|heavy and loud|light and gentle|stopping|warm|Despite the rain hammering on the roof, Leo felt cosy wrapped in his blanket, a mug of cocoa warming his hands.
-5|Which word is spelt correctly?|necessary|neccessary|necesary|neccesary
-5|Which word is spelt correctly?|rhythm|rythm|rhythym|rhytm
-5|Which word is a modal verb?|might|mighty|mind|most
-5|Past tense of "seek"|sought|seeked|sook|soughted
-5|Past tense of "forgive"|forgave|forgived|forgaved|forgot
-5|The girl ___ won the race is my sister.|who|which|what|where
-5|What is the opposite of "generous"?|selfish|kind|rich|giving
-5|Which word has a silent letter?|knee|need|nest|neat
-5|Which punctuation can show parenthesis?|brackets|a full stop|a question mark|an apostrophe
-5|Which is a metaphor?|The classroom was a zoo.|The classroom was like a zoo.|The classroom was noisy.|We went to the zoo.
-5|Why did something feel wrong?|The gulls were silent|It was raining|He was tired|The light broke|The old lighthouse keeper squinted at the horizon. For forty years he had watched these waters, and tonight something felt wrong — the gulls had fallen silent.
-5|"Squinted" means he…|narrowed his eyes|shouted|closed the door|smiled|The old lighthouse keeper squinted at the horizon. For forty years he had watched these waters, and tonight something felt wrong — the gulls had fallen silent.
-6|Which word is spelt correctly?|accommodate|accomodate|acommodate|accommadate
-6|Which word is spelt correctly?|conscience|concience|consience|conscence
-6|Which sentence is in the passive voice?|The window was broken by Tom.|Tom broke the window.|Tom is breaking it.|Did Tom break it?
-6|Which uses a semi-colon correctly?|It was late; we went home.|It was; late we went home.|It was late we; went home.|It; was late we went home.
-6|Which word means the same as "meticulous"?|careful|messy|quick|lucky
-6|What is the opposite of "transparent"?|opaque|clear|shiny|thin
-6|Which sentence uses the subjunctive?|If I were you, I would rest.|If I am you, I rest.|I was you yesterday.|You was right.
-6|What does "reluctant" mean?|unwilling|excited|early|proud
-6|Which is the most formal?|We regret to inform you…|Sorry to tell you…|Bad news, mate…|Oops, so…
-6|Which is personification?|The wind howled angrily.|The wind was strong.|It was windy.|Wind is moving air.
-6|What did Priya think of her design?|It was just okay|It was brilliant|It was broken|She hadn't seen it|Although the committee praised her design, Priya couldn't shake the feeling that it was merely adequate — functional, yes, but hardly inspired.
-6|"Merely adequate" means…|only good enough|excellent|terrible|very old|Although the committee praised her design, Priya couldn't shake the feeling that it was merely adequate — functional, yes, but hardly inspired.
-7|Which word is spelt correctly?|millennium|millenium|milennium|millennuim
-7|Which word is spelt correctly?|minuscule|miniscule|minuskule|minnuscule
-7|Which word is spelt correctly?|liaise|liase|laise|liaese
-7|Plural of "criterion"|criteria|criterions|criterias|criterion's
-7|What does "ubiquitous" mean?|found everywhere|very rare|extremely old|hard to see
-7|What does "sanguine" mean?|optimistic|furious|exhausted|secretive
-7|What does "obfuscate" mean?|make unclear|explain clearly|destroy|celebrate
-7|Between you and ___.|me|I|myself|mine
-7|"Peter Piper picked a peck" is an example of…|alliteration|onomatopoeia|hyperbole|oxymoron
-7|"Deafening silence" is an example of…|an oxymoron|a simile|alliteration|a pun
-7|Which word is a palindrome?|level|lever|label|novel
-7|Past tense of "forsake"|forsook|forsaked|forsank|forsooked
-7|Which uses "affect" correctly?|The cold can affect your mood.|The affect was huge.|It had a big affect.|Affect was felt by all.
-7|"Kowtow" entered English from which language?|Chinese|Japanese|Hindi|Malay
-7|"Equivocation" means…|deliberately vague language|clear honesty|angry shouting|fast talking|The minister's statement was a masterclass in equivocation: every sentence could be read as both a promise and a denial.
-7|What does "pusillanimous" mean?|cowardly|enormous|cheerful|stubborn
+1|Which word rhymes with "cat"?|hat|cup|dog|sun||Cat and hat both end in the "at" sound.
+1|Which word rhymes with "bee"?|tree|bed|cow|pin||Bee and tree both end in the "ee" sound.
+1|Which word starts with "sh"?|ship|chip|slip|tip||Ship begins with the sh sound. Chip starts with ch.
+1|Which word is a colour?|green|grass|jump|happy||Green is a colour. Grass is green, but grass is a thing.
+1|What goes at the end of a telling sentence?|a full stop|a comma|a capital letter|a space||A telling sentence ends with a full stop. Questions end with a question mark.
+1|Which word means more than one dog?|dogs|doges|dog|dogies||Add -s to make most words mean more than one: dog → dogs.
+1|The cat sat on the ___.|mat|sing|blue|ran||"The cat sat on the mat" makes sense — a mat is a thing you can sit on.
+1|Which word has the "ee" sound?|green|grin|gran|grown||Green has "ee" in the middle: gr-ee-n.
+1|Which one is a day of the week?|Monday|March|Morning|Mango||Monday is a day. March is a month.
+1|Which letter is a capital?|G|g|q|j||G is the capital (big) letter. g, q and j are small letters.
+1|What colour is the ball?|red|blue|green|yellow|Sam has a red ball. He kicks it to his dog, Max.|The story says "Sam has a red ball".
+1|Who is Max?|a dog|a boy|a cat|a ball|Sam has a red ball. He kicks it to his dog, Max.|"He kicks it to his dog, Max" — so Max is the dog.
+2|More than one box is…|boxes|boxs|boxies|box||Words ending in x add -es: box → boxes.
+2|More than one baby is…|babies|babys|babyes|babis||Consonant + y: change y to i and add -es: baby → babies.
+2|Today I run. Yesterday I…|ran|runned|runs|running||Run is irregular: today I run, yesterday I ran.
+2|Today I go. Yesterday I…|went|goed|gone|going||Go is irregular: yesterday I went.
+2|Listen and pick the correct spelling.|because|becuase|becos|beacause||It's spelt b-e-c-a-u-s-e. Trick: "Big Elephants Can Always Understand Small Elephants".
+2|Listen and pick the correct spelling.|people|peeple|pepole|peopel||It's spelt p-e-o-p-l-e — the "eo" is the tricky part.
+2|What is the opposite of "hot"?|cold|warm|sunny|fire||Hot ↔ cold. Warm is only a little bit hot.
+2|What is the opposite of "happy"?|sad|glad|funny|kind||Happy ↔ sad. Glad means almost the same as happy.
+2|Which word is a verb (doing word)?|jump|table|blue|soft||You can do it: I jump. Table is a thing; blue and soft describe things.
+2|Which sentence is a question?|Where is my hat?|My hat is red.|Put on your hat.|What a lovely hat!||A question asks something and ends with "?".
+2|I was hungry ___ I ate an apple.|so|but|or|if||"So" shows a result: I was hungry, so I ate.
+2|care + ful =|careful|carefull|carful|careing||The suffix -ful has only one l: careful.
+2|How often did Mia water the seed?|every day|once a week|never|every two weeks|Mia planted a seed in a pot. She watered it every day. After two weeks, a tiny green shoot appeared.|The story says "She watered it every day".
+2|What appeared after two weeks?|a green shoot|a flower|an apple|a bug|Mia planted a seed in a pot. She watered it every day. After two weeks, a tiny green shoot appeared.|"After two weeks, a tiny green shoot appeared."
+3|More than one leaf is…|leaves|leafs|leafes|leavs||Many words ending in -f change to -ves: leaf → leaves.
+3|More than one child is…|children|childs|childrens|childes||Child is irregular: one child, two children.
+3|Yesterday I ___ the ball. (catch)|caught|catched|cought|catches||Catch is irregular: catch → caught.
+3|Yesterday she ___ a letter. (write)|wrote|writed|written|writes||Write → wrote (past). "Written" needs a helper: she has written.
+3|Listen and pick the correct spelling.|friend|freind|frend|freand||"i before e": f-r-i-e-n-d. Trick: a friend to the end.
+3|Which word means the same as "big"?|large|tiny|thin|quick||Big and large are synonyms (same meaning).
+3|Which prefix makes "happy" mean the opposite?|un|dis|re|pre||Un + happy = unhappy (not happy).
+3|Which word is an adjective (describing word)?|fluffy|run|quickly|table||Fluffy describes a noun: a fluffy cat.
+3|Which word sounds the same as "sea"?|see|say|sigh|saw||Sea and see are homophones — same sound, different meaning.
+3|___ dog is very fluffy.|Their|There|They're|Thier||"Their" means belonging to them. There = a place; they're = they are.
+3|Which words need capital letters? "we visited paris in may."|we, paris, may|visited, in|paris only|in, may||The first word of a sentence, names of places (Paris) and months (May) need capitals.
+3|What was the fox probably doing?|hunting|sleeping|playing|swimming|The fox crept silently through the long grass. Its ears twitched as it listened for the rustle of a mouse.|It was creeping quietly and listening for a mouse — it was hunting.
+3|Which word tells us the fox moved quietly?|silently|long|twitched|listened|The fox crept silently through the long grass. Its ears twitched as it listened for the rustle of a mouse.|Silently means without making a sound.
+4|More than one tooth is…|teeth|tooths|teeths|toothes||Tooth is irregular: one tooth, many teeth.
+4|More than one mouse is…|mice|mouses|meese|mices||Mouse is irregular: one mouse, two mice.
+4|Yesterday we ___ some sweets. (buy)|bought|buyed|brought|buy||Buy → bought. Brought is the past of bring.
+4|I ___ my homework yesterday. (bring)|brought|bringed|brang|bought||Bring → brought. Bought is the past of buy.
+4|Listen and pick the correct spelling.|believe|beleive|belive|beleave||b-e-l-i-e-v-e. Trick: never believe a lie — "lie" is inside believe.
+4|Which word is an adverb?|quickly|quick|quiet|quilt||Adverbs often end in -ly and describe how: run quickly.
+4|One dog owns a bone. Which is correct?|the dog's bone|the dogs bone|the dog,s bone|the dogs's bone||For one owner, add apostrophe + s: the dog's bone.
+4|Which word means the same as "brave"?|courageous|scared|careful|lazy||Courageous means brave. Scared is the opposite.
+4|Which word is a conjunction?|because|beautiful|below|bounce||Conjunctions join clauses: I stayed in because it rained.
+4|Which uses inverted commas correctly?|"Come here," said Mum.|Come here, "said Mum."|"Come here, said Mum."|Come "here," said Mum.||Only the spoken words go inside the inverted commas, with the comma inside too.
+4|Which sentence starts with a fronted adverbial?|After lunch, we played chess.|We played chess after lunch.|We played chess.|Chess is fun.||A fronted adverbial (when/where/how) comes first, followed by a comma.
+4|How did Leo feel?|comfortable|frightened|angry|bored|Despite the rain hammering on the roof, Leo felt cosy wrapped in his blanket, a mug of cocoa warming his hands.|"Cosy", a blanket and warm cocoa all tell us he felt comfortable.
+4|"Hammering" suggests the rain was…|heavy and loud|light and gentle|stopping|warm|Despite the rain hammering on the roof, Leo felt cosy wrapped in his blanket, a mug of cocoa warming his hands.|A hammer makes hard, loud bangs — so the rain was heavy and noisy.
+5|Listen and pick the correct spelling.|necessary|neccessary|necesary|neccesary||One c, two s: "one collar, two sleeves" — necessary.
+5|Listen and pick the correct spelling.|rhythm|rythm|rhythym|rhytm||r-h-y-t-h-m. Trick: Rhythm Helps Your Two Hips Move.
+5|Which word is a modal verb?|might|mighty|mind|most||Modal verbs show possibility: might, could, should, will, must.
+5|Past tense of "seek"|sought|seeked|sook|soughted||Seek → sought (like think → thought).
+5|Past tense of "forgive"|forgave|forgived|forgaved|forgot||Forgive → forgave (like give → gave).
+5|The girl ___ won the race is my sister.|who|which|what|where||Use "who" for people. "Which" is for things.
+5|What is the opposite of "generous"?|selfish|kind|rich|giving||Generous means happy to share; selfish means not wanting to share.
+5|Which word has a silent letter?|knee|need|nest|neat||The k in knee is silent — you say "nee".
+5|Which punctuation can show parenthesis?|brackets|a full stop|a question mark|an apostrophe||Brackets (or dashes/commas) add extra information: My aunt (a pilot) visited.
+5|Which is a metaphor?|The classroom was a zoo.|The classroom was like a zoo.|The classroom was noisy.|We went to the zoo.||A metaphor says something IS something else. "Like" would make it a simile.
+5|Why did something feel wrong?|The gulls were silent|It was raining|He was tired|The light broke|The old lighthouse keeper squinted at the horizon. For forty years he had watched these waters, and tonight something felt wrong — the gulls had fallen silent.|The dash explains it: "the gulls had fallen silent".
+5|"Squinted" means he…|narrowed his eyes|shouted|closed the door|smiled|The old lighthouse keeper squinted at the horizon. For forty years he had watched these waters, and tonight something felt wrong — the gulls had fallen silent.|To squint is to half-close your eyes to see far away.
+6|Listen and pick the correct spelling.|accommodate|accomodate|acommodate|accommadate||Double c AND double m: accommodate — it has room for both.
+6|Listen and pick the correct spelling.|conscience|concience|consience|conscence||con + science = conscience.
+6|Which sentence is in the passive voice?|The window was broken by Tom.|Tom broke the window.|Tom is breaking it.|Did Tom break it?||Passive: the thing affected comes first, then "was ... by".
+6|Which uses a semi-colon correctly?|It was late; we went home.|It was; late we went home.|It was late we; went home.|It; was late we went home.||A semi-colon joins two complete, related sentences.
+6|Which word means the same as "meticulous"?|careful|messy|quick|lucky||Meticulous means very careful and precise.
+6|What is the opposite of "transparent"?|opaque|clear|shiny|thin||Transparent lets light through; opaque blocks it.
+6|Which sentence uses the subjunctive?|If I were you, I would rest.|If I am you, I rest.|I was you yesterday.|You was right.||The subjunctive uses "were" for imaginary situations: If I were you…
+6|What does "reluctant" mean?|unwilling|excited|early|proud||Reluctant = not wanting to do something.
+6|Which is the most formal?|We regret to inform you…|Sorry to tell you…|Bad news, mate…|Oops, so…||Formal writing avoids chatty words like "mate" and "oops".
+6|Which is personification?|The wind howled angrily.|The wind was strong.|It was windy.|Wind is moving air.||Personification gives human actions or feelings to non-human things — wind can't really be angry.
+6|What did Priya think of her design?|It was just okay|It was brilliant|It was broken|She hadn't seen it|Although the committee praised her design, Priya couldn't shake the feeling that it was merely adequate — functional, yes, but hardly inspired.|"Merely adequate… hardly inspired" means she thought it was only okay.
+6|"Merely adequate" means…|only good enough|excellent|terrible|very old|Although the committee praised her design, Priya couldn't shake the feeling that it was merely adequate — functional, yes, but hardly inspired.|Adequate = good enough; merely = only.
+7|Which word is spelt correctly?|millennium|millenium|milennium|millennuim||Double l, double n: mille (thousand) + annum (year).
+7|Which word is spelt correctly?|minuscule|miniscule|minuskule|minnuscule||From Latin minus — so minuscule, not "mini".
+7|Which word is spelt correctly?|liaise|liase|laise|liaese||l-i-a-i-s-e: two i's.
+7|Plural of "criterion"|criteria|criterions|criterias|criterion's||Greek origin: one criterion, two criteria.
+7|What does "ubiquitous" mean?|found everywhere|very rare|extremely old|hard to see||Ubiquitous = seeming to be everywhere at once.
+7|What does "sanguine" mean?|optimistic|furious|exhausted|secretive||Sanguine = cheerfully hopeful.
+7|What does "obfuscate" mean?|make unclear|explain clearly|destroy|celebrate||To obfuscate is to deliberately make something confusing.
+7|Between you and ___.|me|I|myself|mine||After a preposition (between) use the object pronoun: me.
+7|"Peter Piper picked a peck" is an example of…|alliteration|onomatopoeia|hyperbole|oxymoron||Alliteration repeats the starting sound (p-p-p).
+7|"Deafening silence" is an example of…|an oxymoron|a simile|alliteration|a pun||An oxymoron puts opposite ideas together.
+7|Which word is a palindrome?|level|lever|label|novel||Level reads the same backwards.
+7|Past tense of "forsake"|forsook|forsaked|forsank|forsooked||Forsake → forsook → forsaken (like take → took → taken).
+7|Which uses "affect" correctly?|The cold can affect your mood.|The affect was huge.|It had a big affect.|Affect was felt by all.||Affect is usually the verb; effect is usually the noun.
+7|"Kowtow" entered English from which language?|Chinese|Japanese|Hindi|Malay||From Chinese 叩头 (kòutóu), to bow until your head touches the ground.
+7|"Equivocation" means…|deliberately vague language|clear honesty|angry shouting|fast talking|The minister's statement was a masterclass in equivocation: every sentence could be read as both a promise and a denial.|Equivocation = using ambiguous words to avoid committing.
+7|What does "pusillanimous" mean?|cowardly|enormous|cheerful|stubborn||Pusillanimous = lacking courage.
 `;
 const BANK_GEO=`
-1|Which is a hot, dry place?|a desert|the North Pole|Antarctica|a glacier
-1|What do you find at the seaside?|sand and waves|snow and ice|skyscrapers|volcanoes
-1|A model of Earth shaped like a ball is a…|globe|compass|ruler|clock
-1|Which season is coldest in the UK?|winter|summer|spring|autumn
-1|Which is a type of weather?|rain|rock|road|river
-1|Which is a city?|London|England|Europe|Atlantic
-2|How many continents are there?|7|5|6|9
-2|Which is the biggest ocean?|Pacific|Atlantic|Indian|Arctic
-2|Which continent is Singapore in?|Asia|Europe|Africa|Australia
-2|Which country is just north of Singapore?|Malaysia|Indonesia|Thailand|Japan
-2|On a compass, the opposite of North is…|South|East|West|Up
-2|Which animal lives in Antarctica?|penguin|camel|tiger|kangaroo
-2|England, Scotland, Wales and ___ make the UK.|Northern Ireland|France|Iceland|Norway
-3|Which river flows through London?|Thames|Seine|Nile|Danube
-3|The Sahara is a…|desert|rainforest|mountain|ocean
-3|Which line divides Earth into North and South?|the Equator|the Prime Meridian|the Arctic Circle|the Date Line
-3|Which continent is Egypt in?|Africa|Asia|Europe|South America
-3|Kangaroos come from…|Australia|Brazil|India|Canada
-3|Which direction does the Sun rise?|East|West|North|South
-3|Land surrounded by water is called…|an island|a valley|a hill|a forest
-3|Mount Everest is in the…|Himalayas|Alps|Andes|Rockies
-4|Which is the largest continent?|Asia|Africa|Europe|North America
-4|Which ocean lies between Africa and Australia?|Indian|Atlantic|Pacific|Arctic
-4|What is a peninsula?|land almost surrounded by water|a tall mountain|a deep lake|a flat desert
-4|Most of the Amazon rainforest is in…|Brazil|Mexico|Kenya|India
-4|Magma that reaches the surface is called…|lava|ash|granite|steam
-4|Singapore has a ___ climate.|tropical|polar|desert|Mediterranean
-4|The Great Barrier Reef is off the coast of…|Australia|Japan|Brazil|Thailand
-4|Lines of latitude run…|east to west|north to south|only in Europe|up mountains
-5|Which country has the most people?|India|China|USA|Indonesia
-5|The Prime Meridian is…|0° longitude|0° latitude|the hottest line|the Date Line
-5|The longest mountain range on land is the…|Andes|Himalayas|Alps|Rockies
-5|Which is the smallest continent?|Australia (Oceania)|Europe|Antarctica|South America
-5|The Strait of Malacca lies between…|Malaysia and Sumatra|the UK and France|Spain and Morocco|India and Sri Lanka
-5|Which is a tectonic hazard?|earthquake|flood|drought|hurricane
-5|Water vapour turning into clouds is…|condensation|evaporation|precipitation|collection
-5|Which country is NOT in ASEAN?|China|Vietnam|Brunei|Laos
-5|In a grid reference, you read first…|the number across|the number up|the bigger number|either one
-6|The Tropic of Capricorn is in the…|Southern Hemisphere|Northern Hemisphere|Arctic|Equator
-6|What is a delta?|land built up where a river meets the sea|a mountain pass|a frozen river|an ocean trench
-6|The deepest point in the ocean is the…|Mariana Trench|Java Trench|Puerto Rico Trench|Dead Sea
-6|The largest hot desert is the…|Sahara|Gobi|Kalahari|Atacama
-6|GMT stands for…|Greenwich Mean Time|Global Map Time|General Meridian Time|Grand Mean Time
-6|Which country is landlocked?|Laos|Vietnam|Thailand|Cambodia
-6|Which biome has permafrost?|tundra|savanna|rainforest|desert
-6|Monsoon winds bring…|heavy seasonal rain|snowstorms|sandstorms|earthquakes
-7|Which country has the most time zones (incl. territories)?|France|Russia|USA|China
-7|The longest river in Asia is the…|Yangtze|Mekong|Ganges|Yellow River
-7|Africa's most populous country is…|Nigeria|Egypt|Ethiopia|South Africa
-7|Lake Baikal is in…|Russia|Mongolia|Kazakhstan|China
-7|The longest international border is between…|Canada & USA|Russia & China|Argentina & Chile|Russia & Kazakhstan
-7|The driest non-polar desert is the…|Atacama|Sahara|Gobi|Namib
-7|The Ring of Fire surrounds which ocean?|Pacific|Atlantic|Indian|Arctic
-7|Angkor Wat is in…|Cambodia|Thailand|Laos|Myanmar
-7|The world's highest waterfall is…|Angel Falls|Niagara Falls|Victoria Falls|Iguazu Falls
-7|Which is the largest country by area?|Russia|Canada|China|USA
+1|Which is a hot, dry place?|a desert|the North Pole|Antarctica|a glacier||Deserts get very little rain and are often hot.
+1|What do you find at the seaside?|sand and waves|snow and ice|skyscrapers|volcanoes||The seaside is where land meets the sea — sand and waves.
+1|A model of Earth shaped like a ball is a…|globe|compass|ruler|clock||A globe is a round model of the Earth.
+1|Which season is coldest in the UK?|winter|summer|spring|autumn||Winter is the coldest season in the UK.
+1|Which is a type of weather?|rain|rock|road|river||Rain falls from clouds — it's weather.
+1|Which is a city?|London|England|Europe|Atlantic||London is a city. England is a country, Europe a continent, Atlantic an ocean.
+1|Which animal lives in a hot, sandy desert?|camel|penguin|polar bear|seal||Camels store fat in their humps and can go days without water.
+2|How many continents are there?|7|5|6|9||Asia, Africa, North America, South America, Antarctica, Europe and Australia (Oceania).
+2|Which is the biggest ocean?|Pacific|Atlantic|Indian|Arctic||The Pacific is the largest and deepest ocean.
+2|Which continent is Singapore in?|Asia|Europe|Africa|Australia||Singapore is in South-East Asia.
+2|Which country is just north of Singapore?|Malaysia|Indonesia|Thailand|Japan||The Causeway links Singapore to Johor in Malaysia.
+2|On a compass, the opposite of North is…|South|East|West|Up||North ↔ South, East ↔ West.
+2|Which animal lives in Antarctica?|penguin|camel|tiger|kangaroo||Penguins live in Antarctica's icy seas.
+2|England, Scotland, Wales and ___ make the UK.|Northern Ireland|France|Iceland|Norway||The UK = England, Scotland, Wales and Northern Ireland.
+3|Which river flows through London?|Thames|Seine|Nile|Danube||The Thames. The Seine flows through Paris.
+3|The Sahara is a…|desert|rainforest|mountain|ocean||The Sahara in North Africa is the largest hot desert.
+3|Which line divides Earth into North and South?|the Equator|the Prime Meridian|the Arctic Circle|the Date Line||The Equator runs around the middle. The Prime Meridian divides East and West.
+3|Which continent is Egypt in?|Africa|Asia|Europe|South America||Egypt is in the north-east corner of Africa.
+3|Kangaroos come from…|Australia|Brazil|India|Canada||Kangaroos are native to Australia.
+3|Which direction does the Sun rise?|East|West|North|South||The Sun rises in the east and sets in the west.
+3|Land surrounded by water is called…|an island|a valley|a hill|a forest||Singapore is an island!
+3|Mount Everest is in the…|Himalayas|Alps|Andes|Rockies||Everest is on the Nepal–China border in the Himalayas.
+4|Which is the largest continent?|Asia|Africa|Europe|North America||Asia is the biggest by area and population.
+4|Which ocean lies between Africa and Australia?|Indian|Atlantic|Pacific|Arctic||The Indian Ocean.
+4|What is a peninsula?|land almost surrounded by water|a tall mountain|a deep lake|a flat desert||Peninsular Malaysia is a peninsula — water on three sides.
+4|Most of the Amazon rainforest is in…|Brazil|Mexico|Kenya|India||About 60% of the Amazon is in Brazil.
+4|Magma that reaches the surface is called…|lava|ash|granite|steam||Underground it's magma; once it erupts it's lava.
+4|Singapore has a ___ climate.|tropical|polar|desert|Mediterranean||Near the Equator: hot and wet all year — tropical.
+4|The Great Barrier Reef is off the coast of…|Australia|Japan|Brazil|Thailand||It runs along Queensland in north-east Australia.
+4|Lines of latitude run…|east to west|north to south|only in Europe|up mountains||Latitude lines run across (east–west) and measure how far north or south you are.
+5|Which country has the most people?|India|China|USA|Indonesia||India passed China in 2023 and now has the largest population.
+5|The Prime Meridian is…|0° longitude|0° latitude|the hottest line|the Date Line||It runs through Greenwich, London, at 0° longitude. The Equator is 0° latitude.
+5|The longest mountain range on land is the…|Andes|Himalayas|Alps|Rockies||The Andes run about 7,000 km down South America.
+5|Which is the smallest continent?|Australia (Oceania)|Europe|Antarctica|South America||Australia/Oceania is smallest by area; Europe is second smallest.
+5|The Strait of Malacca lies between…|Malaysia and Sumatra|the UK and France|Spain and Morocco|India and Sri Lanka||It separates Peninsular Malaysia from Sumatra (Indonesia).
+5|Which is a tectonic hazard?|earthquake|flood|drought|hurricane||Earthquakes come from moving tectonic plates; the others are weather hazards.
+5|Water vapour turning into clouds is…|condensation|evaporation|precipitation|collection||Vapour cools and condenses into droplets that form clouds.
+5|Which country is NOT in ASEAN?|China|Vietnam|Brunei|Laos||ASEAN is South-East Asian countries; China is a partner, not a member.
+5|In a grid reference, you read first…|the number across|the number up|the bigger number|either one||"Along the corridor, then up the stairs" — across first.
+6|The Tropic of Capricorn is in the…|Southern Hemisphere|Northern Hemisphere|Arctic|Equator||Capricorn is south of the Equator; Cancer is north.
+6|What is a delta?|land built up where a river meets the sea|a mountain pass|a frozen river|an ocean trench||A river drops mud and sand at its mouth, building new land — like the Mekong Delta.
+6|The deepest point in the ocean is the…|Mariana Trench|Java Trench|Puerto Rico Trench|Dead Sea||About 11 km deep, in the western Pacific.
+6|The largest hot desert is the…|Sahara|Gobi|Kalahari|Atacama||The Sahara. (Antarctica is the largest desert overall, but it's cold.)
+6|GMT stands for…|Greenwich Mean Time|Global Map Time|General Meridian Time|Grand Mean Time||Time at Greenwich, London, on the Prime Meridian.
+6|Which country is landlocked?|Laos|Vietnam|Thailand|Cambodia||Laos has no coastline — it is surrounded by land.
+6|Which biome has permafrost?|tundra|savanna|rainforest|desert||In the tundra the ground below stays frozen all year.
+6|Monsoon winds bring…|heavy seasonal rain|snowstorms|sandstorms|earthquakes||Monsoons are seasonal winds that bring the rainy season to South and South-East Asia.
+7|Which country has the most time zones (incl. territories)?|France|Russia|USA|China||With overseas territories, France spans 12 time zones; Russia has 11.
+7|The longest river in Asia is the…|Yangtze|Mekong|Ganges|Yellow River||The Yangtze is about 6,300 km.
+7|Africa's most populous country is…|Nigeria|Egypt|Ethiopia|South Africa||Nigeria has well over 200 million people.
+7|Lake Baikal is in…|Russia|Mongolia|Kazakhstan|China||Siberia, Russia — the world's deepest lake.
+7|The longest international border is between…|Canada & USA|Russia & China|Argentina & Chile|Russia & Kazakhstan||About 8,900 km including the Alaska border.
+7|The driest non-polar desert is the…|Atacama|Sahara|Gobi|Namib||Parts of Chile's Atacama have had no recorded rain for years.
+7|The Ring of Fire surrounds which ocean?|Pacific|Atlantic|Indian|Arctic||A horseshoe of volcanoes and earthquake zones around the Pacific.
+7|Angkor Wat is in…|Cambodia|Thailand|Laos|Myanmar||Near Siem Reap, Cambodia.
+7|The world's highest waterfall is…|Angel Falls|Niagara Falls|Victoria Falls|Iguazu Falls||Angel Falls, Venezuela, drops about 979 m.
+7|Which is the largest country by area?|Russia|Canada|China|USA||Russia, about 17 million km².
 `;
 const BANK_SCI=`
-1|Which animal has feathers?|bird|fish|frog|snake
-1|Which sense uses your nose?|smell|taste|sight|hearing
-1|Which material is see-through?|glass|wood|metal|brick
-1|What do plants need to grow?|water and light|sweets|milk|darkness
-1|In which season do most leaves fall?|autumn|summer|spring|winter
-1|Which animal lays eggs?|chicken|cow|dog|cat
-1|Which body part do you hear with?|ears|elbows|knees|toes
-1|Which is a baby cat called?|kitten|puppy|calf|foal
-2|A baby frog is called a…|tadpole|kitten|calf|cub
-2|Which is NOT alive?|a rock|a tree|a bird|a mushroom
-2|What do humans need to survive?|water, food and air|television|toys|sweets
-2|Which material is stretchy?|rubber|glass|stone|brick
-2|How does a fish breathe?|through gills|with lungs|through its tail|it doesn't
-2|A caterpillar turns into a…|butterfly|bee|beetle|spider
-2|Which food chain is correct?|grass → rabbit → fox|fox → grass → rabbit|rabbit → fox → grass|grass → fox → rabbit
-2|Exercise makes your heart beat…|faster|slower|stop|backwards
-3|Which part of a plant takes in water?|roots|petals|flowers|seeds
-3|Light travels in…|straight lines|circles|zigzags|spirals
-3|A shadow forms when light is…|blocked|reflected|bent|heated
-3|Which is magnetic?|an iron nail|a plastic spoon|a wooden block|a glass marble
-3|Which rock forms from cooled lava?|basalt|chalk|sandstone|limestone
-3|Your skeleton helps you…|support and protect your body|digest food|pump blood|breathe
-3|Which nutrient helps build muscle?|protein|sugar|fat|salt
-3|Opposite poles of two magnets…|attract|repel|melt|disappear
-4|The three states of matter are…|solid, liquid, gas|hot, warm, cold|rock, paper, metal|ice, snow, rain
-4|Water boils at…|100°C|0°C|50°C|37°C
-4|Which organ pumps blood?|heart|lungs|stomach|brain
-4|Sound travels as…|vibrations|light|heat|magnetism
-4|Which is an electrical conductor?|copper|plastic|wood|rubber
-4|Canine teeth are for…|tearing food|grinding food|tasting food|storing food
-4|Evaporation is when…|a liquid turns into a gas|a gas turns into a liquid|a solid melts|a liquid freezes
-4|Which animal is a vertebrate?|snake|worm|jellyfish|snail
-5|Which planet is closest to the Sun?|Mercury|Venus|Earth|Mars
-5|How long does Earth take to orbit the Sun?|about 365 days|24 hours|30 days|7 days
-5|What causes day and night?|Earth spinning|the Sun moving around Earth|clouds|the Moon blocking the Sun
-5|Which force slows a sliding object?|friction|gravity|magnetism|upthrust
-5|Which is a reversible change?|melting chocolate|burning wood|baking a cake|rusting iron
-5|Which gas do plants take in?|carbon dioxide|oxygen|helium|neon
-5|Levers, pulleys and gears are…|mechanisms|magnets|circuits|minerals
-5|Which planet is famous for its rings?|Saturn|Mars|Mercury|Venus
-6|Which vessels carry blood away from the heart?|arteries|veins|nerves|tendons
-6|Which living things make their own food?|plants|animals|fungi|viruses
-6|Who explained evolution by natural selection?|Charles Darwin|Isaac Newton|Albert Einstein|Marie Curie
-6|Why can we see the Moon?|it reflects sunlight|it makes its own light|it is on fire|it is a star
-6|Adding batteries to a circuit makes a bulb…|brighter|dimmer|turn off|change colour
-6|Fossils are usually found in ___ rock.|sedimentary|igneous|metamorphic|volcanic
-6|Germs that cause disease are called…|pathogens|vitamins|enzymes|antibodies
-6|Plants make food by…|photosynthesis|respiration|digestion|evaporation
-7|Chemical symbol for tungsten?|W|Tu|Tn|Tg
-7|Chemical symbol for potassium?|K|P|Po|Pt
-7|Approximate speed of light?|300,000 km/s|3,000 km/s|30,000 km/s|3,000,000 km/s
-7|Most abundant gas in Earth's atmosphere?|nitrogen|oxygen|carbon dioxide|argon
-7|How many bones in an adult human?|206|186|226|306
-7|Which planet has the shortest day?|Jupiter|Mercury|Earth|Saturn
-7|pH of pure water at 25°C?|7|0|1|14
-7|Universal donor blood type?|O negative|AB positive|A positive|B negative
-7|Which particle has a negative charge?|electron|proton|neutron|nucleus
-7|Absolute zero is about…|−273°C|−100°C|0°C|−459°C
-7|Which organ produces insulin?|pancreas|liver|kidney|spleen
-7|The shape of DNA is a…|double helix|single spiral|triple strand|flat sheet
-7|Which element has atomic number 1?|hydrogen|helium|oxygen|carbon
-7|Which is NOT a noble gas?|nitrogen|neon|argon|xenon
+1|Which animal has feathers?|bird|fish|frog|snake||Only birds have feathers.
+1|Which sense uses your nose?|smell|taste|sight|hearing||You smell with your nose.
+1|Which material is see-through?|glass|wood|metal|brick||Glass is transparent — light passes through it.
+1|What do plants need to grow?|water and light|sweets|milk|darkness||Plants need water, light and air to grow.
+1|In which season do most leaves fall?|autumn|summer|spring|winter||Many trees drop their leaves in autumn.
+1|Which animal lays eggs?|chicken|cow|dog|cat||Chickens lay eggs; cows, dogs and cats have live babies.
+1|Which body part do you hear with?|ears|elbows|knees|toes||You hear with your ears.
+1|A baby cat is called a…|kitten|puppy|calf|foal||Kitten = baby cat; puppy = baby dog.
+2|A baby frog is called a…|tadpole|kitten|calf|cub||Frogs start as tadpoles that live in water.
+2|Which is NOT alive?|a rock|a tree|a bird|a mushroom||A rock doesn't grow, eat or breathe. Mushrooms are alive (fungi).
+2|What do humans need to survive?|water, food and air|television|toys|sweets||We need water, food and air (and shelter).
+2|Which material is stretchy?|rubber|glass|stone|brick||Rubber stretches and goes back to its shape.
+2|How does a fish breathe?|through gills|with lungs|through its tail|it doesn't||Gills take oxygen out of the water.
+2|A caterpillar turns into a…|butterfly|bee|beetle|spider||Caterpillar → chrysalis → butterfly.
+2|Which food chain is correct?|grass → rabbit → fox|fox → grass → rabbit|rabbit → fox → grass|grass → fox → rabbit||Arrows show who is eaten by whom: rabbits eat grass, foxes eat rabbits.
+2|Exercise makes your heart beat…|faster|slower|stop|backwards||Your muscles need more oxygen, so your heart pumps faster.
+3|Which part of a plant takes in water?|roots|petals|flowers|seeds||Roots take in water from the soil.
+3|Light travels in…|straight lines|circles|zigzags|spirals||That's why you can't see around corners.
+3|A shadow forms when light is…|blocked|reflected|bent|heated||An opaque object blocks light, leaving a dark shape.
+3|Which is magnetic?|an iron nail|a plastic spoon|a wooden block|a glass marble||Iron is a magnetic metal.
+3|Which rock forms from cooled lava?|basalt|chalk|sandstone|limestone||Basalt is an igneous rock — made from cooled lava.
+3|Your skeleton helps you…|support and protect your body|digest food|pump blood|breathe||Bones hold you up and protect organs (the skull protects your brain).
+3|Which nutrient helps build muscle?|protein|sugar|fat|salt||Protein (meat, eggs, beans) helps build and repair muscles.
+3|Opposite poles of two magnets…|attract|repel|melt|disappear||North + south pull together (attract). Same poles push apart.
+4|The three states of matter are…|solid, liquid, gas|hot, warm, cold|rock, paper, metal|ice, snow, rain||Ice (solid), water (liquid) and steam (gas).
+4|At sea level, water boils at…|100°C|0°C|50°C|37°C||Water boils at 100°C and freezes at 0°C. 37°C is body temperature.
+4|Which organ pumps blood?|heart|lungs|stomach|brain||The heart is a muscle that pumps blood around the body.
+4|Sound travels as…|vibrations|light|heat|magnetism||Sounds are vibrations that travel through air to your ears.
+4|Which is an electrical conductor?|copper|plastic|wood|rubber||Metals like copper let electricity flow; plastic and rubber are insulators.
+4|Canine teeth are for…|tearing food|grinding food|tasting food|storing food||Pointy canines tear; flat molars grind.
+4|Evaporation is when…|a liquid turns into a gas|a gas turns into a liquid|a solid melts|a liquid freezes||Puddles dry up because the water evaporates into vapour.
+4|Which animal is a vertebrate?|snake|worm|jellyfish|snail||Vertebrates have a backbone — snakes do.
+5|Which planet is closest to the Sun?|Mercury|Venus|Earth|Mars||Order: Mercury, Venus, Earth, Mars…
+5|How long does Earth take to orbit the Sun?|about 365 days|24 hours|30 days|7 days||One orbit = one year. 24 hours is one spin (a day).
+5|What causes day and night?|Earth spinning|the Sun moving around Earth|clouds|the Moon blocking the Sun||Earth spins once every 24 hours; the side facing the Sun has day.
+5|Which force slows a sliding object?|friction|gravity|magnetism|upthrust||Friction acts between surfaces that rub together.
+5|Which is a reversible change?|melting chocolate|burning wood|baking a cake|rusting iron||Melted chocolate can set again; the others make new materials.
+5|Which gas do plants take in to make food?|carbon dioxide|oxygen|helium|neon||In photosynthesis plants take in carbon dioxide and give out oxygen.
+5|Levers, pulleys and gears are…|mechanisms|magnets|circuits|minerals||Mechanisms let a small force have a bigger effect.
+5|Which planet is famous for its rings?|Saturn|Mars|Mercury|Venus||Saturn's rings are made of ice and rock.
+6|Which vessels carry blood away from the heart?|arteries|veins|nerves|tendons||Arteries carry blood away; veins bring it back.
+6|Which living things make their own food?|plants|animals|fungi|viruses||Plants make food by photosynthesis using sunlight.
+6|Who explained evolution by natural selection?|Charles Darwin|Isaac Newton|Albert Einstein|Marie Curie||Darwin, in On the Origin of Species (1859).
+6|Why can we see the Moon?|it reflects sunlight|it makes its own light|it is on fire|it is a star||The Moon has no light of its own — it reflects the Sun's.
+6|Adding more batteries in a circuit makes a bulb…|brighter|dimmer|turn off|change colour||More cells = more voltage = brighter bulb.
+6|Fossils are usually found in ___ rock.|sedimentary|igneous|metamorphic|volcanic||Sedimentary rock forms in layers that trap and preserve remains.
+6|Germs that cause disease are called…|pathogens|vitamins|enzymes|antibodies||Pathogens include harmful bacteria and viruses.
+6|Plants make food by…|photosynthesis|respiration|digestion|evaporation||Photo = light, synthesis = making.
+7|Chemical symbol for tungsten?|W|Tu|Tn|Tg||W, from its old name wolfram.
+7|Chemical symbol for potassium?|K|P|Po|Pt||K, from Latin kalium. P is phosphorus.
+7|Approximate speed of light?|300,000 km/s|3,000 km/s|30,000 km/s|3,000,000 km/s||About 299,792 km per second.
+7|Most abundant gas in Earth's atmosphere?|nitrogen|oxygen|carbon dioxide|argon||Nitrogen ≈ 78%, oxygen ≈ 21%.
+7|How many bones in an adult human?|206|186|226|306||Babies have about 300; some fuse to make 206.
+7|Which planet has the shortest day?|Jupiter|Mercury|Earth|Saturn||Jupiter spins in about 10 hours.
+7|pH of pure water at 25°C?|7|0|1|14||Pure water is neutral: pH 7.
+7|Universal donor blood type?|O negative|AB positive|A positive|B negative||O negative red cells can go to anyone.
+7|Which particle has a negative charge?|electron|proton|neutron|nucleus||Electrons are negative; protons positive; neutrons neutral.
+7|Absolute zero is about…|−273°C|−100°C|0°C|−459°C||−273.15°C (which is −459°F — the trap answer).
+7|Which organ produces insulin?|pancreas|liver|kidney|spleen||The pancreas makes insulin to control blood sugar.
+7|The shape of DNA is a…|double helix|single spiral|triple strand|flat sheet||Described by Watson, Crick, Franklin and Wilkins in 1953.
+7|Which element has atomic number 1?|hydrogen|helium|oxygen|carbon||Hydrogen: one proton.
+7|Which is NOT a noble gas?|nitrogen|neon|argon|xenon||Noble gases: helium, neon, argon, krypton, xenon, radon.
+`;
+/* Chinese 华文 — grammar/idiom bank (vocabulary questions are generated from ZH_WORDS below) */
+const BANK_ZH=`
+1|How many is 三?|3|1|2|5||三 (sān) is three. 一 one, 二 two, 三 three.
+1|What does 你好 mean?|hello|thank you|goodbye|sorry||你好 (nǐ hǎo) = hello.
+1|What does 谢谢 mean?|thank you|hello|goodbye|please||谢谢 (xièxie) = thank you.
+1|Which is the number 10?|十|千|干|土||十 (shí) = ten. 千 = thousand, 干 = dry, 土 = soil.
+2|What is the opposite of 大?|小|多|人|太||大 (dà) big ↔ 小 (xiǎo) small.
+2|What is the opposite of 上?|下|中|左|大||上 (shàng) up ↔ 下 (xià) down.
+2|What does 再见 mean?|goodbye|hello|again|see you||再见 (zàijiàn) = goodbye — literally "see again".
+2|What does 对不起 mean?|sorry|thank you|excuse me|no problem||对不起 (duìbuqǐ) = sorry.
+3|一 ___ 狗 (a dog)|只|本|张|条||只 (zhī) is the measure word for most animals: 一只狗.
+3|一 ___ 书 (a book)|本|只|个|辆||本 (běn) is for books: 一本书.
+3|Which means "I like you"?|我喜欢你|你喜欢我|我是你|我有你||我 I + 喜欢 like + 你 you.
+3|What does 星期一 mean?|Monday|Sunday|one week|January||星期 = week. 星期一 Monday … 星期天 Sunday.
+3|What is the opposite of 冷?|热|冰|好|快||冷 (lěng) cold ↔ 热 (rè) hot.
+3|Which means "How old are you?"|你几岁？|你好吗？|你是谁？|你在哪儿？||几岁 = how many years old.
+4|一 ___ 鱼 (a fish)|条|本|张|辆||条 (tiáo) is for long, thin things: fish, rivers, roads.
+4|一 ___ 纸 (a sheet of paper)|张|条|本|只||张 (zhāng) is for flat things: paper, tables, tickets.
+4|一 ___ 车 (a car)|辆|只|张|本||辆 (liàng) is the measure word for vehicles.
+4|你好___? (Are you well?)|吗|呢|的|了||吗 at the end turns a sentence into a yes/no question.
+4|一月 means…|January|one month|Monday|one moon||一月 = January. 一个月 = one month.
+4|Which word means "tomorrow"?|明天|昨天|今天|后天||明天 tomorrow, 今天 today, 昨天 yesterday, 后天 day after tomorrow.
+5|Which radical means water?|氵|木|口|火||氵 (三点水) appears in 河 river, 海 sea, 洗 wash.
+5|Which radical means tree / wood?|木|氵|扌|艹||木 appears in 林 woods, 树 tree, 桌 table.
+5|Which character has the hand radical 扌?|打|河|林|吃||打 (hit) has 扌. 河 has 氵, 林 has 木, 吃 has 口.
+5|我___学校去。(I go to school)|到|在|是|有||到…去 means "go to": 我到学校去。
+5|What does 好朋友 mean?|good friend|good morning|friendly|old friend||好 good + 朋友 friend.
+5|Which is the correct word order?|我今天去公园。|我去公园今天。|今天公园我去。|去我今天公园。||Time words go near the front: subject + time + verb + place.
+6|一心一意 means…|wholeheartedly|half-hearted|heartbroken|lonely||一心一意: one heart, one mind — completely focused.
+6|马马虎虎 means…|so-so / careless|very fast|horse riding|brave||Literally "horse horse tiger tiger" — careless, or just okay.
+6|What is the opposite of 勇敢 (brave)?|胆小|聪明|开心|认真||勇敢 brave ↔ 胆小 timid.
+6|Which sentence is correct?|我把作业做完了。|我作业把做完了。|把我作业做完了。|我做完把作业了。||把 sentence: subject + 把 + object + verb + result.
+6|The Lunar New Year greeting is…|新年快乐|生日快乐|中秋快乐|圣诞快乐||新年快乐 Happy New Year. 生日 birthday, 中秋 Mid-Autumn, 圣诞 Christmas.
+6|虽然下雨，___我们还是去了。|但是|因为|所以|如果||虽然…但是 = although… (but).
+7|画蛇添足 means…|overdoing it and spoiling things|drawing animals|being artistic|adding feet for speed||Drawing legs on a snake: adding something unnecessary that ruins the result.
+7|守株待兔 means…|waiting for luck instead of working|guarding a rabbit|planting trees|hunting skilfully||A farmer waits by a stump hoping another rabbit will crash into it.
+7|床前明月光 — what is the next line?|疑是地上霜|举头望明月|低头思故乡|春眠不觉晓||Li Bai, 静夜思: 床前明月光，疑是地上霜。举头望明月，低头思故乡。
+7|In 银行 (bank), 行 is read…|háng|xíng|hàng|héng||行 is háng in 银行 but xíng in 行走 (walk) — a 多音字.
+7|Which idiom means "kill two birds with one stone"?|一箭双雕|一心一意|对牛弹琴|井底之蛙||一箭双雕: one arrow, two eagles.
+7|对牛弹琴 means…|talking to the wrong audience|music for cows|farming|a cow playing music||Playing the lute to a cow — wasting words on someone who can't appreciate them.
+7|What does 犹豫 mean?|to hesitate|to hurry|to forgive|to boast||犹豫 (yóuyù) = hesitate, be undecided.
+7|What does 谦虚 mean?|modest|proud|lazy|generous||谦虚 (qiānxū) = modest, humble.
+`;
+/* Chinese vocabulary: tier|word|pinyin|meaning|emoji */
+const ZH_WORDS=`
+1|一|yī|one|1️⃣
+1|二|èr|two|2️⃣
+1|大|dà|big|🐘
+1|小|xiǎo|small|🐜
+1|人|rén|person|🧍
+1|口|kǒu|mouth|👄
+1|日|rì|sun / day|☀️
+1|月|yuè|moon / month|🌙
+1|山|shān|mountain|⛰️
+1|水|shuǐ|water|💧
+1|火|huǒ|fire|🔥
+1|猫|māo|cat|🐱
+1|狗|gǒu|dog|🐶
+1|鱼|yú|fish|🐟
+1|鸟|niǎo|bird|🐦
+1|手|shǒu|hand|✋
+2|红色|hóngsè|red|🔴
+2|蓝色|lánsè|blue|🔵
+2|妈妈|māma|mum|👩
+2|爸爸|bàba|dad|👨
+2|苹果|píngguǒ|apple|🍎
+2|米饭|mǐfàn|rice|🍚
+2|书|shū|book|📖
+2|车|chē|car|🚗
+2|花|huā|flower|🌸
+2|雨|yǔ|rain|🌧️
+2|熊猫|xióngmāo|panda|🐼
+2|眼睛|yǎnjing|eyes|👀
+3|学校|xuéxiào|school|🏫
+3|朋友|péngyou|friend|🧑‍🤝‍🧑
+3|老师|lǎoshī|teacher|🧑‍🏫
+3|飞机|fēijī|aeroplane|✈️
+3|电脑|diànnǎo|computer|💻
+3|吃饭|chīfàn|eat a meal|🍽️
+3|睡觉|shuìjiào|sleep|😴
+3|游泳|yóuyǒng|swim|🏊
+3|医生|yīshēng|doctor|🧑‍⚕️
+3|冰淇淋|bīngqílín|ice cream|🍦
+3|生日|shēngrì|birthday|🎂
+4|天气|tiānqì|weather|🌤️
+4|图书馆|túshūguǎn|library|📚
+4|喜欢|xǐhuan|to like|❤️
+4|运动|yùndòng|sport / exercise|⚽
+4|动物园|dòngwùyuán|zoo|🦁
+4|厨房|chúfáng|kitchen|🍳
+4|自行车|zìxíngchē|bicycle|🚲
+4|西瓜|xīguā|watermelon|🍉
+4|下雨|xiàyǔ|to rain|☔
+5|环境|huánjìng|environment|🌍
+5|健康|jiànkāng|healthy|💪
+5|地铁|dìtiě|metro / MRT|🚇
+5|礼物|lǐwù|gift|🎁
+5|博物馆|bówùguǎn|museum|🏛️
+5|新加坡|Xīnjiāpō|Singapore|🇸🇬
+5|节日|jiérì|festival|🏮
+5|作业|zuòyè|homework|📝
+5|安静|ānjìng|quiet|🤫
+6|认真|rènzhēn|conscientious|🧐
+6|骄傲|jiāo'ào|proud|😤
+6|勇敢|yǒnggǎn|brave|🦸
+6|失望|shīwàng|disappointed|😞
+6|经验|jīngyàn|experience|🧭
+6|发明|fāmíng|invent|💡
+6|宇宙|yǔzhòu|universe|🌌
+6|保护|bǎohù|protect|🛡️
+7|尴尬|gāngà|awkward|😬
+7|憧憬|chōngjǐng|to long for|🌅
+7|敷衍|fūyǎn|half-hearted, going through the motions|🙄
+7|矛盾|máodùn|contradiction|⚔️
+7|沉默|chénmò|silent, reticent|🤐
+7|朴素|pǔsù|plain and simple|👕
 `;
 /* capitals: tier|country|capital|trap city (optional) */
 const CAPITALS=`
@@ -527,86 +669,137 @@ const sGood=()=>{beep(660,.1);setTimeout(()=>beep(990,.15),90)};
 const sBad=()=>beep(180,.25,'square',.05);
 const sWin=()=>[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.2,'triangle',.09),i*130));
 
-/* ============ maths generator (UK curriculum years; 7 = secondary / Boss) ============ */
+/* ============ maths generator (UK curriculum years; 7 = secondary / Boss only) ============ */
 const SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
 const sup=n=>String(n).split('').map(c=>SUP[c]).join('');
 function fmt(n){if(typeof n==='string')return n;n=parseFloat(n.toFixed(4));let s=Number.isInteger(n)&&Math.abs(n)>=1000?n.toLocaleString('en-GB'):String(n);return s.replace('-','−')}
+const F=fmt;
+function eAdd(a,b){
+  const s=a+b;
+  if(b<10&&a%10+b>10&&a>=10){const t=10-a%10;return `Make the next ten first: ${a} + ${t} = ${a+t}, then ${b-t} more makes ${s}.`}
+  if(b%100===0&&b>=100)return `Add ${b/100} hundred${b>100?'s':''}: ${a} → ${s}.`;
+  if(b%10===0&&b>=10)return `Add ${b/10} ten${b>10?'s':''}: ${a} → ${s}. Only the tens digit changes.`;
+  if(a<=10&&b<=10)return `Start at ${a} and count on ${b}: ${s}.`;
+  return `${a} + ${b} = ${s}.`;
+}
+function eSub(a,b){
+  const d=a-b;
+  if(b<10&&a%10<b&&a%10>0&&a>10){const o=a%10;return `Go back to the ten first: ${a} − ${o} = ${a-o}, then ${b-o} more back makes ${d}.`}
+  if(b%10===0&&b>=10)return `Take away ${b/10} ten${b>10?'s':''}: ${a} → ${d}.`;
+  if(a<=20)return `Start at ${a} and count back ${b}: ${d}.`;
+  return `${a} − ${b} = ${d}.`;
+}
+function eMulPart(a,b){
+  const h=Math.floor(a/100)*100,t=Math.floor((a%100)/10)*10,o=a%10,parts=[h,t,o].filter(x=>x>0);
+  return `Split ${a} into ${parts.join(' + ')}: ${parts.map(x=>`${x} × ${b} = ${x*b}`).join(', ')}. Add them: ${a*b}.`;
+}
 const G={
-1:[()=>{const a=ri(2,10);let b=ri(1,10);if(a+b>20)b=20-a;return{q:`${a} + ${b}`,a:a+b}},
- ()=>{const a=ri(6,20),b=ri(1,a-1);return{q:`${a} − ${b}`,a:a-b}},
- ()=>{const st=pick([2,5,10]),s=st*ri(0,4);return{q:`What comes next?\n${s}, ${s+st}, ${s+2*st}, ?`,a:s+3*st,long:1}},
- ()=>{const a=ri(1,9);return{q:`${a} + ${a}`,a:2*a}}],
-2:[()=>{const a=ri(14,88),b=ri(3,9);return{q:`${a} + ${b}`,a:a+b}},
- ()=>{const a=ri(12,69),t=10*ri(1,3);return{q:`${a} + ${t}`,a:a+t}},
- ()=>{const a=ri(25,99),b=ri(3,9);return{q:`${a} − ${b}`,a:a-b}},
- ()=>{const m=pick([2,5,10]),n=ri(1,12);return{q:`${n} × ${m}`,a:n*m}},
- ()=>{const n=2*ri(5,25);return{q:`Half of ${n}`,a:n/2}}],
-3:[()=>{const a=ri(120,880),b=10*ri(2,9);return Math.random()<.5?{q:`${a} + ${b}`,a:a+b}:{q:`${a} − ${b}`,a:a-b}},
- ()=>{const a=100*ri(1,5)+ri(10,99),b=100*ri(1,3);return{q:`${a} + ${b}`,a:a+b}},
- ()=>{const m=pick([3,4,8]),n=ri(2,12);return{q:`${n} × ${m}`,a:n*m}},
- ()=>{const m=pick([3,4,8]),n=ri(2,12);return{q:`${m*n} ÷ ${m}`,a:n}},
- ()=>{const d=pick([2,3,4]),k=ri(3,12);return{q:`1/${d} of ${d*k}`,a:k}}],
-4:[()=>{const m=pick([6,7,9,11,12]),n=ri(3,12);return{q:`${n} × ${m}`,a:n*m}},
- ()=>{const a=ri(13,49),b=ri(3,7);return{q:`${a} × ${b}`,a:a*b}},
- ()=>{const m=ri(6,12),n=ri(3,12);return{q:`${m*n} ÷ ${m}`,a:n}},
+1:[()=>{const a=ri(1,5),b=ri(1,4);return{q:`${a} + ${b}`,vis:'🍎'.repeat(a)+' ➕ '+'🍎'.repeat(b),a:a+b,e:`Count all the apples: ${a} and ${b} more makes ${a+b}.`}},
+ ()=>{const a=ri(4,9),b=ri(1,a-1);return{q:`${a} − ${b}`,vis:'🍪'.repeat(a),a:a-b,e:`Start with ${a} cookies and eat ${b}: ${a-b} are left.`}},
+ ()=>{const a=ri(2,9);let b=ri(1,10-a);return{q:`${a} + ${b}`,a:a+b,e:eAdd(a,b)}},
+ ()=>{const a=ri(5,10),b=ri(1,a-1);return{q:`${a} − ${b}`,a:a-b,e:eSub(a,b)}},
+ ()=>{const a=ri(10,15),b=ri(1,5);return{q:`${a} + ${b}`,a:a+b,e:`Start at ${a} and count on ${b}: ${a+b}.`}},
+ ()=>{const st=pick([2,5,10]),s=st*ri(0,3);return{q:`What comes next?\n${s}, ${s+st}, ${s+2*st}, ?`,a:s+3*st,long:1,e:`The numbers go up in ${st}s: ${s+2*st} + ${st} = ${s+3*st}.`}},
+ ()=>{const a=ri(1,6);return{q:`Double ${a}`,a:2*a,e:`Double means add it to itself: ${a} + ${a} = ${2*a}.`}}],
+2:[()=>{const a=ri(14,58),b=ri(3,9);return{q:`${a} + ${b}`,a:a+b,e:eAdd(a,b)}},
+ ()=>{const a=ri(12,69),t=10*ri(1,3);return{q:`${a} + ${t}`,a:a+t,e:eAdd(a,t)}},
+ ()=>{const a=ri(21,60),b=ri(3,9);return{q:`${a} − ${b}`,a:a-b,e:eSub(a,b)}},
+ ()=>{const m=pick([2,5,10]),n=ri(1,10);return{q:`${n} × ${m}`,a:n*m,e:`${n} lots of ${m}. Count in ${m}s ${n} times: ${n*m}.`}},
+ ()=>{const n=2*ri(3,20);return{q:`Half of ${n}`,a:n/2,e:`Half means 2 equal parts: ${n} ÷ 2 = ${n/2}. Check: ${n/2} + ${n/2} = ${n}.`}},
+ ()=>{const m=pick([2,5,10]),n=ri(2,10);return{q:`${m*n} ÷ ${m}`,a:n,e:`How many ${m}s make ${m*n}? ${n} × ${m} = ${m*n}, so the answer is ${n}.`}}],
+3:[()=>{const a=ri(120,880),b=10*ri(2,9);return Math.random()<.5?{q:`${a} + ${b}`,a:a+b,e:eAdd(a,b)}:{q:`${a} − ${b}`,a:a-b,e:eSub(a,b)}},
+ ()=>{const a=100*ri(1,5)+ri(10,99),b=100*ri(1,3);return{q:`${a} + ${b}`,a:a+b,e:eAdd(a,b)}},
+ ()=>{const m=pick([3,4,8]),n=ri(2,12);return{q:`${n} × ${m}`,a:n*m,e:`From the ${m} times table: ${n} × ${m} = ${n*m}.`}},
+ ()=>{const m=pick([3,4,8]),n=ri(2,12);return{q:`${m*n} ÷ ${m}`,a:n,e:`Use the ${m} times table: ${n} × ${m} = ${m*n}, so ${m*n} ÷ ${m} = ${n}.`}},
+ ()=>{const d=pick([2,3,4]),k=ri(3,12);return{q:`1/${d} of ${d*k}`,a:k,e:`Share ${d*k} into ${d} equal groups: ${d*k} ÷ ${d} = ${k}.`}}],
+4:[()=>{const m=pick([6,7,9,11,12]),n=ri(3,12);return{q:`${n} × ${m}`,a:n*m,e:`From the ${m} times table: ${n} × ${m} = ${n*m}.`}},
+ ()=>{const a=ri(13,49),b=ri(3,7);return{q:`${a} × ${b}`,a:a*b,e:eMulPart(a,b)}},
+ ()=>{const m=ri(6,12),n=ri(3,12);return{q:`${m*n} ÷ ${m}`,a:n,e:`${n} × ${m} = ${m*n}, so ${m*n} ÷ ${m} = ${n}.`}},
  ()=>{const n=ri(1001,9899),r=pick([10,100]);const a=Math.round(n/r)*r;const o=r===10?100:10;
-   return{q:`Round ${fmt(n)}\nto the nearest ${r}`,a,d:[a+r,a-r,Math.round(n/o)*o===a?a+2*r:Math.round(n/o)*o],long:1}}],
-5:[()=>{const x=ri(12,99)/10,p=pick([10,100,1000]);const a=x*p;return{q:`${fmt(x)} × ${fmt(p)}`,a,d:[a*10,a/10,p===10?a*100:a/100]}},
- ()=>{const n=ri(25,950),p=pick([10,100]);const a=n/p;return{q:`${n} ÷ ${p}`,a,d:[a*10,a/10,a+1]}},
- ()=>{const d=pick([3,4,5,8]),nn=ri(2,d-1),k=ri(3,12);return{q:`${nn}/${d} of ${d*k}`,a:nn*k,d:[k,(nn+1)*k,nn*k+nn]}},
- ()=>{const a=ri(11,49)/10,b=ri(11,99)/100;return{q:`${fmt(a)} + ${fmt(b)}`,a:a+b}},
- ()=>{const a=ri(101,499),b=ri(2,5);return{q:`${a} × ${b}`,a:a*b}}],
-6:[()=>{const a=ri(2,9),b=ri(2,9),c=ri(2,9);return{q:`${a} + ${b} × ${c}`,a:a+b*c,d:[(a+b)*c,a+b*c+1,a*b+c]}},
- ()=>{const p=pick([10,20,25,50,75]),base=20*ri(2,15);return{q:`${p}% of ${base}`,a:p*base/100}},
- ()=>{const a=ri(-9,-1),b=ri(2,12);return{q:`${fmt(a)} + ${b}`,a:a+b,d:[-(a+b),a-b,a+b+2]}},
- ()=>{const a=ri(2,8),b=a+ri(2,8);return{q:`${a} − ${b}`,a:a-b,d:[b-a,a-b-1,a-b+1]}},
- ()=>{const n=ri(4,13);return{q:`${n}²`,a:n*n,d:[2*n,n*n+n,(n-1)*(n-1)]}}],
-7:[()=>{const [p,b]=pick([[15,240],[35,160],[45,240],[12.5,480],[15,80],[35,60],[65,40]]);return{q:`${p}% of ${b}`,a:p*b/100}},
- ()=>{const a=ri(23,49),b=ri(13,29);return{q:`${a} × ${b}`,a:a*b,d:[a*b+10,a*b-10,a*b+a]}},
- ()=>{const [f,v]=pick([['3/8',.375],['5/8',.625],['7/20',.35],['3/16',.1875],['4/25',.16],['7/8',.875]]);return{q:`${f} as a decimal`,a:v,d:[v+.1,v/10,v+.05],long:1}},
- ()=>{const n=ri(7,11);return{q:`2${sup(n)}`,a:2**n,d:[2**(n-1),2**(n+1),2*n]}},
- ()=>{const n=ri(13,25);return{q:`√${n*n}`,a:n,d:[n+1,n-1,n+2]}},
- ()=>{const a=pick([0.25,1.5,2.5,0.4,1.2]),b=pick([48,36,64,120]);return{q:`${a} × ${b}`,a:a*b}},
- ()=>{const a=ri(12,30),b=ri(2,9),c=ri(3,9),d=ri(2,20);return{q:`(${a} − ${b}) × ${c} + ${d}`,a:(a-b)*c+d,d:[a-b*c+d,(a-b)*(c+d),(a-b)*c-d],long:1}}]};
+   const dig=r===10?n%10:Math.floor(n%100/10),place=r===10?'ones':'tens';
+   return{q:`Round ${F(n)}\nto the nearest ${r}`,a,d:[a+r,a-r,Math.round(n/o)*o===a?a+2*r:Math.round(n/o)*o],long:1,
+     e:`Look at the ${place} digit: ${dig}. ${dig>=5?'5 or more rounds up':'Less than 5 rounds down'}, so ${F(n)} → ${F(a)}.`}}],
+5:[()=>{const x=ri(12,99)/10,p=pick([10,100,1000]);const a=x*p,z=String(p).length-1;return{q:`${F(x)} × ${F(p)}`,a,d:[a*10,a/10,p===10?a*100:a/100],e:`× ${F(p)} moves each digit ${z} place${z>1?'s':''} to the left: ${F(x)} → ${F(a)}.`}},
+ ()=>{const n=ri(25,950),p=pick([10,100]);const a=n/p,z=p===10?1:2;return{q:`${n} ÷ ${p}`,a,d:[a*10,a/10,a+1],e:`÷ ${p} moves each digit ${z} place${z>1?'s':''} to the right: ${n} → ${F(a)}.`}},
+ ()=>{const d=pick([3,4,5,8]),nn=ri(2,d-1),k=ri(3,12);return{q:`${nn}/${d} of ${d*k}`,a:nn*k,d:[k,(nn+1)*k,nn*k+nn],e:`First find 1/${d}: ${d*k} ÷ ${d} = ${k}. Then ${nn}/${d} is ${nn} × ${k} = ${nn*k}.`}},
+ ()=>{const a=ri(11,49)/10,b=ri(11,99)/100;return{q:`${F(a)} + ${F(b)}`,a:a+b,e:`Line up the decimal points: ${a.toFixed(2)} + ${b.toFixed(2)} = ${F(a+b)}.`}},
+ ()=>{const a=ri(101,499),b=ri(2,5);return{q:`${a} × ${b}`,a:a*b,e:eMulPart(a,b)}}],
+6:[()=>{const a=ri(2,9),b=ri(2,9),c=ri(2,9);return{q:`${a} + ${b} × ${c}`,a:a+b*c,d:[(a+b)*c,a+b*c+1,a*b+c],e:`Multiply before adding: ${b} × ${c} = ${b*c}, then ${a} + ${b*c} = ${a+b*c}.`}},
+ ()=>{const p=pick([10,20,25,50,75]),base=20*ri(2,15),a=p*base/100;
+   const e={10:`10% means divide by 10: ${base} ÷ 10 = ${a}.`,20:`10% of ${base} is ${base/10}; 20% is double that: ${a}.`,25:`25% is a quarter: ${base} ÷ 4 = ${a}.`,50:`50% is half: ${base} ÷ 2 = ${a}.`,75:`25% is ${base/4}, so 75% is 3 × ${base/4} = ${a}.`}[p];
+   return{q:`${p}% of ${base}`,a,e}},
+ ()=>{const a=ri(-9,-1),b=ri(2,12);return{q:`${F(a)} + ${b}`,a:a+b,d:[-(a+b),a-b,a+b+2],e:`On a number line, start at ${F(a)} and move ${b} to the right: ${F(a+b)}.`}},
+ ()=>{const a=ri(2,8),b=a+ri(2,8);return{q:`${a} − ${b}`,a:a-b,d:[b-a,a-b-1,a-b+1],e:`Start at ${a} and move ${b} to the left. You pass zero, so the answer is negative: ${F(a-b)}.`}},
+ ()=>{const n=ri(4,12);return{q:`${n}²`,a:n*n,d:[2*n,n*n+n,(n-1)*(n-1)],e:`${n}² ("${n} squared") means ${n} × ${n} = ${n*n}.`}}],
+7:[()=>{const [p,b]=pick([[15,240],[35,160],[45,240],[12.5,480],[15,80],[35,60],[65,40]]);return{q:`${p}% of ${b}`,a:p*b/100,e:`${p}% of ${b} = ${b} × ${p/100} = ${F(p*b/100)}.`}},
+ ()=>{const a=ri(23,49),b=ri(13,29);return{q:`${a} × ${b}`,a:a*b,d:[a*b+10,a*b-10,a*b+a],e:`${a} × ${b} = ${a} × ${b-b%10} + ${a} × ${b%10} = ${a*(b-b%10)} + ${a*(b%10)} = ${a*b}.`}},
+ ()=>{const [f,v]=pick([['3/8',.375],['5/8',.625],['7/20',.35],['3/16',.1875],['4/25',.16],['7/8',.875]]);return{q:`${f} as a decimal`,a:v,d:[v+.1,v/10,v+.05],long:1,e:`${f} = ${f.split('/')[0]} ÷ ${f.split('/')[1]} = ${v}.`}},
+ ()=>{const n=ri(7,11);return{q:`2${sup(n)}`,a:2**n,d:[2**(n-1),2**(n+1),2*n],e:`2 multiplied by itself ${n} times = ${2**n}.`}},
+ ()=>{const n=ri(13,25);return{q:`√${n*n}`,a:n,d:[n+1,n-1,n+2],e:`${n} × ${n} = ${n*n}, so √${n*n} = ${n}.`}},
+ ()=>{const a=pick([0.25,1.5,2.5,0.4,1.2]),b=pick([48,36,64,120]);return{q:`${a} × ${b}`,a:a*b,e:`${a} × ${b} = ${F(a*b)}.`}},
+ ()=>{const a=ri(12,30),b=ri(2,9),c=ri(3,9),d=ri(2,20);return{q:`(${a} − ${b}) × ${c} + ${d}`,a:(a-b)*c+d,d:[a-b*c+d,(a-b)*(c+d),(a-b)*c-d],long:1,e:`Brackets first: ${a-b}. Then × ${c} = ${(a-b)*c}. Then + ${d} = ${(a-b)*c+d}.`}}]};
 function genMaths(level){
-  const y=clamp(Math.round(level),1,7),r=pick(G[y])(),ans=fmt(r.a),a=r.a;
-  let cands=(r.d||[]).map(fmt);
+  const y=clamp(Math.round(level),1,7),r=pick(G[y])(),ans=F(r.a),a=r.a;
+  let cands=(r.d||[]).map(F);
   const isInt=Number.isInteger(parseFloat(a.toFixed(4)));
-  shuffle(isInt?[a+1,a-1,a+2,a-2,a+10,a-10,a+5,a*2]:[a+.1,a-.1,a+1,a-1,a*10,a/10,a+.5]).forEach(v=>cands.push(fmt(v)));
+  shuffle(isInt?[a+1,a-1,a+2,a-2,a+10,a-10,a+5,a*2]:[a+.1,a-.1,a+1,a-1,a*10,a/10,a+.5]).forEach(v=>cands.push(F(v)));
   const out=[];for(const c of cands){if(c!==ans&&!out.includes(c)&&!(a>=0&&c.startsWith('−'))&&c!=='NaN')out.push(c);if(out.length===3)break}
-  return{q:r.q,ans,opts:shuffle([ans,...out]),big:true,long:r.long||r.q.length>12,key:r.q};
+  return{q:r.q,vis:r.vis||'',ans,opts:shuffle([ans,...out]),big:true,long:r.long||r.q.length>12,key:r.q,e:r.e||''};
 }
 
 /* ============ bank-based subjects ============ */
 const parse=t=>t.trim().split('\n').map(l=>l.trim()).filter(Boolean).map(l=>l.split('|'));
-const BANK={lang:parse(BANK_LANG),geo:parse(BANK_GEO),sci:parse(BANK_SCI)};
+const BANK={lang:parse(BANK_LANG),geo:parse(BANK_GEO),sci:parse(BANK_SCI),zh:parse(BANK_ZH)};
 const CAPS=parse(CAPITALS).map(f=>({y:+f[0],c:f[1],cap:f[2],trap:f[3]}));
 const FLG=parse(FLAGS).map(f=>({y:+f[0],f:f[1],n:f[2],trap:f[3]||''}));
-function fromEntry(f){return{q:f[1],ans:f[2],opts:shuffle([f[2],f[3],f[4],f[5]]),passage:f[6]||'',key:f[1]+(f[6]||'')+f[2]}}
+const ZHW=parse(ZH_WORDS).map(f=>({y:+f[0],w:f[1],py:f[2],m:f[3],em:f[4]}));
+function fromEntry(f){
+  const q={q:f[1],ans:f[2],opts:shuffle([f[2],f[3],f[4],f[5]]),passage:f[6]||'',e:f[7]||'',key:f[1]+(f[6]||'')+f[2]};
+  if(/^Listen/.test(q.q)){if(SPEECH.ok)q.say={t:q.ans,l:'en'};else q.q='Which word is spelt correctly?'}
+  return q;
+}
+function distract(pool,correct,field,n=3,trap){
+  const d=[];if(trap)d.push(trap);
+  for(const x of shuffle(pool)){const v=x[field];if(d.length>=n)break;if(v!==correct&&!d.includes(v))d.push(v)}
+  return d.slice(0,n);
+}
 function genCapital(y){
-  const pool=CAPS.filter(c=>c.y===y);const c=pick(pool);
-  const others=shuffle(CAPS.filter(x=>Math.abs(x.y-y)<=1&&x.cap!==c.cap).map(x=>x.cap));
-  const d=[];if(c.trap)d.push(c.trap);for(const o of others){if(d.length>=3)break;if(!d.includes(o))d.push(o)}
-  return{q:`What is the capital of ${c.c}?`,ans:c.cap,opts:shuffle([c.cap,...d.slice(0,3)]),key:'cap'+c.c};
+  const c=pick(CAPS.filter(x=>x.y===y));
+  const d=distract(CAPS.filter(x=>Math.abs(x.y-y)<=1),c.cap,'cap',3,c.trap);
+  return{q:`What is the capital of ${c.c}?`,ans:c.cap,opts:shuffle([c.cap,...d]),key:'cap'+c.c,
+    e:`The capital of ${c.c} is ${c.cap}.${c.trap?` ${c.trap} is a well-known city there, but it isn't the capital.`:''}`};
 }
 function genFlag(y){
-  const pool=FLG.filter(c=>c.y===y);const c=pick(pool);
-  const others=shuffle(FLG.filter(x=>Math.abs(x.y-y)<=2&&x.n!==c.n).map(x=>x.n));
-  const d=[];if(c.trap)d.push(c.trap);for(const o of others){if(d.length>=3)break;if(!d.includes(o))d.push(o)}
-  return{q:'Which country has this flag?',vis:c.f,ans:c.n,opts:shuffle([c.n,...d.slice(0,3)]),key:'flag'+c.n};
+  const c=pick(FLG.filter(x=>x.y===y));
+  const d=distract(FLG.filter(x=>Math.abs(x.y-y)<=2),c.n,'n',3,c.trap);
+  return{q:'Which country has this flag?',vis:c.f,ans:c.n,opts:shuffle([c.n,...d]),key:'flag'+c.n,
+    e:`${c.f} is the flag of ${c.n}.${c.trap?` Careful — ${c.trap}'s flag looks quite similar.`:''}`};
+}
+function genZhWord(y){
+  let pool=ZHW.filter(x=>x.y===y);if(!pool.length)pool=ZHW.filter(x=>Math.abs(x.y-y)<=1);
+  const w=pick(pool);let near=ZHW.filter(x=>Math.abs(x.y-y)<=1&&x.w!==w.w);const same=ZHW.filter(x=>Math.abs(x.y-y)<=2&&x.w!==w.w&&x.w.length===w.w.length);if(same.length>=3)near=same;
+  const e=`${w.w} (${w.py}) means "${w.m}".`;
+  const types=['mean','char'];if(w.em&&y<=4)types.push('pic','pic');if(SPEECH.zh&&y<=4)types.push('listen','listen');if(y>=2)types.push('pinyin');
+  const t=pick(types);
+  if(t==='mean')return{q:`What does ${w.w} mean?`,ans:w.m,opts:shuffle([w.m,...distract(near,w.m,'m')]),key:'zm'+w.w,e};
+  if(t==='char')return{q:`Which word means "${w.m}"?`,ans:w.w,opts:shuffle([w.w,...distract(near,w.w,'w')]),key:'zc'+w.w,e,zhOpts:1};
+  if(t==='pic')return{q:'Which word matches the picture?',vis:w.em,ans:w.w,opts:shuffle([w.w,...distract(near.filter(x=>x.em),w.w,'w')]),key:'zp'+w.w,e,zhOpts:1};
+  if(t==='listen')return{q:'Listen 🔊 Which word did you hear?',ans:w.w,opts:shuffle([w.w,...distract(near,w.w,'w')]),key:'zl'+w.w,e,say:{t:w.w,l:'zh'},zhOpts:1};
+  return{q:`How do you say ${w.w}?`,ans:w.py,opts:shuffle([w.py,...distract(near,w.py,'py')]),key:'zy'+w.w,e,say:null};
 }
 function genBank(sid,level,seen){
   const y=clamp(Math.round(level),1,7);
   let tries=0,q;
   do{
     const entries=BANK[sid].filter(f=>+f[0]===y);
-    let r=Math.random();
+    const r=Math.random();
     if(sid==='geo'&&y>=2&&r<.25)q=genCapital(y);
     else if(sid==='geo'&&r<.45)q=genFlag(y);
+    else if(sid==='zh'&&r<.6)q=genZhWord(y);
     else q=fromEntry(pick(entries.length?entries:BANK[sid].filter(f=>Math.abs(+f[0]-y)<=1)));
     tries++;
-  }while(seen&&seen.has(q.key)&&tries<12);
-  q.long=true;return q;
+  }while(seen&&seen.has(q.key)&&tries<14);
+  return q;
 }
 function genQ(sid,level,seen){
   let q,t=0;
@@ -614,8 +807,44 @@ function genQ(sid,level,seen){
   else q=genBank(sid,level,seen);
   if(seen)seen.add(q.key);
   const L=Math.max(...q.opts.map(o=>o.length));
-  q.layout=L>16?'one':L>7?'two':'';
+  q.layout=q.big?'':(L>16?'one':L>7?'two':'');
   return q;
+}
+
+/* ============ speech (read-aloud & listening) ============ */
+const SPEECH={ok:false,zh:false,en:null,zhv:null};
+function pickVoices(){
+  try{const vs=speechSynthesis.getVoices();if(!vs.length)return;
+    SPEECH.en=vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;
+    SPEECH.zhv=vs.find(v=>/zh[-_]CN/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang)&&!/HK|yue/i.test(v.lang))||null;
+    SPEECH.zh=!!SPEECH.zhv;}catch(e){}
+}
+if(typeof window.speechSynthesis!=='undefined'){SPEECH.ok=true;pickVoices();try{speechSynthesis.onvoiceschanged=pickVoices}catch(e){}}
+function speakable(t){
+  return t.replace(/(\d+)\/(\d+) of/g,(m,a,b)=>`${a} over ${b} of`).replace(/×/g,' times ').replace(/÷/g,' divided by ').replace(/−/g,' minus ').replace(/\+/g,' plus ')
+   .replace(/²/g,' squared').replace(/√/g,'square root of ').replace(/%/g,' percent').replace(/___/g,' blank ').replace(/\n/g,'. ').replace(/[🔊✏️]/gu,'');
+}
+const ZHRE=/([\u3400-\u9fff\u3000-\u303f\uff00-\uffef]+)/;
+function speakParts(parts){
+  if(!SPEECH.ok)return;
+  try{speechSynthesis.cancel();
+    for(const p of parts){
+      const segs=p.l==='zh'?[p.t]:String(p.t).split(ZHRE).filter(s=>s.trim());
+      for(const s of segs){const zh=p.l==='zh'||ZHRE.test(s);
+        if(zh&&!SPEECH.zh)continue;
+        const u=new SpeechSynthesisUtterance(zh?s:speakable(s));
+        u.lang=zh?'zh-CN':'en-GB';u.rate=zh?0.75:0.95;const v=zh?SPEECH.zhv:SPEECH.en;if(v)u.voice=v;
+        speechSynthesis.speak(u);}
+    }}catch(e){}
+}
+function primeSpeech(){try{if(SPEECH.ok){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}}catch(e){}}
+function readQ(q,withOpts=true){
+  const parts=[];
+  if(q.passage)parts.push({t:q.passage});
+  parts.push({t:q.q});
+  if(q.say)parts.push({t:q.say.t,l:q.say.l});
+  if(withOpts&&!(q.say&&/^Listen/.test(q.q))){parts.push({t:'Is it'});q.opts.forEach((o,i)=>{if(i===q.opts.length-1)parts.push({t:'or'});parts.push({t:o,l:/[\u3400-\u9fff]/.test(o)?'zh':'en'})})}
+  speakParts(parts);
 }
 
 /* ============ stages ============ */
@@ -629,6 +858,9 @@ const STAGES=[
  {id:'geo',icon:'🌏',name:'Globe Isles',subj:'Geography',age:'Geography age',bg:'linear-gradient(180deg,#7fd3ff 0%,#4fb3e8 45%,#2d8fd0 100%)',
   deco:['☁️','🐬','🏝️','🐠','⛵','🐳','🌴','🦀'],
   nodes:[['🧭',"Captain's Test"],['🐠','Coral Cove'],['🏝️','Palm Atoll'],['⛵','Trade Winds'],['🗼','Boss Lighthouse']]},
+ {id:'zh',icon:'🐼',name:'Panda Pagoda',subj:'Chinese 华文',age:'Chinese age',bg:'linear-gradient(180deg,#ffd9a8 0%,#f59e6b 45%,#c2410c 100%)',
+  deco:['🏮','🎋','🐉','🏮','🥮','🎋','🧧','🌸'],
+  nodes:[['🏮','Lantern Test'],['🥟','Dumpling Den'],['🎋','Bamboo Grove'],['🐉','Dragon Gate'],['🏯','Boss Pagoda']]},
  {id:'sci',icon:'🔬',name:'Science Lab',subj:'Science',age:'Science age',bg:'linear-gradient(180deg,#2a2466 0%,#4b3fa0 50%,#7a63d6 100%)',
   deco:['⭐','🪐','✨','☄️','🌙','⭐','🛸','✨'],
   nodes:[['🥼',"Professor's Test"],['🐞','Bug Garden'],['🧲','Magnet Mine'],['🚀','Rocket Ridge'],['🔭','Boss Observatory']]}
@@ -644,13 +876,15 @@ const AVATARS=['🦊','🐼','🐯','🦁','🐸','🐵','🦄','🐲','🐧','�
 const COLORS=['#ff8a3d','#ff5c8a','#7b61ff','#2bb3ff','#22c55e','#ffc83d','#14b8a6','#a3a3c2'];
 const emptySubj=()=>({ability:null,history:[],stars:[0,0,0]});
 function newProfile(kind){return{id:Date.now().toString(36)+ri(10,99),name:'',kind,age:8,avatar:kind==='adult'?'🐲':'🦊',color:kind==='adult'?'#7b61ff':'#ff8a3d',acc:'none',
-  subj:{maths:emptySubj(),lang:emptySubj(),geo:emptySubj(),sci:emptySubj()},badges:[],trophies:[],stats:{answered:0,correct:0,bestStreak:0,padQs:0},boss:{w:0,l:0,d:0},unlockAll:false,padOn:null}}
+  subj:Object.fromEntries(STAGES.map(s=>[s.id,emptySubj()])),badges:[],trophies:[],stats:{answered:0,correct:0,bestStreak:0,padQs:0},boss:{w:0,l:0,d:0},unlockAll:false,padOn:null,year:null,readAloud:null}}
 function migrate(p){
   if(!p.subj){p.subj={maths:p.maths||emptySubj()};delete p.maths}
   STAGES.forEach(s=>{if(!p.subj[s.id])p.subj[s.id]=emptySubj()});
   p.trophies.forEach(t=>{if(!t.sid)t.sid='maths'});
   if(p.stats.padQs==null)p.stats.padQs=0;
   if(p.padOn===undefined)p.padOn=null;
+  if(p.readAloud===undefined)p.readAloud=null;
+  if(!p.year)p.year=clamp(Math.round((p.age||8)-5),1,6);
 }
 S.profiles.forEach(migrate);save();
 const sub=(p,sid)=>p.subj[sid];
@@ -659,19 +893,23 @@ function learningAge(p){const a=STAGES.map(s=>ageOf(p,s.id)).filter(x=>x!=null);
 const starsIn=(p,sid)=>sub(p,sid).stars.reduce((a,b)=>a+b,0);
 const totalStars=p=>STAGES.reduce((a,s)=>a+starsIn(p,s.id),0);
 const padDefault=p=>p.padOn!=null?p.padOn:(p.age<=8);
+const readDefault=p=>p.readAloud!=null?p.readAloud:(p.age<=8);
+/* children never get secondary (Year 7) questions, and never more than 2 years above their school year */
+const kidMax=p=>Math.min(6.4,(p.year||2)+2.4);
+const kidStart=p=>Math.max(1,(p.year||2)-1);
 
 const ACCS=[
  {id:'none',e:'',n:'None'},
  {id:'cap',e:'🧢',need:p=>totalStars(p)>=3,how:'Earn 3 stars'},
  {id:'shades',e:'🕶️',need:p=>p.badges.includes('streak5'),how:'Get a 5-answer streak'},
  {id:'tophat',e:'🎩',need:p=>totalStars(p)>=18,how:'Earn 18 stars'},
- {id:'grad',e:'🎓',need:p=>p.badges.includes('allround'),how:'Take all 4 tests'},
+ {id:'grad',e:'🎓',need:p=>p.badges.includes('allround'),how:'Take all 5 tests'},
  {id:'crown',e:'👑',need:p=>p.trophies.length>0,how:'Beat a Boss'}
 ];
 const BADGES=[
  {id:'test',e:'🧠',n:'Brain Scan',d:'Finish any stage test'},
  {id:'ahead',e:'🚀',n:'Ahead of the Curve',d:'A subject age above your real age'},
- {id:'allround',e:'🌈',n:'All-Rounder',d:'Take the test in all 4 stages'},
+ {id:'allround',e:'🌈',n:'All-Rounder',d:'Take the test in all 5 stages'},
  {id:'streak5',e:'🔥',n:'On Fire',d:'5 right in a row'},
  {id:'streak10',e:'⚡',n:'Unstoppable',d:'10 right in a row'},
  {id:'perfect',e:'⭐',n:'Perfectionist',d:'3 stars on a level'},
@@ -679,7 +917,7 @@ const BADGES=[
  {id:'path',e:'🗺️',n:'Path Finder',d:'Clear all practice levels in a stage'},
  {id:'scribe',e:'✏️',n:'Working It Out',d:'Use working paper on 10 questions'},
  {id:'boss',e:'🐉',n:'Boss Slayer',d:'Beat a grown-up in Boss PK'},
- {id:'grand',e:'👑',n:'Grand Champion',d:'Beat the Boss in all 4 stages'},
+ {id:'grand',e:'👑',n:'Grand Champion',d:'Beat the Boss in all 5 stages'},
  {id:'grow',e:'🌱',n:'Growing Brain',d:'A subject age up 0.5 since first test'},
  {id:'century',e:'💯',n:'Century',d:'Answer 100 questions'}
 ];
@@ -706,7 +944,8 @@ const app=()=>$('#app');
 function setLayer(h){$('#layer').innerHTML=h}
 
 /* ============ working paper pad ============ */
-function padHTML(id,hint=true){return `<div class="pad" id="${id}-wrap"><canvas id="${id}"></canvas>${hint?'<span class="padhint">✏️ Working paper — write here</span>':''}<div class="padbar"><button onclick="padClear('${id}')">🧽 Clear</button></div></div>`}
+let PADBIG=false;
+function padHTML(id,hint=true,expand=true){return `<div class="pad ${PADBIG&&expand?'big':''}" id="${id}-wrap"><canvas id="${id}"></canvas>${hint?'<span class="padhint">✏️ Working paper — write here</span>':''}<div class="padbar">${expand?`<button class="padexp" onclick="PADBIG=!PADBIG;renderQ()">${PADBIG?'⤡ Smaller':'⤢ Bigger'}</button>`:''}<button onclick="padClear('${id}')">🧽 Clear</button></div></div>`}
 function padInit(id,onFirst){
   const c=document.getElementById(id);if(!c)return;
   const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
@@ -749,7 +988,9 @@ function home(){
    <div class="sect">🧒 Young adventurers</div>
    <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')">＋ Add child</button></div>
    <div class="sect">🐲 Grown-up bosses</div>
-   <div class="players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')">＋ Add grown-up</button></div>`;
+   <div class="players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')">＋ Add grown-up</button></div>
+   <div class="center" style="margin-top:28px"><button class="back" style="padding:12px 18px" onclick="backupScreen()">💾 Save / restore progress</button>
+   ${S.profiles.length&&backupNudge()?'<div class="small" style="color:#ffd27a;margin-top:8px">Tip: save a copy of progress before updating the app</div>':''}</div>`;
 }
 function openProfile(id){S.cur=id;save();map()}
 
@@ -764,6 +1005,10 @@ function drawEditor(){
    <label class="l">Player type</label>
    <div class="seg"><button class="${p.kind==='kid'?'on':''}" onclick="E.kind='kid';drawEditor()">🧒 Child</button><button class="${p.kind==='adult'?'on':''}" onclick="E.kind='adult';drawEditor()">🐲 Grown-up (Boss)</button></div>
    ${p.kind==='kid'?`<label class="l">Real age (years)</label><input type="number" min="4" max="14" step="0.5" value="${p.age}" oninput="E.age=parseFloat(this.value)||E.age">
+   <label class="l">School year <span class="muted small">(sets where questions start)</span></label>
+   <div class="seg">${[1,2,3,4,5,6].map(y=>`<button class="${(E.year||clamp(Math.round(E.age-5),1,6))===y?'on':''}" onclick="E.year=${y};drawEditor()">Y${y}</button>`).join('')}</div>
+   <label class="l">Read questions aloud 🔊</label>
+   <div class="seg"><button class="${readDefault(p)?'on':''}" onclick="E.readAloud=true;drawEditor()">🔊 Automatically</button><button class="${!readDefault(p)?'on':''}" onclick="E.readAloud=false;drawEditor()">Only when tapped</button></div>
    <label class="l">Working paper</label>
    <div class="seg"><button class="${padDefault(p)?'on':''}" onclick="E.padOn=true;drawEditor()">✏️ Open by default</button><button class="${!padDefault(p)?'on':''}" onclick="E.padOn=false;drawEditor()">Only when tapped</button></div>`:''}
    <label class="l">Avatar</label>
@@ -782,7 +1027,7 @@ function drawEditor(){
 function closeEditor(){setLayer('');E=null}
 function saveEditor(){
   const nm=(E.name||'').trim();if(!nm){miniToast('Please add a name');return}
-  E.name=nm;E.age=clamp(E.age||8,4,14);const isNew=E._new;delete E._new;migrate(E);
+  E.name=nm;E.age=clamp(E.age||8,4,14);if(!E.year)E.year=clamp(Math.round(E.age-5),1,6);const isNew=E._new;delete E._new;migrate(E);
   if(isNew)S.profiles.push(E);else S.profiles[S.profiles.findIndex(x=>x.id===E.id)]=E;
   save();const back=E;closeEditor();
   if(BOSS_PENDING&&back.kind==='adult'){BOSS_PENDING=false;bossSetup(back.id);return}
@@ -832,7 +1077,7 @@ function map(){
    <div class="mapfoot"><span>${st.icon} ${st.subj} · Boss = PK vs a grown-up</span>
    <button class="linkbtn" onclick="toggleUnlock()">${p.unlockAll?'🔓 Parent: re-lock':'🔑 Parent: unlock all'}</button></div>`;
 }
-function toggleUnlock(){const p=cur();p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=clamp(p.age-5,1,6)});save();map()}
+function toggleUnlock(){const p=cur();p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
 function tapNode(i){
   const p=cur(),sid=STAGE;
   if(!unlocked(p,sid,i)){miniToast(i===1?'🔒 Do the test first':'🔒 Get at least 1 star on the previous level');return}
@@ -846,59 +1091,96 @@ function intro(){
   app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${n[0]} ${n[1]}</h1></div>
    <div class="card center"><div style="font-size:80px">${n[0]}</div>
    <h2>What's your ${st.age.toLowerCase()}?</h2>
-   <p class="muted">12 ${st.subj.toLowerCase()} questions. They get harder when you're right and easier when you're wrong — so it's okay to miss some!</p>
-   <p class="muted small">Grown-ups: please let ${esc(p.name)} answer alone so the result is accurate. Reading the questions aloud for younger children is fine.</p>
-   <button class="btn block" onclick="startQuiz('test')">Start ✨</button></div>`;
+   <p class="muted">12 ${st.subj.split(' ')[0].toLowerCase()} questions. The first ones are easy, then they get harder when you're right and easier when you're wrong — so it's okay to miss some!</p>
+   <p class="muted small">Starts at Year ${kidStart(p)} level for ${esc(p.name)} (school year ${p.year}). Grown-ups: please let ${esc(p.name)} answer alone. Reading the questions aloud is fine — or use the 🔊 button.</p>
+   <button class="btn block" onclick="primeSpeech();startQuiz('test')">Start ✨</button></div>`;
 }
 function startQuiz(mode,levelIdx){
+  primeSpeech();
   const p=cur(),s=sub(p,STAGE);
-  const ab=s.ability!=null?s.ability:clamp(p.age-5,1,6);
-  Q={sid:STAGE,mode,levelIdx,n:mode==='test'?12:8,i:0,ability:ab,step:1,streak:0,correct:0,times:[],trail:[],cur:null,locked:false,seen:new Set(),pad:STAGE==='maths'?padDefault(p):false};
+  const ab=mode==='test'?kidStart(p):(s.ability!=null?s.ability:kidStart(p));
+  Q={sid:STAGE,mode,levelIdx,n:mode==='test'?12:8,i:0,ability:ab,level:ab,run:0,missed:false,streak:0,correct:0,times:[],trail:[],log:[],cur:null,locked:false,
+     seen:new Set(),pad:STAGE==='maths'?padDefault(p):false,read:readDefault(p),token:0};
   nextQ();
 }
-function qLevel(){return Q.mode==='test'?clamp(Q.ability,1,7):clamp(Q.ability+NODEOFF[Q.levelIdx]+(Math.random()*.6-.3),1,7)}
+/* question difficulty: tests warm up easy then climb; practice levels ramp from easier to harder within the level */
+function qLevel(){
+  const p=cur(),mx=kidMax(p);
+  if(Q.mode==='test')return clamp(Q.level,1,mx);
+  const ramp=-0.9+1.4*(Q.i/(Q.n-1));
+  return clamp(Q.ability+NODEOFF[Q.levelIdx]+ramp,1,mx);
+}
 function nextQ(){
   if(Q.i>=Q.n)return Q.mode==='test'?finishTest():finishLevel();
-  Q.cur=genQ(Q.sid,qLevel(),Q.seen);Q.t0=Date.now();Q.locked=false;Q.padUsed=false;renderQ();
+  Q.cur=genQ(Q.sid,qLevel(),Q.seen);Q.t0=Date.now();Q.locked=false;Q.padUsed=false;Q.token++;
+  renderQ();
+  const c=Q.cur;
+  if(Q.read)setTimeout(()=>readQ(c),250);else if(c.say)setTimeout(()=>speakParts([c.say]),250);
 }
 function togglePad(){Q.pad=!Q.pad;const p=cur();p.padOn=Q.pad;save();renderQ()}
 function renderQ(){
   const st=stageById(Q.sid),node=st.nodes[Q.mode==='test'?0:Q.levelIdx],c=Q.cur;
-  app().innerHTML=`<div class="qtop"><button class="back" onclick="map()">✕</button>
+  const listen=c.say&&/^Listen/.test(c.q);
+  app().innerHTML=`<div class="qtop"><button class="back" onclick="try{speechSynthesis.cancel()}catch(e){};map()">✕</button>
     <div class="prog"><i style="width:${Q.i/Q.n*100}%"></i></div>
     <span class="streak">${Q.streak>=2?'🔥'+Q.streak:''}</span>
-    <button class="padtoggle ${Q.pad?'on':''}" onclick="togglePad()">✏️ ${Q.pad?'Hide paper':'Working paper'}</button></div>
-   <div class="qcard" id="qc"><div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n}</div>
+    ${SPEECH.ok?`<button class="padtoggle" onclick="readQ(Q.cur)">🔊 Read</button>`:''}
+    <button class="padtoggle ${Q.pad?'on':''}" onclick="togglePad()">✏️ ${Q.pad?'Hide paper':'Paper'}</button></div>
+   <div class="qcard ${Q.pad?'haspad':''}" id="qc">
+    <div class="qhead"><div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n}</div>
     ${c.passage?`<div class="passage">${esc(c.passage)}</div>`:''}
     <div class="qtext ${c.big?(c.long?'long':''):'txt'}">${esc(c.q)}</div>
-    ${c.vis?`<div class="qvis">${c.vis}</div>`:''}
+    ${c.vis?`<div class="qvis ${c.vis.length>12?'many':''}">${c.vis}</div>`:''}
+    ${c.say?`<button class="listen" onclick="speakParts([Q.cur.say])">🔊 ${listen?'Play again':'Hear it'}</button>`:''}</div>
     ${Q.pad?padHTML('qpad'):''}
-    <div class="opts ${c.layout}">${c.opts.map((o,k)=>`<button class="opt" data-k="${k}" onclick="answer(${k},this)">${esc(o)}</button>`).join('')}</div>
+    <div class="opts ${c.layout} ${c.zhOpts?'zh':''}">${c.opts.map((o,k)=>`<button class="opt" data-k="${k}" onclick="answer(${k},this)">${esc(o)}</button>`).join('')}</div>
     <div class="fb" id="fb"></div></div>`;
   if(Q.pad)padInit('qpad',()=>{if(!Q.padUsed){Q.padUsed=true;const p=cur();p.stats.padQs++;save();checkStatBadges(p)}});
+  if(Q.locked)showFeedback();
 }
 function answer(k,el){
   if(Q.locked)return;Q.locked=true;
-  const p=cur(),ok=Q.cur.opts[k]===Q.cur.ans,t=(Date.now()-Q.t0)/1000;
-  Q.times.push(t);p.stats.answered++;
-  document.querySelectorAll('.opt').forEach(b=>{if(Q.cur.opts[+b.dataset.k]===Q.cur.ans)b.classList.add('right')});
+  const p=cur(),c=Q.cur,ok=c.opts[k]===c.ans,t=(Date.now()-Q.t0)/1000;
+  Q.times.push(t);p.stats.answered++;Q.lastOk=ok;Q.picked=c.opts[k];
+  Q.log.push({q:c.q,passage:c.passage,vis:c.vis,ans:c.ans,picked:c.opts[k],ok,e:c.e});
   if(ok){Q.correct++;Q.streak++;p.stats.correct++;sGood();
-    $('#fb').innerHTML=pick(['Brilliant! ✨','Correct! 🎉','Super! 💪','Nailed it! 🌟']);
     if(Q.streak>p.stats.bestStreak)p.stats.bestStreak=Q.streak;
     if(Q.streak>=5)award(p,'streak5');if(Q.streak>=10)award(p,'streak10');
-  }else{Q.streak=0;el.classList.add('wrong');$('#qc').classList.add('shake');sBad();
-    $('#fb').innerHTML=`<span style="color:var(--bad)">Not quite — it's <b>${esc(Q.cur.ans)}</b></span>`}
-  if(Q.mode==='test'){Q.ability=clamp(Q.ability+(ok?Q.step:-Q.step),0.5,7.9);Q.step=Math.max(.3,Q.step*.82);Q.trail.push(Q.ability)}
-  else Q.ability=clamp(Q.ability+(ok?.04:-.04),0.5,7.9);
+  }else{Q.streak=0;$('#qc').classList.add('shake');sBad()}
+  if(Q.mode==='test'){
+    /* warm-up: first 2 questions never move the level. Then climb 0.5 per right answer until the first miss,
+       after that 2-in-a-row to go up, 1 miss to go down (keeps success around 70%). */
+    if(Q.i>=2){
+      if(ok){if(!Q.missed)Q.level+=0.5;else if(++Q.run>=2){Q.level+=0.5;Q.run=0}}
+      else{Q.missed=true;Q.run=0;Q.level-=0.5}
+      Q.level=clamp(Q.level,1,kidMax(p));
+    }
+    Q.trail.push(Q.level);
+  }else Q.ability=clamp(Q.ability+(ok?.04:-.04),0.5,kidMax(p));
   Q.i++;save();
-  const delay=ok?(Q.cur.big?750:1000):(Q.cur.big?1700:2300);
-  setTimeout(nextQ,delay);
+  showFeedback();
+  const tok=Q.token;
+  if(ok)setTimeout(()=>{if(Q&&Q.token===tok&&Q.locked)nextQ()},c.big?2200:2800);
+}
+function showFeedback(){
+  const c=Q.cur,ok=Q.lastOk;
+  document.querySelectorAll('.opt').forEach(b=>{const v=c.opts[+b.dataset.k];if(v===c.ans)b.classList.add('right');else if(v===Q.picked)b.classList.add('wrong')});
+  $('#fb').innerHTML=`<div class="verdict-line" style="color:${ok?'var(--good)':'var(--bad)'}">${ok?pick(['Brilliant! ✨','Correct! 🎉','Super! 💪','Nailed it! 🌟']):`Not quite — the answer is <b>${esc(c.ans)}</b>`}</div>
+    ${c.e?`<div class="explain"><b>Why?</b> ${esc(c.e)}</div>`:''}
+    <button class="btn ${ok?'ghost':''} block" style="margin-top:12px" onclick="Q.token++;nextQ()">${Q.i>=Q.n?'See results':'Next'} ▶</button>`;
+  const fb=$('#fb');if(fb&&!ok)setTimeout(()=>fb.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+}
+function reviewHTML(log){
+  const wrong=log.filter(x=>!x.ok).length;
+  return `<details class="review"><summary>📋 Review answers (${log.length-wrong} right, ${wrong} to learn)</summary>
+    ${log.map((x,i)=>`<div class="rv ${x.ok?'ok':'no'}"><div class="rq">${i+1}. ${x.passage?`<i>${esc(x.passage)}</i><br>`:''}${esc(x.q).replace(/\n/g,' ')} ${x.vis&&x.vis.length<=12?x.vis:''}</div>
+      <div>${x.ok?'✅':'❌ You chose <b>'+esc(x.picked)+'</b> ·'} Answer: <b>${esc(x.ans)}</b></div>${x.e?`<div class="muted small">${esc(x.e)}</div>`:''}</div>`).join('')}</details>`;
 }
 function finishTest(){
-  const p=cur(),s=sub(p,Q.sid),last=Q.trail.slice(-5);
+  const p=cur(),s=sub(p,Q.sid),last=Q.trail.slice(-6);
   s.ability=last.reduce((a,b)=>a+b,0)/last.length;
   s.history.push({d:today(),age:ageOf(p,Q.sid)});
-  save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true);
+  save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
 }
 function verdict(p,sid){
   const diff=Math.round((ageOf(p,sid)-p.age)*10)/10;
@@ -912,24 +1194,27 @@ function ageBars(p){
     return `<div class="agebar"><span>${s.icon} ${s.subj.split(' ')[0]}</span><div class="tr">${a!=null?`<i style="width:${pos(a)}%;background:${a>p.age?'var(--good)':'var(--adult)'}"></i>`:''}<b style="left:${pos(p.age)}%" title="Real age"></b></div><span>${a??'–'}</span></div>`}).join('')}
     <div class="small muted" style="text-align:right">▮ black mark = real age (${p.age})</div></div>`;
 }
-function showAgeResult(sid,fresh){
+function showAgeResult(sid,fresh,log){
   STAGE=sid;
   const p=cur(),st=stageById(sid),a=ageOf(p,sid),v=verdict(p,sid);
   const lo=5,hi=13,pos=x=>clamp((x-lo)/(hi-lo)*100,2,98);
   const H=sub(p,sid).history.slice(-8),mx=Math.max(...H.map(h=>h.age),p.age);
+  const capped=sub(p,sid).ability>=kidMax(p)-0.05;
   if(fresh&&a>p.age){confetti(60);sWin()}
   app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${st.icon} Your ${st.age}</h1></div>
    <div class="card center">${avatar(p,84)}
     <div class="qlabel" style="margin-top:14px">${esc(p.name)}'s ${st.age}</div>
-    <div class="big" style="color:${v.c}">${a>=12.9?'12.9+':a}</div>
+    <div class="big" style="color:${v.c}">${a}${capped?'+':''}</div>
     <div class="verdict">${v.e} ${v.t}</div>
     <div class="gauge"><div class="bar"></div>
       ${[5,7,9,11,13].map(t=>`<div class="tick" style="left:${pos(t)}%">${t}</div>`).join('')}
       <div class="mk up" style="left:${pos(p.age)}%">🎂 Real ${p.age}</div>
       <div class="mk" style="left:${pos(a)}%;top:30px;font-size:28px">${p.avatar}</div></div>
+    ${capped?`<p class="small muted">Top score for school year ${p.year} — questions stop at 2 years above. Change the school year in the profile to stretch further.</p>`:''}
     ${H.length>1?`<div class="qlabel" style="margin-top:18px">Progress</div><div class="hist">${H.map(h=>`<div style="height:${Math.max(10,h.age/mx*70)}px"><span>${h.age}</span></div>`).join('')}</div>`:''}
+    ${log?reviewHTML(log):''}
     <div class="qlabel" style="margin:20px 0 8px">All subjects · Learning age ${learningAge(p)??'?'}</div>${ageBars(p)}
-    <p class="muted small" style="margin-top:18px">Compares answers with what the UK primary curriculum expects at each year group. A fun guide, not a formal assessment.</p>
+    <p class="muted small" style="margin-top:18px">Compares answers with what the UK primary curriculum expects at each year group${sid==='zh'?' (Chinese: a second-language learner path)':''}. A fun guide, not a formal assessment.</p>
     <button class="btn block" onclick="map()">Back to the map 🗺️</button></div>`;
 }
 function finishLevel(){
@@ -950,6 +1235,7 @@ function finishLevel(){
     <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer</p>
     <div class="chip" style="background:#efeaff;color:var(--ink);font-size:16px">🧠 ${stageById(Q.sid).age} ${after} ${delta>0?`<b style="color:var(--good)">▲ ${delta}</b>`:delta<0?`<b style="color:var(--bad)">▼ ${Math.abs(delta)}</b>`:''}</div>
     ${stars===0?'<p class="muted">Get 4 or more right to unlock the next level.</p>':''}
+    ${reviewHTML(Q.log)}
     <div class="row" style="margin-top:20px"><button class="btn ghost" style="flex:1" onclick="startQuiz('level',${Q.levelIdx})">↻ Again</button>
     <button class="btn" style="flex:2" onclick="map()">Map 🗺️</button></div></div>`;
 }
@@ -979,9 +1265,9 @@ function bossSetup(adultId){
    </div>`;
 }
 const LIMIT=6;
-function startBoss(){
+function startBoss(){primeSpeech();
   const kid=cur(),ad=getP(bossOpts.adult);if(!ad)return;
-  B={sid:STAGE,kid,ad,p:bossOpts.strength==='gentle'?1:0,t:90,sides:{kid:{},adult:{}},over:false,ks:0,as:0,seenK:new Set(),seenA:new Set(),kpad:STAGE==='maths'?padDefault(kid):false};
+  B={sid:STAGE,kid,ad,p:bossOpts.strength==='gentle'?1:0,t:90,sides:{kid:{},adult:{}},over:false,ks:0,as:0,seenK:new Set(),seenA:new Set(),kpad:STAGE==='maths'?padDefault(kid):false,kLvl:clamp((sub(kid,STAGE).ability||kidStart(kid))-0.8,1,kidMax(kid))};
   app().innerHTML='';
   setLayer(`<div class="arena">
     <div class="half adult ${bossOpts.facing?'flip':''}" id="h-adult"></div>
@@ -995,9 +1281,10 @@ function startBoss(){
 }
 function newBossQ(side){
   const seen=side==='kid'?B.seenK:B.seenA;
-  const lvl=side==='kid'?clamp(sub(B.kid,B.sid).ability+(Math.random()-.5),1,7):7;
+  const lvl=side==='kid'?B.kLvl:7;
   if(seen.size>40)seen.clear();
   B.sides[side]={q:genQ(B.sid,lvl,seen),lock:false};drawSide(side);
+  const q=B.sides[side].q;if(side==='kid'&&q.say)speakParts([q.say]);
 }
 function toggleBossPad(){B.kpad=!B.kpad;drawSide('kid')}
 function drawSide(side){
@@ -1005,16 +1292,16 @@ function drawSide(side){
   el.classList.toggle('locked',s.lock);const q=s.q;
   const showPad=side==='kid'&&B.kpad&&!s.lock;
   el.innerHTML=`<div class="who">${avatar(pl,40)}<span>${esc(pl.name)}${side==='adult'?' · BOSS':''}</span>
-     ${side==='kid'?`<button class="padtoggle" onclick="toggleBossPad()">✏️ ${B.kpad?'Hide':'Paper'}</button>`:''}<span class="sc">✓ ${side==='kid'?B.ks:B.as}</span></div>
+     ${side==='kid'?`${SPEECH.ok?`<button class="padtoggle" onclick="readQ(B.sides.kid.q)">🔊</button>`:''}<button class="padtoggle" onclick="toggleBossPad()">✏️ ${B.kpad?'Hide':'Paper'}</button>`:''}<span class="sc">✓ ${side==='kid'?B.ks:B.as}</span></div>
    <div class="bq ${q.big?(q.long?'long':''):'txt'}">${s.lock?'🥶 Frozen!':(q.passage?`<div style="font-size:15px;font-weight:500;text-align:left;margin-bottom:6px">${esc(q.passage)}</div>`:'')+esc(q.q)+(q.vis?`<div class="qvis">${q.vis}</div>`:'')}</div>
-   ${showPad?padHTML('bpad',false):''}
+   ${showPad?padHTML('bpad',false,false):''}
    <div class="opts ${q.layout}">${q.opts.map((o,k)=>`<button class="opt" onpointerdown="bossAns('${side}',${k},this)">${esc(o)}</button>`).join('')}</div>`;
   if(showPad)padInit('bpad',()=>{B.kid.stats.padQs++;save()});
 }
 function bossAns(side,k,el){
   if(!B||B.over)return;const s=B.sides[side];if(s.lock)return;
   const ok=s.q.opts[k]===s.q.ans;
-  if(ok){el.classList.add('right');sGood();if(side==='kid'){B.p++;B.ks++}else{B.p--;B.as++}moveKnot();
+  if(ok){el.classList.add('right');sGood();if(side==='kid'){B.p++;B.ks++;B.kLvl=Math.min(B.kLvl+0.2,Math.min(kidMax(B.kid),(sub(B.kid,B.sid).ability||kidStart(B.kid))+0.6))}else{B.p--;B.as++}moveKnot();
     if(Math.abs(B.p)>=LIMIT)return endBoss(B.p>0?'kid':'adult');
     setTimeout(()=>B&&!B.over&&newBossQ(side),250);
   }else{el.classList.add('wrong');sBad();s.lock=true;
@@ -1065,7 +1352,58 @@ function cabinet(){
      <div><div class="big" style="font-size:34px">${p.stats.answered}</div><div class="small muted">Answered</div></div>
      <div><div class="big" style="font-size:34px">${p.stats.answered?Math.round(p.stats.correct/p.stats.answered*100):0}%</div><div class="small muted">Accuracy</div></div>
      <div><div class="big" style="font-size:34px">${p.stats.bestStreak}</div><div class="small muted">Best streak</div></div>
-     <div><div class="big" style="font-size:34px">${totalStars(p)}</div><div class="small muted">Stars /36</div></div></div></div>`;
+     <div><div class="big" style="font-size:34px">${totalStars(p)}</div><div class="small muted">Stars /45</div></div></div></div>`;
+}
+
+/* ============ BACKUP / RESTORE ============ */
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(e){}
+function backupCode(){
+  const json=JSON.stringify(S);
+  return 'QPK1:'+btoa(unescape(encodeURIComponent(json)));
+}
+function readCode(code){
+  code=(code||'').trim();
+  if(code.startsWith('{'))return JSON.parse(code);
+  const m=code.match(/QPK1:([A-Za-z0-9+/=\s]+)/);if(!m)throw new Error('not a Quest PK code');
+  return JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/\s/g,'')))));
+}
+function backupScreen(){
+  const code=backupCode(),kb=Math.round(code.length/1024*10)/10;
+  setLayer(`<div class="modal" onclick="if(event.target===this)setLayer('')"><div class="card">
+   <h2>💾 Save &amp; restore progress</h2>
+   <p class="muted">Progress is kept on this iPad. Save a copy before deleting the app icon, changing iPad, or clearing Safari — then paste it back here.</p>
+   <label class="l">1 · Save a copy</label>
+   <div class="row wrap">
+     <button class="btn" onclick="copyCode()">📋 Copy progress code</button>
+     <a class="btn ghost" id="dl" download="quest-pk-progress-${today()}.txt" href="data:text/plain;charset=utf-8,${encodeURIComponent(code)}" style="text-decoration:none">⬇️ Save as file</a>
+   </div>
+   <p class="small muted">Paste the copied code into Notes or WhatsApp it to yourself (${kb} KB, ${S.profiles.length} player${S.profiles.length===1?'':'s'}).</p>
+   <label class="l">2 · Restore from a copy</label>
+   <textarea id="rc" rows="4" placeholder="Paste a progress code here…" style="width:100%;font:inherit;font-size:14px;padding:10px;border-radius:14px;border:2px solid #e2e3f5"></textarea>
+   <div class="row wrap" style="margin-top:8px">
+     <button class="btn purple" onclick="restoreFrom($('#rc').value)">Restore</button>
+     <label class="btn ghost" style="cursor:pointer">📂 From file<input type="file" accept=".txt,text/plain" style="display:none" onchange="restoreFile(this)"></label>
+   </div>
+   <p class="small muted">Restoring replaces the progress on this iPad.</p>
+   <button class="btn ghost block" style="margin-top:14px" onclick="setLayer('')">Close</button>
+  </div></div>`);
+}
+function copyCode(){
+  S.lastBackup=today();S.lastBackupN=S.profiles.reduce((a,p)=>a+p.stats.answered,0);save();
+  const code=backupCode();
+  try{navigator.clipboard.writeText(code).then(()=>miniToast('✅ Copied — paste it into Notes'),()=>showCodeBox(code))}catch(e){showCodeBox(code)}
+}
+function showCodeBox(code){const t=$('#rc');if(t){t.value=code;t.select();miniToast('Select all & copy the code in the box')}}
+function restoreFile(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>restoreFrom(r.result);r.readAsText(f)}
+function restoreFrom(code){
+  try{const d=readCode(code);if(!d||!Array.isArray(d.profiles))throw new Error('no players');
+    S=d;S.profiles.forEach(migrate);save();setLayer('');home();miniToast(`✅ Restored ${S.profiles.length} player${S.profiles.length===1?'':'s'}`);
+  }catch(e){miniToast('❌ That code didn\'t work — check it was copied in full')}
+}
+/* remind to back up now and then */
+function backupNudge(){
+  const n=S.profiles.reduce((a,p)=>a+(p.stats?p.stats.answered:0),0);
+  return n>=30&&(!S.lastBackup||n-S.lastBackupN>=150);
 }
 
 home();
