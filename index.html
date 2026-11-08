@@ -211,6 +211,12 @@
   .badge.off b{color:var(--muted)}
 
 
+  .toggle{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-top:14px}
+  .toggle .ic{font-size:28px} .toggle b{display:block;font-size:16px} .toggle span span{font-size:13px;color:var(--muted)}
+  .toggle > span:nth-child(2){flex:1}
+  .sw{width:52px;height:30px;border-radius:30px;background:var(--line);position:relative;flex:none;transition:background .15s}
+  .sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .15s}
+  .sw.on{background:var(--jade)} .sw.on i{left:25px}
   /* writing practice */
   .card .levels button{background:var(--cream)}
   .card .levels button.on{background:#fff}
@@ -413,12 +419,23 @@ function makeQuestions(levelKey, p){
     idx = Math.min(idx, pool.length-1);
     picks.push(pool[idx].w); pool.splice(idx,1);
   }
-  const types = shuffle(["meaning","meaning","meaning","hanzi","hanzi","hanzi","listen","listen"]);
-  return shuffle(picks).map((w,i)=>{
+  const writing = store.writeRound !== false && typeof STROKES !== "undefined";
+  const types = writing ? shuffle(["meaning","meaning","hanzi","hanzi","listen","listen"]).concat(["write","write"]) : shuffle(["meaning","meaning","meaning","hanzi","hanzi","hanzi","listen","listen"]);
+  const qs = shuffle(picks).map((w,i)=>{
     const others = shuffle(L.words.filter(x=>x[0]!==w[0])).slice(0,3);
     const rec = p.words[w[0]];
-    return {w, type:types[i], opts:shuffle([w, ...others]), tag: !rec ? "new" : (!rec.m && rec.bad>0 ? "revise" : "")};
+    let type = types[i], ch = null;
+    if(type==="write"){ ch = writeTarget(w, p); if(!ch) type = "meaning"; }
+    return {w, type, ch, opts:shuffle([w, ...others]), tag: !rec ? "new" : (!rec.m && rec.bad>0 ? "revise" : "")};
   });
+  // spread the writing questions out: never first, never back to back
+  if(writing){
+    const wq = qs.filter(q=>q.type==="write"), rest = qs.filter(q=>q.type!=="write");
+    const slots = [2 + Math.floor(Math.random()*2), 5 + Math.floor(Math.random()*3)];
+    wq.forEach((q,k)=>rest.splice(Math.min(slots[k], rest.length), 0, q));
+    return rest;
+  }
+  return qs;
 }
 
 /* ---------------- Game state ---------------- */
@@ -501,7 +518,8 @@ function setup(){
     <div class="topbar"><button class="back" id="bk">← Back</button><b>Who's playing? (${P.length})</b><span style="width:48px"></span></div>
     ${P.map((_,i)=>card(i)).join(`<div class="vs">VS</div>`)}
     ${P.length<MAXP?`<button class="btn ghost" id="add">＋ Add a player</button>`:""}
-    <button class="btn" id="start" style="margin-top:14px">Start duel</button>
+    <button class="card toggle" id="wtog"><span class="ic">✍️</span><span><b>Writing questions</b><span>2 of each player's 8 questions: write a character, stroke by stroke</span></span><span class="sw ${store.writeRound!==false?"on":""}"><i></i></span></button>
+    <button class="btn" id="start" style="margin-top:4px">Start duel</button>
     <p class="footnote">2–${MAXP} players. Each gets questions at their own level; grown-up levels get less time per question.</p>`;
   const syncNames = ()=>{ P.forEach((p,i)=>{ const el=document.getElementById("nm"+i); if(!el) return; const v=el.value.trim(); p.name = v || ("Player "+(i+1)); }); };
   $app.querySelectorAll("[data-sp]").forEach(b=>b.onclick=()=>{ syncNames(); const i=+b.dataset.sp, n=b.dataset.n;
@@ -516,6 +534,7 @@ function setup(){
     const used = P.map(p=>p.avatar); const av = AVATARS.find(a=>!used.includes(a)) || AVATARS[0];
     P.push({name:"Player "+(P.length+1), avatar:av, level:"k1"}); save(); setup();
     window.scrollTo(0, document.body.scrollHeight); };
+  document.getElementById("wtog").onclick = ()=>{ syncNames(); store.writeRound = store.writeRound===false; save(); setup(); };
   document.getElementById("bk").onclick = ()=>{ syncNames(); save(); home(); };
   document.getElementById("start").onclick = ()=>{
     syncNames();
@@ -544,7 +563,7 @@ function handoff(){
         <button class="chip" id="chg">Wrong level? Change</button>
       </div>
       <div id="lvlpick" style="display:none">${levelButtons(pi, p.level)}</div>
-      <p>${QN} questions${revise?` · includes ${revise} word${revise===1?"":"s"} to revise 🔁`:" · faster answers score more"}</p>
+      <p>${QN} questions${duel.qs[pi].some(q=>q.type==="write")?" · including ✍️ writing":""}${revise?` · ${revise} to revise 🔁`:""}</p>
       <button class="btn pc" id="ready">I'm ready!</button>
     </div>`;
   document.getElementById("chg").onclick = ()=>{ const el=document.getElementById("lvlpick"); el.style.display = el.style.display==="none" ? "block" : "none"; };
@@ -563,6 +582,7 @@ function question(){
   const pi = duel.order[duel.turn], p = store.players[pi], L = LEVELS[p.level];
   $app.className = "pc"+pi;
   const Q = duel.qs[pi][duel.q], [hz,py,en] = Q.w;
+  if(Q.type==="write") return writeQuestion();
   const R = duel.res[pi];
   qState = {answered:false, hint:false, start:performance.now(), limit:L.time*1000};
   const showPy = L.pinyin, idiom = !!L.idiom;
@@ -761,6 +781,104 @@ function results(){
   document.getElementById("re").onclick = ()=>{ newDuel(); handoff(); };
   document.getElementById("chg").onclick = setup;
   document.getElementById("hm").onclick = home;
+}
+
+/* ---------------- Writing questions inside a duel ---------------- */
+function writeTarget(w, p){
+  const chars = [...w[0]].filter(c=>STROKES[c]);
+  if(!chars.length) return null;
+  const wr = p.write || {};
+  return chars.slice().sort((a,b)=>((wr[a]||{}).best||0)-((wr[b]||{}).best||0) || Math.random()-.5)[0];
+}
+function writeQuestion(){
+  stopTimer();
+  const pi = duel.order[duel.turn], p = store.players[pi], L = LEVELS[p.level];
+  $app.className = "pc"+pi;
+  const Q = duel.qs[pi][duel.q], [hz,py,en] = Q.w, ch = Q.ch, R = duel.res[pi];
+  const nStrokes = STROKES[ch].strokes.length;
+  const limit = Math.round((L.kid ? 10 : 8) + nStrokes*(L.kid ? 3.5 : 2.5)) * 1000;
+  qState = {answered:false, start:performance.now(), limit, mistakes:0};
+  const size = Math.max(220, Math.min(340, innerWidth-80, innerHeight-470));
+  $app.innerHTML = `
+    <div class="qhead"><span class="who">${p.avatar} ${esc(p.name)}</span><span class="score" id="sc">${R.score} pts</span><button class="x" id="stop" aria-label="Stop duel">✕</button></div>
+    <div class="dots">${Array.from({length:QN},(_,i)=>`<i class="${i<duel.q?(R.marks[i]?"ok":"no"):(i===duel.q?"cur":"")}"></i>`).join("")}</div>
+    <div class="timer"><div id="tbar" style="width:100%"></div></div>
+    <div class="wprompt">
+      <div class="ask" style="font-size:14px;color:var(--muted);font-weight:600">✍️ Write the missing character</div>
+      <div class="wword">${[...hz].map(c=>c===ch?`<span class="cur">□</span>`:`<span class="done">${c}</span>`).join("")}</div>
+      <div class="wmeta"><b>${py}</b> · ${esc(en)} <button class="say" id="say">🔊</button></div>
+    </div>
+    <div class="wbox" style="width:${size}px;height:${size}px">${GRID(size)}<div id="hw"></div></div>
+    <div class="wmsg" id="wmsg">${nStrokes} stroke${nStrokes===1?"":"s"} · hints appear after 3 misses</div>
+    <div class="wbtns" id="wbtns"><button class="btn ghost small" id="giveup">🙈 Show me (no points)</button></div>
+    <div id="after"></div>`;
+  confirmTap(document.getElementById("stop"), "Stop?", quitDuel);
+  document.getElementById("say").onclick = ()=>speak(hz);
+  const msg = document.getElementById("wmsg");
+  writer = HanziWriter.create("hw", ch, {
+    width:size, height:size, padding:size*0.08, showOutline:false, showCharacter:false,
+    strokeColor:"#2A2140", outlineColor:"#E2D8C8", drawingColor:"#E5503A", highlightColor:"#F2B33D",
+    drawingWidth: Math.max(14, size/16), strokeAnimationSpeed:1.2, delayBetweenStrokes:200,
+    charDataLoader:(c, ok, err)=> STROKES[c] ? ok(STROKES[c]) : err()
+  });
+  writer.quiz({
+    showHintAfterMisses:3, highlightOnComplete:true,
+    onMistake:()=>{ qState.mistakes++; msg.textContent = qState.mistakes>=3 ? "Follow the flashing stroke" : "Not quite — try that stroke again"; msg.className="wmsg bad"; },
+    onCorrectStroke:(d)=>{ msg.textContent = `Stroke ${d.strokeNum+1} of ${nStrokes} ✓`; msg.className="wmsg good"; },
+    onComplete:(sum)=>finishWrite(sum.totalMistakes, false)
+  });
+  document.getElementById("giveup").onclick = ()=>finishWrite(99, true);
+  const bar = document.getElementById("tbar");
+  timer = setInterval(()=>{
+    const left = Math.max(0, 1 - (performance.now()-qState.start)/qState.limit);
+    bar.style.width = (left*100)+"%";
+    bar.className = left<.25?"danger":left<.5?"warn":"";
+    if(left<=0) finishWrite(99, true, true);
+  }, 100);
+}
+function finishWrite(mistakes, failed, timedOut){
+  if(!qState || qState.answered) return;
+  qState.answered = true; stopTimer();
+  const N = store.players.length;
+  const pi = duel.order[duel.turn], R = duel.res[pi], P = store.players[pi];
+  const Q = duel.qs[pi][duel.q], [hz,py,en] = Q.w, ch = Q.ch;
+  const secs = (performance.now()-qState.start)/1000;
+  const left = Math.max(0, 1 - secs*1000/qState.limit);
+  const stars = failed ? 0 : mistakes===0 ? 3 : mistakes<=2 ? 2 : 1;
+  const ok = stars>=2;
+  let pts = 0;
+  if(stars){ pts = [0,40,80,100][stars] + Math.round(50*left); R.score += pts; }
+  if(ok){ R.correct++; } else R.missed.push(Q.w);
+  R.marks[duel.q] = ok;
+  const prof = profile(P.name, P.avatar);
+  recordWord(prof, hz, ok, R);
+  prof.write = prof.write || {};
+  if(stars){ const r = prof.write[ch] || (prof.write[ch] = {n:0, best:0}); r.n++; r.best = Math.max(r.best, stars); }
+  try{ writer.cancelQuiz(); }catch(e){}
+  if(failed){ try{ writer.showCharacter(); writer.animateCharacter(); }catch(e){} }
+  document.getElementById("sc").textContent = R.score+" pts";
+  $app.querySelectorAll(".dots i")[duel.q].className = ok?"ok":"no";
+  $app.querySelector(".wword .cur").textContent = ch;
+  document.getElementById("wbtns").innerHTML = "";
+  const m = document.getElementById("wmsg");
+  m.innerHTML = failed ? (timedOut?"⏰ Time's up — watch how it's written":"Watch how it's written") : `<span class="stars">${"⭐".repeat(stars)}${"☆".repeat(3-stars)}</span>`;
+  m.className = "wmsg " + (ok?"good":"bad");
+  speak(hz);
+  const last = duel.q===QN-1, lastTurn = duel.turn===N-1;
+  document.getElementById("after").innerHTML = `
+    <div class="reveal ${ok?"good":"bad"} pop">
+      <span class="rhz">${hz}</span>
+      <span class="rtxt"><b>${py}</b><small>${esc(en)}</small></span>
+      <button class="say" id="say2">🔊</button>
+      <span class="pts">${stars?"+"+pts:"✗"}</span>
+    </div>
+    <button class="btn pc next" id="nx">${last?(lastTurn?"See who won! 🏆":"Done — pass it on →"):"Next →"}</button>`;
+  document.getElementById("say2").onclick=()=>speak(hz);
+  document.getElementById("nx").onclick = ()=>{
+    if(!last){ duel.q++; question(); }
+    else if(!lastTurn){ duel.turn++; handoff(); }
+    else results();
+  };
 }
 
 /* ---------------- Writing practice (stroke order) ----------------
@@ -985,6 +1103,7 @@ function howModal(){
       <li>Each player answers ${QN} timed questions: meanings, characters and listening.</li>
       <li>Points = correct answer + speed bonus. A pinyin hint costs 30. Pass the device round; the top score wins.</li>
       <li>Words you miss come back more often (🔁). Get one right ${MASTER_RUN} times in a row to master it ⭐.</li>
+      <li>✍️ Duels include 2 writing questions each (switch off in setup): write the missing character stroke by stroke. Fewer mistakes = more stars and points.</li>
       <li>✍️ Writing practice: watch the stroke order, trace it, then write from memory for up to 3 stars.</li>
       <li>Earn badges, keep the family streak going 🔥 and watch your progress chart climb.</li>
     </ul>
