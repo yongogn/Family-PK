@@ -231,6 +231,122 @@ h2{margin:0 0 10px}
 .waitdots span{animation:blink 1.4s infinite}.waitdots span:nth-child(2){animation-delay:.2s}.waitdots span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
 .orline{text-align:center;color:var(--muted);margin:14px 0 10px;font-weight:600}
+
+/* ===== v2 kid-friendly look ===== */
+:root{--season:#fb923c}
+body{color:var(--ink)}
+#fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+#fx span{position:absolute;top:-40px;animation:drift linear infinite;opacity:.55;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+@keyframes drift{0%{transform:translateY(-40px) rotate(0)}50%{transform:translateY(55vh) translateX(30px) rotate(160deg)}100%{transform:translateY(110vh) translateX(-20px) rotate(340deg)}}
+#app{position:relative;z-index:1}
+.card{border-radius:28px;border:4px solid rgba(255,255,255,.9);box-shadow:0 12px 0 rgba(0,0,0,.18),0 18px 40px rgba(0,0,0,.25)}
+.pop{animation:popin .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes popin{from{transform:scale(.8);opacity:0}}
+.btn{border-radius:20px;letter-spacing:.3px;transition:transform .08s,filter .15s}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(3px) scale(.98)}
+.top h1{text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.chip{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.25);backdrop-filter:blur(4px)}
+.chip.tok{background:#facc15;color:#713f12;border-color:#fde68a}
+/* avatar */
+.av2{position:relative;display:inline-grid;place-items:center;flex:none;border-radius:50%;background:radial-gradient(circle at 50% 40%,#fff 0%,color-mix(in srgb,var(--c) 35%,#fff) 70%);box-shadow:0 0 0 4px #fff,0 6px 14px rgba(0,0,0,.25)}
+.av2 svg{width:96%;height:96%}
+.lvbadge{position:absolute;right:-6px;bottom:-4px;background:linear-gradient(180deg,#fde047,#f59e0b);color:#78350f;font-weight:700;border-radius:999px;min-width:1.9em;height:1.9em;display:grid;place-items:center;border:3px solid #fff;box-shadow:0 3px 6px rgba(0,0,0,.25)}
+.avmini{display:inline-grid;place-items:center;background:#fff;border-radius:50%;width:34px;height:34px;overflow:hidden;flex:none}
+.avmini svg{width:34px;height:34px}
+.xpbar{height:12px;background:rgba(0,0,0,.18);border-radius:999px;overflow:hidden;margin:4px 0;border:2px solid rgba(255,255,255,.5)}
+.xpbar.sm{height:9px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,#facc15,#fb923c,#f472b6);border-radius:999px}
+.avedit{display:flex;align-items:center;gap:14px;background:#f6f4ff;border-radius:22px;padding:10px 14px;cursor:pointer}
+.avcard{max-width:620px!important}
+.lvline{text-align:center;font-weight:700;margin:6px 0 10px}
+.avtabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px}
+.avtabs button{flex:none;background:#f1f2ff;border-radius:14px;padding:8px 12px;font-weight:600;font-size:15px;color:var(--muted)}
+.avtabs button.on{background:var(--adult);color:#fff}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;max-height:38vh;overflow:auto;padding:4px}
+.avopt{position:relative;background:#f7f7ff;border-radius:18px;border:3px solid transparent;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.avopt small{font-size:12px;color:var(--muted);font-weight:600}
+.avopt.on{border-color:var(--adult);background:#efeaff}
+.avopt.locked{opacity:.45}
+.avopt .lk{position:absolute;top:4px;right:6px}
+.swatch{width:54px;height:54px;border-radius:50%;display:block;border:4px solid #fff;box-shadow:0 0 0 2px #ddd}
+/* home */
+.hero{position:relative;padding:12px 0 4px}
+.hero .logo{font-size:52px;text-shadow:0 5px 0 rgba(0,0,0,.25);letter-spacing:1px}
+.logosub{color:#fff;opacity:.9;font-weight:600;margin-top:2px}
+.mascot{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px}
+.mascot svg{animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-3deg)}}
+.bubble{background:#fff;color:var(--ink);border-radius:18px;padding:10px 14px;font-weight:600;font-size:15px;max-width:260px;text-align:left;position:relative;box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.bubble::before{content:'';position:absolute;left:-10px;top:50%;border:10px solid transparent;border-right-color:#fff;border-left:0;transform:translateY(-50%)}
+.players{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.pcard{border-radius:26px;border:4px solid #fff;box-shadow:0 8px 0 rgba(0,0,0,.15),0 12px 24px rgba(0,0,0,.25);background:linear-gradient(180deg,color-mix(in srgb,var(--c,#fff) 22%,#fff) 0%,#fff 55%);transition:transform .15s}
+.pcard:active{transform:scale(.97)}
+.pcard .nm{font-size:22px}
+.kpis{display:flex;justify-content:center;gap:8px;margin-top:6px;font-weight:700;font-size:14px}
+.playbtn{margin-top:12px;padding:12px;font-size:19px}
+.homefoot{margin-top:22px;color:#fff;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.homefoot>div{flex-basis:100%}
+.homefoot a{color:#fff}
+.sect{font-size:20px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+/* map */
+.stages{gap:10px}
+.stage{border-radius:18px;border:3px solid rgba(255,255,255,.25);font-size:15px}
+.stage.on{border-color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.2)}
+.stage.arcade{background:linear-gradient(135deg,#f472b6,#a855f7);border-color:#fbcfe8}
+.stage.arcade.lock{background:rgba(255,255,255,.12)}
+.mapwrap{background:#fff7d6;border:5px solid #fff}
+.map{position:relative}
+.band{position:absolute;left:0;right:0}
+.chhead{position:absolute;left:50%;transform:translateX(-50%);background:#fff;border-radius:18px;padding:6px 18px;font-weight:700;font-size:17px;box-shadow:0 5px 0 rgba(0,0,0,.15);white-space:nowrap;z-index:2}
+.chhead span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;text-align:center}
+.map svg .dash{animation:march 1.2s linear infinite}
+@keyframes march{to{stroke-dashoffset:-28}}
+.node{z-index:3}
+.node .dot{border-width:6px;box-shadow:0 7px 0 rgba(0,0,0,.2),0 10px 20px rgba(0,0,0,.2)}
+.node.test .dot{border-color:#a855f7}
+.node.done .dot{border-color:#22c55e;background:#f0fdf4}
+.node.next .dot{box-shadow:0 0 0 8px rgba(250,204,21,.55),0 7px 0 rgba(0,0,0,.2)}
+.node .won{position:absolute;top:-12px;right:-12px;font-size:26px}
+.node .lbl.play{background:var(--kid);color:#fff;margin-top:4px}
+.deco{font-size:28px;z-index:1}
+/* boss */
+.bosshero{display:flex;align-items:center;justify-content:center;gap:16px;margin:6px 0 10px}
+.bosshero>span{font-size:34px}
+.opplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.opp{background:#f6f6ff;border:3px solid transparent;border-radius:20px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:15px}
+.opp.on{border-color:var(--adult);background:#efeaff}
+.opp.add{border:3px dashed #d4d4f7;color:var(--muted)}
+.rec{font-size:12px;font-weight:700;background:#fff;border-radius:999px;padding:2px 8px;color:#4c1d95}
+.rec.new{color:#16a34a}
+.streakline{font-size:18px;font-weight:700;color:#ea580c;margin:4px 0}
+/* arcade */
+.arcadehead{padding:14px 18px}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:14px}
+.gcard{background:#fff;border-radius:26px;padding:16px;border:4px solid #fff;box-shadow:0 8px 0 rgba(0,0,0,.15);text-align:center}
+.gcard.locked{opacity:.6;filter:saturate(.4)}
+.gicon{font-size:56px}
+.gname{font-weight:700;font-size:20px;margin:2px 0 4px}
+.needs{margin-top:10px;font-weight:600;color:var(--muted);font-size:14px}
+.gshell{position:fixed;inset:0;z-index:45;display:flex;flex-direction:column;background:linear-gradient(180deg,#312e81,#1e1b4b)}
+.gbar{display:flex;align-items:center;gap:12px;padding:10px 14px;color:#fff;font-size:20px}
+.gbar b{flex:1}
+#gscore{background:#facc15;color:#713f12;border-radius:999px;padding:4px 14px;font-weight:700}
+.garea{flex:1;position:relative;touch-action:none}
+.garea canvas{position:absolute;inset:0;touch-action:none}
+.gctl{display:flex;gap:10px;padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+.gctl button{flex:1;background:#fff;border-radius:18px;font-size:28px;font-weight:700;padding:14px 0;box-shadow:0 5px 0 #c7c9f5}
+.gctl button:active{transform:translateY(3px);box-shadow:0 2px 0 #c7c9f5}
+.pturn{flex:1;color:#fff;text-align:center;font-size:20px;display:flex;align-items:center;justify-content:center;gap:8px}
+.gover{position:absolute;inset:0;background:rgba(10,8,40,.6);display:grid;place-items:center;padding:20px}
+.gover .card{max-width:380px;width:100%}
+/* speaking */
+.speakcard h2{font-size:26px}
+.sayword{font-size:64px;font-weight:700;margin:8px 0;line-height:1.1}
+.sayword.zh{font-size:96px}
+.btn.mic{background:linear-gradient(180deg,#f43f5e,#e11d48);box-shadow:0 5px 0 #9f1239;font-size:20px}
+.btn.mic.listening{animation:pulse 1s infinite;background:#22c55e;box-shadow:0 5px 0 #15803d}
+@media (max-width:480px){.hero .logo{font-size:40px}.bubble{font-size:13px;max-width:190px}.players{grid-template-columns:repeat(2,1fr)}.sayword{font-size:48px}.sayword.zh{font-size:76px}}
 </style>
 </head>
 <body>
@@ -861,45 +977,125 @@ function speakParts(parts){
     }}catch(e){}
 }
 function primeSpeech(){try{if(SPEECH.ok){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}}catch(e){}}
-function readQ(q,withOpts=true){
+function readQ(q,withOpts=true,sid){
+  const listen=q.say&&/^Listen/.test(q.q);
+  if(sid==='zh'){
+    /* Chinese stage: speak only the Chinese words/characters */
+    const zh=[];const grab=t=>{const m=String(t||'').match(/[\u3400-\u9fff][\u3400-\u9fff\uff0c\u3002\uff1f\uff01\u3001]*/g);if(m)m.forEach(x=>zh.push({t:x,l:'zh'}))};
+    if(q.say)zh.push({t:q.say.t,l:'zh'});else{grab(q.passage);grab(q.q);if(withOpts&&!q.zhOpts)q.opts.forEach(grab);else if(withOpts)q.opts.forEach(o=>zh.push({t:o,l:'zh'}))}
+    if(listen)return speakParts([{t:q.say.t,l:'zh'}]);
+    return speakParts(zh);
+  }
   const parts=[];
   if(q.passage)parts.push({t:q.passage});
   parts.push({t:q.q});
   if(q.say)parts.push({t:q.say.t,l:q.say.l});
-  if(withOpts&&!(q.say&&/^Listen/.test(q.q))){parts.push({t:'Is it'});q.opts.forEach((o,i)=>{if(i===q.opts.length-1)parts.push({t:'or'});parts.push({t:o,l:/[\u3400-\u9fff]/.test(o)?'zh':'en'})})}
+  if(withOpts&&!listen){parts.push({t:'Is it'});q.opts.forEach((o,i)=>{if(i===q.opts.length-1)parts.push({t:'or'});parts.push({t:o,l:/[\u3400-\u9fff]/.test(o)?'zh':'en'})})}
   speakParts(parts);
 }
 
-/* ============ stages ============ */
+/* ============ STAGES: test + 3 chapters × (5 levels + Boss) ============ */
+const CH=(name,tint,levels,boss)=>({name,tint,levels:levels.split(',').map(s=>{const [i,...n]=s.trim().split(' ');return[i,n.join(' ')]}),boss});
 const STAGES=[
- {id:'maths',icon:'🔢',name:'Number Kingdom',subj:'Maths',age:'Maths age',bg:'linear-gradient(180deg,#8ad7ff 0%,#bdf0c4 30%,#86d88a 100%)',
-  deco:['☁️','☁️','🌲','🌳','🪨','🌷','🌲','⛰️'],
-  nodes:[['🧙',"Wizard's Test"],['🍄','Mushroom Meadow'],['🌋','Lava Ridge'],['❄️','Frost Peak'],['🏰','Boss Castle']]},
- {id:'lang',icon:'📚',name:'Word Woods',subj:'English & reading',age:'Reading age',bg:'linear-gradient(180deg,#b9e6c9 0%,#7cc68f 45%,#4f9f68 100%)',
-  deco:['🍂','🌲','🌳','🦔','🍄','🌲','🐿️','🌿'],
-  nodes:[['🦉',"Owl's Test"],['📖','Story Stump'],['🎵','Rhyme River'],['🔤','Spelling Spires'],['🏛️','Boss Library']]},
- {id:'geo',icon:'🌏',name:'Globe Isles',subj:'Geography',age:'Geography age',bg:'linear-gradient(180deg,#7fd3ff 0%,#4fb3e8 45%,#2d8fd0 100%)',
-  deco:['☁️','🐬','🏝️','🐠','⛵','🐳','🌴','🦀'],
-  nodes:[['🧭',"Captain's Test"],['🐠','Coral Cove'],['🏝️','Palm Atoll'],['⛵','Trade Winds'],['🗼','Boss Lighthouse']]},
- {id:'zh',icon:'🐼',name:'Panda Pagoda',subj:'Chinese 华文',age:'Chinese age',bg:'linear-gradient(180deg,#ffd9a8 0%,#f59e6b 45%,#c2410c 100%)',
-  deco:['🏮','🎋','🐉','🏮','🥮','🎋','🧧','🌸'],
-  nodes:[['🏮','Lantern Test'],['🥟','Dumpling Den'],['🎋','Bamboo Grove'],['🐉','Dragon Gate'],['🏯','Boss Pagoda']]},
- {id:'sci',icon:'🔬',name:'Science Lab',subj:'Science',age:'Science age',bg:'linear-gradient(180deg,#2a2466 0%,#4b3fa0 50%,#7a63d6 100%)',
-  deco:['⭐','🪐','✨','☄️','🌙','⭐','🛸','✨'],
-  nodes:[['🥼',"Professor's Test"],['🐞','Bug Garden'],['🧲','Magnet Mine'],['🚀','Rocket Ridge'],['🔭','Boss Observatory']]}
+ {id:'maths',icon:'🔢',name:'Number Kingdom',subj:'Maths',age:'Maths age',test:['🧙',"Wizard's Test"],chapters:[
+   CH('Mushroom Meadow','#86efac','🍄 Toadstool Trail,🐞 Ladybird Lane,🌻 Sunflower Steps,🐌 Snail Hill,🌈 Rainbow Bridge',['🏰','Meadow Castle']),
+   CH('Lava Lands','#fdba74','🌋 Ember Path,🔥 Fire Pit,🦎 Gecko Rocks,💎 Crystal Cave,☄️ Comet Crater',['🐉','Dragon Keep']),
+   CH('Frost Peaks','#bae6fd','❄️ Snowdrift,🐧 Penguin Point,🧊 Ice Bridge,🏔️ Summit Path,🌌 Aurora Ridge',['🏯','Ice Palace'])]},
+ {id:'lang',icon:'📚',name:'Word Woods',subj:'English & reading',age:'Reading age',test:['🦉',"Owl's Test"],chapters:[
+   CH('Word Woods','#bbf7d0','📖 Story Stump,🍄 Rhyme Grove,🐿️ Squirrel Spelling,🍂 Leafy Letters,🦔 Hedgehog Hollow',['🏛️','Old Library']),
+   CH('Poem Pond','#a5f3fc','🐸 Lily Pads,🦆 Duck Dock,🎵 Rhyme River,✒️ Ink Falls,🌊 Grammar Rapids',['🏰','Story Castle']),
+   CH('Fable Mountains','#ddd6fe','🐉 Dragon Tales,🗝️ Riddle Gate,📜 Scroll Tower,🔮 Crystal Words,⭐ Star Summit',['👑',"King's Archive"])]},
+ {id:'geo',icon:'🌏',name:'Globe Isles',subj:'Geography',age:'Geography age',test:['🧭',"Captain's Test"],chapters:[
+   CH('Coral Cove','#99f6e4','🐠 Reef Run,🐚 Shell Beach,🦀 Crab Corner,🐢 Turtle Bay,🌴 Palm Atoll',['🗼','Lighthouse']),
+   CH('Jungle Isles','#bef264','🦜 Parrot Perch,🐒 Monkey Vines,🌺 Orchid Path,🐊 Croc River,🗿 Stone Heads',['🛕','Jungle Temple']),
+   CH('World Voyage','#fde68a','⛵ Trade Winds,🏜️ Desert Dunes,🗽 Big City,🏔️ High Peaks,🌍 Globe Gate',['🏰',"Explorer's Fort"])]},
+ {id:'zh',icon:'🐼',name:'Panda Pagoda',subj:'Chinese 华文',age:'Chinese age',test:['🏮','Lantern Test'],chapters:[
+   CH('Panda Valley','#fecaca','🐼 Panda Path,🎋 Bamboo Grove,🥟 Dumpling Den,🍵 Tea House,🌸 Blossom Bridge',['🏯','Pagoda']),
+   CH('Dragon River','#fed7aa','🐉 Dragon Boats,🐟 Koi Pond,🏮 Lantern Street,🧧 Red Packet Alley,🎐 Wind Chimes',['🏰','River Fort']),
+   CH('Great Wall','#fef08a','🧱 Wall Steps,🦁 Lion Dance,🎆 Firework Tower,📜 Poem Pavilion,⛩️ Sky Gate',['👑',"Emperor's Palace"])]},
+ {id:'sci',icon:'🔬',name:'Science Lab',subj:'Science',age:'Science age',test:['🥼',"Professor's Test"],chapters:[
+   CH('Bug Garden','#d9f99d','🐞 Beetle Bed,🌱 Sprout Patch,🐝 Bee Hive,🦋 Butterfly Bush,🍄 Fungus Forest',['🔬','Garden Lab']),
+   CH('Magnet Mine','#c7d2fe','🧲 Magnet Mine,⚡ Spark Tunnel,💡 Lightbulb Lab,⚙️ Gear Works,🔋 Battery Bay',['🤖','Robot Factory']),
+   CH('Space Station','#a5b4fc','🚀 Launch Pad,🌙 Moon Base,🪐 Ring Planet,☄️ Comet Trail,🌌 Galaxy Gate',['🔭','Observatory'])]}
 ];
-const NODEPOS=[[22,88],[70,72],[30,54],[72,36],[42,14]];
-const NODEOFF=[0,-0.5,0,0.5];
-const DECOPOS=[[6,4],[78,8],[80,56],[6,40],[52,62],[8,68],[86,86],[12,20]];
+const NCH=3,NLV=5,STARS_PER_STAGE=NCH*NLV*3;
 const stageById=id=>STAGES.find(s=>s.id===id);
 let STAGE='maths';
+const lvlOff=(c,l)=>-0.6+c*0.5+l*0.12;
+const bossWon=(p,sid,c)=>p.trophies.some(t=>t.sid===sid&&(t.ch||0)===c);
+function nodeName(st,n){return n.t==='test'?st.test:n.t==='boss'?st.chapters[n.c].boss:st.chapters[n.c].levels[n.l]}
+function stageNodes(){const a=[{t:'test'}];for(let c=0;c<NCH;c++){for(let l=0;l<NLV;l++)a.push({t:'lvl',c,l});a.push({t:'boss',c})}return a}
+function unlockedN(p,sid,n){
+  const s=sub(p,sid);if(p.unlockAll||n.t==='test')return true;
+  if(n.t==='lvl'){if(n.l===0)return n.c===0?s.ability!=null:bossWon(p,sid,n.c-1);return s.stars[n.c*NLV+n.l-1]>=1}
+  for(let l=0;l<NLV;l++)if(s.stars[n.c*NLV+l]<1)return false;return true;
+}
+function doneN(p,sid,n){const s=sub(p,sid);return n.t==='test'?s.ability!=null:n.t==='lvl'?s.stars[n.c*NLV+n.l]>0:bossWon(p,sid,n.c)}
+const ARCADE_NEED=15;
+function arcadeOpen(p){return p.unlockAll||totalStars(p)>=ARCADE_NEED||p.stats.bestStreak>=10}
+
+/* ============ MAP ============ */
+function map(){
+  if(RM.role)rmClose();
+  const p=cur();if(!p)return home();
+  if(STAGE==='arcade')return arcade();
+  const st=stageById(STAGE),sid=st.id,a=ageOf(p,sid),lv=levelOf(p);
+  const nodes=stageNodes();
+  const nextI=nodes.findIndex(n=>unlockedN(p,sid,n)&&!doneN(p,sid,n));
+  const GAP=122,HEAD=92,TOP=70,BOT=80;
+  let y=BOT;const pos=[],heads=[];
+  nodes.forEach((n,i)=>{
+    if(n.t==='lvl'&&n.l===0){heads.push({c:n.c,y:y+10});y+=HEAD}
+    pos.push({x:50+30*Math.sin(i*0.95),y});y+=GAP});
+  const H=y+TOP;
+  const Y=v=>H-v;
+  let d=`M${pos[0].x} ${Y(pos[0].y)}`;for(let i=1;i<pos.length;i++){const p0=pos[i-1],p1=pos[i],my=(Y(p0.y)+Y(p1.y))/2;d+=` C${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${Y(p1.y)}`}
+  const extra=SEASON.mapExtra||[];
+  const decos=Array.from({length:Math.round(H/150)},(_,i)=>{const side=i%2?84+Math.random()*8:4+Math.random()*8;return `<div class="deco" style="left:${side}%;top:${(i*150+40)}px">${pick(i%3===0&&extra.length?extra:['🌳','🌲','🌿','🪨','🌼','☁️','✨'])}</div>`}).join('');
+  const bands=st.chapters.map((ch,c)=>{const top=c===NCH-1?0:Y(heads[c+1].y)+20,bot=Y(heads[c].y)+40;return `<div class="band" style="top:${top}px;height:${bot-top}px;background:linear-gradient(180deg,${shade(ch.tint,-25)},${ch.tint})"></div>`}).join('');
+  const startBand=`<div class="band" style="top:${Y(heads[0].y)+40}px;bottom:0;background:linear-gradient(180deg,${st.chapters[0].tint},#fff7d6)"></div>`;
+  app().innerHTML=`
+   <div class="top">
+     <button class="back" onclick="home()">‹</button>${avatar(p,52,true)}
+     <div style="flex:1;min-width:0"><h1 style="font-size:20px">${esc(p.name)}</h1><div class="xpbar sm"><i style="width:${lv.pct}%"></i></div><div class="small" style="opacity:.85">Lv ${lv.n} ${lv.title}</div></div>
+     <span class="chip" onclick="cabinet()">🏅 ${p.badges.length} 🏆 ${p.trophies.length}</span><span class="chip tok">🪙 ${p.tokens||0}</span></div>
+   <div class="stages">${STAGES.map(s=>`<button class="stage ${s.id===sid?'on':''}" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}<span class="small"> ${starsIn(p,s.id)}⭐</span></button>`).join('')}
+     <button class="stage arcade ${arcadeOpen(p)?'':'lock'}" onclick="STAGE='arcade';arcade()">🕹️ Arcade${arcadeOpen(p)?'':' 🔒'}</button></div>
+   <div class="row wrap" style="margin-bottom:10px">
+     <span class="chip" style="background:${a!=null&&a>p.age?'#22c55e':'rgba(255,255,255,.18)'}">🧠 ${st.age} ${a??'?'}</span>
+     <span class="chip">⭐ ${starsIn(p,sid)}/${STARS_PER_STAGE}</span><span class="chip">${SEASON.icon} ${SEASON.name}</span></div>
+   <div class="mapwrap"><div class="map" style="height:${H}px">${startBand}${bands}
+     <svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="#fffbeb" stroke-width="16" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".9"/>
+     <path d="${d}" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" vector-effect="non-scaling-stroke" class="dash"/></svg>
+     ${decos}
+     ${heads.map(h=>`<div class="chhead" style="top:${Y(h.y)-24}px"><span>Chapter ${h.c+1}</span>${st.chapters[h.c].name}${bossWon(p,sid,h.c)?' 🏆':''}</div>`).join('')}
+     ${nodes.map((n,i)=>{const ok=unlockedN(p,sid,n),done=doneN(p,sid,n),nm=nodeName(st,n),stv=n.t==='lvl'?sub(p,sid).stars[n.c*NLV+n.l]:0;
+       return `<div class="node ${n.t==='boss'?'boss':''} ${n.t==='test'?'test':''} ${ok?'':'locked'} ${done?'done':''} ${i===nextI?'next':''}" id="node${i}" style="left:${pos[i].x}%;top:${Y(pos[i].y)}px" onclick="tapNode(${i})">
+         <div class="dot">${nm[0]}${ok?'':'<span class="lk">🔒</span>'}${n.t==='boss'&&done?'<span class="won">🏆</span>':''}</div>
+         <div class="lbl">${n.t==='boss'?'BOSS · ':n.t==='lvl'?(n.c*NLV+n.l+1)+' · ':''}${nm[1]}</div>
+         ${i===nextI?'<div class="lbl play">👆 Tap to play</div>':''}
+         ${n.t==='lvl'?`<div class="st">${'⭐'.repeat(stv)}${'<span style="opacity:.3">⭐</span>'.repeat(3-stv)}</div>`:''}
+         ${n.t==='test'&&done&&i!==nextI?`<div class="st" style="font-size:12px;font-weight:700">Retake anytime</div>`:''}
+       </div>`}).join('')}
+   </div></div>
+   <div class="mapfoot"><span>${st.icon} ${st.subj} · 3 chapters · Bosses: grown-ups or 🤖 Robo-Boss</span>
+   <button class="linkbtn" onclick="toggleUnlock()">${p.unlockAll?'🔓 Parent: re-lock':'🔑 Parent: unlock all'}</button></div>`;
+  const target=document.getElementById('node'+(nextI>=0?nextI:nodes.length-1));
+  if(target)setTimeout(()=>target.scrollIntoView({block:'center'}),30);
+}
+function toggleUnlock(){const p=cur();p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
+function tapNode(i){
+  const p=cur(),sid=STAGE,n=stageNodes()[i];
+  if(!unlockedN(p,sid,n)){miniToast(n.t==='boss'?'🔒 Get a star on all 5 levels of this chapter first':n.l===0&&n.c>0?'🔒 Beat the previous chapter\'s Boss first':n.t==='lvl'&&n.c===0&&n.l===0?'🔒 Do the test first':'🔒 Get at least 1 star on the previous level');return}
+  if(n.t==='test')intro();else if(n.t==='lvl')startQuiz('level',n.c,n.l);else bossSetup(null,n.c);
+}
 
 /* ============ profiles ============ */
 const AVATARS=['🦊','🐼','🐯','🦁','🐸','🐵','🦄','🐲','🐧','🐨','🐰','🦖'];
 const COLORS=['#ff8a3d','#ff5c8a','#7b61ff','#2bb3ff','#22c55e','#ffc83d','#14b8a6','#a3a3c2'];
-const emptySubj=()=>({ability:null,history:[],stars:[0,0,0]});
+const emptySubj=()=>({ability:null,history:[],stars:Array(15).fill(0)});
 function newProfile(kind){return{id:Date.now().toString(36)+ri(10,99),name:'',kind,age:8,avatar:kind==='adult'?'🐲':'🦊',color:kind==='adult'?'#7b61ff':'#ff8a3d',acc:'none',
-  subj:Object.fromEntries(STAGES.map(s=>[s.id,emptySubj()])),badges:[],trophies:[],stats:{answered:0,correct:0,bestStreak:0,padQs:0},boss:{w:0,l:0,d:0},unlockAll:false,padOn:null,year:null,readAloud:null}}
+  subj:Object.fromEntries(STAGES.map(s=>[s.id,emptySubj()])),badges:[],trophies:[],stats:{answered:0,correct:0,bestStreak:0,padQs:0},boss:{w:0,l:0,d:0},unlockAll:false,padOn:null,year:null,readAloud:null,tokens:3,rivals:{},hi:{}}}
 function migrate(p){
   if(!p.subj){p.subj={maths:p.maths||emptySubj()};delete p.maths}
   STAGES.forEach(s=>{if(!p.subj[s.id])p.subj[s.id]=emptySubj()});
@@ -908,8 +1104,13 @@ function migrate(p){
   if(p.padOn===undefined)p.padOn=null;
   if(p.readAloud===undefined)p.readAloud=null;
   if(!p.year)p.year=clamp(Math.round((p.age||8)-5),1,6);
+  STAGES.forEach(s=>{const st=p.subj[s.id].stars;while(st.length<15)st.push(0)});
+  p.trophies.forEach(t=>{if(t.ch==null)t.ch=0});
+  if(!p.av)p.av=defaultAv(p);
+  if(p.tokens==null)p.tokens=Math.max(3,totalStars(p));
+  if(!p.rivals){p.rivals={};p.trophies.forEach(t=>{const k=(S.profiles.find(x=>x.kind==='adult'&&x.name===t.vs)||{}).id||('remote:'+String(t.vs).toLowerCase());const r=p.rivals[k]||(p.rivals[k]={name:t.vs,w:0,l:0,d:0,streak:0});r.w++})}
+  if(!p.hi)p.hi={};
 }
-S.profiles.forEach(migrate);save();
 const sub=(p,sid)=>p.subj[sid];
 const ageOf=(p,sid)=>sub(p,sid).ability==null?null:Math.round((sub(p,sid).ability+5)*10)/10;
 function learningAge(p){const a=STAGES.map(s=>ageOf(p,s.id)).filter(x=>x!=null);return a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length*10)/10:null}
@@ -921,14 +1122,6 @@ const readDefault=p=>p.readAloud!=null?p.readAloud:(p.age<=8);
 const kidMax=p=>Math.min(6.4,(p.year||2)+2.4);
 const kidStart=p=>Math.max(1,(p.year||2)-1);
 
-const ACCS=[
- {id:'none',e:'',n:'None'},
- {id:'cap',e:'🧢',need:p=>totalStars(p)>=3,how:'Earn 3 stars'},
- {id:'shades',e:'🕶️',need:p=>p.badges.includes('streak5'),how:'Get a 5-answer streak'},
- {id:'tophat',e:'🎩',need:p=>totalStars(p)>=18,how:'Earn 18 stars'},
- {id:'grad',e:'🎓',need:p=>p.badges.includes('allround'),how:'Take all 5 tests'},
- {id:'crown',e:'👑',need:p=>p.trophies.length>0,how:'Beat a Boss'}
-];
 const BADGES=[
  {id:'test',e:'🧠',n:'Brain Scan',d:'Finish any stage test'},
  {id:'ahead',e:'🚀',n:'Ahead of the Curve',d:'A subject age above your real age'},
@@ -937,17 +1130,14 @@ const BADGES=[
  {id:'streak10',e:'⚡',n:'Unstoppable',d:'10 right in a row'},
  {id:'perfect',e:'⭐',n:'Perfectionist',d:'3 stars on a level'},
  {id:'speedy',e:'🏎️',n:'Lightning Fingers',d:'Level done, under 4s per answer'},
- {id:'path',e:'🗺️',n:'Path Finder',d:'Clear all practice levels in a stage'},
+ {id:'path',e:'🗺️',n:'Path Finder',d:'Star every level in a chapter'},
+ {id:'speaker',e:'🎤',n:'Super Speaker',d:'Say 10 words out loud correctly'},
  {id:'scribe',e:'✏️',n:'Working It Out',d:'Use working paper on 10 questions'},
  {id:'boss',e:'🐉',n:'Boss Slayer',d:'Beat a grown-up in Boss PK'},
  {id:'grand',e:'👑',n:'Grand Champion',d:'Beat the Boss in all 5 stages'},
  {id:'grow',e:'🌱',n:'Growing Brain',d:'A subject age up 0.5 since first test'},
  {id:'century',e:'💯',n:'Century',d:'Answer 100 questions'}
 ];
-function avatar(p,size=72){
-  const acc=ACCS.find(a=>a.id===p.acc);
-  return `<div class="av" style="--c:${p.color};width:${size}px;height:${size}px;font-size:${size*.58}px">${p.avatar}${acc&&acc.e?`<span class="acc" style="font-size:${size*.42}px">${acc.e}</span>`:''}</div>`;
-}
 let toastQ=[],toastOn=false;
 function award(p,id){if(p.kind!=='kid'||p.badges.includes(id))return;p.badges.push(id);save();toastQ.push(BADGES.find(b=>b.id===id));runToast()}
 function runToast(){if(toastOn||!toastQ.length)return;toastOn=true;const b=toastQ.shift();const el=document.createElement('div');el.className='toast';
@@ -965,6 +1155,194 @@ function checkStatBadges(p){
 }
 const app=()=>$('#app');
 function setLayer(h){$('#layer').innerHTML=h}
+
+/* ============ AVATAR BUILDER (SVG characters) + PLAYER LEVELS ============ */
+const AV_COLORS=['#ff8a3d','#ff5c8a','#a78bfa','#38bdf8','#4ade80','#facc15','#2dd4bf','#f472b6','#94a3b8','#8b5e3c'];
+const AV_SPECIES=[['fox','🦊 Fox',1],['cat','🐱 Cat',1],['bear','🐻 Bear',1],['bunny','🐰 Bunny',1],['panda','🐼 Panda',1],['monkey','🐵 Monkey',2],['owl','🦉 Owl',3],['penguin','🐧 Penguin',4],['dino','🦖 Dino',6],['robot','🤖 Robot',8]];
+/* items: [id,label,unlock] — unlock: number = player level, or {badge}, {trophy}, {season}, {stars} */
+const AV_ITEMS={
+ eye:[['round','Round',1],['happy','Happy',1],['sleepy','Sleepy',2],['sparkle','Sparkly',3],['wink','Wink',5],['star','Star eyes',10]],
+ mouth:[['smile','Smile',1],['grin','Big grin',1],['o','Ooh',2],['cat','Cat mouth',3],['tongue','Cheeky',4],['fangs','Vampire',{season:'spooky'}]],
+ hat:[['','None',1],['cap','Cap',1],['bow','Bow',2],['beanie','Beanie',3],['party','Party hat',4],['headphones','Headphones',5],['flower','Flower',6],['tophat','Top hat',7],['wizard','Wizard hat',9],['crown','Crown',{trophy:1}],['grad','Grad cap',{badge:'allround'}],['witch','Witch hat',{season:'spooky'}],['pumpkin','Pumpkin',{season:'spooky',lvl:3}],['santa','Santa hat',{season:'winter'}],['lantern','Lantern',{season:'lny'}]],
+ face:[['','None',1],['glasses','Glasses',2],['shades','Shades',{badge:'streak5'}],['stars','Star specs',8],['mask','Hero mask',10],['monocle','Monocle',11]],
+ neck:[['','None',1],['scarf','Scarf',3],['bowtie','Bow tie',5],['medal','Medal',{badge:'boss'}],['cape','Hero cape',8],['batwings','Bat wings',{season:'spooky',lvl:4}]]
+};
+const LEVEL_TITLES=['Sprout','Seedling','Explorer','Adventurer','Pathfinder','Hero','Super Hero','Champion','Grand Champion','Legend','Mythic','Galaxy Brain'];
+function xpOf(p){return totalStars(p)*10+p.trophies.length*40+p.badges.length*15+(p.stats?p.stats.correct:0)}
+const lvlNeed=n=>Math.round(30*Math.pow(n-1,1.7));
+function levelOf(p){const xp=xpOf(p);let n=1;while(xp>=lvlNeed(n+1))n++;const a=lvlNeed(n),b=lvlNeed(n+1);return{n,xp,pct:Math.round((xp-a)/(b-a)*100),next:b-xp,title:LEVEL_TITLES[Math.min(LEVEL_TITLES.length-1,Math.floor((n-1)/2))]}}
+function itemOpen(p,u){
+  if(p.kind==='adult')return true;
+  const L=levelOf(p).n;
+  if(typeof u==='number')return L>=u;
+  if(u.season)return (SEASON.id===u.season||p.seasonItems&&p.seasonItems.includes(u.season))&&L>=(u.lvl||1);
+  if(u.badge)return p.badges.includes(u.badge);
+  if(u.trophy)return p.trophies.length>=u.trophy;
+  return false;
+}
+function itemHow(u){
+  if(typeof u==='number')return 'Reach level '+u;
+  if(u.season)return ({spooky:'Spooky season',winter:'Winter season',lny:'Lunar New Year season'}[u.season]||'Seasonal')+(u.lvl?' · level '+u.lvl:'')+' — keep it forever once you wear it!';
+  if(u.badge)return 'Earn the '+(BADGES.find(b=>b.id===u.badge)||{}).n+' badge';
+  if(u.trophy)return 'Beat a Boss';
+  return '';
+}
+const EMOJI2SP={'🦊':'fox','🐼':'panda','🐯':'cat','🦁':'bear','🐸':'dino','🐵':'monkey','🦄':'bunny','🐲':'dino','🐧':'penguin','🐨':'bear','🐰':'bunny','🦖':'dino'};
+function defaultAv(p){return{sp:EMOJI2SP[p.avatar]||(p.kind==='adult'?'dino':'fox'),col:p.color&&AV_COLORS.includes(p.color)?p.color:(p.kind==='adult'?'#a78bfa':'#ff8a3d'),eye:'round',mouth:'smile',hat:'',face:'',neck:''}}
+function shade(hex,amt){let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');const n=parseInt(c,16);let r=(n>>16)+amt,g=(n>>8&255)+amt,b=(n&255)+amt;r=clamp(r,0,255);g=clamp(g,0,255);b=clamp(b,0,255);return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function avatarSVG(a,size=72){
+  a=a||{};const sp=a.sp||'fox',col=a.col||'#ff8a3d',dk=shade(col,-45),lt=shade(col,70);
+  const panda=sp==='panda',peng=sp==='penguin',robot=sp==='robot';
+  const head=panda?'#ffffff':peng?'#334155':col;
+  let back='',ears='',over='',feat='';
+  // neck items behind
+  if(a.neck==='cape')back+=`<path d="M28 92 Q60 70 92 92 L104 120 L16 120Z" fill="#ef4444"/><path d="M28 92 Q60 78 92 92" stroke="#b91c1c" stroke-width="3" fill="none"/>`;
+  if(a.neck==='batwings')back+=`<path d="M38 96 L4 80 L12 94 L2 100 L16 104 L10 114 L40 106Z M82 96 L116 80 L108 94 L118 100 L104 104 L110 114 L80 106Z" fill="#3b0764"/>`;
+  // body
+  back+=`<ellipse cx="60" cy="116" rx="30" ry="18" fill="${peng?'#334155':robot?'#94a3b8':panda?'#1f2937':col}"/>`;
+  if(peng)back+=`<ellipse cx="60" cy="118" rx="18" ry="14" fill="#fff"/>`;
+  // ears
+  if(sp==='cat'||sp==='fox'){const tall=sp==='fox'?4:12;ears=`<path d="M24 46 L${30} ${tall} L56 32Z" fill="${col}"/><path d="M96 46 L90 ${tall} L64 32Z" fill="${col}"/><path d="M31 40 L33 ${tall+12} L48 33Z" fill="${sp==='fox'?'#fff':'#ffb4c8'}"/><path d="M89 40 L87 ${tall+12} L72 33Z" fill="${sp==='fox'?'#fff':'#ffb4c8'}"/>`}
+  if(sp==='bear'||panda){const ec=panda?'#1f2937':col;ears=`<circle cx="30" cy="34" r="15" fill="${ec}"/><circle cx="90" cy="34" r="15" fill="${ec}"/>${panda?'':`<circle cx="30" cy="34" r="8" fill="${lt}"/><circle cx="90" cy="34" r="8" fill="${lt}"/>`}`}
+  if(sp==='bunny')ears=`<ellipse cx="42" cy="18" rx="10" ry="28" fill="${col}" transform="rotate(-12 42 18)"/><ellipse cx="78" cy="18" rx="10" ry="28" fill="${col}" transform="rotate(12 78 18)"/><ellipse cx="42" cy="20" rx="5" ry="20" fill="#ffb4c8" transform="rotate(-12 42 20)"/><ellipse cx="78" cy="20" rx="5" ry="20" fill="#ffb4c8" transform="rotate(12 78 20)"/>`;
+  if(sp==='monkey')ears=`<circle cx="16" cy="66" r="14" fill="${col}"/><circle cx="104" cy="66" r="14" fill="${col}"/><circle cx="16" cy="66" r="7" fill="#fcd9b6"/><circle cx="104" cy="66" r="7" fill="#fcd9b6"/>`;
+  if(sp==='owl')ears=`<path d="M22 40 L18 14 L44 30Z" fill="${dk}"/><path d="M98 40 L102 14 L76 30Z" fill="${dk}"/>`;
+  if(sp==='dino')ears=`<path d="M44 30 L52 8 L60 28 L68 6 L76 30Z" fill="${dk}"/>`;
+  if(robot)ears=`<line x1="60" y1="26" x2="60" y2="8" stroke="#64748b" stroke-width="4"/><circle cx="60" cy="8" r="6" fill="#f43f5e"/><rect x="10" y="56" width="10" height="20" rx="4" fill="#64748b"/><rect x="100" y="56" width="10" height="20" rx="4" fill="#64748b"/>`;
+  // head
+  const headShape=robot?`<rect x="18" y="26" width="84" height="76" rx="20" fill="#cbd5e1"/><rect x="26" y="40" width="68" height="44" rx="14" fill="#1e293b"/>`
+    :`<ellipse cx="60" cy="64" rx="43" ry="39" fill="${head}"/>`;
+  // face patches
+  if(sp==='fox')feat+=`<path d="M22 70 Q60 108 98 70 Q86 92 60 96 Q34 92 22 70Z" fill="#fff"/>`;
+  if(sp==='monkey')feat+=`<ellipse cx="60" cy="72" rx="30" ry="24" fill="#fcd9b6"/>`;
+  if(sp==='owl')feat+=`<circle cx="45" cy="60" r="16" fill="${lt}"/><circle cx="75" cy="60" r="16" fill="${lt}"/>`;
+  if(peng)feat+=`<path d="M26 62 Q30 36 60 52 Q90 36 94 62 Q96 96 60 100 Q24 96 26 62Z" fill="#fff"/>`;
+  if(sp==='bear'||sp==='cat'||sp==='bunny'||sp==='dino')feat+=`<ellipse cx="60" cy="80" rx="20" ry="13" fill="${lt}" opacity=".9"/>`;
+  if(panda)feat+=`<ellipse cx="44" cy="61" rx="12" ry="15" fill="#1f2937" transform="rotate(20 44 61)"/><ellipse cx="76" cy="61" rx="12" ry="15" fill="#1f2937" transform="rotate(-20 76 61)"/>`;
+  // eyes
+  const ec=robot?'#22d3ee':panda?'#fff':'#1e1b4b';
+  const eye=(x,t)=>{const y=60;
+    if(robot)return `<rect x="${x-8}" y="${y-6}" width="16" height="12" rx="4" fill="${ec}"/>`;
+    if(t==='happy')return `<path d="M${x-7} ${y+2} Q${x} ${y-8} ${x+7} ${y+2}" stroke="${ec}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    if(t==='sleepy')return `<path d="M${x-7} ${y} Q${x} ${y+6} ${x+7} ${y}" stroke="${ec}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    if(t==='star')return `<path d="M${x} ${y-9} L${x+3} ${y-3} L${x+9} ${y-2} L${x+4} ${y+2} L${x+6} ${y+9} L${x} ${y+5} L${x-6} ${y+9} L${x-4} ${y+2} L${x-9} ${y-2} L${x-3} ${y-3}Z" fill="#facc15" stroke="#b45309" stroke-width="1"/>`;
+    if(t==='sparkle')return `<ellipse cx="${x}" cy="${y}" rx="8" ry="10" fill="${panda?'#111':'#1e1b4b'}"/><circle cx="${x+3}" cy="${y-4}" r="3.5" fill="#fff"/><circle cx="${x-3}" cy="${y+4}" r="1.6" fill="#fff"/>`;
+    return `<circle cx="${x}" cy="${y}" r="8" fill="#fff"/><circle cx="${x+1}" cy="${y+1}" r="5" fill="#1e1b4b"/><circle cx="${x+3}" cy="${y-2}" r="1.8" fill="#fff"/>`};
+  const et=a.eye||'round';
+  feat+=eye(45,et==='wink'?'round':et)+eye(75,et==='wink'?'happy':et);
+  // nose / beak
+  if(sp==='owl'||peng)feat+=`<path d="M54 70 L66 70 L60 80Z" fill="#f59e0b"/>`;
+  else if(!robot)feat+=`<ellipse cx="60" cy="73" rx="${sp==='dino'?3:5}" ry="${sp==='dino'?2:3.5}" fill="${panda||sp==='bear'?'#1f2937':sp==='dino'?dk:'#3b2f2f'}"/>`;
+  // mouth
+  const m=a.mouth||'smile',mc=robot?'#22d3ee':'#3b1d1d',my=robot?76:82;
+  if(m==='grin')feat+=`<path d="M48 ${my-2} Q60 ${my+14} 72 ${my-2}Z" fill="#7f1d1d"/><path d="M53 ${my+5} Q60 ${my+10} 67 ${my+5}" fill="#fb7185"/>`;
+  else if(m==='o')feat+=`<ellipse cx="60" cy="${my+2}" rx="5" ry="6" fill="#7f1d1d"/>`;
+  else if(m==='cat')feat+=`<path d="M50 ${my} Q55 ${my+6} 60 ${my} Q65 ${my+6} 70 ${my}" stroke="${mc}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  else if(m==='tongue')feat+=`<path d="M50 ${my} Q60 ${my+8} 70 ${my}" stroke="${mc}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M58 ${my+3} Q64 ${my+14} 68 ${my+2}Z" fill="#fb7185"/>`;
+  else if(m==='fangs')feat+=`<path d="M48 ${my} Q60 ${my+8} 72 ${my}" stroke="${mc}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M52 ${my+2} L55 ${my+9} L57 ${my+3}Z M68 ${my+2} L65 ${my+9} L63 ${my+3}Z" fill="#fff"/>`;
+  else feat+=`<path d="M50 ${my} Q60 ${my+10} 70 ${my}" stroke="${mc}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+  if(!robot&&!peng)feat+=`<circle cx="32" cy="76" r="6" fill="#fb7185" opacity=".45"/><circle cx="88" cy="76" r="6" fill="#fb7185" opacity=".45"/>`;
+  // face accessories
+  const f=a.face;
+  if(f==='glasses')over+=`<circle cx="45" cy="60" r="12" fill="none" stroke="#1e293b" stroke-width="3"/><circle cx="75" cy="60" r="12" fill="none" stroke="#1e293b" stroke-width="3"/><line x1="57" y1="60" x2="63" y2="60" stroke="#1e293b" stroke-width="3"/>`;
+  if(f==='shades')over+=`<path d="M30 52 H58 V62 Q58 72 44 72 Q30 72 30 62Z M62 52 H90 V62 Q90 72 76 72 Q62 72 62 62Z" fill="#111827"/><line x1="58" y1="55" x2="62" y2="55" stroke="#111827" stroke-width="3"/><path d="M34 56 L40 56" stroke="#fff" stroke-width="2" opacity=".6"/>`;
+  if(f==='stars')over+=['45','75'].map(x=>`<path transform="translate(${x} 60) scale(1.5)" d="M0 -9 L3 -3 L9 -2 L4 2 L6 9 L0 5 L-6 9 L-4 2 L-9 -2 L-3 -3Z" fill="#f472b6" stroke="#9d174d" stroke-width="1"/>`).join('')+`<line x1="56" y1="58" x2="64" y2="58" stroke="#9d174d" stroke-width="3"/>`;
+  if(f==='mask')over+=`<path d="M24 52 Q60 44 96 52 L94 68 Q78 74 64 64 L56 64 Q42 74 26 68Z" fill="#e11d48"/><ellipse cx="45" cy="60" rx="7" ry="5" fill="#fff"/><ellipse cx="75" cy="60" rx="7" ry="5" fill="#fff"/><circle cx="45" cy="60" r="3" fill="#111"/><circle cx="75" cy="60" r="3" fill="#111"/>`;
+  if(f==='monocle')over+=`<circle cx="75" cy="60" r="12" fill="rgba(255,255,255,.25)" stroke="#b45309" stroke-width="3"/><path d="M86 66 Q92 84 84 100" stroke="#b45309" stroke-width="2" fill="none"/>`;
+  // neck front
+  const n=a.neck;
+  if(n==='scarf')over+=`<path d="M30 94 Q60 108 90 94 L92 104 Q60 118 28 104Z" fill="#ef4444"/><rect x="70" y="100" width="10" height="20" rx="3" fill="#dc2626"/>`;
+  if(n==='bowtie')over+=`<path d="M48 98 L58 103 L48 108Z M72 98 L62 103 L72 108Z" fill="#7c3aed"/><circle cx="60" cy="103" r="4" fill="#5b21b6"/>`;
+  if(n==='medal')over+=`<path d="M50 94 L60 108 L70 94" stroke="#3b82f6" stroke-width="5" fill="none"/><circle cx="60" cy="110" r="7" fill="#facc15" stroke="#b45309" stroke-width="2"/>`;
+  // hats
+  const h=a.hat;
+  if(h==='cap')over+=`<path d="M22 40 Q60 0 98 40Z" fill="#2563eb"/><path d="M60 36 Q96 34 112 44 Q90 46 60 42Z" fill="#1d4ed8"/><circle cx="60" cy="12" r="4" fill="#1e3a8a"/>`;
+  if(h==='beanie')over+=`<path d="M20 44 Q60 -8 100 44Z" fill="#14b8a6"/><rect x="18" y="36" width="84" height="12" rx="6" fill="#0f766e"/><circle cx="60" cy="8" r="8" fill="#f0fdfa"/>`;
+  if(h==='bow')over+=`<path d="M60 28 L38 16 L40 40Z M60 28 L82 16 L80 40Z" fill="#ec4899"/><circle cx="60" cy="28" r="6" fill="#be185d"/>`;
+  if(h==='party')over+=`<path d="M60 -2 L80 36 L40 36Z" fill="#a855f7"/><path d="M50 18 L70 18 M45 28 L75 28" stroke="#facc15" stroke-width="4"/><circle cx="60" cy="-2" r="5" fill="#facc15"/>`;
+  if(h==='headphones')over+=`<path d="M18 62 Q18 14 60 14 Q102 14 102 62" stroke="#111827" stroke-width="7" fill="none"/><rect x="8" y="54" width="16" height="26" rx="6" fill="#ef4444"/><rect x="96" y="54" width="16" height="26" rx="6" fill="#ef4444"/>`;
+  if(h==='flower')over+=`<g transform="translate(86 30)">${[0,72,144,216,288].map(r=>`<ellipse cx="0" cy="-8" rx="5" ry="8" fill="#f9a8d4" transform="rotate(${r})"/>`).join('')}<circle r="5" fill="#facc15"/></g>`;
+  if(h==='tophat')over+=`<rect x="36" y="-2" width="48" height="34" rx="4" fill="#111827"/><rect x="26" y="28" width="68" height="8" rx="4" fill="#111827"/><rect x="36" y="20" width="48" height="6" fill="#dc2626"/>`;
+  if(h==='wizard')over+=`<path d="M60 -6 L84 36 L36 36Z" fill="#4338ca"/><ellipse cx="60" cy="36" rx="34" ry="6" fill="#3730a3"/><circle cx="56" cy="14" r="3" fill="#facc15"/><circle cx="66" cy="26" r="2.5" fill="#facc15"/>`;
+  if(h==='crown')over+=`<path d="M34 34 L34 10 L47 22 L60 4 L73 22 L86 10 L86 34Z" fill="#facc15" stroke="#b45309" stroke-width="2"/><circle cx="60" cy="24" r="4" fill="#ef4444"/><circle cx="44" cy="28" r="3" fill="#3b82f6"/><circle cx="76" cy="28" r="3" fill="#22c55e"/>`;
+  if(h==='grad')over+=`<path d="M60 8 L104 22 L60 36 L16 22Z" fill="#111827"/><rect x="40" y="26" width="40" height="12" fill="#1f2937"/><path d="M96 24 L98 46" stroke="#facc15" stroke-width="3"/><circle cx="98" cy="48" r="4" fill="#facc15"/>`;
+  if(h==='witch')over+=`<path d="M60 -10 Q66 10 86 34 L34 34 Q50 18 60 -10Z" fill="#4c1d95"/><ellipse cx="60" cy="34" rx="44" ry="8" fill="#3b0764"/><rect x="40" y="24" width="40" height="7" fill="#f97316"/>`;
+  if(h==='pumpkin')over+=`<ellipse cx="60" cy="22" rx="30" ry="20" fill="#f97316"/><path d="M45 6 Q40 22 45 40 M75 6 Q80 22 75 40 M60 2 V42" stroke="#c2410c" stroke-width="2" fill="none"/><rect x="56" y="-4" width="8" height="10" rx="2" fill="#15803d"/><path d="M48 22 L54 16 L56 24Z M72 22 L66 16 L64 24Z" fill="#422006"/>`;
+  if(h==='santa')over+=`<path d="M24 40 Q50 -6 94 14 L80 40Z" fill="#dc2626"/><rect x="20" y="34" width="80" height="12" rx="6" fill="#fff"/><circle cx="96" cy="16" r="8" fill="#fff"/>`;
+  if(h==='lantern')over+=`<path d="M60 -2 V6" stroke="#b45309" stroke-width="2"/><ellipse cx="60" cy="20" rx="20" ry="15" fill="#dc2626"/><rect x="50" y="4" width="20" height="4" fill="#facc15"/><rect x="50" y="33" width="20" height="4" fill="#facc15"/><path d="M60 37 V46" stroke="#facc15" stroke-width="3"/>`;
+  return `<svg viewBox="-6 -12 132 140" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${back}${ears}${headShape}${feat}${over}</svg>`;
+}
+const avOf=p=>p&&p.av?p.av:defaultAv(p||{});
+function avatar(p,size=72,ring=false){
+  const lv=ring&&p.kind==='kid'?levelOf(p):null;
+  return `<div class="av2" style="width:${size}px;height:${size}px;--c:${avOf(p).col}">${avatarSVG(avOf(p),size)}${lv?`<span class="lvbadge" style="font-size:${Math.max(11,size*.18)}px">${lv.n}</span>`:''}</div>`;
+}
+const avMini=(p,size=28)=>`<span class="avmini">${avatarSVG(avOf(p),size)}</span>`;
+
+/* ---------- avatar editor (opens from the profile editor) ---------- */
+let AVTAB='sp';
+function avatarEditor(){
+  const p=E,a=p.av,lv=p.kind==='kid'?levelOf(p):null;
+  const tabs=[['sp','🐾 Animal'],['col','🎨 Colour'],['eye','👀 Eyes'],['mouth','😄 Mouth'],['hat','🎩 Hats'],['face','🕶️ Face'],['neck','🧣 Neck']];
+  const optBtn=(on,open,how,click,inner)=>`<button class="avopt ${on?'on':''} ${open?'':'locked'}" onclick="${open?click:`miniToast('🔒 ${esc(how).replace(/'/g,"\\'")}')`}">${inner}${open?'':'<span class="lk">🔒</span>'}</button>`;
+  let grid='';
+  if(AVTAB==='sp')grid=AV_SPECIES.map(([id,lab,u])=>{const open=itemOpen(p,u);return optBtn(a.sp===id,open,itemHow(u),`E.av.sp='${id}';avatarEditor()`,`${avatarSVG(Object.assign({},a,{sp:id,hat:'',face:'',neck:''}),64)}<small>${lab.split(' ')[1]}</small>`)}).join('');
+  else if(AVTAB==='col')grid=AV_COLORS.map(c=>optBtn(a.col===c,true,'',`E.av.col='${c}';avatarEditor()`,`<span class="swatch" style="background:${c}"></span>`)).join('');
+  else grid=AV_ITEMS[AVTAB].map(([id,lab,u])=>{const open=itemOpen(p,u);return optBtn((a[AVTAB]||'')===id,open,itemHow(u),`E.av.${AVTAB}='${id}';avatarEditor()`,`${avatarSVG(Object.assign({},a,{[AVTAB]:id}),64)}<small>${lab}</small>`)}).join('');
+  setLayer(`<div class="modal"><div class="card avcard">
+    <div class="center">${avatarSVG(a,150)}</div>
+    ${lv?`<div class="lvline">Level ${lv.n} · ${lv.title} <div class="xpbar"><i style="width:${lv.pct}%"></i></div><span class="small muted">${lv.next} XP to level ${lv.n+1} — new items unlock as you level up!</span></div>`:''}
+    <div class="avtabs">${tabs.map(([k,l])=>`<button class="${AVTAB===k?'on':''}" onclick="AVTAB='${k}';avatarEditor()">${l}</button>`).join('')}</div>
+    <div class="avgrid">${grid}</div>
+    <button class="btn block" style="margin-top:14px" onclick="drawEditor()">✓ Done</button>
+  </div></div>`);
+}
+
+S.profiles.forEach(migrate);save();
+/* ============ SEASONS ============ */
+const SEASONS={
+ spooky:{id:'spooky',name:'Spooky Autumn',icon:'🎃',bg:'radial-gradient(1200px 700px at 50% -10%,#7c2d12 0%,#431407 35%,#1c0a2e 100%)',parts:['🍂','🍁','🦇','🎃','👻','🍂'],accent:'#fb923c',
+   pop:{good:['🎃','🍬','🍭'],bad:['🦇','🕷️'],name:'Pumpkin Pop',icon:'🎃'},hello:'Happy spooky season! 🎃 Collect the witch hat and pumpkin before autumn ends.',mapExtra:['🎃','🍂','🦇','👻']},
+ autumn:{id:'autumn',name:'Autumn',icon:'🍁',bg:'radial-gradient(1200px 700px at 50% -10%,#b45309 0%,#7c2d12 40%,#3b1a0b 100%)',parts:['🍂','🍁','🌰','🍂'],accent:'#f59e0b',
+   pop:{good:['🌰','🍎','🍄'],bad:['🐝'],name:'Acorn Pop',icon:'🌰'},hello:'Crunchy leaves season 🍂',mapExtra:['🍂','🍁','🌰']},
+ winter:{id:'winter',name:'Winter Wonderland',icon:'❄️',bg:'radial-gradient(1200px 700px at 50% -10%,#3b82f6 0%,#1e3a8a 40%,#0f172a 100%)',parts:['❄️','⛄','✨','❄️','🎄'],accent:'#93c5fd',
+   pop:{good:['🎁','⛄','🍪'],bad:['🧊'],name:'Present Pop',icon:'🎁'},hello:'Snowy season ❄️ — grab the Santa hat!',mapExtra:['❄️','⛄','🎄']},
+ lny:{id:'lny',name:'Lunar New Year',icon:'🧧',bg:'radial-gradient(1200px 700px at 50% -10%,#dc2626 0%,#7f1d1d 40%,#2b0a0a 100%)',parts:['🧧','🏮','🎆','🍊','✨'],accent:'#facc15',
+   pop:{good:['🧧','🍊','🥟'],bad:['🧨'],name:'Red Packet Pop',icon:'🧧'},hello:'新年快乐! 🧧 Lantern hats are here.',mapExtra:['🏮','🧧','🍊']},
+ spring:{id:'spring',name:'Spring',icon:'🌸',bg:'radial-gradient(1200px 700px at 50% -10%,#ec4899 0%,#7e22ce 45%,#2e1065 100%)',parts:['🌸','🌷','🦋','🐣','🌼'],accent:'#f9a8d4',
+   pop:{good:['🥚','🐣','🌷'],bad:['🐝'],name:'Egg Pop',icon:'🥚'},hello:'Spring is here 🌸',mapExtra:['🌸','🦋','🌷']},
+ summer:{id:'summer',name:'Summer',icon:'☀️',bg:'radial-gradient(1200px 700px at 50% -10%,#06b6d4 0%,#2563eb 40%,#1e1b4b 100%)',parts:['☀️','🌊','🍉','🐚','🏖️'],accent:'#fde047',
+   pop:{good:['🍉','🍦','🐚'],bad:['🦀'],name:'Beach Pop',icon:'🍉'},hello:'Sunny summer ☀️',mapExtra:['🌴','🐚','🍉']},
+ midautumn:{id:'midautumn',name:'Mid-Autumn',icon:'🥮',bg:'radial-gradient(1200px 700px at 50% -10%,#6d28d9 0%,#312e81 40%,#0f0a2e 100%)',parts:['🏮','🥮','🌕','🐇','✨'],accent:'#fcd34d',
+   pop:{good:['🥮','🏮','🐇'],bad:['☁️'],name:'Mooncake Pop',icon:'🥮'},hello:'中秋快乐 🥮',mapExtra:['🏮','🌕','🐇']}
+};
+function seasonFor(d){
+  const m=d.getMonth()+1,day=d.getDate();
+  if(m===10||(m===11&&day<=15))return 'spooky';
+  if(m===11)return 'autumn';
+  if(m===12)return 'winter';
+  if((m===1&&day>=15)||m===2)return 'lny';
+  if(m===1)return 'winter';
+  if(m>=3&&m<=5)return 'spring';
+  if(m>=6&&m<=8)return 'summer';
+  return 'midautumn';
+}
+let SEASON=SEASONS[(S.season&&SEASONS[S.season])?S.season:seasonFor(new Date())];
+function applySeason(){
+  SEASON=SEASONS[(S.season&&SEASONS[S.season])?S.season:seasonFor(new Date())];
+  document.body.style.background=SEASON.bg;document.body.style.backgroundAttachment='fixed';
+  document.documentElement.style.setProperty('--season',SEASON.accent);
+  let fx=document.getElementById('fx');if(!fx){fx=document.createElement('div');fx.id='fx';document.body.prepend(fx)}
+  fx.innerHTML=Array.from({length:12},(_,i)=>`<span style="left:${(i*8.3+Math.random()*6).toFixed(1)}%;animation-duration:${(10+Math.random()*10).toFixed(1)}s;animation-delay:-${(Math.random()*15).toFixed(1)}s;font-size:${18+Math.round(Math.random()*16)}px">${SEASON.parts[i%SEASON.parts.length]}</span>`).join('');
+}
+function seasonPicker(){
+  setLayer(`<div class="modal" onclick="if(event.target===this)setLayer('')"><div class="card"><h2>🎨 Season theme</h2>
+   <p class="muted">Changes automatically through the year. Parents can pick one here.</p>
+   <div class="grid-pick" style="grid-template-columns:repeat(4,1fr)">
+    <button class="${!S.season?'on':''}" style="font-size:15px" onclick="S.season=null;save();applySeason();setLayer('');home()">🗓️<br>Auto</button>
+    ${Object.values(SEASONS).map(s=>`<button class="${S.season===s.id?'on':''}" style="font-size:15px" onclick="S.season='${s.id}';save();applySeason();setLayer('');home()">${s.icon}<br>${s.name.split(' ')[0]}</button>`).join('')}
+   </div><button class="btn ghost block" style="margin-top:14px" onclick="setLayer('')">Close</button></div></div>`);
+}
 
 /* ============ working paper pad ============ */
 let PADBIG=false;
@@ -987,134 +1365,10 @@ function padInit(id,onFirst){
 }
 function padClear(id){const c=document.getElementById(id);if(c)c.getContext('2d').clearRect(0,0,c.width,c.height)}
 
-/* ============ HOME ============ */
-function home(){
-  stopBoss();if(RM.role)rmClose();
-  const kids=S.profiles.filter(p=>p.kind==='kid'),ads=S.profiles.filter(p=>p.kind==='adult');
-  const card=p=>{
-    if(p.kind==='kid'){const la=learningAge(p);
-      return `<div class="pcard" onclick="openProfile('${p.id}')">
-       <button class="edit" onclick="event.stopPropagation();editProfile('${p.id}')">✏️</button>
-       ${avatar(p,80)}<div class="nm">${esc(p.name)}</div>
-       <div class="sub">Age ${p.age} · ⭐ ${totalStars(p)} · 🏆 ${p.trophies.length}</div>
-       <span class="tag">${la!=null?'Learning age '+la:'New player'}</span>
-       <div class="subjrow">${STAGES.map(s=>`<span>${s.icon} ${ageOf(p,s.id)??'–'}</span>`).join('')}</div>
-       <button class="btn block" style="margin-top:12px;padding:10px;font-size:17px">▶ Play</button></div>`}
-    return `<div class="pcard" onclick="editProfile('${p.id}')">
-       <button class="edit" onclick="event.stopPropagation();editProfile('${p.id}')">✏️</button>
-       ${avatar(p,80)}<div class="nm">${esc(p.name)}</div><div class="sub">Boss record</div>
-       <span class="tag ad">${p.boss.w}W · ${p.boss.l}L${p.boss.d?' · '+p.boss.d+'D':''}</span>
-       <div class="small muted" style="margin-top:10px">Bosses join from a child's Boss level</div></div>`};
-  app().innerHTML=`
-   <div class="hero"><div class="logo">Quest <span>PK</span></div><div style="font-size:20px;opacity:.9">闯关PK</div>
-   <p>Four worlds. Grown-up bosses. Find out your learning age.</p></div>
-   <div class="sect">🧒 Young adventurers</div>
-   <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')">＋ Add child</button></div>
-   <div class="sect">🐲 Grown-up bosses</div>
-   <div class="players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')">＋ Add grown-up</button></div>
-   ${REMOTE_OK?`<div class="center" style="margin-top:24px"><button class="btn purple" onclick="joinScreen('')">🌏 Join a far-away Boss PK</button></div>`:''}
-   <div class="center" style="margin-top:18px"><button class="back" style="padding:12px 18px" onclick="backupScreen()">💾 Save / restore progress</button>
-   <div class="small" style="color:#fff;opacity:.85;margin-top:16px">Quest PK v${APP_VERSION} · ${APP_DATE} · <a href="#" style="color:#fff" onclick="event.preventDefault();whatsNew()">What's new</a> · <a href="#" style="color:#fff" onclick="event.preventDefault();checkUpdate(true)">Check for updates</a></div>
-   <div id="verstat" class="small" style="color:#fff;opacity:.85;margin-top:6px"></div>
-   ${S.profiles.length&&backupNudge()?'<div class="small" style="color:#ffd27a;margin-top:8px">Tip: save a copy of progress before updating the app</div>':''}</div>`;
-}
-function openProfile(id){S.cur=id;save();map()}
-
-/* ============ PROFILE EDITOR ============ */
-let E=null,BOSS_PENDING=false;
-function editProfile(id,kind){E=id?JSON.parse(JSON.stringify(getP(id))):newProfile(kind||'kid');E._new=!id;drawEditor()}
-function drawEditor(){
-  const p=E;
-  setLayer(`<div class="modal" onclick="if(event.target===this)closeEditor()"><div class="card">
-   <div class="row" style="justify-content:space-between"><h2>${p._new?'New player':'Edit player'}</h2>${avatar(p,64)}</div>
-   <label class="l">Name</label><input type="text" value="${esc(p.name)}" placeholder="e.g. Ethan, Mummy" maxlength="14" oninput="E.name=this.value">
-   <label class="l">Player type</label>
-   <div class="seg"><button class="${p.kind==='kid'?'on':''}" onclick="E.kind='kid';drawEditor()">🧒 Child</button><button class="${p.kind==='adult'?'on':''}" onclick="E.kind='adult';drawEditor()">🐲 Grown-up (Boss)</button></div>
-   ${p.kind==='kid'?`<label class="l">Real age (years)</label><input type="number" min="4" max="14" step="0.5" value="${p.age}" oninput="E.age=parseFloat(this.value)||E.age">
-   <label class="l">School year <span class="muted small">(sets where questions start)</span></label>
-   <div class="seg">${[1,2,3,4,5,6].map(y=>`<button class="${(E.year||clamp(Math.round(E.age-5),1,6))===y?'on':''}" onclick="E.year=${y};drawEditor()">Y${y}</button>`).join('')}</div>
-   <label class="l">Read questions aloud 🔊</label>
-   <div class="seg"><button class="${readDefault(p)?'on':''}" onclick="E.readAloud=true;drawEditor()">🔊 Automatically</button><button class="${!readDefault(p)?'on':''}" onclick="E.readAloud=false;drawEditor()">Only when tapped</button></div>
-   <label class="l">Working paper</label>
-   <div class="seg"><button class="${padDefault(p)?'on':''}" onclick="E.padOn=true;drawEditor()">✏️ Open by default</button><button class="${!padDefault(p)?'on':''}" onclick="E.padOn=false;drawEditor()">Only when tapped</button></div>`:''}
-   <label class="l">Avatar</label>
-   <div class="grid-pick">${AVATARS.map(a=>`<button class="${p.avatar===a?'on':''}" onclick="E.avatar='${a}';drawEditor()">${a}</button>`).join('')}</div>
-   <label class="l">Colour</label>
-   <div class="swatches">${COLORS.map(c=>`<button class="${p.color===c?'on':''}" style="background:${c}" onclick="E.color='${c}';drawEditor()"></button>`).join('')}</div>
-   <label class="l">Accessory ${p.kind==='kid'?'<span class="muted small">(unlock by playing)</span>':''}</label>
-   <div class="grid-pick">${ACCS.map(a=>{const ok=p.kind==='adult'||!a.need||a.need(p);
-      return `<button class="${p.acc===a.id?'on':''} ${ok?'':'locked'}" onclick="${ok?`E.acc='${a.id}';drawEditor()`:`miniToast('🔒 ${a.how}')`}">${a.e||'∅'}${ok?'':'<span class="lk">🔒</span>'}</button>`}).join('')}</div>
-   <div class="row" style="margin-top:22px">
-     ${!p._new?`<button class="btn ghost" onclick="delProfile()">🗑️</button>`:''}
-     <button class="btn ghost" style="flex:1" onclick="closeEditor()">Cancel</button>
-     <button class="btn ${p.kind==='adult'?'purple':''}" style="flex:2" onclick="saveEditor()">Save</button>
-   </div></div></div>`);
-}
-function closeEditor(){setLayer('');E=null}
-function saveEditor(){
-  const nm=(E.name||'').trim();if(!nm){miniToast('Please add a name');return}
-  E.name=nm;E.age=clamp(E.age||8,4,14);if(!E.year)E.year=clamp(Math.round(E.age-5),1,6);const isNew=E._new;delete E._new;migrate(E);
-  if(isNew)S.profiles.push(E);else S.profiles[S.profiles.findIndex(x=>x.id===E.id)]=E;
-  save();const back=E;closeEditor();
-  if(BOSS_PENDING&&back.kind==='adult'){BOSS_PENDING=false;bossSetup(back.id);return}
-  if(cur()&&cur().kind==='kid'&&document.querySelector('.map'))map();else home();
-}
-function delProfile(){
-  setLayer(`<div class="modal"><div class="card center"><h2>Delete ${esc(E.name)}?</h2><p class="muted">Progress, badges and trophies will be lost.</p>
-   <div class="row"><button class="btn ghost" style="flex:1" onclick="drawEditor()">Keep</button><button class="btn" style="flex:1;background:var(--bad);box-shadow:0 5px 0 #b91c1c" onclick="S.profiles=S.profiles.filter(x=>x.id!==E.id);save();closeEditor();home()">Delete</button></div></div></div>`);
-}
-
-/* ============ MAP ============ */
-function unlocked(p,sid,i){
-  if(p.unlockAll||i===0)return true;
-  if(i===1)return sub(p,sid).ability!=null;
-  return sub(p,sid).stars[i-2]>=1;
-}
-function nodeDone(p,sid,i){const s=sub(p,sid);return i===0?s.ability!=null:i<4?s.stars[i-1]>0:p.trophies.some(t=>t.sid===sid)}
-function map(){
-  if(RM.role)rmClose();
-  const p=cur();if(!p)return home();
-  const st=stageById(STAGE),sid=st.id,a=ageOf(p,sid);
-  const nextIdx=[0,1,2,3,4].find(i=>unlocked(p,sid,i)&&!nodeDone(p,sid,i));
-  const pts=NODEPOS.map(n=>[n[0],n[1]*6.2]);
-  let d=`M${pts[0][0]} ${pts[0][1]}`;for(let i=1;i<pts.length;i++){const [x0,y0]=pts[i-1],[x1,y1]=pts[i];const my=(y0+y1)/2;d+=` C${x0} ${my}, ${x1} ${my}, ${x1} ${y1}`}
-  const lbl=sid==='sci'?'#fff':'';
-  app().innerHTML=`
-   <div class="top"><button class="back" onclick="home()">‹</button>${avatar(p,46)}<h1>${esc(p.name)}</h1>
-     <span class="chip" onclick="cabinet()">🏅 ${p.badges.length} · 🏆 ${p.trophies.length}</span></div>
-   <div class="row wrap" style="margin-bottom:12px">
-     <span class="chip">🎂 Age ${p.age}</span>
-     <span class="chip" style="background:${a!=null&&a>p.age?'#22c55e':'rgba(255,255,255,.16)'}">🧠 ${st.age} ${a??'?'}</span>
-     <span class="chip">⭐ ${starsIn(p,sid)}/9</span>
-   </div>
-   <div class="stages">${STAGES.map(s=>`<button class="stage ${s.id===sid?'on':''}" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}${p.trophies.some(t=>t.sid===s.id)?' 🏆':''}</button>`).join('')}</div>
-   <div class="mapwrap" style="background:${st.bg}"><div class="map">
-     <svg viewBox="0 0 100 620" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="#fff8d6" stroke-width="14" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".85"/>
-     <path d="${d}" fill="none" stroke="#e8c770" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
-     ${st.deco.map((e,i)=>`<div class="deco" style="left:${DECOPOS[i][0]}%;top:${DECOPOS[i][1]}%">${e}</div>`).join('')}
-     ${st.nodes.map((n,i)=>{const ok=unlocked(p,sid,i),stv=i>=1&&i<=3?sub(p,sid).stars[i-1]:0,done=nodeDone(p,sid,i),boss=i===4;
-       return `<div class="node ${boss?'boss':''} ${ok?'':'locked'} ${done?'done':''} ${i===nextIdx?'next':''}" style="left:${NODEPOS[i][0]}%;top:${NODEPOS[i][1]}%" onclick="tapNode(${i})">
-         <div class="dot">${n[0]}${ok?'':'<span class="lk">🔒</span>'}</div>
-         <div class="lbl">${i===0?'':(boss?'BOSS · ':i+' · ')}${n[1]}</div>
-         ${i===nextIdx?'<div class="lbl" style="background:var(--kid);color:#fff;margin-top:4px">👆 Tap to play</div>':''}
-         ${i>=1&&i<=3?`<div class="st">${'⭐'.repeat(stv)}${'<span style="opacity:.3">⭐</span>'.repeat(3-stv)}</div>`:''}
-         ${i===0&&a!=null&&i!==nextIdx?`<div class="st" style="font-size:12px;font-weight:600;color:${lbl}">Retake anytime</div>`:''}
-       </div>`}).join('')}
-   </div></div>
-   <div class="mapfoot"><span>${st.icon} ${st.subj} · Boss = PK vs a grown-up</span>
-   <button class="linkbtn" onclick="toggleUnlock()">${p.unlockAll?'🔓 Parent: re-lock':'🔑 Parent: unlock all'}</button></div>`;
-}
-function toggleUnlock(){const p=cur();p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
-function tapNode(i){
-  const p=cur(),sid=STAGE;
-  if(!unlocked(p,sid,i)){miniToast(i===1?'🔒 Do the test first':'🔒 Get at least 1 star on the previous level');return}
-  if(i===0)intro();else if(i<4)startQuiz('level',i);else bossSetup();
-}
-
 /* ============ QUIZ ============ */
 let Q=null;
 function intro(){
-  const p=cur(),st=stageById(STAGE),n=st.nodes[0];
+  const p=cur(),st=stageById(STAGE),n=st.test;
   app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${n[0]} ${n[1]}</h1></div>
    <div class="card center"><div style="font-size:80px">${n[0]}</div>
    <h2>What's your ${st.age.toLowerCase()}?</h2>
@@ -1122,11 +1376,11 @@ function intro(){
    <p class="muted small">Starts at Year ${kidStart(p)} level for ${esc(p.name)} (school year ${p.year}). Grown-ups: please let ${esc(p.name)} answer alone. Reading the questions aloud is fine — or use the 🔊 button.</p>
    <button class="btn block" onclick="primeSpeech();startQuiz('test')">Start ✨</button></div>`;
 }
-function startQuiz(mode,levelIdx){
+function startQuiz(mode,c,l){
   primeSpeech();
   const p=cur(),s=sub(p,STAGE);
   const ab=mode==='test'?kidStart(p):(s.ability!=null?s.ability:kidStart(p));
-  Q={sid:STAGE,mode,levelIdx,n:mode==='test'?12:8,i:0,ability:ab,level:ab,run:0,missed:false,streak:0,correct:0,times:[],trail:[],log:[],cur:null,locked:false,
+  Q={sid:STAGE,mode,ch:c||0,lv:l||0,n:mode==='test'?12:8,i:0,ability:ab,level:ab,run:0,missed:false,streak:0,correct:0,times:[],trail:[],log:[],cur:null,locked:false,
      seen:new Set(),pad:STAGE==='maths'?padDefault(p):false,read:readDefault(p),token:0};
   nextQ();
 }
@@ -1134,24 +1388,25 @@ function startQuiz(mode,levelIdx){
 function qLevel(){
   const p=cur(),mx=kidMax(p);
   if(Q.mode==='test')return clamp(Q.level,1,mx);
-  const ramp=-0.9+1.4*(Q.i/(Q.n-1));
-  return clamp(Q.ability+NODEOFF[Q.levelIdx]+ramp,1,mx);
+  const ramp=-0.6+1.0*(Q.i/(Q.n-1));
+  return clamp(Q.ability+lvlOff(Q.ch,Q.lv)+ramp,1,mx);
 }
 function nextQ(){
   if(Q.i>=Q.n)return Q.mode==='test'?finishTest():finishLevel();
+  if(Q.mode==='level'&&Q.i===4&&!Q.spoke&&canSpeak(Q.sid,cur())){Q.spoke=true;return speakRound(()=>nextQ())}
   Q.cur=genQ(Q.sid,qLevel(),Q.seen);Q.t0=Date.now();Q.locked=false;Q.padUsed=false;Q.token++;
   renderQ();
   const c=Q.cur;
-  if(Q.read)setTimeout(()=>readQ(c),250);else if(c.say)setTimeout(()=>speakParts([c.say]),250);
+  if(Q.read)setTimeout(()=>readQ(c,true,Q.sid),250);else if(c.say)setTimeout(()=>speakParts([c.say]),250);
 }
 function togglePad(){Q.pad=!Q.pad;const p=cur();p.padOn=Q.pad;save();renderQ()}
 function renderQ(){
-  const st=stageById(Q.sid),node=st.nodes[Q.mode==='test'?0:Q.levelIdx],c=Q.cur;
+  const st=stageById(Q.sid),node=Q.mode==='test'?st.test:st.chapters[Q.ch].levels[Q.lv],c=Q.cur;
   const listen=c.say&&/^Listen/.test(c.q);
   app().innerHTML=`<div class="qtop"><button class="back" onclick="try{speechSynthesis.cancel()}catch(e){};map()">✕</button>
     <div class="prog"><i style="width:${Q.i/Q.n*100}%"></i></div>
     <span class="streak">${Q.streak>=2?'🔥'+Q.streak:''}</span>
-    ${SPEECH.ok?`<button class="padtoggle" onclick="readQ(Q.cur)">🔊 Read</button>`:''}
+    ${SPEECH.ok?`<button class="padtoggle" onclick="readQ(Q.cur,true,Q.sid)">🔊 Read</button>`:''}
     <button class="padtoggle ${Q.pad?'on':''}" onclick="togglePad()">✏️ ${Q.pad?'Hide paper':'Paper'}</button></div>
    <div class="qcard ${Q.pad?'haspad':''}" id="qc">
     <div class="qhead"><div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n}</div>
@@ -1207,7 +1462,7 @@ function finishTest(){
   const p=cur(),s=sub(p,Q.sid),last=Q.trail.slice(-6);
   s.ability=last.reduce((a,b)=>a+b,0)/last.length;
   s.history.push({d:today(),age:ageOf(p,Q.sid)});
-  save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
+  p.tokens=(p.tokens||0)+2;save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
 }
 function verdict(p,sid){
   const diff=Math.round((ageOf(p,sid)-p.age)*10)/10;
@@ -1236,7 +1491,7 @@ function showAgeResult(sid,fresh,log){
     <div class="gauge"><div class="bar"></div>
       ${[5,7,9,11,13].map(t=>`<div class="tick" style="left:${pos(t)}%">${t}</div>`).join('')}
       <div class="mk up" style="left:${pos(p.age)}%">🎂 Real ${p.age}</div>
-      <div class="mk" style="left:${pos(a)}%;top:30px;font-size:28px">${p.avatar}</div></div>
+      <div class="mk" style="left:${pos(a)}%;top:24px">${avMini(p,40)}</div></div>
     ${capped?`<p class="small muted">Top score for school year ${p.year} — questions stop at 2 years above. Change the school year in the profile to stretch further.</p>`:''}
     ${H.length>1?`<div class="qlabel" style="margin-top:18px">Progress</div><div class="hist">${H.map(h=>`<div style="height:${Math.max(10,h.age/mx*70)}px"><span>${h.age}</span></div>`).join('')}</div>`:''}
     ${log?reviewHTML(log):''}
@@ -1245,13 +1500,13 @@ function showAgeResult(sid,fresh,log){
     <button class="btn block" onclick="map()">Back to the map 🗺️</button></div>`;
 }
 function finishLevel(){
-  const p=cur(),s=sub(p,Q.sid),i=Q.levelIdx-1,node=stageById(Q.sid).nodes[Q.levelIdx];
+  const p=cur(),s=sub(p,Q.sid),i=Q.ch*NLV+Q.lv,node=stageById(Q.sid).chapters[Q.ch].levels[Q.lv];
   const stars=Q.correct>=8?3:Q.correct>=6?2:Q.correct>=4?1:0;
   const before=ageOf(p,Q.sid);s.ability=Q.ability;const after=ageOf(p,Q.sid);
-  if(stars>s.stars[i])s.stars[i]=stars;save();
+  if(stars>s.stars[i])s.stars[i]=stars;p.tokens=(p.tokens||0)+stars;save();
   if(stars===3)award(p,'perfect');
   const avg=Q.times.reduce((a,b)=>a+b,0)/Q.times.length;if(stars>=1&&avg<4)award(p,'speedy');
-  if(s.stars.every(x=>x>0))award(p,'path');
+  if(s.stars.slice(Q.ch*NLV,Q.ch*NLV+NLV).every(x=>x>0))award(p,'path');
   checkStatBadges(p);
   if(stars>=2){sWin();if(stars===3)confetti(70)}
   const delta=Math.round((after-before)*10)/10;
@@ -1259,56 +1514,79 @@ function finishLevel(){
    <div class="card center">
     <div class="stars3">${[0,1,2].map(k=>`<span class="${k<stars?'':'off'}">⭐</span>`).join('')}</div>
     <h2>${['Keep trying!','Level cleared!','Great job!','PERFECT!'][stars]}</h2>
-    <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer</p>
+    <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer${stars?` · <b>+${stars} 🪙</b>`:''}</p>
     <div class="chip" style="background:#efeaff;color:var(--ink);font-size:16px">🧠 ${stageById(Q.sid).age} ${after} ${delta>0?`<b style="color:var(--good)">▲ ${delta}</b>`:delta<0?`<b style="color:var(--bad)">▼ ${Math.abs(delta)}</b>`:''}</div>
     ${stars===0?'<p class="muted">Get 4 or more right to unlock the next level.</p>':''}
     ${reviewHTML(Q.log)}
-    <div class="row" style="margin-top:20px"><button class="btn ghost" style="flex:1" onclick="startQuiz('level',${Q.levelIdx})">↻ Again</button>
+    <div class="row" style="margin-top:20px"><button class="btn ghost" style="flex:1" onclick="startQuiz('level',${Q.ch},${Q.lv})">↻ Again</button>
     <button class="btn" style="flex:2" onclick="map()">Map 🗺️</button></div></div>`;
 }
 
 /* ============ BOSS PK ============ */
-let B=null,bossOpts={facing:true,strength:'fierce',adult:null};
-function bossSetup(adultId){
+let B=null,bossOpts={facing:true,strength:'fierce',adult:null,ch:0};
+const ROBO={id:'robo',name:'Robo-Boss',kind:'adult',av:{sp:'robot',col:'#94a3b8',eye:'round',mouth:'smile',hat:'',face:'',neck:''},boss:{w:0,l:0,d:0}};
+const rivalKey=ad=>ad.id==='robo'?'robo':ad.id==='remote'?'remote:'+ad.name.trim().toLowerCase():ad.id;
+function rivalRec(p,ad){p.rivals=p.rivals||{};const k=rivalKey(ad);return p.rivals[k]||(p.rivals[k]={name:ad.name,w:0,l:0,d:0,streak:0,last:null})}
+function recChip(p,ad){const r=(p.rivals||{})[rivalKey(ad)];return r&&(r.w+r.l+r.d)?`<span class="rec">${r.w}W · ${r.l}L${r.d?' · '+r.d+'D':''}</span>`:'<span class="rec new">New rival</span>'}
+function bossSetup(adultId,ch){
   if(RM.role==='host'&&!(B&&B.remote))rmClose();
-  const p=cur(),st=stageById(STAGE),ads=S.profiles.filter(x=>x.kind==='adult');
+  if(ch!=null)bossOpts.ch=ch;
+  const p=cur(),st=stageById(STAGE),c=bossOpts.ch,bn=st.chapters[c].boss,ads=S.profiles.filter(x=>x.kind==='adult');
   if(adultId)bossOpts.adult=adultId;
-  if(!ads.find(a=>a.id===bossOpts.adult))bossOpts.adult=ads[0]?ads[0].id:null;
-  app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${st.nodes[4][0]} ${st.nodes[4][1]}</h1></div>
+  if(bossOpts.adult!=='robo'&&!ads.find(a=>a.id===bossOpts.adult))bossOpts.adult=ads[0]?ads[0].id:'robo';
+  const opp=[...ads,ROBO];
+  app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${bn[0]} ${bn[1]} <span class="small" style="opacity:.8">· Chapter ${c+1}</span></h1></div>
    <div class="card">
-    <div class="center"><div style="font-size:70px">⚔️</div><h2>${esc(p.name)} vs the Grown-up Boss</h2>
-    <p class="muted">${st.subj} tug-of-war! Each right answer pulls the star to your side. Pull it all the way — or be ahead when the 90 seconds run out — to win.<br>
-    ${esc(p.name)} gets questions at their level. The Boss gets secondary-school questions. Wrong answers freeze you for a moment.</p></div>
+    <div class="center"><div class="bosshero">${avatar(p,84)}<span>⚔️</span>${avatar(bossOpts.adult==='robo'?ROBO:getP(bossOpts.adult)||ROBO,84)}</div>
+    <h2>${esc(p.name)} vs the Boss</h2>
+    <p class="muted">${st.subj} tug-of-war! Each right answer pulls the star to your side. Pull it all the way — or be ahead when the 90 seconds run out — to win.</p></div>
     <label class="l">Who is the Boss?</label>
-    ${ads.length?`<div class="row wrap">${ads.map(a=>`<button onclick="bossOpts.adult='${a.id}';bossSetup()" style="background:${bossOpts.adult===a.id?'#efeaff':'#f5f6ff'};border:3px solid ${bossOpts.adult===a.id?'var(--adult)':'transparent'};border-radius:18px;padding:10px 14px" class="row">${avatar(a,40)}<b>${esc(a.name)}</b></button>`).join('')}
-      <button class="btn ghost" onclick="BOSS_PENDING=true;editProfile(null,'adult')">＋</button></div>`
-      :`<button class="btn purple block" onclick="BOSS_PENDING=true;editProfile(null,'adult')">＋ Add a grown-up first</button>`}
+    <div class="opplist">${opp.map(a=>`<button class="opp ${bossOpts.adult===a.id?'on':''}" onclick="bossOpts.adult='${a.id}';bossSetup()">${avatar(a,48)}<b>${esc(a.name)}</b>${recChip(p,a)}</button>`).join('')}
+      <button class="opp add" onclick="BOSS_PENDING=true;editProfile(null,'adult')"><span style="font-size:30px">＋</span><b>Grown-up</b></button></div>
+    ${bossOpts.adult==='robo'?'<p class="small muted">🤖 Robo-Boss plays when no grown-up is around. Beating it opens the next chapter, but only real grown-ups give the Boss Slayer badge!</p>':''}
     <label class="l">Boss strength</label>
     <div class="seg"><button class="${bossOpts.strength==='gentle'?'on':''}" onclick="bossOpts.strength='gentle';bossSetup()">😊 Gentle</button><button class="${bossOpts.strength==='fierce'?'on':''}" onclick="bossOpts.strength='fierce';bossSetup()">😈 Fierce</button></div>
-    <p class="muted small">Gentle: child starts 1 pull ahead and the Boss freezes longer after a mistake.</p>
-    <label class="l">Seating</label>
-    <div class="seg"><button class="${bossOpts.facing?'on':''}" onclick="bossOpts.facing=true;bossSetup()">↕️ Facing each other</button><button class="${!bossOpts.facing?'on':''}" onclick="bossOpts.facing=false;bossSetup()">➡️ Side by side</button></div>
-    <p class="muted small">Facing: lay the iPad flat between you — the Boss's half is upside-down.</p>
-    <button class="btn gold block" style="margin-top:18px" ${ads.length?'':'disabled'} onclick="startBoss()">⚔️ FIGHT! (same iPad)</button>
+    ${bossOpts.adult!=='robo'?`<label class="l">Seating</label>
+    <div class="seg"><button class="${bossOpts.facing?'on':''}" onclick="bossOpts.facing=true;bossSetup()">↕️ Facing each other</button><button class="${!bossOpts.facing?'on':''}" onclick="bossOpts.facing=false;bossSetup()">➡️ Side by side</button></div>`:''}
+    <button class="btn gold block" style="margin-top:18px" onclick="startBoss()">⚔️ FIGHT!${bossOpts.adult==='robo'?'':' (same iPad)'}</button>
     ${REMOTE_OK?`<div class="orline">or</div><button class="btn purple block" onclick="remoteHost()">🌏 Play live with someone far away</button>
-    <p class="muted small center">Grandma or anyone with Quest PK joins from their own phone or iPad — send an invite or read out a room code.</p>`:''}
+    <p class="muted small center">Grandma or anyone joins from their own phone or iPad — send an iMessage invite or read out a room code.</p>`:''}
    </div>`;
 }
 const LIMIT=6;
-function startBoss(){primeSpeech();
-  const kid=cur(),ad=getP(bossOpts.adult);if(!ad)return;
-  B={sid:STAGE,kid,ad,p:bossOpts.strength==='gentle'?1:0,t:90,sides:{kid:{},adult:{}},over:false,ks:0,as:0,seenK:new Set(),seenA:new Set(),kpad:STAGE==='maths'?padDefault(kid):false,kLvl:clamp((sub(kid,STAGE).ability||kidStart(kid))-0.8,1,kidMax(kid))};
-  app().innerHTML='';
-  setLayer(`<div class="arena">
-    <div class="half adult ${bossOpts.facing?'flip':''}" id="h-adult"></div>
-    <div class="mid"><button class="bossexit" onclick="endBoss(null)">✕</button>
-      <span style="font-size:22px">${ad.avatar}</span>
-      <div class="rope"><span class="knot" id="knot">⭐</span></div>
-      <span style="font-size:22px">${kid.avatar}</span><div class="timer" id="timer">90</div></div>
-    <div class="half kid" id="h-kid"></div></div>`);
-  newBossQ('kid');newBossQ('adult');moveKnot();
-  B.timer=setInterval(()=>{B.t--;$('#timer').textContent=B.t;if(B.t<=10)beep(400,.05);if(B.t<=0)endBoss(B.p>0?'kid':B.p<0?'adult':'draw')},1000);
+function newB(kid,ad,extra){
+  const c=bossOpts.ch,ab=sub(kid,STAGE).ability||kidStart(kid);
+  return Object.assign({sid:STAGE,ch:c,kid,ad,p:bossOpts.strength==='gentle'?1:0,t:90,sides:{kid:{},adult:{}},over:false,ks:0,as:0,seenK:new Set(),seenA:new Set(),
+    kpad:STAGE==='maths'?padDefault(kid):false,kLvl:clamp(ab-0.8+c*0.3,1,kidMax(kid)),kCap:Math.min(kidMax(kid),ab+0.6+c*0.3)},extra||{});
 }
+function startBoss(){primeSpeech();
+  const kid=cur(),robo=bossOpts.adult==='robo',ad=robo?ROBO:getP(bossOpts.adult);if(!ad)return;
+  B=newB(kid,ad,{robo});
+  app().innerHTML='';
+  setLayer(`<div class="arena ${robo?'remote':''}">
+    ${robo?`<div class="rpanel" id="h-adult"></div>`:`<div class="half adult ${bossOpts.facing?'flip':''}" id="h-adult"></div>`}
+    <div class="mid"><button class="bossexit" onclick="endBoss(null)">✕</button>
+      ${avMini(ad)}<div class="rope"><span class="knot" id="knot">⭐</span></div>${avMini(kid)}<div class="timer" id="timer">90</div></div>
+    <div class="half kid" id="h-kid"></div></div>`);
+  const go=()=>{
+    newBossQ('kid');if(!robo)newBossQ('adult');else{drawRoboPanel();roboTick()}moveKnot();
+    B.timer=setInterval(()=>{B.t--;$('#timer').textContent=B.t;if(B.t<=10)beep(400,.05);if(B.t<=0)endBoss(B.p>0?'kid':B.p<0?'adult':'draw')},1000);
+  };
+  countdown(go);
+}
+/* Robo-Boss: answers on a timer; Fierce is faster and more accurate */
+function roboTick(){
+  if(!B||B.over||!B.robo)return;
+  const fierce=bossOpts.strength==='fierce',wait=(fierce?3000:4300)+Math.random()*(fierce?1400:2000),acc=fierce?0.82:0.65;
+  B.roboT=setTimeout(()=>{
+    if(!B||B.over)return;
+    if(Math.random()<acc){B.p--;B.as++;sBad();moveKnot();B.roboMsg='✅ Got one!';if(Math.abs(B.p)>=LIMIT)return endBoss('adult')}
+    else B.roboMsg=pick(['🤔 Oops, wrong!','💥 Error! Rebooting…','🙃 Missed it']);
+    drawRoboPanel();roboTick();
+  },wait);
+}
+function drawRoboPanel(){const el=$('#h-adult');if(!el||!B)return;
+  el.innerHTML=`<div class="who">${avatar(ROBO,44)}<span>Robo-Boss <span class="small" style="opacity:.8">${bossOpts.strength==='fierce'?'😈 Fierce':'😊 Gentle'} · ${B.roboMsg||'Calculating… 🤖'}</span></span><span class="sc">✓ ${B.as}</span></div>`}
 function newBossQ(side){
   const seen=side==='kid'?B.seenK:B.seenA;
   const lvl=side==='kid'?B.kLvl:7;
@@ -1322,16 +1600,16 @@ function drawSide(side){
   el.classList.toggle('locked',s.lock);const q=s.q;
   const showPad=side==='kid'&&B.kpad&&!s.lock;
   el.innerHTML=`<div class="who">${avatar(pl,40)}<span>${esc(pl.name)}${side==='adult'?' · BOSS':''}</span>
-     ${side==='kid'?`${SPEECH.ok?`<button class="padtoggle" onclick="readQ(B.sides.kid.q)">🔊</button>`:''}<button class="padtoggle" onclick="toggleBossPad()">✏️ ${B.kpad?'Hide':'Paper'}</button>`:''}<span class="sc">✓ ${side==='kid'?B.ks:B.as}</span></div>
+     ${side==='kid'?`${SPEECH.ok?`<button class="padtoggle" onclick="readQ(B.sides.kid.q,true,B.sid)">🔊</button>`:''}<button class="padtoggle" onclick="toggleBossPad()">✏️ ${B.kpad?'Hide':'Paper'}</button>`:''}<span class="sc">✓ ${side==='kid'?B.ks:B.as}</span></div>
    <div class="bq ${q.big?(q.long?'long':''):'txt'}">${s.lock?'🥶 Frozen!':(q.passage?`<div style="font-size:15px;font-weight:500;text-align:left;margin-bottom:6px">${esc(q.passage)}</div>`:'')+esc(q.q)+(q.vis?`<div class="qvis">${q.vis}</div>`:'')}</div>
    ${showPad?padHTML('bpad',false,false):''}
-   <div class="opts ${q.layout}">${q.opts.map((o,k)=>`<button class="opt" onpointerdown="bossAns('${side}',${k},this)">${esc(o)}</button>`).join('')}</div>`;
+   <div class="opts ${q.layout} ${q.zhOpts?'zh':''}">${q.opts.map((o,k)=>`<button class="opt" onpointerdown="bossAns('${side}',${k},this)">${esc(o)}</button>`).join('')}</div>`;
   if(showPad)padInit('bpad',()=>{B.kid.stats.padQs++;save()});
 }
 function bossAns(side,k,el){
   if(!B||B.over)return;const s=B.sides[side];if(s.lock)return;
   const ok=s.q.opts[k]===s.q.ans;
-  if(ok){el.classList.add('right');sGood();if(side==='kid'){B.p++;B.ks++;B.kLvl=Math.min(B.kLvl+0.2,Math.min(kidMax(B.kid),(sub(B.kid,B.sid).ability||kidStart(B.kid))+0.6))}else{B.p--;B.as++}moveKnot();
+  if(ok){el.classList.add('right');sGood();if(side==='kid'){B.p++;B.ks++;B.kLvl=Math.min(B.kLvl+0.2,B.kCap)}else{B.p--;B.as++}moveKnot();
     if(Math.abs(B.p)>=LIMIT)return endBoss(B.p>0?'kid':'adult');
     setTimeout(()=>B&&!B.over&&newBossQ(side),250);
   }else{el.classList.add('wrong');sBad();s.lock=true;
@@ -1340,44 +1618,137 @@ function bossAns(side,k,el){
 }
 function moveKnot(){const k=$('#knot');if(k)k.style.left=((B.p+LIMIT)/(2*LIMIT)*100)+'%';if(B&&B.remote)rmState()}
 function rmRematch(){if(RM.conn&&RM.conn.open&&RM.guest)startRemoteBoss();else remoteHost()}
-function stopBoss(){if(B&&B.timer)clearInterval(B.timer)}
+function stopBoss(){if(B){clearInterval(B.timer);clearTimeout(B.roboT)}}
+function ordinal(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
 function endBoss(result){
-  if(!B||B.over)return;B.over=true;clearInterval(B.timer);
-  const {kid,ad,sid}=B,st=stageById(sid);setLayer('');
+  if(!B||B.over)return;B.over=true;clearInterval(B.timer);clearTimeout(B.roboT);
+  const {kid,ad,sid,ch}=B,st=stageById(sid),bn=st.chapters[ch].boss;setLayer('');
   if(B.remote){if(result===null){rmSend({t:'cancel'});rmClose()}else rmSend({t:'end',result,ks:B.ks,as:B.as})}
   if(result===null){B=null;return bossSetup()}
-  const rematch=B.remote?`rmRematch()`:`bossSetup()`,rlabel=B.remote?`↻ Rematch ${esc(ad.name)}`:'↻ Rematch';
+  const rematch=B.remote?`rmRematch()`:`bossSetup()`,rlabel=`↻ Rematch ${esc(ad.name)}`;
+  const r=rivalRec(kid,ad);r.name=ad.name;r.last=today();
+  if(result==='kid'){r.w++;r.streak=r.streak>0?r.streak+1:1}else if(result==='adult'){r.l++;r.streak=r.streak<0?r.streak-1:-1}else{r.d++;r.streak=0}
+  if(ad.boss&&ad.id!=='remote'&&ad.id!=='robo'){if(result==='kid')ad.boss.l++;else if(result==='adult')ad.boss.w++;else ad.boss.d++}
+  const recLine=`Record vs ${esc(ad.name)}: <b>${r.w}W · ${r.l}L${r.d?' · '+r.d+'D':''}</b>`;
   if(result==='kid'){
-    const first=kid.trophies.length===0;
-    kid.trophies.push({sid,stage:st.name,d:today(),vs:ad.name,strength:bossOpts.strength});
-    ad.boss.l++;save();award(kid,'boss');checkStatBadges(kid);sWin();confetti(150);
-    app().innerHTML=`<div class="card center" style="margin-top:30px">
-      <div class="trophy">🏆</div><h2 style="font-size:30px">${esc(kid.name)} WINS!</h2>
-      <p style="font-size:18px">You defeated <b>${esc(ad.name)}</b> the Boss ${bossOpts.strength==='fierce'?'on 😈 Fierce':''}!</p>
-      <div class="row" style="justify-content:center;gap:24px;margin:10px 0">${avatar(kid,80)}<span style="font-size:30px">⚔️</span><div style="opacity:.6">${avatar(ad,60)}</div></div>
-      <p class="muted">Score ${B.ks} – ${B.as} · 🏆 ${st.name} Champion trophy added to your cabinet${first?' · 👑 Crown unlocked for your avatar!':''}</p>
+    const firstTrophy=kid.trophies.length===0,newChapter=!bossWon(kid,sid,ch);
+    kid.trophies.push({sid,ch,stage:st.name,boss:bn[1],d:today(),vs:ad.name,robo:!!B.robo,remote:!!B.remote,strength:bossOpts.strength});
+    kid.tokens=(kid.tokens||0)+3;
+    save();if(!B.robo)award(kid,'boss');checkStatBadges(kid);sWin();confetti(150);
+    const head=r.w===1?`First win against ${esc(ad.name)}! 🎉`:`You beat ${esc(ad.name)} again — that's your ${ordinal(r.w)} win!`;
+    const streak=r.streak>=2?`<div class="streakline">🔥 ${r.streak} wins in a row against ${esc(ad.name)}!</div>`:'';
+    app().innerHTML=`<div class="card center pop" style="margin-top:30px">
+      <div class="trophy">🏆</div><h2 style="font-size:28px">${esc(kid.name)} WINS!</h2>
+      <p style="font-size:18px">${head}</p>${streak}
+      <div class="bosshero">${avatar(kid,90,true)}<span>⚔️</span><div style="opacity:.6">${avatar(ad,64)}</div></div>
+      <p class="muted">Score ${B.ks} – ${B.as} · ${recLine}<br>🏆 ${bn[1]} trophy · +3 🪙${newChapter&&ch<NCH-1?` · <b>Chapter ${ch+2} unlocked!</b>`:''}${firstTrophy?' · 👑 Crown unlocked for your avatar!':''}</p>
       <div class="row"><button class="btn ghost" style="flex:1" onclick="${rematch}">${rlabel}</button><button class="btn gold" style="flex:1" onclick="cabinet()">🏆 Cabinet</button></div>
       <button class="btn block" style="margin-top:12px" onclick="map()">Map 🗺️</button></div>`;
   }else{
-    if(result==='adult')ad.boss.w++;else ad.boss.d++;save();
-    app().innerHTML=`<div class="card center" style="margin-top:30px">
-      <div style="font-size:90px">${result==='adult'?'🐲':'🤝'}</div>
-      <h2>${result==='adult'?`${esc(ad.name)} defends the ${esc(st.nodes[4][1].replace('Boss ',''))}!`:"It's a draw!"}</h2>
-      <p class="muted">Score ${B.ks} – ${B.as}. ${result==='adult'?'Train on the practice levels to grow your age, then come back stronger!':'So close! One more round?'}</p>
+    save();
+    const lossHead=result==='adult'?(r.streak<=-2?`${esc(ad.name)} has won ${-r.streak} in a row — time for revenge!`:`${esc(ad.name)} defends the ${esc(bn[1])}!`):"It's a draw!";
+    app().innerHTML=`<div class="card center pop" style="margin-top:30px">
+      <div style="font-size:90px">${result==='adult'?(B.robo?'🤖':'🐲'):'🤝'}</div>
+      <h2>${lossHead}</h2>
+      <p class="muted">Score ${B.ks} – ${B.as} · ${recLine}<br>${result==='adult'?'Train on the levels to grow stronger, then come back!':'So close! One more round?'}</p>
       <div class="row"><button class="btn" style="flex:1" onclick="${rematch}">${rlabel}</button><button class="btn ghost" style="flex:1" onclick="map()">Map</button></div></div>`;
   }
   B=null;
 }
 
+/* ============ HOME ============ */
+const MASCOT={sp:'owl',col:'#a78bfa',eye:'sparkle',mouth:'grin',hat:'wizard',face:'',neck:''};
+function home(){
+  stopBoss();stopGame();if(RM.role)rmClose();
+  const kids=S.profiles.filter(p=>p.kind==='kid'),ads=S.profiles.filter(p=>p.kind==='adult');
+  const mascotHat=SEASON.id==='spooky'?'witch':SEASON.id==='winter'?'santa':SEASON.id==='lny'?'lantern':'wizard';
+  const card=p=>{
+    if(p.kind==='kid'){const la=learningAge(p),lv=levelOf(p);
+      return `<div class="pcard kid" onclick="openProfile('${p.id}')" style="--c:${avOf(p).col}">
+       <button class="edit" onclick="event.stopPropagation();editProfile('${p.id}')">✏️</button>
+       ${avatar(p,96,true)}<div class="nm">${esc(p.name)}</div>
+       <div class="sub">Lv ${lv.n} ${lv.title}</div><div class="xpbar sm"><i style="width:${lv.pct}%"></i></div>
+       <div class="kpis"><span>⭐ ${totalStars(p)}</span><span>🏆 ${p.trophies.length}</span><span>🪙 ${p.tokens||0}</span></div>
+       <span class="tag">${la!=null?'🧠 Learning age '+la:'✨ New player'}</span>
+       <button class="btn block playbtn">▶ Play</button></div>`}
+    return `<div class="pcard" onclick="editProfile('${p.id}')" style="--c:${avOf(p).col}">
+       <button class="edit" onclick="event.stopPropagation();editProfile('${p.id}')">✏️</button>
+       ${avatar(p,80)}<div class="nm">${esc(p.name)}</div><div class="sub">Boss record</div>
+       <span class="tag ad">${p.boss.w}W · ${p.boss.l}L${p.boss.d?' · '+p.boss.d+'D':''}</span></div>`};
+  app().innerHTML=`
+   <div class="hero">
+     <div class="mascot">${avatarSVG(Object.assign({},MASCOT,{hat:mascotHat}),110)}<div class="bubble">${esc(SEASON.hello)}</div></div>
+     <div class="logo">Quest <span>PK</span></div><div class="logosub">闯关PK · learn · battle · level up</div></div>
+   <div class="sect">🧒 Young adventurers</div>
+   <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')">＋<br>Add child</button></div>
+   <div class="sect">🐲 Grown-up bosses</div>
+   <div class="players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')">＋<br>Add grown-up</button></div>
+   ${REMOTE_OK?`<div class="center" style="margin-top:24px"><button class="btn purple" onclick="joinScreen('')">🌏 Join a far-away Boss PK</button></div>`:''}
+   <div class="center homefoot">
+     <button class="back" onclick="backupScreen()">💾 Save / restore</button>
+     <button class="back" onclick="seasonPicker()">${SEASON.icon} Theme</button>
+     ${S.profiles.length&&backupNudge()?'<div class="small" style="color:#ffd27a;margin-top:8px">Tip: save a copy of progress before updating the app</div>':''}
+     <div class="small" style="margin-top:14px;opacity:.85">Quest PK v${APP_VERSION} · ${APP_DATE} · <a href="#" onclick="event.preventDefault();whatsNew()">What's new</a> · <a href="#" onclick="event.preventDefault();checkUpdate(true)">Check for updates</a></div>
+     <div id="verstat" class="small" style="opacity:.85;margin-top:6px"></div></div>`;
+}
+function openProfile(id){S.cur=id;save();if(STAGE==='arcade')STAGE='maths';map()}
+
+/* ============ PROFILE EDITOR ============ */
+let E=null,BOSS_PENDING=false;
+function editProfile(id,kind){E=id?JSON.parse(JSON.stringify(getP(id))):newProfile(kind||'kid');E._new=!id;if(!E.av)E.av=defaultAv(E);drawEditor()}
+function drawEditor(){
+  const p=E;
+  setLayer(`<div class="modal" onclick="if(event.target===this)closeEditor()"><div class="card">
+   <h2>${p._new?'New player':'Edit player'}</h2>
+   <div class="avedit" onclick="AVTAB='sp';avatarEditor()">${avatarSVG(p.av,120)}<span class="btn ghost" style="padding:10px 14px;font-size:16px">🎨 Customise avatar</span></div>
+   <label class="l">Name</label><input type="text" value="${esc(p.name)}" placeholder="e.g. Ethan, Mummy" maxlength="14" oninput="E.name=this.value">
+   <label class="l">Player type</label>
+   <div class="seg"><button class="${p.kind==='kid'?'on':''}" onclick="E.kind='kid';drawEditor()">🧒 Child</button><button class="${p.kind==='adult'?'on':''}" onclick="E.kind='adult';drawEditor()">🐲 Grown-up (Boss)</button></div>
+   ${p.kind==='kid'?`<label class="l">Real age (years)</label><input type="number" min="4" max="14" step="0.5" value="${p.age}" oninput="E.age=parseFloat(this.value)||E.age">
+   <label class="l">School year <span class="muted small">(sets where questions start)</span></label>
+   <div class="seg">${[1,2,3,4,5,6].map(y=>`<button class="${(E.year||clamp(Math.round(E.age-5),1,6))===y?'on':''}" onclick="E.year=${y};drawEditor()">Y${y}</button>`).join('')}</div>
+   <label class="l">Read questions aloud 🔊</label>
+   <div class="seg"><button class="${readDefault(p)?'on':''}" onclick="E.readAloud=true;drawEditor()">🔊 Automatically</button><button class="${!readDefault(p)?'on':''}" onclick="E.readAloud=false;drawEditor()">Only when tapped</button></div>
+   <label class="l">Working paper</label>
+   <div class="seg"><button class="${padDefault(p)?'on':''}" onclick="E.padOn=true;drawEditor()">✏️ Open in maths</button><button class="${!padDefault(p)?'on':''}" onclick="E.padOn=false;drawEditor()">Only when tapped</button></div>
+   ${SRC?`<label class="l">Speaking bonus 🎤 <span class="muted small">(say words out loud in English & Chinese)</span></label>
+   <div class="seg"><button class="${p.speak!==false?'on':''}" onclick="E.speak=true;drawEditor()">🎤 On</button><button class="${p.speak===false?'on':''}" onclick="E.speak=false;drawEditor()">Off</button></div>`:''}`:''}
+   <div class="row" style="margin-top:22px">
+     ${!p._new?`<button class="btn ghost" onclick="delProfile()">🗑️</button>`:''}
+     <button class="btn ghost" style="flex:1" onclick="closeEditor()">Cancel</button>
+     <button class="btn ${p.kind==='adult'?'purple':''}" style="flex:2" onclick="saveEditor()">Save</button>
+   </div></div></div>`);
+}
+function closeEditor(){setLayer('');E=null}
+function saveEditor(){
+  const nm=(E.name||'').trim();if(!nm){miniToast('Please add a name');return}
+  E.name=nm;E.age=clamp(E.age||8,4,14);if(!E.year)E.year=clamp(Math.round(E.age-5),1,6);
+  /* seasonal items worn during their season are kept for good */
+  for(const k of['hat','mouth','neck']){const it=(AV_ITEMS[k]||[]).find(i=>i[0]===E.av[k]);if(it&&it[2].season){E.seasonItems=E.seasonItems||[];if(!E.seasonItems.includes(it[2].season))E.seasonItems.push(it[2].season)}}
+  const isNew=E._new;delete E._new;migrate(E);
+  if(isNew)S.profiles.push(E);else S.profiles[S.profiles.findIndex(x=>x.id===E.id)]=E;
+  save();const back=E;closeEditor();
+  if(BOSS_PENDING&&back.kind==='adult'){BOSS_PENDING=false;bossSetup(back.id);return}
+  if(cur()&&cur().kind==='kid'&&document.querySelector('.map'))map();else home();
+}
+function delProfile(){
+  setLayer(`<div class="modal"><div class="card center"><h2>Delete ${esc(E.name)}?</h2><p class="muted">Progress, badges and trophies will be lost.</p>
+   <div class="row"><button class="btn ghost" style="flex:1" onclick="drawEditor()">Keep</button><button class="btn" style="flex:1;background:var(--bad);box-shadow:0 5px 0 #b91c1c" onclick="S.profiles=S.profiles.filter(x=>x.id!==E.id);save();closeEditor();home()">Delete</button></div></div></div>`);
+}
+
 /* ============ CABINET ============ */
 function cabinet(){
-  const p=cur();
-  app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button>${avatar(p,46)}<h1>${esc(p.name)}'s cabinet</h1></div>
+  const p=cur(),lv=levelOf(p),riv=Object.values(p.rivals||{}).sort((a,b)=>(b.w+b.l)-(a.w+a.l));
+  app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button>${avatar(p,52,true)}<h1>${esc(p.name)}'s cabinet</h1></div>
+   <div class="card center"><div class="row" style="justify-content:center;gap:18px">${avatarSVG(avOf(p),110)}<div style="text-align:left"><div class="big" style="font-size:34px">Level ${lv.n}</div><b>${lv.title}</b><div class="xpbar" style="width:180px"><i style="width:${lv.pct}%"></i></div><div class="small muted">${lv.xp} XP · ${lv.next} to next level</div>
+     <button class="btn ghost" style="margin-top:8px;padding:8px 12px;font-size:15px" onclick="E=JSON.parse(JSON.stringify(cur()));E._new=false;if(!E.av)E.av=defaultAv(E);AVTAB='hat';avatarEditor()">🎨 Dress up</button></div></div></div>
    <div class="sect">🧠 Learning age ${learningAge(p)??'?'}</div>
    <div class="card">${ageBars(p)}</div>
-   <div class="sect">🏆 Trophies</div>
-   <div class="card">${p.trophies.length?p.trophies.slice().reverse().map(t=>`<div class="trow"><span style="font-size:40px">🏆</span><div><b>${stageById(t.sid).icon} ${t.stage} Champion</b><div class="small muted">Beat ${esc(t.vs)} ${t.strength==='fierce'?'😈':'😊'} · ${t.d}</div></div></div>`).join('')
-     :'<div class="center muted">No trophies yet — beat a grown-up at any Boss level to win one!</div>'}</div>
+   <div class="sect">⚔️ Rivals</div>
+   <div class="card">${riv.length?riv.map(r=>`<div class="trow"><b style="flex:1">${esc(r.name)}</b><span>${r.w}W · ${r.l}L${r.d?' · '+r.d+'D':''}</span>${r.streak>=2?`<span class="small">🔥${r.streak}</span>`:''}</div>`).join(''):'<div class="center muted">No Boss battles yet.</div>'}</div>
+   <div class="sect">🏆 Trophies (${p.trophies.length})</div>
+   <div class="card">${p.trophies.length?p.trophies.slice().reverse().map(t=>{const st=stageById(t.sid);return `<div class="trow"><span style="font-size:36px">🏆</span><div><b>${st.icon} ${esc(t.boss||st.chapters[t.ch||0].boss[1])}</b> <span class="small muted">· Ch ${(t.ch||0)+1}</span><div class="small muted">Beat ${esc(t.vs)}${t.remote?' 🌏':''}${t.robo?' 🤖':''} ${t.strength==='fierce'?'😈':'😊'} · ${t.d}</div></div></div>`}).join('')
+     :'<div class="center muted">No trophies yet — beat a Boss to win one!</div>'}</div>
    <div class="sect">🏅 Badges (${p.badges.length}/${BADGES.length})</div>
    <div class="badges">${BADGES.map(b=>`<div class="badge ${p.badges.includes(b.id)?'':'off'}"><div class="e">${b.e}</div><div class="n">${b.n}</div><div class="d">${b.d}</div></div>`).join('')}</div>
    <div class="sect">📈 Stats</div>
@@ -1385,13 +1756,248 @@ function cabinet(){
      <div><div class="big" style="font-size:34px">${p.stats.answered}</div><div class="small muted">Answered</div></div>
      <div><div class="big" style="font-size:34px">${p.stats.answered?Math.round(p.stats.correct/p.stats.answered*100):0}%</div><div class="small muted">Accuracy</div></div>
      <div><div class="big" style="font-size:34px">${p.stats.bestStreak}</div><div class="small muted">Best streak</div></div>
-     <div><div class="big" style="font-size:34px">${totalStars(p)}</div><div class="small muted">Stars /45</div></div></div></div>`;
+     <div><div class="big" style="font-size:34px">${totalStars(p)}</div><div class="small muted">Stars /${STARS_PER_STAGE*STAGES.length}</div></div>
+     <div><div class="big" style="font-size:34px">${p.stats.spoken||0}</div><div class="small muted">Words spoken</div></div></div></div>`;
 }
 
+/* ============ ARCADE ISLAND (unlocked by stars / streaks; games cost tokens earned by learning) ============ */
+const GAMES=[
+ {id:'pop',name:()=>SEASON.pop.name,icon:()=>SEASON.pop.icon,desc:()=>`Tap the ${SEASON.pop.good.join('')} — avoid the ${SEASON.pop.bad.join('')}! A seasonal special.`,need:{}},
+ {id:'snake',name:()=>'Dragon Dash',icon:()=>'🐉',desc:()=>'Steer the dragon to gobble dumplings — don\'t bite your tail!',need:{}},
+ {id:'bunny',name:()=>'Bunny Hop',icon:()=>'🐰',desc:()=>'Tap to jump over obstacles and grab carrots.',need:{stars:30}},
+ {id:'stack',name:()=>'Candy Stack',icon:()=>'🍬',desc:()=>'Slide and spin the candy blocks to fill whole rows.',need:{stars:50,streak:12}},
+ {id:'penguin',name:()=>'Penguin Pop',icon:()=>'🐧',desc:()=>'Take turns knocking out ice. Whoever drops the penguin loses! 2 players or vs Robo.',need:{stars:70,trophies:3}}
+];
+function gameOpen(p,g){const n=g.need;if(p.unlockAll||(!n.stars&&!n.streak&&!n.trophies))return true;return (n.stars&&totalStars(p)>=n.stars)||(n.streak&&p.stats.bestStreak>=n.streak)||(n.trophies&&p.trophies.length>=n.trophies)}
+function needText(n){const a=[];if(n.stars)a.push(`${n.stars} ⭐`);if(n.streak)a.push(`a ${n.streak}-answer streak`);if(n.trophies)a.push(`${n.trophies} 🏆`);return 'Unlock with '+a.join(' or ')}
+function arcade(){
+  stopGame();
+  const p=cur();if(!p)return home();STAGE='arcade';
+  const open=arcadeOpen(p),ts=totalStars(p);
+  app().innerHTML=`<div class="top"><button class="back" onclick="STAGE='maths';map()">‹</button>${avatar(p,52,true)}<h1>🕹️ Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div>
+   <div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">🕹️ Arcade</button></div>
+   ${!open?`<div class="card center"><div style="font-size:70px">🏝️🔒</div><h2>Arcade Island is locked</h2>
+     <p class="muted">Collect <b>${ARCADE_NEED} stars</b> on the learning maps (you have ${ts}) — or get a <b>10-answer streak</b> (best: ${p.stats.bestStreak}).</p>
+     <div class="xpbar" style="max-width:320px;margin:10px auto"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div></div>`:`
+   <div class="card arcadehead"><div class="row" style="gap:14px"><div style="font-size:46px">${SEASON.icon}</div><div><b>${SEASON.name} special: ${SEASON.pop.name}</b><div class="small muted">Each game costs 1 🪙. Earn 🪙 by learning: 1 per star, +2 per test, +3 per Boss win.</div></div></div></div>
+   <div class="games">${GAMES.map(g=>{const ok=gameOpen(p,g),hi=(p.hi||{})[g.id];
+     return `<div class="gcard ${ok?'':'locked'}"><div class="gicon">${g.icon()}</div><div class="gname">${g.name()}</div><div class="small muted">${g.desc()}</div>
+      ${hi!=null?`<div class="small" style="margin-top:6px">🏅 Best: <b>${hi}</b></div>`:''}
+      ${ok?`<button class="btn block" style="margin-top:10px" onclick="playGame('${g.id}')">▶ Play · 1 🪙</button>`:`<div class="needs">🔒 ${needText(g.need)}</div>`}</div>`}).join('')}</div>`}`;
+}
+function playGame(id){
+  const p=cur();
+  if((p.tokens||0)<1){miniToast('Out of 🪙 — finish a level to earn more!');return}
+  p.tokens--;save();
+  ({pop:gPop,snake:gSnake,bunny:gBunny,stack:gStack,penguin:gPenguinMenu})[id]();
+}
+let GAME=null;
+function stopGame(){if(GAME){GAME.dead=true;cancelAnimationFrame(GAME.raf);clearInterval(GAME.iv);clearTimeout(GAME.to);window.removeEventListener('keydown',GAME.key||(()=>{}))}GAME=null}
+function shell(id,title,controls){
+  stopGame();
+  setLayer(`<div class="gshell"><div class="gbar"><button class="bossexit" onclick="stopGame();setLayer('');arcade()">✕</button><b>${title}</b><span id="gscore">0</span></div>
+    <div class="garea" id="garea"><canvas id="gc"></canvas></div>${controls?`<div class="gctl">${controls}</div>`:''}</div>`);
+  const area=$('#garea'),c=$('#gc'),r=area.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  c.width=r.width*dpr;c.height=r.height*dpr;c.style.width=r.width+'px';c.style.height=r.height+'px';
+  const x=c.getContext('2d');x.scale(dpr,dpr);
+  GAME={id,c,x,W:r.width,H:r.height,score:0,dead:false};return GAME;
+}
+function setScore(v){GAME.score=v;const e=$('#gscore');if(e)e.textContent=v}
+function gameOver(msg){
+  if(!GAME||GAME.over)return;GAME.over=true;
+  const p=cur(),id=GAME.id,sc=GAME.score;p.hi=p.hi||{};const best=sc>(p.hi[id]||0);if(best)p.hi[id]=sc;save();
+  cancelAnimationFrame(GAME.raf);clearInterval(GAME.iv);
+  if(best&&sc>0){sWin();confetti(60)}else sBad();
+  const ov=document.createElement('div');ov.className='gover';
+  ov.innerHTML=`<div class="card center pop"><div style="font-size:60px">${best&&sc>0?'🏅':'🎮'}</div><h2>${msg||'Game over'}</h2>
+    <div class="big" style="font-size:52px">${sc}</div><p class="muted">${best&&sc>0?'New best score!':'Best: '+(p.hi[id]||0)}</p>
+    <div class="row"><button class="btn" style="flex:1" onclick="playGame('${id}')">↻ Again · 1 🪙</button><button class="btn ghost" style="flex:1" onclick="stopGame();setLayer('');arcade()">Arcade</button></div></div>`;
+  const sh=$('.gshell');if(sh)sh.appendChild(ov);
+}
+function swipe(el,cb){let sx,sy;el.addEventListener('touchstart',e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
+  el.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return cb('tap');cb(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))})}
+const emo=(x,e,cx,cy,s)=>{x.font=`${s}px system-ui, "Apple Color Emoji"`;x.textAlign='center';x.textBaseline='middle';x.fillText(e,cx,cy)};
+
+/* ---- Seasonal Pop (whack) ---- */
+function gPop(){
+  const g=shell('pop',SEASON.pop.icon+' '+SEASON.pop.name,'');
+  const holes=[];const cols=3,rows=3,cw=g.W/cols,rh=(g.H-40)/rows;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)holes.push({x:cw*(c+.5),y:40+rh*(r+.62),pop:null});
+  let left=30;g.iv=setInterval(()=>{left--;if(left<=0)gameOver('Time\'s up!')},1000);
+  const spawn=()=>{if(g.dead||g.over)return;const free=holes.filter(h=>!h.pop);if(free.length){const h=pick(free),bad=Math.random()<.25;h.pop={e:pick(bad?SEASON.pop.bad:SEASON.pop.good),bad,t:performance.now(),life:Math.max(650,1100-g.score*12)}}
+    g.to=setTimeout(spawn,Math.max(320,700-g.score*10))};spawn();
+  g.c.addEventListener('pointerdown',e=>{const r=g.c.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+    for(const h of holes)if(h.pop&&Math.hypot(px-h.x,py-(h.y-28))<Math.min(cw,rh)*.4){if(h.pop.bad){setScore(Math.max(0,g.score-2));sBad();if(navigator.vibrate)navigator.vibrate(60)}else{setScore(g.score+1);sGood()}h.pop=null}});
+  const draw=t=>{if(g.dead)return;const x=g.x;x.clearRect(0,0,g.W,g.H);
+    x.fillStyle='#fff';x.font='bold 18px Fredoka';x.textAlign='left';x.fillText('⏱ '+left+'s',12,22);
+    for(const h of holes){x.fillStyle='#3f2a1d';x.beginPath();x.ellipse(h.x,h.y,cw*.32,rh*.12,0,0,7);x.fill();
+      if(h.pop){const age=t-h.pop.t;if(age>h.pop.life){h.pop=null;continue}const up=Math.min(1,age/140),s=Math.min(cw,rh)*.5;emo(x,h.pop.e,h.x,h.y-s*.55*up,s)}}
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ---- Dragon Dash (snake) ---- */
+function gSnake(){
+  const g=shell('snake','🐉 Dragon Dash',`<button onpointerdown="GAME.turn('left')">◀</button><button onpointerdown="GAME.turn('up')">▲</button><button onpointerdown="GAME.turn('down')">▼</button><button onpointerdown="GAME.turn('right')">▶</button>`);
+  const N=16,cs=Math.floor(Math.min(g.W,g.H)/N),ox=(g.W-cs*N)/2,oy=(g.H-cs*N)/2;
+  let body=[[6,8],[5,8],[4,8]],dir=[1,0],next=[1,0],food=null,speed=170,last=0;
+  const place=()=>{do{food=[ri(0,N-1),ri(0,N-1)]}while(body.some(b=>b[0]===food[0]&&b[1]===food[1]))};place();
+  const D={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]};
+  g.turn=d=>{const v=D[d];if(v&&!(v[0]===-dir[0]&&v[1]===-dir[1]))next=v};
+  swipe(g.c,d=>g.turn(d));g.key=e=>{const m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];if(m){e.preventDefault();g.turn(m)}};window.addEventListener('keydown',g.key);
+  const step=()=>{dir=next;const h=[body[0][0]+dir[0],body[0][1]+dir[1]];
+    if(h[0]<0||h[1]<0||h[0]>=N||h[1]>=N||body.some(b=>b[0]===h[0]&&b[1]===h[1]))return gameOver('Bonk! 🐉');
+    body.unshift(h);if(h[0]===food[0]&&h[1]===food[1]){setScore(g.score+1);beep(700+g.score*10,.06);speed=Math.max(80,speed-4);place()}else body.pop()};
+  const draw=t=>{if(g.dead||g.over)return;if(t-last>speed){last=t;step();if(g.over)return}
+    const x=g.x;x.clearRect(0,0,g.W,g.H);
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++){x.fillStyle=(i+j)%2?'#86efac':'#4ade80';x.fillRect(ox+i*cs,oy+j*cs,cs,cs)}
+    emo(x,'🥟',ox+food[0]*cs+cs/2,oy+food[1]*cs+cs/2,cs*.9);
+    body.forEach((b,i)=>{x.fillStyle=i===0?'#dc2626':`hsl(${(i*14)%360},80%,55%)`;x.beginPath();x.arc(ox+b[0]*cs+cs/2,oy+b[1]*cs+cs/2,cs*(i===0?.52:.44),0,7);x.fill()});
+    const h=body[0];x.fillStyle='#fff';x.beginPath();x.arc(ox+h[0]*cs+cs/2+dir[0]*3-dir[1]*5,oy+h[1]*cs+cs/2+dir[1]*3-dir[0]*5,3.5,0,7);x.arc(ox+h[0]*cs+cs/2+dir[0]*3+dir[1]*5,oy+h[1]*cs+cs/2+dir[1]*3+dir[0]*5,3.5,0,7);x.fill();
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ---- Bunny Hop (runner) ---- */
+function gBunny(){
+  const g=shell('bunny','🐰 Bunny Hop','<button style="flex:1" onpointerdown="GAME.jump()">⬆ JUMP</button>');
+  const ground=g.H*.78,obsE=SEASON.id==='spooky'?['🎃','🪨']:SEASON.id==='winter'?['⛄','🧊']:['🪨','🌵','🍄'];
+  let by=ground,vy=0,obs=[],spd=4.5,dist=0,carrots=0,lastT=0,nextO=60;
+  g.jump=()=>{if(by>=ground-1){vy=-13.5;beep(620,.05)}};
+  g.c.addEventListener('pointerdown',()=>g.jump());g.key=e=>{if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();g.jump()}};window.addEventListener('keydown',g.key);
+  const draw=t=>{if(g.dead||g.over)return;const dt=Math.min(2,(t-(lastT||t))/16.7);lastT=t;
+    vy+=0.75*dt;by=Math.min(ground,by+vy*dt);if(by>=ground)vy=0;
+    spd+=0.0025*dt;dist+=spd*dt;nextO-=spd*dt;
+    if(nextO<=0){const c=Math.random()<.3;obs.push({x:g.W+30,c,e:c?'🥕':pick(obsE),y:c?ground-70-Math.random()*50:ground});nextO=220+Math.random()*260}
+    obs.forEach(o=>o.x-=spd*dt);obs=obs.filter(o=>o.x>-40);
+    for(const o of obs){if(Math.abs(o.x-70)<26&&Math.abs((o.y-18)-(by-22))<30){if(o.c){carrots++;o.x=-99;beep(900,.06)}else return gameOver('Oops! 🐰')}}
+    setScore(Math.floor(dist/40)+carrots*5);
+    const x=g.x;x.clearRect(0,0,g.W,g.H);
+    x.fillStyle='#bbf7d0';x.fillRect(0,ground+14,g.W,g.H-ground);x.fillStyle='#4ade80';x.fillRect(0,ground+10,g.W,8);
+    emo(x,'☁️',(g.W-(dist*.3)%(g.W+100)),60,40);emo(x,'☁️',(g.W*1.5-(dist*.2)%(g.W+120))%g.W,100,30);
+    obs.forEach(o=>emo(x,o.e,o.x,o.y-6,38));emo(x,'🐰',70,by-14,48);
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ---- Candy Stack (falling blocks, original piece set on an 8×14 board) ---- */
+function gStack(){
+  const g=shell('stack','🍬 Candy Stack',`<button onpointerdown="GAME.mv(-1)">◀</button><button onpointerdown="GAME.rot()">⟳</button><button onpointerdown="GAME.mv(1)">▶</button><button onpointerdown="GAME.drop()">⤓</button>`);
+  const W=8,H=14,cs=Math.floor(Math.min(g.W/W,g.H/H)),ox=(g.W-cs*W)/2,oy=(g.H-cs*H)/2;
+  const SH=[[[0,0],[1,0],[2,0]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1],[1,2]],[[0,0],[1,0],[2,0],[3,0]]];
+  const COL=['#f472b6','#facc15','#a78bfa','#34d399','#fb923c','#60a5fa','#f87171'];
+  const grid=Array.from({length:H},()=>Array(W).fill(null));
+  let pc,lines=0,last=0;
+  const spawn=()=>{const i=ri(0,SH.length-1);pc={c:SH[i].map(a=>a.slice()),x:Math.floor(W/2)-1,y:0,col:COL[i]};if(hit(pc.c,pc.x,pc.y))gameOver('Too tall! 🍬')};
+  const hit=(cells,px,py)=>cells.some(([a,b])=>{const X=a+px,Y=b+py;return X<0||X>=W||Y>=H||(Y>=0&&grid[Y][X])});
+  const lock=()=>{pc.c.forEach(([a,b])=>{if(pc.y+b>=0)grid[pc.y+b][pc.x+a]=pc.col});let cl=0;
+    for(let y=H-1;y>=0;y--){if(grid[y].every(v=>v)){grid.splice(y,1);grid.unshift(Array(W).fill(null));cl++;y++}}
+    if(cl){lines+=cl;setScore(g.score+[0,10,25,45,70][cl]);sGood()}else beep(300,.04);spawn()};
+  g.mv=d=>{if(pc&&!hit(pc.c,pc.x+d,pc.y))pc.x+=d};
+  g.rot=()=>{if(!pc)return;const mx=Math.max(...pc.c.map(c=>c[1]));const r=pc.c.map(([a,b])=>[mx-b,a]);for(const k of[0,-1,1,-2]){if(!hit(r,pc.x+k,pc.y)){pc.c=r;pc.x+=k;return}}};
+  g.drop=()=>{if(!pc)return;while(!hit(pc.c,pc.x,pc.y+1))pc.y++;lock()};
+  swipe(g.c,d=>{if(d==='left')g.mv(-1);else if(d==='right')g.mv(1);else if(d==='down')g.drop();else g.rot()});
+  g.key=e=>{const k=e.key;if(k==='ArrowLeft')g.mv(-1);else if(k==='ArrowRight')g.mv(1);else if(k==='ArrowUp')g.rot();else if(k==='ArrowDown'||k===' ')g.drop();else return;e.preventDefault()};window.addEventListener('keydown',g.key);
+  spawn();
+  const cell=(x,X,Y,col)=>{x.fillStyle=col;x.beginPath();x.roundRect?x.roundRect(ox+X*cs+1,oy+Y*cs+1,cs-2,cs-2,6):x.rect(ox+X*cs+1,oy+Y*cs+1,cs-2,cs-2);x.fill();x.fillStyle='rgba(255,255,255,.35)';x.fillRect(ox+X*cs+5,oy+Y*cs+4,cs*.35,cs*.18)};
+  const draw=t=>{if(g.dead||g.over)return;const sp=Math.max(160,650-lines*25);
+    if(t-last>sp){last=t;if(!hit(pc.c,pc.x,pc.y+1))pc.y++;else{lock();if(g.over)return}}
+    const x=g.x;x.clearRect(0,0,g.W,g.H);x.fillStyle='rgba(255,255,255,.12)';x.fillRect(ox,oy,cs*W,cs*H);
+    for(let y=0;y<H;y++)for(let X=0;X<W;X++)if(grid[y][X])cell(x,X,y,grid[y][X]);
+    if(pc)pc.c.forEach(([a,b])=>{if(pc.y+b>=0)cell(x,pc.x+a,pc.y+b,pc.col)});
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ---- Penguin Pop (turn-based ice PK) ---- */
+function gPenguinMenu(){
+  const p=cur();
+  setLayer(`<div class="modal"><div class="card center pop"><div style="font-size:70px">🐧</div><h2>Penguin Pop</h2>
+   <p class="muted">Take turns tapping ice blocks. Blocks not connected to the edge fall too. Whoever makes the penguin fall loses!</p>
+   <button class="btn block" onclick="gPenguin('robo')">🤖 ${esc(p.name)} vs Robo</button>
+   <button class="btn purple block" style="margin-top:10px" onclick="gPenguin('two')">👫 2 players (pass the iPad)</button>
+   <button class="btn ghost block" style="margin-top:10px" onclick="setLayer('');arcade()">Back</button></div></div>`);
+}
+function gPenguin(mode){
+  const p=cur(),g=shell('penguin','🐧 Penguin Pop','<div id="pturn" class="pturn"></div>');
+  const N=7,C=3,cs=Math.floor(Math.min(g.W,g.H-10)/N),ox=(g.W-cs*N)/2,oy=(g.H-cs*N)/2;
+  const ice=Array.from({length:N},()=>Array(N).fill(true));
+  const names=[p.name,mode==='robo'?'Robo':'Player 2'];let turn=0,falling=[];
+  const supported=g2=>{const seen=Array.from({length:N},()=>Array(N).fill(false)),q=[];
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++)if((i===0||j===0||i===N-1||j===N-1)&&g2[j][i]){seen[j][i]=true;q.push([i,j])}
+    while(q.length){const [i,j]=q.pop();for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]]){const X=i+a,Y=j+b;if(X>=0&&Y>=0&&X<N&&Y<N&&g2[Y][X]&&!seen[Y][X]){seen[Y][X]=true;q.push([X,Y])}}}
+    return seen};
+  const apply=(g2,i,j)=>{g2[j][i]=false;const s=supported(g2),fell=[];for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(g2[y][x]&&!s[y][x]){g2[y][x]=false;fell.push([x,y])}return fell};
+  const showTurn=()=>{const e=$('#pturn');if(e)e.innerHTML=`${turn===0?avMini(p,30):(mode==='robo'?avMini(ROBO,30):'👤')} <b>${esc(names[turn])}</b>'s turn`};
+  const move=(i,j)=>{if(g.over||!ice[j][i]||(i===C&&j===C))return false;
+    const fell=apply(ice,i,j);falling.push({x:i,y:j,t:performance.now()},...fell.map(f=>({x:f[0],y:f[1],t:performance.now()})));beep(400,.06);
+    setScore(g.score+(turn===0?1:0));
+    if(!ice[C][C]){setTimeout(()=>{const winner=names[1-turn];if(turn===0)setScore(0);gameOver(turn===0?`${winner} wins! 🐧💦`:`${p.name} wins! 🎉`)},700);return true}
+    turn=1-turn;showTurn();if(mode==='robo'&&turn===1)g.to=setTimeout(roboMove,700);return true};
+  const roboMove=()=>{if(g.over)return;const opts=[];for(let j=0;j<N;j++)for(let i=0;i<N;i++)if(ice[j][i]&&!(i===C&&j===C)){const t=ice.map(r=>r.slice());apply(t,i,j);opts.push({i,j,safe:t[C][C]})}
+    const safe=opts.filter(o=>o.safe);const m=pick(safe.length?safe:opts);move(m.i,m.j)};
+  g.c.addEventListener('pointerdown',e=>{if(mode==='robo'&&turn===1)return;const r=g.c.getBoundingClientRect(),i=Math.floor((e.clientX-r.left-ox)/cs),j=Math.floor((e.clientY-r.top-oy)/cs);if(i>=0&&j>=0&&i<N&&j<N)move(i,j)});
+  showTurn();
+  const draw=t=>{if(g.dead)return;const x=g.x;x.clearRect(0,0,g.W,g.H);
+    x.fillStyle='#0c4a6e';x.fillRect(ox-8,oy-8,cs*N+16,cs*N+16);
+    for(let j=0;j<N;j++)for(let i=0;i<N;i++)if(ice[j][i]){x.fillStyle=(i===C&&j===C)?'#e0f2fe':'#bae6fd';x.fillRect(ox+i*cs+2,oy+j*cs+2,cs-4,cs-4);x.fillStyle='rgba(255,255,255,.6)';x.fillRect(ox+i*cs+6,oy+j*cs+6,cs*.3,cs*.12)}
+    falling=falling.filter(f=>t-f.t<600);falling.forEach(f=>{const k=(t-f.t)/600;x.globalAlpha=1-k;x.fillStyle='#7dd3fc';const s=(cs-4)*(1-k*.6);x.fillRect(ox+f.x*cs+cs/2-s/2,oy+f.y*cs+cs/2-s/2+k*20,s,s);x.globalAlpha=1});
+    if(ice[C][C]||g.over)emo(x,ice[C][C]?'🐧':'💦',ox+C*cs+cs/2,oy+C*cs+cs/2,cs*.8);
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ============ SPEAKING PRACTICE (child speaks; speech recognition) ============ */
+const SRC=window.SpeechRecognition||window.webkitSpeechRecognition;
+const SAY_EN={1:'cat,dog,sun,fish,frog,tree,red,big,hat,cup',2:'rabbit,garden,yellow,people,because,flower,water,happy,school,family',
+ 3:'friend,island,castle,dinosaur,library,beautiful,mountain,elephant,garden,picture',4:'believe,favourite,adventure,dangerous,interesting,February,question,surprise,dictionary,breakfast',
+ 5:'necessary,rhythm,environment,temperature,vegetable,comfortable,mysterious,disappear,knowledge,government',6:'accommodate,conscience,embarrass,parliament,pronunciation,miscellaneous,sincerely,thorough,rhyme,muscle'};
+function canSpeak(sid,p){return !!SRC&&p.speak!==false&&(sid==='zh'||sid==='lang')}
+function speakTarget(sid,level){
+  const y=clamp(Math.round(level),1,6);
+  if(sid==='zh'){const pool=ZHW.filter(w=>w.y<=Math.max(1,Math.min(4,y))&&w.y>=Math.max(1,y-2));const w=pick(pool.length?pool:ZHW.filter(w=>w.y<=2));return{t:w.w,show:w.w,sub:`${w.py} · ${w.m}`,vis:w.em,lang:'zh-CN',prompt:'Say it in Chinese!'}}
+  const words=SAY_EN[y].split(',');const w=pick(words);return{t:w.toLowerCase(),show:w,sub:'',vis:'',lang:'en-GB',prompt:'Read this word out loud!'}
+}
+function speakRound(after){
+  const p=cur(),T=speakTarget(Q.sid,Q.ability);Q.sp={T,tries:0,after};
+  app().innerHTML=`<div class="qtop"><button class="back" onclick="try{SR&&SR.abort()}catch(e){};map()">✕</button><div class="prog"><i style="width:${Q.i/Q.n*100}%"></i></div><span class="chip">🎤 Bonus</span></div>
+   <div class="qcard speakcard"><div class="qlabel">🎤 Speaking bonus · +1 🪙</div>
+    <h2 style="margin:6px 0">${T.prompt}</h2>
+    ${T.vis?`<div class="qvis">${T.vis}</div>`:''}
+    <div class="sayword ${T.lang==='zh-CN'?'zh':''}">${esc(T.show)}</div>${T.sub?`<div class="muted" style="font-size:20px">${esc(T.sub)}</div>`:''}
+    <div class="row" style="justify-content:center;gap:10px;margin-top:16px">
+      ${SPEECH.ok&&(T.lang!=='zh-CN'||SPEECH.zh)?`<button class="btn ghost" onclick="speakParts([{t:Q.sp.T.t,l:Q.sp.T.lang==='zh-CN'?'zh':'en'}])">🔊 Hear it</button>`:''}
+      <button class="btn mic" id="micbtn" onclick="listen()">🎤 Tap & say it</button></div>
+    <div id="srout" class="fb"></div></div>`;
+}
+let SR=null;
+function listen(){
+  const T=Q.sp.T,out=$('#srout'),btn=$('#micbtn');
+  try{speechSynthesis.cancel()}catch(e){}
+  try{SR=new SRC();SR.lang=T.lang;SR.interimResults=false;SR.maxAlternatives=5;SR.continuous=false}catch(e){return speakFail('Speaking isn\'t available on this device.')}
+  btn.classList.add('listening');btn.textContent='👂 Listening…';out.innerHTML='';
+  let got=false;
+  SR.onresult=e=>{got=true;const alts=[];for(const r of e.results)for(const a of r)alts.push(a.transcript.trim());
+    const norm=s=>s.toLowerCase().replace(/[\s.,!?。，！？]/g,'');
+    const ok=alts.some(a=>norm(a).includes(norm(T.t))||(T.lang==='zh-CN'&&T.t.length===1&&norm(a)===norm(T.t)));
+    speakResult(ok,alts[0]||'')};
+  SR.onerror=e=>{btn.classList.remove('listening');btn.textContent='🎤 Tap & say it';
+    if(e.error==='not-allowed'||e.error==='service-not-allowed')speakFail('Microphone permission is off. A grown-up can allow it in Settings → Safari → Microphone.');
+    else if(e.error==='no-speech')out.innerHTML='<span class="muted">I didn\'t hear anything — tap and try again, a bit louder!</span>';
+    else out.innerHTML=`<span class="muted">Couldn't listen (${esc(e.error)}). Try again.</span>`};
+  SR.onend=()=>{btn.classList.remove('listening');btn.textContent='🎤 Tap & say it';if(!got&&!out.innerHTML)out.innerHTML='<span class="muted">Tap and say it again.</span>'};
+  try{SR.start()}catch(e){speakFail('Couldn\'t start the microphone.')}
+}
+function speakResult(ok,heard){
+  const p=cur(),out=$('#srout');Q.sp.tries++;
+  if(ok){sGood();confetti(30);p.tokens=(p.tokens||0)+1;p.stats.spoken=(p.stats.spoken||0)+1;save();if(p.stats.spoken>=10)award(p,'speaker');
+    out.innerHTML=`<div class="verdict-line" style="color:var(--good)">🌟 Perfect! I heard “${esc(heard)}” · +1 🪙</div><button class="btn block" style="margin-top:12px" onclick="Q.sp.after()">Next ▶</button>`;return}
+  sBad();
+  out.innerHTML=`<div class="verdict-line" style="color:var(--bad)">I heard “${esc(heard||'…')}”. ${Q.sp.tries<2?'Try once more!':'Nice try!'}</div>
+   <div class="row" style="justify-content:center;gap:8px;margin-top:10px">${Q.sp.tries>=2?`<button class="btn ghost" onclick="Q.sp.after()">Skip ▶</button><button class="btn ghost" onclick="speakResult(true,'(grown-up checked)')">✓ Grown-up: it was right</button>`:''}</div>`;
+}
+function speakFail(msg){const out=$('#srout');if(out)out.innerHTML=`<div class="muted">${esc(msg)}</div><button class="btn ghost block" style="margin-top:10px" onclick="Q.sp.after()">Skip ▶</button>`}
+
 /* ============ VERSION ============ */
-const APP_VERSION='1.5';
-const APP_DATE='8 Nov 2026';
+const APP_VERSION='2.0';
+const APP_DATE='9 Nov 2026';
 const CHANGES=[
+ ['2.0','3 chapters per stage, Robo-Boss, rival records, avatar builder & levels, seasonal themes, Arcade Island, speaking bonus, new look'],
  ['1.5','Live Boss PK with someone far away (invite or room code)'],
  ['1.4','Save / restore progress; updates load by themselves; version check'],
  ['1.3','Bigger working paper, answer explanations & review, gentler progressive levels, read-aloud, Chinese stage'],
@@ -1533,8 +2139,8 @@ function rmFail(msg){
 function hostData(m){
   if(!m||!m.t)return;
   if(m.t==='hello'){
-    RM.guest={name:String(m.name||'Boss').slice(0,14),avatar:m.avatar||'🐲',color:m.color||'#7b61ff'};
-    miniToast(`${RM.guest.avatar} ${RM.guest.name} has joined!`);beep(880,.15,'triangle');
+    RM.guest={name:String(m.name||'Boss').slice(0,14),av:m.av||GUEST_AVS[0]};
+    miniToast(`⚔️ ${esc(RM.guest.name)} has joined!`);beep(880,.15,'triangle');
     startRemoteBoss();
   }else if(m.t==='pull'&&B&&B.remote&&!B.over){
     B.p--;B.as++;sBad();moveKnot();drawRemotePanel();
@@ -1542,19 +2148,15 @@ function hostData(m){
   }else if(m.t==='quit'){if(B&&B.remote&&!B.over){miniToast(RM.guest.name+' left the game');endBoss('draw')}}
 }
 function startRemoteBoss(){
-  const kid=cur(),g=RM.guest;
-  const ad={id:'remote',name:g.name,avatar:g.avatar,color:g.color,acc:'none',boss:{w:0,l:0,d:0}};
-  B={remote:true,sid:STAGE,kid,ad,p:bossOpts.strength==='gentle'?1:0,t:90,sides:{kid:{},adult:{}},over:false,ks:0,as:0,seenK:new Set(),seenA:new Set(),
-     kpad:STAGE==='maths'?padDefault(kid):false,kLvl:clamp((sub(kid,STAGE).ability||kidStart(kid))-0.8,1,kidMax(kid))};
-  const st=stageById(STAGE);
-  rmSend({t:'start',sid:STAGE,stage:st.name,subj:st.subj,kid:{name:kid.name,avatar:kid.avatar,color:kid.color},strength:bossOpts.strength,limit:LIMIT,dur:90,p:B.p});
+  const kid=cur(),g=RM.guest,st=stageById(STAGE);
+  const ad={id:'remote',name:g.name,av:g.av,kind:'adult',boss:{w:0,l:0,d:0}};
+  B=newB(kid,ad,{remote:true});
+  rmSend({t:'start',sid:STAGE,ch:B.ch,stage:st.chapters[B.ch].boss[1],subj:st.subj,kid:{name:kid.name,av:avOf(kid)},strength:bossOpts.strength,limit:LIMIT,dur:90,p:B.p,rec:rivalRec(kid,ad)});
   app().innerHTML='';
   setLayer(`<div class="arena remote">
     <div class="rpanel" id="h-adult"></div>
     <div class="mid"><button class="bossexit" onclick="endBoss(null)">✕</button>
-      <span style="font-size:22px">${g.avatar}</span>
-      <div class="rope"><span class="knot" id="knot">⭐</span></div>
-      <span style="font-size:22px">${kid.avatar}</span><div class="timer" id="timer">90</div></div>
+      ${avMini(ad)}<div class="rope"><span class="knot" id="knot">⭐</span></div>${avMini(kid)}<div class="timer" id="timer">90</div></div>
     <div class="half kid" id="h-kid"></div></div>`);
   drawRemotePanel();
   countdown(()=>{
@@ -1575,19 +2177,21 @@ function drawRemotePanel(){
 function rmState(){if(B&&B.remote)rmSend({t:'state',p:B.p,time:B.t,ks:B.ks,as:B.as})}
 
 /* ---------- GUEST (grown-up's device) ---------- */
-let GJ={name:'',avatar:'👵',color:'#7b61ff',adultId:null},GG=null;
+const GUEST_AVS=[{sp:'bunny',col:'#f472b6',eye:'happy',mouth:'smile',hat:'flower',face:'glasses',neck:''},{sp:'bear',col:'#94a3b8',eye:'round',mouth:'smile',hat:'cap',face:'glasses',neck:''},
+ {sp:'cat',col:'#a78bfa',eye:'sparkle',mouth:'cat',hat:'bow',face:'',neck:''},{sp:'bear',col:'#8b5e3c',eye:'round',mouth:'grin',hat:'',face:'',neck:'bowtie'},{sp:'dino',col:'#4ade80',eye:'round',mouth:'fangs',hat:'',face:'',neck:''},{sp:'panda',col:'#ff8a3d',eye:'sparkle',mouth:'grin',hat:'',face:'',neck:''}];
+let GJ={name:'',av:GUEST_AVS[0],adultId:null},GG=null;
 function joinScreen(code){
   rmClose();
   const ads=S.profiles.filter(p=>p.kind==='adult');
-  if(ads.length&&!GJ.adultId&&!GJ.name){const a=ads[0];GJ={name:a.name,avatar:a.avatar,color:a.color,adultId:a.id}}
+  if(ads.length&&!GJ.adultId&&!GJ.name){const a=ads[0];GJ={name:a.name,av:avOf(a),adultId:a.id}}
   app().innerHTML=`<div class="top"><button class="back" onclick="home()">‹</button><h1>🌏 Join a far-away Boss PK</h1></div>
    <div class="card">
     <label class="l">Room code</label>
     <input type="text" id="jcode" maxlength="4" value="${esc(code||'')}" placeholder="e.g. K7QM" autocapitalize="characters" style="text-transform:uppercase;font-size:32px;letter-spacing:10px;text-align:center">
     <label class="l">Who's playing?</label>
-    ${ads.length?`<div class="row wrap" style="margin-bottom:8px">${ads.map(a=>`<button onclick="GJ={name:'${esc(a.name).replace(/'/g,"\\'")}',avatar:'${a.avatar}',color:'${a.color}',adultId:'${a.id}'};joinScreen($('#jcode').value)" style="background:${GJ.adultId===a.id?'#efeaff':'#f5f6ff'};border:3px solid ${GJ.adultId===a.id?'var(--adult)':'transparent'};border-radius:18px;padding:8px 12px" class="row">${avatar(a,36)}<b>${esc(a.name)}</b></button>`).join('')}</div>`:''}
+    ${ads.length?`<div class="row wrap" style="margin-bottom:8px">${ads.map(a=>`<button onclick="GJ={name:getP('${a.id}').name,av:avOf(getP('${a.id}')),adultId:'${a.id}'};joinScreen($('#jcode').value)" style="background:${GJ.adultId===a.id?'#efeaff':'#f5f6ff'};border:3px solid ${GJ.adultId===a.id?'var(--adult)':'transparent'};border-radius:18px;padding:8px 12px" class="row">${avatar(a,36)}<b>${esc(a.name)}</b></button>`).join('')}</div>`:''}
     <input type="text" id="jname" maxlength="14" placeholder="Your name, e.g. Grandma" value="${esc(GJ.name)}" oninput="GJ.name=this.value;GJ.adultId=null">
-    <div class="grid-pick" style="margin-top:10px">${['👵','👴','👩','👨','🐲','🐼'].map(e=>`<button class="${GJ.avatar===e?'on':''}" onclick="GJ.avatar='${e}';joinScreen($('#jcode').value)">${e}</button>`).join('')}</div>
+    <div class="grid-pick" style="margin-top:10px">${GUEST_AVS.map((v,i)=>`<button class="${JSON.stringify(GJ.av)===JSON.stringify(v)?'on':''}" onclick="GJ.av=GUEST_AVS[${i}];GJ.adultId=null;GJ.name=$('#jname').value;joinScreen($('#jcode').value)">${avatarSVG(v,52)}</button>`).join('')}</div>
     <button class="btn purple block" style="margin-top:18px" onclick="joinGo()">⚔️ Join the battle</button>
     <p class="small muted" style="margin-top:12px">You'll get the grown-up (secondary-school) questions. Keep this screen open — the battle starts as soon as you join.</p>
    </div>`;
@@ -1605,7 +2209,7 @@ function joinGo(){
   RM.timer=setTimeout(()=>{if(!(RM.conn&&RM.conn.open))joinFail('No answer from room '+code+'. Check the code, and that the child\'s iPad is still on the waiting screen.')},20000);
   peer.on('open',()=>{
     const conn=peer.connect(peerId(code),{reliable:true});RM.conn=conn;
-    conn.on('open',()=>{clearTimeout(RM.timer);rmSend({t:'hello',name:GJ.name,avatar:GJ.avatar,color:GJ.color});
+    conn.on('open',()=>{clearTimeout(RM.timer);rmSend({t:'hello',name:GJ.name,av:GJ.av});
       app().innerHTML=`<div class="card center" style="margin-top:30px"><div style="font-size:60px">🤝</div><h2>Connected!</h2><p class="muted">Get ready…</p></div>`});
     conn.on('data',m=>guestData(m));
     conn.on('close',()=>{if(GG&&!GG.over){GG.over=true;guestEnd({result:'draw',reason:'left'})}});
@@ -1622,7 +2226,7 @@ function joinFail(msg){
 function guestData(m){
   if(!m||!m.t)return;
   if(m.t==='start'){
-    GG={sid:m.sid,stage:m.stage,subj:m.subj,kid:m.kid,strength:m.strength,limit:m.limit||6,p:m.p||0,time:m.dur||90,ks:0,as:0,over:false,seen:new Set(),q:null,lock:false,started:false};
+    GG={sid:m.sid,rec:m.rec,stage:m.stage,subj:m.subj,kid:m.kid,strength:m.strength,limit:m.limit||6,p:m.p||0,time:m.dur||90,ks:0,as:0,over:false,seen:new Set(),q:null,lock:false,started:false};
     STAGE=m.sid;guestRender();countdown(()=>{});
   }else if(m.t==='go'&&GG){GG.started=true;guestNewQ()}
   else if(m.t==='state'&&GG){Object.assign(GG,{p:m.p,time:m.time,ks:m.ks,as:m.as});guestBar()}
@@ -1635,9 +2239,7 @@ function guestRender(){
   setLayer(`<div class="arena guest">
     <div class="half adult" id="g-q"><div class="center" style="color:#fff;font-size:22px;font-weight:700">Get ready to defend the ${esc(g.stage)}!</div></div>
     <div class="mid"><button class="bossexit" onclick="rmSend({t:'quit'});GG=null;setLayer('');rmClose();home()">✕</button>
-      <span style="font-size:22px">${GJ.avatar}</span>
-      <div class="rope"><span class="knot" id="knot">⭐</span></div>
-      <span style="font-size:22px">${g.kid.avatar}</span><div class="timer" id="timer">${g.time}</div></div>
+      ${avMini({av:GJ.av})}<div class="rope"><span class="knot" id="knot">⭐</span></div>${avMini({av:g.kid.av})}<div class="timer" id="timer">${g.time}</div></div>
     <div class="rpanel kidp" id="g-kid"></div></div>`);
   guestBar();
 }
@@ -1645,7 +2247,7 @@ function guestBar(){
   const g=GG;if(!g)return;
   const k=$('#knot');if(k)k.style.left=((g.p+g.limit)/(2*g.limit)*100)+'%';
   const t=$('#timer');if(t)t.textContent=g.time;
-  const kp=$('#g-kid');if(kp)kp.innerHTML=`<div class="who">${avatar({avatar:g.kid.avatar,color:g.kid.color,acc:'none'},40)}<span>${esc(g.kid.name)} <span class="small" style="opacity:.8">is answering…</span></span><span class="sc">✓ ${g.ks}</span></div>`;
+  const kp=$('#g-kid');if(kp)kp.innerHTML=`<div class="who">${avatar({av:g.kid.av},40)}<span>${esc(g.kid.name)} <span class="small" style="opacity:.8">is answering…</span></span><span class="sc">✓ ${g.ks}</span></div>`;
 }
 function guestNewQ(){
   const g=GG;if(!g||g.over)return;
@@ -1655,7 +2257,7 @@ function guestNewQ(){
 function guestDrawQ(){
   const g=GG,q=g.q,el=$('#g-q');if(!el||!q)return;
   el.classList.toggle('locked',g.lock);
-  el.innerHTML=`<div class="who">${avatar({avatar:GJ.avatar,color:GJ.color,acc:'none'},40)}<span>${esc(GJ.name)} · BOSS</span><span class="sc">✓ ${g.as}</span></div>
+  el.innerHTML=`<div class="who">${avatar({av:GJ.av},40)}<span>${esc(GJ.name)} · BOSS</span><span class="sc">✓ ${g.as}</span></div>
    <div class="bq ${q.big?(q.long?'long':''):'txt'}">${g.lock?'🥶 Frozen!':(q.passage?`<div style="font-size:15px;font-weight:500;text-align:left;margin-bottom:6px">${esc(q.passage)}</div>`:'')+esc(q.q)+(q.vis?`<div class="qvis">${q.vis}</div>`:'')}</div>
    <div class="opts ${q.layout}">${q.opts.map((o,k)=>`<button class="opt" onpointerdown="guestAns(${k},this)">${esc(o)}</button>`).join('')}</div>`;
 }
@@ -1666,14 +2268,17 @@ function guestAns(k,el){
     setTimeout(()=>{if(!GG||GG.over)return;guestDrawQ();setTimeout(()=>{if(GG&&!GG.over)guestNewQ()},fr)},350)}
 }
 function guestEnd(m){
-  const g=GG||{kid:{name:'The child',avatar:'🦊'},stage:'castle',ks:0,as:0};setLayer('');
+  const g=GG||{kid:{name:'The child'},stage:'castle',ks:0,as:0};setLayer('');
+  S.guestRivals=S.guestRivals||{};const gk=(GJ.name+'>'+g.kid.name).toLowerCase(),gr=S.guestRivals[gk]||(S.guestRivals[gk]={me:GJ.name,kid:g.kid.name,w:0,l:0,d:0});
   const won=m.result==='adult',draw=m.result==='draw';
-  if(GJ.adultId){const a=getP(GJ.adultId);if(a){if(won)a.boss.w++;else if(draw)a.boss.d++;else a.boss.l++;save()}}
+  if(m.reason!=='left'){if(won)gr.w++;else if(draw)gr.d++;else gr.l++}
+  if(GJ.adultId&&m.reason!=='left'){const a=getP(GJ.adultId);if(a){if(won)a.boss.w++;else if(draw)a.boss.d++;else a.boss.l++}}save();
   if(won)sWin();
   app().innerHTML=`<div class="card center" style="margin-top:30px">
     <div style="font-size:90px">${m.reason==='left'?'📴':won?'🐲':draw?'🤝':'🏆'}</div>
-    <h2>${m.reason==='left'?'The connection ended':won?`You defended the ${esc(g.stage)}!`:draw?"It's a draw!":`${esc(g.kid.name)} beat you!`}</h2>
+    <h2>${m.reason==='left'?'The connection ended':won?(gr.w>1?`You beat ${esc(g.kid.name)} again!`:`You defended the ${esc(g.stage)}!`):draw?"It's a draw!":`${esc(g.kid.name)} beat you!`}</h2>
     <p class="muted">Score: ${esc(g.kid.name)} ${m.ks??g.ks} – ${m.as??g.as} ${esc(GJ.name)}</p>
+    <p>All-time vs ${esc(g.kid.name)}: <b>you ${gr.w} – ${gr.l} ${esc(g.kid.name)}</b>${gr.d?` (${gr.d} draws)`:''}</p>
     <p class="small muted">Waiting here means ${esc(g.kid.name)} can start a rematch.</p>
     <button class="btn ghost block" onclick="rmClose();GG=null;home()">Leave</button></div>`;
 }
@@ -1684,6 +2289,7 @@ function checkJoinLink(){
   return false;
 }
 
+applySeason();
 window.addEventListener('hashchange',checkJoinLink);
 if(!checkJoinLink())home();
 setTimeout(()=>checkUpdate(false),800);
