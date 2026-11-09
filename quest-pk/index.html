@@ -404,6 +404,8 @@ body{color:var(--ink)}
 .numpad{display:flex;gap:6px;flex:1;flex-wrap:wrap;justify-content:center}
 .numpad button{flex:1 0 9%;min-width:38px;background:#fff;border-radius:14px;font-size:24px;font-weight:700;padding:10px 0;box-shadow:0 4px 0 #c7c9f5}
 @media (max-width:480px){.slot{width:34px;height:46px;font-size:22px}.tiles .tile{width:42px;height:48px;font-size:22px}}
+
+.gshell{overflow:hidden}.garea{min-height:0;overflow:hidden}.gctl.pen{flex-wrap:wrap;height:150px;align-content:flex-start;box-sizing:border-box}.gctl.pen .pturn{flex:1 1 100%;min-height:44px}.gctl.pen button{flex:1 1 0}
 </style>
 </head>
 <body>
@@ -2259,6 +2261,196 @@ function avatarEditor(){
 }
 
 S.profiles.forEach(migrate);save();
+/* ===== HISTORY bank: year|question|answer|wrong|wrong|wrong|passage|explanation ===== */
+const BANK_HIST=`
+1|Which toy is from long ago?|spinning top|tablet|games console|smartphone||Spinning tops have been played with for thousands of years.
+1|Before electric lights, people lit their homes with…|candles|LED bulbs|neon signs|phone torches||Candles and oil lamps were used before electricity.
+1|Long ago, how did people send messages to someone far away?|letters|emails|text messages|video calls||People wrote letters and posted them.
+1|Which part belongs to a castle?|drawbridge|escalator|garage|lift||A drawbridge could be pulled up to keep enemies out.
+1|Kings and queens wear a…|crown|helmet|cap|hood||A crown shows that someone is a king or queen.
+1|Long ago, before cars, people often travelled by…|horse and cart|electric scooter|aeroplane|bus||Horses pulled carts and carriages.
+1|Who was the first person to walk on the Moon?|Neil Armstrong|Yuri Gagarin|Isaac Newton|Christopher Columbus||Neil Armstrong stepped onto the Moon in 1969.
+1|Long ago, children wrote at school on small…|slates|tablets|laptops|whiteboards||Slates were small chalkboards.
+2|When was the Great Fire of London?|1666|1066|1966|1766||It started on 2 September 1666.
+2|Where did the Great Fire of London start?|a bakery|a church|a castle|a school||It began in Thomas Farriner's bakery on Pudding Lane.
+2|Samuel Pepys wrote about the Great Fire in his…|diary|newspaper|song|painting||Pepys's diary tells us what the fire was like.
+2|Who was called "The Lady with the Lamp"?|Florence Nightingale|Mary Seacole|Marie Curie|Queen Victoria||She checked on wounded soldiers at night by lamplight.
+2|In which year did people first land on the Moon?|1969|1869|1999|1949||Apollo 11 landed on 20 July 1969.
+2|Who was the first person to travel into space?|Yuri Gagarin|Neil Armstrong|Buzz Aldrin|Amelia Earhart||Yuri Gagarin orbited Earth in 1961.
+2|Which queen reigned in the UK for 70 years?|Elizabeth II|Victoria|Mary I|Anne||Queen Elizabeth II reigned from 1952 to 2022.
+2|What is a historian?|someone who studies the past|someone who cooks|a type of dinosaur|a builder||Historians find out about the past from evidence.
+2|Which is the oldest way to listen to music?|singing together|a radio|a phone|a CD||People sang long before any machines existed.
+3|Stone Age people made tools from…|flint|plastic|steel|aluminium||Flint can be chipped to make sharp edges.
+3|Stonehenge is in…|England|Egypt|France|Scotland||Stonehenge is in Wiltshire, England.
+3|What were the kings of Ancient Egypt called?|pharaohs|emperors|tsars|sultans||Pharaohs ruled Egypt for about 3,000 years.
+3|Which river was the lifeline of Ancient Egypt?|the Nile|the Thames|the Amazon|the Yangtze||The Nile flooded each year, making the land good for farming.
+3|What is a mummy?|a preserved body|a type of pyramid|an Egyptian god|a boat||Egyptians preserved bodies for the afterlife.
+3|Egyptian picture-writing is called…|hieroglyphics|emoji|calligraphy|runes||Hieroglyphics used pictures for sounds and words.
+3|Which boy pharaoh's tomb was found in 1922?|Tutankhamun|Ramesses II|Cleopatra|Khufu||Howard Carter discovered Tutankhamun's tomb full of treasure.
+3|The Romans invaded Britain in…|AD 43|1066|AD 793|1215||Emperor Claudius sent his army in AD 43.
+3|What language did the Ancient Romans speak?|Latin|Greek|Italian|English||Latin — many English words come from it.
+3|What did the Romans build to carry water to towns?|aqueducts|pyramids|castles|windmills||Aqueducts were channels and bridges for water.
+4|Where did the Vikings come from?|Scandinavia|Italy|Egypt|India||Norway, Sweden and Denmark.
+4|Vikings sailed in wooden ships called…|longships|galleons|junks|canoes||Longships were fast and could sail up rivers.
+4|Where did the Olympic Games begin?|Ancient Greece|Ancient Rome|Egypt|China||At Olympia in Greece, around 776 BC.
+4|Which city is called the birthplace of democracy?|Athens|Sparta|Rome|London||Athenian citizens voted on decisions.
+4|Which Greek city-state was famous for its warriors?|Sparta|Rome|Cairo|Babylon||Spartan boys trained as soldiers from age 7.
+4|Who was the first emperor to unite China?|Qin Shi Huang|Kublai Khan|Confucius|Genghis Khan||He united China in 221 BC.
+4|What was buried near the first emperor of China?|the Terracotta Army|the Great Pyramid|Stonehenge|the Colosseum||Thousands of clay soldiers guard his tomb.
+4|Paper was first made in…|China|England|Mexico|Greece||Cai Lun improved paper-making in China around AD 105.
+4|Which trade route linked China with Europe?|the Silk Road|Route 66|the Orient Express|the Panama Canal||Silk, spices and ideas travelled along it.
+4|Anglo-Saxon England was made up of several…|kingdoms|countries|continents|oceans||Such as Wessex, Mercia and Northumbria.
+5|Which civilisation built step pyramids in Central America?|the Maya|the Vikings|the Romans|the Celts||The Maya built cities like Chichén Itzá.
+5|How many wives did Henry VIII have?|6|2|4|8||Divorced, beheaded, died; divorced, beheaded, survived.
+5|Who sailed across the Atlantic to the Americas in 1492?|Christopher Columbus|Captain Cook|Zheng He|Marco Polo||Columbus reached the Caribbean in 1492.
+5|Which Chinese admiral led huge treasure fleets in the 1400s?|Zheng He|Marco Polo|Kublai Khan|Sun Yat-sen||Zheng He sailed as far as East Africa.
+5|In 1819, Stamford Raffles set up a British trading post in…|Singapore|Hong Kong|Penang|Sydney||He landed in Singapore in January 1819.
+5|Which prince, legend says, named Singapura after seeing a "lion"?|Sang Nila Utama|Parameswara|Hang Tuah|Raffles||Singa-pura means "lion city".
+5|Who used a printing press to print books in the 1400s?|Johannes Gutenberg|William Shakespeare|Galileo|Leonardo da Vinci||Gutenberg's press made books much cheaper.
+5|Elizabeth I was the daughter of…|Henry VIII|Henry VII|Edward VI|James I||Her mother was Anne Boleyn.
+5|The Spanish Armada sailed against England in…|1588|1066|1666|1815||Elizabeth I's navy and storms defeated it.
+5|The House of Wisdom in Baghdad was a famous…|centre of learning|palace|market|army||Scholars there translated and studied science and maths.
+6|In which year did World War II begin?|1939|1914|1945|1918||It began when Germany invaded Poland in September 1939.
+6|In February 1942, Singapore was captured by…|Japan|Germany|Italy|Russia||The Japanese occupation lasted until 1945.
+6|In which year did Singapore become an independent country?|1965|1959|1963|1945||Singapore became independent on 9 August 1965.
+6|Who was Singapore's first Prime Minister?|Lee Kuan Yew|Goh Chok Tong|Yusof Ishak|Lim Boon Keng||He led Singapore from 1959 to 1990.
+6|The Industrial Revolution began in…|Britain|China|Brazil|Japan||Factories and steam engines spread from Britain in the 1700s.
+6|Who refused to give up her bus seat in 1955?|Rosa Parks|Harriet Tubman|Michelle Obama|Malala Yousafzai||Her protest helped spark the US civil rights movement.
+6|Who led India's peaceful struggle for independence?|Mahatma Gandhi|Winston Churchill|Napoleon|Mao Zedong||Gandhi used non-violent protest.
+6|Who was UK Prime Minister for most of World War II?|Winston Churchill|Margaret Thatcher|Tony Blair|David Lloyd George||Churchill led Britain from 1940 to 1945.
+6|Moving children from cities to the countryside in WWII was called…|evacuation|migration|vacation|immigration||It kept children safer from bombing.
+6|The suffragettes campaigned for…|women's right to vote|longer holidays|free bread|more castles||Many women in the UK won the vote in 1918.
+6|Who wrote a famous diary while hiding during WWII?|Anne Frank|Florence Nightingale|Queen Victoria|Emmeline Pankhurst||Her diary was published after the war.
+7|In which year did the Berlin Wall fall?|1989|1991|1975|1961||It fell on 9 November 1989.
+7|Which dynasty built most of the Great Wall we see today?|Ming|Qin|Han|Tang||Most surviving brick sections are from the Ming dynasty.
+7|Who was the first President of Singapore?|Yusof Ishak|Benjamin Sheares|Wee Kim Wee|S R Nathan||Yusof Ishak, who appears on Singapore's banknotes.
+7|The Treaty of Versailles ended which war?|World War I|World War II|the Napoleonic Wars|the Boer War||It was signed in 1919.
+7|Who was the last tsar of Russia?|Nicholas II|Peter the Great|Ivan the Terrible|Alexander III||He gave up the throne in 1917.
+7|The Western Roman Empire fell in…|AD 476|AD 43|AD 1066|AD 800||The last western emperor was removed in 476.
+7|The Rosetta Stone helped scholars read…|Egyptian hieroglyphs|Mayan glyphs|Viking runes|Chinese oracle bones||It had the same text in three scripts.
+7|Which empire was ruled by the famously rich Mansa Musa?|Mali|Ottoman|Mughal|Inca||The Mali Empire in West Africa, 14th century.
+7|The Meiji Restoration modernised which country?|Japan|China|Korea|Thailand||It began in 1868.
+7|Who wrote "The Art of War"?|Sun Tzu|Confucius|Laozi|Mencius||An ancient Chinese book on strategy.
+7|What did the Japanese rename Singapore during the occupation?|Syonan-to|Temasek|Singapura|Malaya||Syonan-to means "Light of the South Island".
+7|Temasek is an old name for…|Singapore|Melaka|Penang|Jakarta||Temasek means "sea town".
+`;
+/* timeline: tier|event|year (negative = BC) */
+const H_TIME=`
+2|the pyramids of Giza were built|-2560
+2|the Romans invaded Britain|43
+2|the Great Fire of London|1666
+2|the first Moon landing|1969
+2|the Wright brothers' first aeroplane flight|1903
+3|the first Olympic Games in Ancient Greece|-776
+3|Tutankhamun became pharaoh|-1332
+3|the Vikings first raided England|793
+3|the Battle of Hastings|1066
+3|Columbus sailed to the Americas|1492
+3|the Titanic sank|1912
+4|Qin Shi Huang united China|-221
+4|Magna Carta was signed|1215
+4|Gutenberg's printing press|1440
+4|Stamford Raffles arrived in Singapore|1819
+4|the telephone was invented|1876
+4|World War II began|1939
+5|Shakespeare was born|1564
+5|Victoria became queen|1837
+5|the first modern Olympics in Athens|1896
+5|World War I began|1914
+5|Singapore became independent|1965
+5|the World Wide Web went public|1991
+6|the fall of Singapore|1942
+6|the Berlin Wall fell|1989
+6|the first iPhone was released|2007
+6|the Spanish Armada|1588
+6|the Liverpool to Manchester railway opened|1830
+`;
+/* famous people: tier|person|famous for */
+const H_PEOPLE=`
+1|Neil Armstrong|first person to walk on the Moon
+2|Florence Nightingale|nursing wounded soldiers
+2|Queen Victoria|ruling the UK for 63 years in the 1800s
+2|Yuri Gagarin|being the first human in space
+3|Tutankhamun|being Egypt's boy pharaoh
+3|Julius Caesar|leading Rome before it had emperors
+3|Cleopatra|being the last queen of Ancient Egypt
+3|Isaac Newton|explaining gravity
+3|Leonardo da Vinci|painting the Mona Lisa
+4|Henry VIII|having six wives
+4|Qin Shi Huang|being the first emperor of China
+4|Confucius|teaching respect and good behaviour in ancient China
+4|Marie Curie|discovering radium and polonium
+4|William Shakespeare|writing Romeo and Juliet
+4|Amelia Earhart|flying solo across the Atlantic as a woman
+5|Christopher Columbus|sailing to the Americas in 1492
+5|Zheng He|leading China's treasure fleets
+5|Stamford Raffles|founding a British trading post in Singapore
+5|Genghis Khan|building the Mongol Empire
+5|Ada Lovelace|writing the first computer program
+5|Valentina Tereshkova|being the first woman in space
+6|Lee Kuan Yew|being Singapore's first Prime Minister
+6|Mahatma Gandhi|leading India's peaceful independence movement
+6|Nelson Mandela|ending apartheid in South Africa
+6|Martin Luther King Jr.|the "I Have a Dream" speech
+6|Emmeline Pankhurst|leading the suffragettes
+6|Anne Frank|writing a diary while hiding in WWII
+6|Alexander the Great|building a huge ancient empire
+7|Yusof Ishak|being Singapore's first President
+7|Mansa Musa|being the rich ruler of the Mali Empire
+7|Sun Yat-sen|founding the Republic of China
+`;
+/* inventions: tier|invention|inventor */
+const H_INV=`
+2|the aeroplane|the Wright brothers
+3|the telephone|Alexander Graham Bell
+3|the printing press|Johannes Gutenberg
+4|the World Wide Web|Tim Berners-Lee
+4|the steam locomotive "Rocket"|George Stephenson
+4|the first television demonstration|John Logie Baird
+5|the smallpox vaccine|Edward Jenner
+5|dynamite|Alfred Nobel
+5|long-distance radio|Guglielmo Marconi
+6|the theory of relativity|Albert Einstein
+6|penicillin|Alexander Fleming
+6|the first computer program|Ada Lovelace
+`;
+const HT=parse(H_TIME).map(f=>({y:+f[0],e:f[1],yr:+f[2]})),HP=parse(H_PEOPLE).map(f=>({y:+f[0],n:f[1],f:f[2]})),HI=parse(H_INV).map(f=>({y:+f[0],i:f[1],who:f[2]}));
+BANK.hist=parse(BANK_HIST);
+const yrTxt=y=>y<0?`${-y} BC`:y<1000?`AD ${y}`:String(y);
+function genHist(y,t){
+  if(t==='time'){
+    const pool=HT.filter(e=>e.y<=Math.max(3,y+1)),pickN=[];
+    for(const e of shuffle(pool)){if(pickN.every(x=>Math.abs(x.yr-e.yr)>=20))pickN.push(e);if(pickN.length===4)break}
+    const first=Math.random()<.6,ans=pickN.slice().sort((a,b)=>first?a.yr-b.yr:b.yr-a.yr)[0];
+    const cap=s=>s[0].toUpperCase()+s.slice(1);
+    return{q:`Which happened ${first?'FIRST':'most RECENTLY'}?`,ans:cap(ans.e),opts:shuffle(pickN.map(x=>cap(x.e))),key:'ht'+pickN.map(x=>x.yr).sort().join(),
+      e:pickN.slice().sort((a,b)=>a.yr-b.yr).map(x=>`${yrTxt(x.yr)}: ${x.e}`).join(' · ')};
+  }
+  if(t==='people'){
+    const pool=HP.filter(p=>Math.abs(p.y-y)<=2),p=pick(pool.length?pool:HP),d=strOpts(p.n,HP.filter(x=>x!==p).map(x=>x.n));
+    return Math.random()<.5?{q:`Who is famous for ${p.f}?`,ans:p.n,opts:shuffle([p.n,...d]),key:'hpw'+p.n,e:`${p.n} is famous for ${p.f}.`}
+      :{q:`What is ${p.n} famous for?`,ans:p.f,opts:shuffle([p.f,...strOpts(p.f,HP.filter(x=>x!==p).map(x=>x.f))]),key:'hpf'+p.n,e:`${p.n} is famous for ${p.f}.`};
+  }
+  const pool=HI.filter(i=>Math.abs(i.y-y)<=2),it=pick(pool.length?pool:HI);
+  return{q:`Who is known for ${it.i}?`,ans:it.who,opts:shuffle([it.who,...strOpts(it.who,HI.filter(x=>x!==it).map(x=>x.who))]),key:'hi'+it.i,e:`${it.i[0].toUpperCase()+it.i.slice(1)}: ${it.who}.`};
+}
+const _genBankH=genBank;
+genBank=function(sid,level,seen){
+  if(sid!=='hist')return _genBankH(sid,level,seen);
+  const y=clamp(Math.round(level),1,7);let q,t=0;
+  do{const r=Math.random(),entries=BANK.hist.filter(f=>+f[0]===y);
+    q=(y>=2&&r<.2)?genHist(y,'time'):r<.4?genHist(y,'people'):(y>=2&&r<.5)?genHist(y,'inv'):fromEntry(pick(entries.length?entries:BANK.hist.filter(f=>Math.abs(+f[0]-y)<=1)));t++}
+  while(seen&&seen.has(q.key)&&t<20);
+  return q;
+};
+STAGES.push({id:'hist',icon:'⏳',name:'Time Tunnel',subj:'History',age:'History age',test:['⏳','Time Machine Test'],chapters:[
+  CH('Ancient Wonders','#fde68a','🦴 Stone Age Camp,🗿 Standing Stones,🏺 Pyramid Path,⚱️ Pharaoh\'s Tomb,🏛️ Roman Road',['🏟️','Colosseum']),
+  CH('Kingdoms & Explorers','#fecaca','⚔️ Viking Shore,🏰 Castle Keep,🐫 Silk Road,⛵ Treasure Fleet,👑 Tudor Court',['🏯',"Emperor's Hall"]),
+  CH('Modern Times','#c7d2fe','🚂 Steam Station,🦁 Singapura Harbour,✈️ First Flight,🚀 Moon Base,💻 Digital Age',['🗽','Time Tower'])]});
+S.profiles.forEach(p=>{if(p.subj&&!p.subj.hist)p.subj.hist=emptySubj()});
+BADGES.find(b=>b.id==='allround').d='Take the test in all 6 stages';
+BADGES.find(b=>b.id==='grand').d='Beat the Boss in all 6 stages';
+
 /* ============ AVATAR v3: chibi bodies, shading, outfits, pets, backgrounds, magic ============ */
 AV_SPECIES.length=0;
 AV_SPECIES.push(['fox','🦊 Fox',1],['cat','🐱 Cat',1],['bear','🐻 Bear',1],['bunny','🐰 Bunny',1],['panda','🐼 Panda',1],['monkey','🐵 Monkey',2],['owl','🦉 Owl',3],['penguin','🐧 Penguin',4],
@@ -2989,7 +3181,7 @@ function stopGame(){if(GAME){GAME.dead=true;cancelAnimationFrame(GAME.raf);clear
 function shell(id,title,controls){
   stopGame();
   setLayer(`<div class="gshell"><div class="gbar"><button class="bossexit" onclick="stopGame();setLayer('');arcade()">✕</button><b>${title}</b><span id="gscore">0</span></div>
-    <div class="garea" id="garea"><canvas id="gc"></canvas></div>${controls?`<div class="gctl">${controls}</div>`:''}</div>`);
+    <div class="garea" id="garea"><canvas id="gc"></canvas></div>${controls?`<div class="gctl${controls.includes('pturn')?' pen':''}">${controls}</div>`:''}</div>`);
   const area=$('#garea'),c=$('#gc'),r=area.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
   c.width=r.width*dpr;c.height=r.height*dpr;c.style.width=r.width+'px';c.style.height=r.height+'px';
   const x=c.getContext('2d');x.scale(dpr,dpr);
@@ -3486,10 +3678,109 @@ function dashArcade(){
    <div class="dcard">${GAMES.map(g=>`<div class="trow"><span style="font-size:30px">${g.icon()}</span><b style="flex:1">${g.name()}</b><span>${(p.hi||{})[g.id]!=null?'🏅 '+p.hi[g.id]:(gameOpen(p,g)?'Not played yet':'🔒')}</span></div>`).join('')}</div>`;
 }
 
+/* ============ SPORTS GAMES ============ */
+GAMES.push(
+ {id:'penalty',name:()=>'Penalty Shootout',icon:()=>'⚽',desc:()=>'Take 5 penalties against Robo-Keeper, then dive to save its shots. Best of 5, then sudden death!',need:{}},
+ {id:'keepy',name:()=>'Keepy-Uppy',icon:()=>'🦶',desc:()=>'Tap the ball to keep it in the air. How many touches can you do?',need:{stars:20}},
+ {id:'hoops',name:()=>'Hoop Shot',icon:()=>'🏀',desc:()=>'Time your shot to sink as many baskets as you can in 45 seconds.',need:{stars:30}}
+);
+const _playGame2=playGame;
+playGame=function(id){
+  const fn={penalty:gPenalty,keepy:gKeepy,hoops:gHoops}[id];
+  if(!fn)return _playGame2(id);
+  const p=cur();if((p.tokens||0)<1){miniToast('Out of 🪙 — finish a level to earn more!');return}
+  p.tokens--;save();fn();
+};
+
+/* ---- Penalty Shootout ---- */
+function gPenalty(){
+  const g=shell('penalty','⚽ Penalty Shootout','<div id="pturn" class="pturn"></div>'),p=cur();$('.gctl').classList.add('pen');
+  const W=g.W,H=g.H,gw=Math.min(W*.8,520),gh=gw*.38,gx=(W-gw)/2,gy=H*.12,spotX=W/2,spotY=H*.82;
+  let me=0,robo=0,round=0,phase='shoot',ball=null,keeper={x:W/2,dive:0,t:0},msg='',msgT=0,busy=false,kickN=0;
+  const zoneOf=x=>x<gx+gw/3?0:x<gx+2*gw/3?1:2,zoneX=z=>gx+gw*(z*2+1)/6;
+  const info=()=>{if(g.dead||GAME!==g)return;const txt=`${avMini(p,30)} <b>${me}</b> – <b>${robo}</b> ${avMini(ROBO,30)} · ${phase==='shoot'?'⚽ Tap the goal to shoot!':'🧤 Dive: tap ◀ ● ▶'}${Math.floor(kickN/2)>=5?' · Sudden death!':''}`;
+    const c=$('.gctl');if(c)c.innerHTML=`<div class="pturn">${txt}</div>`+(phase==='save'&&!keeper.dive?`<button onpointerdown="GAME.dive(0)">◀</button><button onpointerdown="GAME.dive(1)">●</button><button onpointerdown="GAME.dive(2)">▶</button>`:'')};
+  const done=()=>{const mk=Math.ceil(kickN/2),rk=Math.floor(kickN/2);
+    if(mk<=5&&rk<=5&&(me+(5-mk)<robo||robo+(5-rk)<me))return true;
+    return kickN%2===0&&mk>=5&&me!==robo};
+  const finish=()=>{setScore(me*10+Math.max(0,me-robo)*20);if(me>robo){sWin();confetti(100);gameOver(`You win ${me}–${robo}! 🏆`)}else gameOver(`Robo-Keeper wins ${robo}–${me}`)};
+  const next=()=>{if(g.dead||GAME!==g)return;kickN++;if(done())return setTimeout(finish,500);phase=kickN%2===0?'shoot':'save';keeper={x:W/2,dive:0,t:0};ball=null;busy=false;info();
+    if(phase==='save')setTimeout(()=>{if(!g.dead&&GAME===g)roboShoot()},900)};
+  const show=(m)=>{msg=m;msgT=performance.now()};
+  g.c.addEventListener('pointerdown',e=>{if(phase!=='shoot'||busy||g.over)return;const r=g.c.getBoundingClientRect(),tx=e.clientX-r.left,ty=e.clientY-r.top;if(ty>spotY-40)return;
+    busy=true;info();const kz=Math.random()<.62?ri(0,2):zoneOf(tx);keeper.dive=kz;keeper.t=performance.now();
+    const onTarget=tx>gx+6&&tx<gx+gw-6&&ty>gy+6&&ty<gy+gh;const post=onTarget&&(tx<gx+gw*.06||tx>gx+gw*.94)&&Math.random()<.35;
+    ball={x0:spotX,y0:spotY,x1:tx,y1:ty,t:performance.now(),dur:520,res:null};
+    setTimeout(()=>{let res;if(!onTarget)res='Wide! 😬';else if(post)res='Off the post! 😱';else if(zoneOf(tx)===kz&&ty>gy+gh*.12)res='Saved! 🧤';else{res='GOAL! ⚽';me++;beep(880,.2,'triangle');confetti(30)}
+      if(res!=='GOAL! ⚽')sBad();show(res);info();setTimeout(next,1200)},560)});
+  const roboShoot=()=>{if(g.over)return;const z=ri(0,2),tx=zoneX(z)+ri(-20,20),ty=gy+gh*(.25+Math.random()*.6),miss=Math.random()<.12;
+    ball={x0:spotX,y0:gy-40>0?spotY:spotY,x1:miss?(z===0?gx-30:gx+gw+30):tx,y1:ty,t:performance.now()+800,dur:600,res:null,robo:true,z,miss};g.window=performance.now()+800;
+    setTimeout(()=>{busy=true;info();let res;if(miss)res='Robo missed! 🙌';else if(keeper.dive===z+1){res='SAVED! 🧤🎉';beep(880,.2,'triangle');confetti(30)}else{res='Robo scores 🤖';robo++;sBad()}
+      show(res);info();setTimeout(next,1200)},1450)};
+  g.dive=z=>{if(phase!=='save'||keeper.dive)return;keeper.dive=z+1;keeper.t=performance.now();info()};
+  info();
+  const draw=t=>{if(g.dead)return;const x=g.x;x.clearRect(0,0,W,H);
+    x.fillStyle='#16a34a';x.fillRect(0,0,W,H);for(let i=0;i<8;i++){x.fillStyle=i%2?'#15803d':'#16a34a';x.fillRect(0,i*H/8,W,H/8)}
+    x.strokeStyle='#fff';x.lineWidth=3;x.strokeRect(gx-gw*.25,gy+gh,gw*1.5,H*.3);x.beginPath();x.arc(spotX,spotY,4,0,7);x.fillStyle='#fff';x.fill();
+    x.fillStyle='rgba(255,255,255,.18)';x.fillRect(gx,gy,gw,gh);x.strokeStyle='rgba(255,255,255,.5)';x.lineWidth=1;for(let i=0;i<=gw;i+=14){x.beginPath();x.moveTo(gx+i,gy);x.lineTo(gx+i,gy+gh);x.stroke()}for(let j=0;j<=gh;j+=14){x.beginPath();x.moveTo(gx,gy+j);x.lineTo(gx+gw,gy+j);x.stroke()}
+    x.strokeStyle='#fff';x.lineWidth=7;x.beginPath();x.moveTo(gx,gy+gh);x.lineTo(gx,gy);x.lineTo(gx+gw,gy);x.lineTo(gx+gw,gy+gh);x.stroke();
+    // keeper
+    const dz=phase==='shoot'?keeper.dive:keeper.dive?keeper.dive-1:1,prog=keeper.t?Math.min(1,(t-keeper.t)/300):0,kx=W/2+(zoneX(dz)-W/2)*prog,ky=gy+gh*.62;
+    const kp=phase==='shoot'?ROBO:p;x.save();x.translate(kx,ky);x.rotate((dz-1)*prog*.9);x.fillStyle=phase==='shoot'?'#f59e0b':'#3b82f6';x.fillRect(-gh*.12,-gh*.18,gh*.24,gh*.42);
+    x.fillStyle='#fde68a';x.beginPath();x.arc(-gh*.2,-gh*.12,gh*.07,0,7);x.arc(gh*.2,-gh*.12,gh*.07,0,7);x.fill();x.restore();
+    emo(x,phase==='shoot'?'🤖':'🧤',kx,ky-gh*.3,gh*.3);
+    // shooter
+    if(phase==='save')emo(x,'🤖',spotX+30,spotY+10,40);
+    // ball
+    let bx=spotX,by=spotY,bs=34;if(ball){const k=clamp((t-ball.t)/ball.dur,0,1),e=1-(1-k)*(1-k);bx=ball.x0+(ball.x1-ball.x0)*e;by=ball.y0+(ball.y1-ball.y0)*e-Math.sin(k*Math.PI)*30;bs=34-14*e}
+    emo(x,'⚽',bx,by,bs);
+    if(msg&&t-msgT<1100){x.fillStyle='rgba(0,0,0,.45)';x.fillRect(0,H*.45-34,W,68);x.fillStyle='#fff';x.font='700 34px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(msg,W/2,H*.45)}
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ---- Keepy-Uppy ---- */
+function gKeepy(){
+  const g=shell('keepy','🦶 Keepy-Uppy','<div class="pturn">Tap the ball! Tap its side to send it sideways.</div>');
+  const R=Math.min(g.W,g.H)*.07;let b={x:g.W/2,y:g.H*.3,vx:0,vy:0},started=false,last=0;
+  g.c.addEventListener('pointerdown',e=>{if(g.over)return;const r=g.c.getBoundingClientRect(),tx=e.clientX-r.left,ty=e.clientY-r.top;
+    if(Math.hypot(tx-b.x,ty-b.y)<R*1.8){started=true;b.vy=-Math.min(16,10+g.score*.08);b.vx=(b.x-tx)/R*4+(Math.random()-.5);setScore(g.score+1);beep(500+Math.min(600,g.score*10),.05)}});
+  const draw=t=>{if(g.dead||g.over)return;const dt=Math.min(2,(t-(last||t))/16.7);last=t;
+    if(started){b.vy+=0.45*dt*(1+g.score*.01);b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.x<R){b.x=R;b.vx*=-.8}if(b.x>g.W-R){b.x=g.W-R;b.vx*=-.8}if(b.y>g.H-R){return gameOver(`${g.score} touches! ⚽`)}}
+    const x=g.x;x.clearRect(0,0,g.W,g.H);x.fillStyle='#16a34a';x.fillRect(0,g.H-30,g.W,30);
+    x.fillStyle='rgba(0,0,0,.2)';x.beginPath();x.ellipse(b.x,g.H-28,R*(1-Math.min(.7,(g.H-b.y)/g.H)),6,0,0,7);x.fill();
+    emo(x,'⚽',b.x,b.y,R*2);if(!started){x.fillStyle='#fff';x.font='600 22px Fredoka, sans-serif';x.textAlign='center';x.fillText('Tap the ball to start!',g.W/2,g.H*.5)}
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
+/* ---- Hoop Shot ---- */
+function gHoops(){
+  const g=shell('hoops','🏀 Hoop Shot','<button style="flex:1" onpointerdown="GAME.shoot()">🏀 SHOOT</button>');
+  const W=g.W,H=g.H;let left=45,pw=0,dir=1,ball=null,hoopX=W/2,hv=0,msg='',msgT=0,last=0,made=0;
+  g.iv=setInterval(()=>{left--;if(left<=0)gameOver(`${made} baskets! 🏀`)},1000);
+  const sweet=()=>({lo:.48-Math.min(.12,made*.01),hi:.62-Math.min(.06,made*.005)});
+  g.shoot=()=>{if(ball||g.over)return;const s=sweet(),ok=pw>=s.lo&&pw<=s.hi,short=pw<s.lo;ball={t:performance.now(),ok,short,x0:W/2,tx:hoopX};beep(400,.05);
+    setTimeout(()=>{if(g.dead||GAME!==g)return;if(ok){made++;setScore(g.score+(hv?3:2));sGood();msg=pick(['Swish! 🔥','Nothing but net!','Score! 🏀']);if(made>=3)hv=(hv||1.6)*(Math.random()<.5?-1:1)}else{sBad();msg=short?'Too short!':'Too long!'}msgT=performance.now();ball=null},900)};
+  g.c.addEventListener('pointerdown',()=>g.shoot());
+  const draw=t=>{if(g.dead||g.over)return;const dt=Math.min(2,(t-(last||t))/16.7);last=t;
+    if(!ball){pw+=dir*0.018*dt*(1+made*.03);if(pw>1){pw=1;dir=-1}if(pw<0){pw=0;dir=1}}
+    if(hv){hoopX+=hv*dt;if(hoopX<W*.25||hoopX>W*.75)hv*=-1}
+    const x=g.x,hy=H*.22;x.clearRect(0,0,W,H);x.fillStyle='#b45309';x.fillRect(0,H*.75,W,H*.25);
+    x.fillStyle='#fff';x.fillRect(hoopX-70,hy-90,140,90);x.strokeStyle='#ef4444';x.lineWidth=4;x.strokeRect(hoopX-28,hy-50,56,40);
+    x.strokeStyle='#f97316';x.lineWidth=6;x.beginPath();x.ellipse(hoopX,hy,34,8,0,0,7);x.stroke();
+    x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=2;for(let i=-3;i<=3;i++){x.beginPath();x.moveTo(hoopX+i*10,hy+4);x.lineTo(hoopX+i*7,hy+40);x.stroke()}
+    let bx=W/2,by=H*.7,bs=56;if(ball){const k=Math.min(1,(t-ball.t)/900),ty=ball.ok?hy+10:ball.short?hy+70:hy-60,tx=ball.ok?ball.tx:ball.tx+(ball.short?0:60);bx=ball.x0+(tx-ball.x0)*k;by=H*.7+(ty-H*.7)*k-Math.sin(k*Math.PI)*H*.3;bs=56-22*k}
+    emo(x,'🏀',bx,by,bs);
+    const mx=W*.15,mw=W*.7,my=H*.86,s=sweet();x.fillStyle='rgba(0,0,0,.35)';x.fillRect(mx,my,mw,18);x.fillStyle='#22c55e';x.fillRect(mx+mw*s.lo,my,mw*(s.hi-s.lo),18);x.fillStyle='#facc15';x.fillRect(mx+mw*pw-3,my-6,6,30);
+    x.fillStyle='#fff';x.font='bold 18px Fredoka, sans-serif';x.textAlign='left';x.fillText('⏱ '+left+'s',12,24);x.textAlign='center';x.fillText('Shoot when the yellow line is in the green!',W/2,my+44);
+    if(msg&&t-msgT<900){x.font='700 32px Fredoka, sans-serif';x.fillText(msg,W/2,H*.48)}
+    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+}
+
 /* ============ VERSION ============ */
-const APP_VERSION='2.3';
+const APP_VERSION='2.4';
 const APP_DATE='9 Nov 2026';
 const CHANGES=[
+ ['2.4','New History stage (Time Tunnel) and sports games: Penalty Shootout, Keepy-Uppy, Hoop Shot'],
  ['2.3','Festival themes (Deepavali, Christmas, Hari Raya, National Day, Easter…), spelling builder, 4 new arcade games (2048, Bubble Pop, Gem Swap, Sudoku), sticky stage header, new summary dashboard'],
  ['2.2','Speaking bonus works without Siri/Dictation (record & compare), with a fix-it checklist'],
  ['2.1','Many more questions in every subject (no repeats for a long while), new maths types, avatar upgrade: outfits, pets, backgrounds, magic, new animals'],
