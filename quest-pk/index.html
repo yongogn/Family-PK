@@ -406,6 +406,54 @@ body{color:var(--ink)}
 @media (max-width:480px){.slot{width:34px;height:46px;font-size:22px}.tiles .tile{width:42px;height:48px;font-size:22px}}
 
 .gshell{overflow:hidden}.garea{min-height:0;overflow:hidden}.gctl.pen{flex-wrap:wrap;height:150px;align-content:flex-start;box-sizing:border-box}.gctl.pen .pturn{flex:1 1 100%;min-height:44px}.gctl.pen button{flex:1 1 0}
+
+.opts.pic{grid-template-columns:1fr 1fr}.opts.pic .opt{font-size:68px;padding:18px 6px;line-height:1.1}
+.opts.one .opt{font-size:22px}
+.yrseg{flex-wrap:wrap}.yrseg button{flex:1 0 auto;min-width:54px}
+
+/* ===== theme skins ===== */
+body{background-attachment:fixed}
+.btn{background:var(--kid,#ff8a3d);box-shadow:0 5px 0 var(--kidsh,#c9621f)}.btn:active{box-shadow:0 2px 0 var(--kidsh,#c9621f)}
+.btn.purple{background:var(--adult,#7b61ff);box-shadow:0 5px 0 var(--adultsh,#4f37c9)}
+.card,.qcard,.dcard{background:var(--strip) top left/100% 9px no-repeat,var(--card,#fff)}
+.qcard{padding-top:34px}
+.opt{background:var(--opt,#f1f2ff);box-shadow:0 5px 0 var(--optsh,#d5d8f5)}
+.stickyhead{background:var(--head);padding-top:0}
+.garland{height:34px;margin:0 -16px 4px;background:var(--garland) repeat-x;background-size:auto 34px;pointer-events:none}
+.hero .garland.hero-g{height:40px;background-size:auto 40px;margin:-16px -16px 6px}
+.hero{overflow:visible}
+.heroart{position:absolute;top:40px;width:86px;height:86px;opacity:.95;pointer-events:none;filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}
+.heroart.l{left:0;transform:rotate(-8deg)}.heroart.r{right:0;transform:rotate(8deg)}
+.heroart svg,.deco.art svg{width:100%;height:100%;display:block}
+.deco.art{filter:drop-shadow(0 5px 6px rgba(0,0,0,.18));opacity:1}
+.mapwrap{border-color:var(--mapb,#fff)}
+.node .dot{border-color:var(--ring)}
+.hero .logo span{color:var(--gold)}
+.chip.tok{background:var(--gold);color:#3b2600}
+.stage.on{box-shadow:0 5px 0 var(--kidsh)}
+.qcard .qlabel{color:var(--kid)}
+/* node styles */
+body[data-node=bauble] .node:not(.boss) .dot::before{content:'';position:absolute;top:-13px;left:50%;width:22px;height:12px;border-radius:4px 4px 2px 2px;background:linear-gradient(#e2e8f0,#94a3b8);transform:translateX(-50%)}
+body[data-node=lantern] .node:not(.boss) .dot{border-radius:46% 46% 46% 46%/40% 40% 60% 60%;background:radial-gradient(circle at 50% 40%,#fff 0 45%,color-mix(in srgb,var(--ring) 22%,#fff) 70%)}
+body[data-node=lantern] .node:not(.boss) .dot::before{content:'';position:absolute;top:-10px;left:50%;width:34px;height:9px;border-radius:3px;background:#facc15;transform:translateX(-50%)}
+body[data-node=lantern] .node:not(.boss) .dot::after{content:'';position:absolute;bottom:-16px;left:50%;width:4px;height:14px;background:#facc15;transform:translateX(-50%);box-shadow:-5px 2px 0 #facc15,5px 2px 0 #facc15}
+body[data-node=glow] .node .dot{box-shadow:0 0 0 4px rgba(251,191,36,.35),0 0 24px rgba(251,191,36,.75),0 7px 0 rgba(0,0,0,.15)}
+body[data-node=pumpkin] .node:not(.boss) .dot{background:radial-gradient(circle at 50% 45%,#fff7ed 0 55%,#fed7aa 80%)}
+body[data-node=pumpkin] .node:not(.boss) .dot::before{content:'';position:absolute;top:-12px;left:50%;width:10px;height:14px;border-radius:3px;background:#15803d;transform:translateX(-50%) rotate(12deg)}
+/* dark maps */
+body[data-skin=spooky] .mapwrap,body[data-skin=midautumn] .mapwrap{background:#1e1b4b}
+body[data-skin=spooky] .chhead,body[data-skin=midautumn] .chhead{background:#fffbeb}
+/* fx */
+#fx i.sn{position:absolute;top:-12px;border-radius:50%;background:#fff;aspect-ratio:1;filter:blur(.5px);animation:snowfall linear infinite}
+@keyframes snowfall{0%{transform:translate(0,-20px)}50%{transform:translate(18px,52vh)}100%{transform:translate(-12px,106vh)}}
+#fx i.tw{position:absolute;width:14px;height:14px;background:radial-gradient(circle,#fff 0 18%,#fde047 30%,transparent 70%);border-radius:50%;animation:twinkle 2.6s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.95}}
+#fx i.pt{position:absolute;top:-20px;width:10px;height:14px;border-radius:70% 10% 70% 10%;opacity:.75;animation:drift linear infinite}
+#fx span.rs{position:absolute;bottom:-60px;top:auto;animation:rise linear infinite;opacity:.8;filter:drop-shadow(0 0 10px rgba(251,191,36,.8))}
+@keyframes rise{0%{transform:translateY(0)}100%{transform:translateY(-118vh) translateX(26px)}}
+@media (max-width:600px){.heroart{width:60px;height:60px;top:46px}}
+
+.opts.grp .opt{font-size:44px;letter-spacing:2px;padding:12px 6px}
 </style>
 </head>
 <body>
@@ -1791,7 +1839,7 @@ function readQ(q,withOpts=true,sid){
   if(q.passage)parts.push({t:q.passage});
   parts.push({t:q.q});
   if(q.say)parts.push({t:q.say.t,l:q.say.l});
-  if(withOpts&&!listen){parts.push({t:'Is it'});q.opts.forEach((o,i)=>{if(i===q.opts.length-1)parts.push({t:'or'});parts.push({t:o,l:/[\u3400-\u9fff]/.test(o)?'zh':'en'})})}
+  if(withOpts&&!listen){parts.push({t:'Is it'});(q.optSay||q.opts).forEach((o,i)=>{if(i===q.opts.length-1)parts.push({t:'or'});parts.push({t:o,l:/[\u3400-\u9fff]/.test(o)?'zh':'en'})})}
   speakParts(parts);
 }
 
@@ -2012,11 +2060,10 @@ function map(){
   const H=y+TOP;
   const Y=v=>H-v;
   let d=`M${pos[0].x} ${Y(pos[0].y)}`;for(let i=1;i<pos.length;i++){const p0=pos[i-1],p1=pos[i],my=(Y(p0.y)+Y(p1.y))/2;d+=` C${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${Y(p1.y)}`}
-  const extra=SEASON.mapExtra||[];
-  const decos=Array.from({length:Math.round(H/150)},(_,i)=>{const side=i%2?84+Math.random()*8:4+Math.random()*8;return `<div class="deco" style="left:${side}%;top:${(i*150+40)}px">${pick(i%3===0&&extra.length?extra:['🌳','🌲','🌿','🪨','🌼','☁️','✨'])}</div>`}).join('');
-  const bands=st.chapters.map((ch,c)=>{const top=c===NCH-1?0:Y(heads[c+1].y)+20,bot=Y(heads[c].y)+40;return `<div class="band" style="top:${top}px;height:${bot-top}px;background:linear-gradient(180deg,${shade(ch.tint,-25)},${ch.tint})"></div>`}).join('');
-  const startBand=`<div class="band" style="top:${Y(heads[0].y)+40}px;bottom:0;background:linear-gradient(180deg,${st.chapters[0].tint},#fff7d6)"></div>`;
-  app().innerHTML=`<div class="stickyhead">
+  const decos=sceneDecos(H);
+  const bands=st.chapters.map((ch,c)=>{const top=c===NCH-1?0:Y(heads[c+1].y)+20,bot=Y(heads[c].y)+40;return `<div class="band" style="top:${top}px;height:${bot-top}px;background:${bandBg(ch.tint,c)}"></div>`}).join('');
+  const startBand=`<div class="band" style="top:${Y(heads[0].y)+40}px;bottom:0;background:${bandBg(st.chapters[0].tint,0)}"></div>`;
+  app().innerHTML=`<div class="stickyhead"><div class="garland"></div>
    <div class="top">
      <button class="back" onclick="home()">‹</button>${avatar(p,52,true)}
      <div style="flex:1;min-width:0"><h1 style="font-size:20px">${esc(p.name)}</h1><div class="xpbar sm"><i style="width:${lv.pct}%"></i></div><div class="small" style="opacity:.85">Lv ${lv.n} ${lv.title}</div></div>
@@ -2024,11 +2071,11 @@ function map(){
    <div class="stages">${STAGES.map(s=>`<button class="stage ${s.id===sid?'on':''}" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}<span class="small"> ${starsIn(p,s.id)}⭐</span></button>`).join('')}
      <button class="stage arcade ${arcadeOpen(p)?'':'lock'}" onclick="STAGE='arcade';arcade()">🕹️ Arcade${arcadeOpen(p)?'':' 🔒'}</button></div></div>
    <div class="row wrap" style="margin-bottom:10px">
-     <span class="chip" style="background:${a!=null&&a>p.age?'#22c55e':'rgba(255,255,255,.18)'}">🧠 ${st.age} ${a??'?'}</span>
+     <span class="chip" style="background:${better(p,a)?'#22c55e':'rgba(255,255,255,.18)'}">🧠 ${stAge(p,st)} ${a??'?'}</span>
      <span class="chip">⭐ ${starsIn(p,sid)}/${STARS_PER_STAGE}</span><span class="chip">${SEASON.icon} ${SEASON.name}</span></div>
    <div class="mapwrap"><div class="map" style="height:${H}px">${startBand}${bands}
-     <svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="#fffbeb" stroke-width="16" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".9"/>
-     <path d="${d}" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" vector-effect="non-scaling-stroke" class="dash"/></svg>
+     <svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="22" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${d}" fill="none" stroke="${SKIN.road[0]}" stroke-width="16" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".95"/>
+     <path d="${d}" fill="none" stroke="${SKIN.road[1]}" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" vector-effect="non-scaling-stroke" class="dash"/></svg>
      ${decos}
      ${heads.map(h=>`<div class="chhead" style="top:${Y(h.y)-24}px"><span>Chapter ${h.c+1}</span>${st.chapters[h.c].name}${bossWon(p,sid,h.c)?' 🏆':''}</div>`).join('')}
      ${nodes.map((n,i)=>{const ok=unlockedN(p,sid,n),done=doneN(p,sid,n),nm=nodeName(st,n),stv=n.t==='lvl'?sub(p,sid).stars[n.c*NLV+n.l]:0;
@@ -2065,7 +2112,7 @@ function migrate(p){
   if(p.stats.padQs==null)p.stats.padQs=0;
   if(p.padOn===undefined)p.padOn=null;
   if(p.readAloud===undefined)p.readAloud=null;
-  if(!p.year)p.year=clamp(Math.round((p.age||8)-5),1,6);
+  if(p.year==null)p.year=clamp(Math.round((p.age||8)-5),1,6);
   STAGES.forEach(s=>{const st=p.subj[s.id].stars;while(st.length<15)st.push(0)});
   p.trophies.forEach(t=>{if(t.ch==null)t.ch=0});
   if(!p.av)p.av=defaultAv(p);
@@ -2074,15 +2121,16 @@ function migrate(p){
   if(!p.hi)p.hi={};
 }
 const sub=(p,sid)=>p.subj[sid];
-const ageOf=(p,sid)=>sub(p,sid).ability==null?null:Math.round((sub(p,sid).ability+5)*10)/10;
+const ageOf=(p,sid)=>{const a=sub(p,sid).ability;if(a==null)return null;if((p.year??3)>=8)return Math.round(clamp((p.age||35)+(7.8-a)*9,16,99));return Math.round((a+5)*10)/10};
 function learningAge(p){const a=STAGES.map(s=>ageOf(p,s.id)).filter(x=>x!=null);return a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length*10)/10:null}
 const starsIn=(p,sid)=>sub(p,sid).stars.reduce((a,b)=>a+b,0);
 const totalStars=p=>STAGES.reduce((a,s)=>a+starsIn(p,s.id),0);
-const padDefault=p=>p.padOn!=null?p.padOn:(p.age<=8);
+const padDefault=p=>p.padOn!=null?p.padOn:(p.age<=8&&p.year!==0);
 const readDefault=p=>p.readAloud!=null?p.readAloud:(p.age<=8);
 /* children never get secondary (Year 7) questions, and never more than 2 years above their school year */
-const kidMax=p=>Math.min(6.4,(p.year||2)+2.4);
-const kidStart=p=>Math.max(1,(p.year||2)-1);
+const kidMax=p=>p.year===0?1.4:(p.year??2)>=8?9.4:Math.min(6.4,(p.year??2)+2.4);
+const kidStart=p=>p.year===0?0:(p.year??2)>=8?6.5:Math.max(1,(p.year??2)-1);
+const kidMin=p=>p.year===0?-0.4:(p.year??2)>=8?5:0.5;
 
 const BADGES=[
  {id:'test',e:'🧠',n:'Brain Scan',d:'Finish any stage test'},
@@ -2450,6 +2498,411 @@ STAGES.push({id:'hist',icon:'⏳',name:'Time Tunnel',subj:'History',age:'History
 S.profiles.forEach(p=>{if(p.subj&&!p.subj.hist)p.subj.hist=emptySubj()});
 BADGES.find(b=>b.id==='allround').d='Take the test in all 6 stages';
 BADGES.find(b=>b.id==='grand').d='Beat the Boss in all 6 stages';
+/* ============ AGE TIERS: Little Explorers (pre-school, level 0) and Grown-ups (levels 8–9) ============ */
+/* ---- picture words for phonics (word|emoji) ---- */
+const PW=`apple|🍎
+ant|🐜
+ball|⚽
+bear|🐻
+banana|🍌
+bee|🐝
+cat|🐱
+car|🚗
+cake|🎂
+dog|🐶
+duck|🦆
+egg|🥚
+elephant|🐘
+fish|🐟
+frog|🐸
+goat|🐐
+grapes|🍇
+hat|🎩
+horse|🐴
+house|🏠
+ice cream|🍦
+juice|🧃
+kite|🪁
+key|🔑
+lion|🦁
+lemon|🍋
+moon|🌙
+monkey|🐵
+nose|👃
+orange|🍊
+octopus|🐙
+pig|🐷
+pizza|🍕
+queen|👑
+rabbit|🐰
+rainbow|🌈
+sun|☀️
+snake|🐍
+tree|🌳
+tiger|🐯
+umbrella|☂️
+van|🚐
+violin|🎻
+whale|🐳
+watch|⌚
+yo-yo|🪀
+zebra|🦓`.split('\n').map(l=>{const [w,e]=l.split('|');return{w,e,l:w[0]}});
+const RHYMES=[['cat','🐱','hat','🎩'],['dog','🐶','frog','🐸'],['bee','🐝','tree','🌳'],['star','⭐','car','🚗'],['moon','🌙','spoon','🥄'],['cake','🎂','snake','🐍'],['bear','🐻','pear','🍐'],['mouse','🐭','house','🏠'],['goat','🐐','boat','⛵'],['fish','🐟','dish','🍽️'],['bed','🛏️','bread','🍞'],['clock','🕰️','sock','🧦'],['king','🤴','ring','💍'],['bug','🐛','mug','☕']];
+const L_SHAPES=[['circle','⚪'],['triangle','🔺'],['square','🟥'],['star','⭐'],['heart','❤️'],['diamond','🔷']];
+const SIZE_SETS=[['🐘','elephant','🐜','ant','🐶','dog','🐱','cat'],['🐳','whale','🦐','shrimp','🐬','dolphin','🐢','turtle'],['🚌','bus','🛴','scooter','🚗','car','🏍️','motorbike'],['🏠','house','🔑','key','🚗','car','🪑','chair']];
+const ZH_PIC=`猫|māo|🐱|cat
+狗|gǒu|🐶|dog
+鱼|yú|🐟|fish
+鸟|niǎo|🐦|bird
+马|mǎ|🐴|horse
+牛|niú|🐮|cow
+猪|zhū|🐷|pig
+苹果|píngguǒ|🍎|apple
+香蕉|xiāngjiāo|🍌|banana
+太阳|tàiyáng|☀️|sun
+月亮|yuèliang|🌙|moon
+花|huā|🌸|flower
+树|shù|🌳|tree
+车|chē|🚗|car
+书|shū|📖|book
+水|shuǐ|💧|water
+火|huǒ|🔥|fire
+大象|dàxiàng|🐘|elephant
+熊猫|xióngmāo|🐼|panda
+手|shǒu|✋|hand
+眼睛|yǎnjing|👀|eyes
+耳朵|ěrduo|👂|ears
+蛋糕|dàngāo|🎂|cake
+雨|yǔ|🌧️|rain`.split('\n').map(l=>{const [h,py,e,m]=l.split('|');return{h,py,e,m}});
+const ZH_NUM=['一','二','三','四','五','六','七','八','九','十'];
+/* ---- pre-school picture bank: stage|question|vis|answer|wrong|wrong|wrong|names of answer,w1,w2,w3|explanation ---- */
+const LITTLE=`geo|Where does a fish live?||🌊|🌳|🏠|⛰️|the sea,a tree,a house,a mountain|Fish live in water — in the sea, rivers and ponds.
+geo|Where does a bird make its home?||🪺|🌊|🚗|🧊|a nest,the sea,a car,ice|Birds build nests to keep their eggs safe.
+geo|Which one is a mountain?||⛰️|🏖️|🌊|🏠|a mountain,a beach,the sea,a house|A mountain is a very, very big hill.
+geo|Which picture shows a rainy day?||🌧️|☀️|🌈|⛄|rain,sun,a rainbow,a snowman|Rain falls from grey clouds. Time for an umbrella!
+geo|Which picture shows a snowy day?||⛄|☀️|🌧️|🌴|a snowman,sun,rain,a palm tree|Snow is frozen rain — cold enough to build a snowman!
+geo|Which one goes on the water?||⛵|🚗|🚲|✈️|a boat,a car,a bike,a plane|Boats float on water.
+geo|Which one flies in the sky?||✈️|🚂|🚌|🚜|a plane,a train,a bus,a tractor|Planes fly high up in the sky.
+geo|When do we see the moon and stars?||🌙|☀️|🌈|🌅|night time,sunny day,a rainbow,sunrise|We see the moon and stars at night when it is dark.
+geo|What colour is the sky on a sunny day?||🔵|🟢|🟤|🟣|blue,green,brown,purple|On a sunny day the sky is blue.
+geo|Which animal lives where it is very cold?||🐧|🐪|🦁|🐒|a penguin,a camel,a lion,a monkey|Penguins live near the icy South Pole.
+geo|Which animal lives in the hot desert?||🐪|🐧|🐻‍❄️|🐳|a camel,a penguin,a polar bear,a whale|Camels live in hot, dry deserts and can go a long time without water.
+geo|Where do we buy food?||🛒|🏫|🏥|🚒|a shop,a school,a hospital,a fire engine|We buy food at a shop or supermarket.
+sci|Which animal says "moo"?||🐮|🐶|🐱|🐑|a cow,a dog,a cat,a sheep|Cows say "moo"!
+sci|Which animal says "woof"?||🐶|🐮|🐷|🐔|a dog,a cow,a pig,a hen|Dogs say "woof"!
+sci|Which animal says "quack"?||🦆|🐸|🐝|🐍|a duck,a frog,a bee,a snake|Ducks say "quack"!
+sci|Which animal says "oink"?||🐷|🐴|🐑|🐱|a pig,a horse,a sheep,a cat|Pigs say "oink"!
+sci|What do we see with?||👀|👂|👃|✋|eyes,ears,nose,hand|We see with our eyes.
+sci|What do we hear with?||👂|👀|👄|🦶|ears,eyes,mouth,foot|We hear with our ears.
+sci|What do we smell with?||👃|👂|✋|👀|nose,ears,hand,eyes|We smell with our nose.
+sci|Which one is HOT?||🔥|🧊|⛄|🍦|fire,ice,a snowman,ice cream|Fire is very hot — never touch it!
+sci|Which one is COLD?||🧊|🔥|☀️|☕|ice,fire,the sun,hot tea|Ice is frozen water, so it is cold.
+sci|What does a plant need to grow?||💧|🍬|🧸|📺|water,sweets,a teddy,TV|Plants need water and sunshine to grow.
+sci|Which one is a baby frog?||🐸|🐛|🐣|🐶|a frog,a caterpillar,a chick,a puppy|A frog starts life as a tadpole and grows into a frog.
+sci|What comes out of an egg?||🐣|🐶|🐱|🐴|a chick,a puppy,a kitten,a horse|Baby chicks hatch out of eggs.
+sci|Which food is healthy?||🥕|🍭|🍩|🍟|a carrot,a lolly,a doughnut,chips|Carrots are vegetables — good for your body!
+hist|Which one is from long, long ago?||🦕|🚗|📱|🛴|a dinosaur,a car,a phone,a scooter|Dinosaurs lived millions of years ago — long before people!
+hist|Which light did people use long ago?||🕯️|💡|🔦|📱|a candle,a light bulb,a torch,a phone|Long ago there was no electricity, so people used candles.
+hist|How did people travel before cars?||🐴|🚗|✈️|🚀|a horse,a car,a plane,a rocket|Before cars, people rode horses or used horse-drawn carts.
+hist|Which one is NEW (made not long ago)?||📱|📜|🏺|🕯️|a phone,a scroll,an old pot,a candle|Smartphones were invented not long ago.
+hist|Who is the OLDEST?||👴|👶|🧒|👦|grandpa,a baby,a child,a boy|Grandpa is the oldest — he has lived the longest.
+hist|Who is the YOUNGEST?||👶|👴|👩|🧑|a baby,grandpa,mummy,a grown-up|Babies are the youngest — they have only just been born.
+hist|Where did kings and queens live long ago?||🏰|🏠|🏢|⛺|a castle,a house,flats,a tent|Kings and queens lived in big castles.
+hist|What did people write on long ago?||📜|💻|📱|📺|a scroll,a computer,a phone,a TV|Long ago people wrote on scrolls made of paper or animal skin.
+hist|Which one goes up into space?||🚀|🐴|⛵|🚲|a rocket,a horse,a boat,a bike|Rockets carry astronauts into space.
+life|The man is red. What do you do?|🚦|🛑|🏃|💃|😴|stop and wait,run,dance,sleep|Red means stop! Wait for the green man, then look and listen.
+life|What do we do before we eat?||🧼|📺|🛏️|⚽|wash hands,watch TV,go to bed,play ball|Wash your hands with soap to get rid of germs.
+life|What do we use to brush our teeth?||🪥|🍴|🖍️|🔨|a toothbrush,a fork,a crayon,a hammer|Brush your teeth morning and night!
+life|The stove is hot. What should you do?|🔥|🙅|✋|👅|🤾|stay away,touch it,lick it,play near it|Stay away from hot things and tell a grown-up.
+life|If you get lost in a shop, who can you ask for help?||👮|🐕|🤡|🚗|a police officer,a dog,a clown,a car|Ask a police officer or a shop worker — they will help you find your grown-up.
+life|What do we wear in a car?||🪢|👑|🧤|🎩|a seat belt,a crown,gloves,a hat|Always wear your seat belt in the car.
+life|It is raining. What do you take?||☂️|🕶️|🩳|🪁|an umbrella,sunglasses,shorts,a kite|An umbrella keeps you dry.
+life|It is sunny and hot. What should you wear?||🧢|🧣|🧤|🥾|a cap,a scarf,gloves,boots|A cap or hat keeps the sun off your head.
+life|Your friend is sad. What can you do?||🤗|😝|🏃|🙈|give a hug,laugh,run away,hide|Being kind helps — ask if they are okay or give a hug.
+life|What do you say when someone gives you something?||🙏|😠|🤐|👎|thank you,grumpy face,say nothing,thumbs down|We say "thank you" to be polite.
+life|Where does rubbish go?||🗑️|🛏️|🌳|🚽|the bin,the bed,a tree,the toilet|Rubbish goes in the bin to keep places clean.
+life|What do you do at bedtime?||🛏️|⚽|🍦|🎢|go to sleep,play football,eat ice cream,go on a ride|Sleep helps you grow and gives you energy for tomorrow.
+geo|Which one is a beach?||🏖️|⛰️|🏙️|🌲|a beach,a mountain,a city,a forest|A beach has sand and the sea.
+geo|Which one is a city with tall buildings?||🏙️|🏕️|🏝️|🌾|a city,a campsite,an island,a field|Cities have lots of tall buildings and people.
+geo|What do we see after rain when the sun comes out?||🌈|⛄|🌪️|🌙|a rainbow,a snowman,a tornado,the moon|Sunlight shining through raindrops makes a rainbow.
+geo|Which animal lives in the jungle?||🐒|🐧|🐫|🐄|a monkey,a penguin,a camel,a cow|Monkeys swing through jungle trees.
+geo|Which is an island?||🏝️|🏔️|🏜️|🏙️|an island,a mountain,a desert,a city|An island is land with water all around it — like Singapore!
+sci|Which animal has a long trunk?||🐘|🦒|🦓|🐊|an elephant,a giraffe,a zebra,a crocodile|Elephants use their trunks to drink and pick things up.
+sci|Which animal has a very long neck?||🦒|🐘|🐷|🐰|a giraffe,an elephant,a pig,a rabbit|Giraffes have long necks to eat leaves from tall trees.
+sci|Which one gives us milk?||🐄|🐔|🐟|🐝|a cow,a hen,a fish,a bee|We get milk from cows.
+sci|Which one makes honey?||🐝|🐞|🦋|🐜|a bee,a ladybird,a butterfly,an ant|Bees make honey from flowers.
+sci|What does a caterpillar turn into?||🦋|🐝|🐦|🐛|a butterfly,a bee,a bird,a worm|A caterpillar makes a cocoon and becomes a butterfly.
+sci|Which one floats on water?||🦆|🪨|🔨|🔑|a duck,a rock,a hammer,a key|Ducks float. Heavy things like rocks sink.
+hist|Which phone is from long ago?||☎️|📱|💻|⌚|an old phone,a smartphone,a laptop,a smartwatch|Old phones had a dial and a cord!
+hist|Which one is a knight from long ago?||🛡️|🚀|🎮|📱|a knight's shield,a rocket,a game,a phone|Knights carried shields and wore armour.
+hist|Which one is from the time of the dinosaurs?||🦖|🐶|🐱|🐔|a T. rex,a dog,a cat,a hen|T. rex was a dinosaur that lived long, long ago.
+hist|What did people use before cars to carry heavy things?||🐂|🚚|🚁|✈️|an ox,a lorry,a helicopter,a plane|Animals like oxen pulled carts.
+hist|Which one is a pyramid from long ago?||🔺|🏢|🏠|⛺|a pyramid,an office,a house,a tent|The Egyptians built pyramids thousands of years ago.
+hist|Who was a baby first, then grew up?||🧑|🦕|🏰|🚗|a grown-up,a dinosaur toy,a castle,a car|Everyone starts as a baby and grows up.
+life|Where should you cross the road?||🦓|🌳|🚗|🏪|a zebra crossing,behind a tree,between cars,a shop|Cross at a zebra crossing or with the green man.
+life|What do you do when you sneeze?||🤧|😮|🙌|🗣️|use a tissue,sneeze on people,clap,shout|Catch it in a tissue, bin it, wash your hands.
+life|Which one is a healthy drink?||💧|🥤|🧋|🍭|water,fizzy drink,bubble tea,a lolly|Water is the best drink for your body.
+life|Who helps when there is a fire?||🧑‍🚒|🧑‍🍳|🧑‍🎨|🧑‍🌾|a firefighter,a chef,an artist,a farmer|Firefighters put out fires and keep us safe.
+life|What do we do with toys after playing?||🧺|🗑️|🚽|🌊|tidy them away,throw them away,flush them,throw them in the sea|Tidying up keeps toys safe and the floor clear.
+life|Who helps us when we are sick?||🧑‍⚕️|🧑‍🚀|🤹|🧑‍✈️|a doctor,an astronaut,a juggler,a pilot|Doctors and nurses help us get better.`.split('\n').map(l=>{const f=l.split('|');return{s:f[0],q:f[1],vis:f[2],a:f[3],w:[f[4],f[5],f[6]],names:f[7].split(','),e:f[8]}});
+
+/* ---- grown-up banks (year|q|answer|wrong|wrong|wrong|passage|explanation); 8 = general, 9 = expert ---- */
+const GROWN={lang:`8|Which is correct? "The new rule will ___ everyone."|affect|effect|effects|affection||"Affect" is usually the verb; "effect" is usually the noun.
+8|Which is correct? "There are ___ people here than yesterday."|fewer|less|lesser|few||Use "fewer" for things you can count, "less" for amounts you can't.
+8|Which is correct? "The company changed ___ logo."|its|it's|its'|it is||"It's" means "it is". The possessive is "its" — no apostrophe.
+8|Which spelling is correct?|accommodate|accomodate|acommodate|accommadate||Accommodate has double c AND double m.
+8|Which spelling is correct?|definitely|definately|definitly|defanitely||Definitely contains the word "finite".
+8|Which spelling is correct?|separate|seperate|separete|seprate||There's "a rat" in sep-a-rate.
+8|Which spelling is correct?|embarrass|embarass|embaras|enbarrass||Embarrass has double r and double s.
+8|Which spelling is correct?|millennium|millenium|milennium|millenneum||Millennium: double l, double n.
+8|"Stationery" means…|writing materials|not moving|a train stop|a fixed position||Stationery (with an e) = paper and pens. Stationary (with an a) = standing still.
+8|Which is correct? "She paid me a nice ___."|compliment|complement|complament|compliement||A compliment is praise. A complement completes something.
+8|What does "ubiquitous" mean?|found everywhere|very rare|extremely large|easily broken||Smartphones are ubiquitous — you see them everywhere.
+8|What does "pragmatic" mean?|practical and realistic|stubborn|dreamy and idealistic|talkative||A pragmatic person deals with things as they really are.
+8|What does "ephemeral" mean?|lasting a very short time|ancient|heavy|transparent||Ephemeral = short-lived, like a soap bubble.
+8|What does it mean to "bite the bullet"?|do something unpleasant bravely|eat too fast|speak angrily|quit a job||The phrase comes from patients biting a bullet to bear pain.
+8|What does "the ball is in your court" mean?|it's your decision now|you are winning|you must pay|it's time to play||Like tennis: it's now your turn to act.
+8|What does "a blessing in disguise" mean?|something bad that turns out good|a hidden present|a fake smile|a secret party||A setback that leads to something better.
+8|Which is correct? "Neither of the answers ___ right."|is|are|were|be||"Neither" is singular in formal English, so "is".
+8|Which is correct? "Between you and ___."|me|I|myself|mine||After a preposition like "between", use the object form "me".
+9|What does "obsequious" mean?|too eager to please|very angry|hard to see|out of date||An obsequious waiter fusses over you far too much.
+9|What does "laconic" mean?|using very few words|lazy|cheerful|very loud||A laconic reply: "Yes."
+9|What does "sanguine" mean?|optimistic|bloody-minded|sad|confused||Sanguine = cheerfully hopeful, even in a tough spot.
+9|"Principal" or "principle"? "It's a matter of ___."|principle|principal|principel|principall||A principle is a rule or belief. A principal is a head teacher or main sum of money.
+9|Which word means "to make something less severe"?|mitigate|militate|migrate|mutilate||Mitigate the risk = reduce it. (Militate against = work against.)
+9|What does "a Pyrrhic victory" mean?|a win that costs too much|an easy win|a win by cheating|a win at sport||Named after King Pyrrhus, who won battles but lost most of his army.
+9|What does "to beg the question" originally mean?|assume the very thing you're trying to prove|ask a polite question|avoid answering|repeat a question||In logic it's a circular argument; people now often use it to mean "raise the question".
+9|What is a "euphemism"?|a mild word used for something unpleasant|a word that sounds like its meaning|an exaggeration|a word with two meanings||"Passed away" is a euphemism for "died".`,
+geo:`8|Which is the world's largest ocean?|Pacific|Atlantic|Indian|Arctic||The Pacific covers about a third of Earth's surface.
+8|Which country has the most people?|India|China|USA|Indonesia||India overtook China in 2023.
+8|Which strait separates Singapore's region from Sumatra and carries huge shipping traffic?|Strait of Malacca|Strait of Gibraltar|Bosphorus|Strait of Hormuz||The Strait of Malacca is one of the world's busiest shipping lanes.
+8|What is the capital of Australia?|Canberra|Sydney|Melbourne|Perth||Canberra was built as a compromise between Sydney and Melbourne.
+8|What is the capital of Canada?|Ottawa|Toronto|Vancouver|Montreal||Ottawa, in Ontario.
+8|Which is the largest country by area?|Russia|Canada|China|USA||Russia spans 11 time zones.
+8|Mount Everest sits on the border of Nepal and…|China|India|Bhutan|Pakistan||The border with China (Tibet) runs across the summit.
+8|Which is the longest river in Asia?|Yangtze|Mekong|Ganges|Yellow River||The Yangtze is about 6,300 km long.
+8|How many countries are in ASEAN?|10|8|12|6||ASEAN has 10 members (Timor-Leste is joining as the 11th).
+8|Which country has the most islands?|Sweden|Indonesia|Philippines|Japan||Sweden has over 200,000 islands, most of them tiny.
+8|What time zone is Singapore in?|UTC+8|UTC+7|UTC+9|UTC+5:30||Singapore uses UTC+8, the same as Hong Kong and Perth.
+9|What is the capital of Myanmar?|Naypyidaw|Yangon|Mandalay|Bagan||Myanmar moved its capital from Yangon to Naypyidaw in 2005-06.
+9|Which country is completely surrounded by South Africa?|Lesotho|Eswatini|Botswana|Namibia||Lesotho is an enclave inside South Africa.
+9|Which is the deepest point in the ocean?|Challenger Deep|Java Trench|Puerto Rico Trench|Tonga Trench||Challenger Deep in the Mariana Trench is nearly 11 km deep.
+9|Which line divides the Northern and Southern Hemispheres?|the Equator|the Prime Meridian|Tropic of Cancer|International Date Line||Singapore is only about 137 km north of the Equator.
+9|What is the capital of Kazakhstan?|Astana|Almaty|Tashkent|Bishkek||Astana became the capital in 1997.
+9|Which desert is the largest hot desert in the world?|Sahara|Gobi|Kalahari|Arabian||Antarctica is the largest desert overall, but the Sahara is the largest hot one.`,
+sci:`8|Why does the sky look blue?|air scatters blue light more|it reflects the sea|the Sun is blue|ozone is blue||Shorter blue wavelengths scatter more off air molecules (Rayleigh scattering).
+8|At high altitude, water boils at…|a lower temperature|a higher temperature|the same temperature|it can't boil||Lower air pressure means water boils below 100°C — so cooking takes longer.
+8|What do antibiotics treat?|bacterial infections|viral infections like flu|allergies|all infections||Antibiotics don't work on viruses such as colds and flu.
+8|How does a microwave oven heat food?|makes water molecules vibrate|heats the plate first|uses radiation from uranium|burns gas||Microwaves make water molecules jiggle, which creates heat.
+8|What is the normal resting heart rate for an adult?|60–100 beats per minute|20–40|120–160|200+||Fit athletes can be lower than 60.
+8|Which gas do plants take in for photosynthesis?|carbon dioxide|oxygen|nitrogen|helium||Plants use CO₂, water and light to make sugar and release oxygen.
+8|Which part of the body produces insulin?|pancreas|liver|kidneys|heart||The pancreas releases insulin to control blood sugar.
+8|Why does ice float on water?|ice is less dense than water|ice is lighter because of air|water pushes cold things up|ice is hollow||Water expands when it freezes, so ice is less dense.
+8|What is the chemical symbol for sodium?|Na|S|So|Sd||Na comes from the Latin "natrium".
+8|Roughly how long does sunlight take to reach Earth?|8 minutes|8 seconds|8 hours|8 days||About 8 minutes 20 seconds.
+9|What does DNA stand for?|deoxyribonucleic acid|dinitrogen acid|dynamic nucleic array|double nuclear acid||DNA carries genetic instructions.
+9|What is the most abundant gas in Earth's atmosphere?|nitrogen|oxygen|carbon dioxide|argon||About 78% nitrogen, 21% oxygen.
+9|Which vitamin does skin make in sunlight?|vitamin D|vitamin C|vitamin A|vitamin B12||Sunlight on skin triggers vitamin D production.
+9|What is the speed of light, roughly?|300,000 km per second|300 km per second|3,000 km per hour|30,000 km per hour||About 299,792 km/s.
+9|What is absolute zero?|−273.15 °C|0 °C|−100 °C|−459 °C||The lowest possible temperature: 0 kelvin.
+9|What type of energy does a stretched rubber band store?|elastic potential energy|kinetic energy|thermal energy|nuclear energy||It turns into kinetic energy when you let go.`,
+zh:`8|"画蛇添足" 的意思是…|做多余的事反而坏事|画画很好|动物很多|跑得很快||Drawing feet on a snake: overdoing it and spoiling the result.
+8|"守株待兔" 的意思是…|不努力，只等好运|保护小动物|很有耐心地工作|在树下休息||Waiting by a tree stump for rabbits: hoping for luck without effort.
+8|"一石二鸟" 的意思是…|一件事得到两个好处|打鸟很准|石头很重|两只鸟在飞||One stone, two birds.
+8|"对牛弹琴" 的意思是…|对不懂的人说道理|音乐很好听|牛喜欢音乐|弹琴给朋友听||Playing music to a cow: talking to the wrong audience.
+8|"亡羊补牢" 的意思是…|出了问题后及时补救|羊跑了不用管|买新的羊|修房子||Mend the pen after losing a sheep — it's not too late to fix things.
+8|"井底之蛙" 形容…|见识很少的人|跳得很高的人|住在井里的动物|喜欢游泳的人||A frog at the bottom of a well sees only a small circle of sky.
+8|"半途而废" 的意思是…|做事做到一半就放弃|走了一半的路|吃一半的饭|把东西分一半||Giving up halfway.
+8|"一心一意" 的意思是…|专心|很伤心|很多想法|一个人||Wholehearted, fully focused.
+8|"马马虎虎" 的意思是…|不认真，还可以|马和老虎|非常认真|跑得很快||So-so / careless.
+8|"入乡随俗" 的意思是…|到一个地方就按那里的习惯做|回家乡|穿新衣服|不喜欢旅行||When in Rome, do as the Romans do.
+9|"塞翁失马" 后面一句是…|焉知非福|马上回来|一去不回|千里之行||A loss may turn out to be a blessing.
+9|"狐假虎威" 的意思是…|仗着别人的势力欺负人|狐狸很聪明|老虎很厉害|动物是朋友||The fox borrows the tiger's fierceness.
+9|"拔苗助长" 的意思是…|急于求成反而坏事|帮助植物长大|种很多树|努力学习||Pulling seedlings up to help them grow — and killing them.
+9|"刻舟求剑" 的意思是…|做事死板，不懂变化|在船上刻字|找到宝剑|很会游泳||Marking the boat to find a sword dropped in a moving river.
+9|"自相矛盾" 的意思是…|说话或做事前后不一致|自己和自己打架|长矛很好|盾很结实||The seller of the unbeatable spear and the unbreakable shield.
+9|"胸有成竹" 的意思是…|做事前已经有把握|胸口有竹子|喜欢画竹子|身体很好||Having the bamboo already in mind before painting it.
+9|"掩耳盗铃" 的意思是…|自己骗自己|偷东西被抓|铃声很大|捂住耳朵睡觉||Covering your ears while stealing a bell — fooling only yourself.`,
+hist:`8|In which year did Singapore become an independent nation?|1965|1963|1959|1971||9 August 1965, after separating from Malaysia.
+8|Which empire built Angkor Wat?|Khmer Empire|Majapahit|Ming dynasty|Mughal Empire||Built in the 12th century, originally as a Hindu temple.
+8|In which year did World War II end?|1945|1939|1918|1950||It ended in Asia in August-September 1945.
+8|Who was the first person to walk on the Moon?|Neil Armstrong|Buzz Aldrin|Yuri Gagarin|John Glenn||July 1969, Apollo 11.
+8|The Berlin Wall fell in…|1989|1961|1975|1991||It came down on 9 November 1989.
+8|Which document, signed in 1215, limited the English king's power?|Magna Carta|Bill of Rights|Domesday Book|Act of Union||King John agreed to it at Runnymede.
+8|The Japanese occupation of Singapore lasted from 1942 to…|1945|1943|1950|1948||Singapore was called Syonan-to during the occupation.
+8|Who was Singapore's first Prime Minister?|Lee Kuan Yew|Goh Chok Tong|David Marshall|Yusof Ishak||He served from 1959 to 1990.
+8|The French Revolution began in…|1789|1689|1815|1848||It began with the storming of the Bastille in July 1789.
+8|Which dynasty built most of the Great Wall that still stands today?|Ming|Qin|Han|Tang||The Qin linked earlier walls; most of today's brick wall is Ming.
+9|The Treaty of Westphalia (1648) ended which war?|Thirty Years' War|Hundred Years' War|Seven Years' War|War of the Roses||It is often seen as the start of the modern idea of state sovereignty.
+9|Who led the Mongol Empire at its founding?|Genghis Khan|Kublai Khan|Tamerlane|Attila||Genghis Khan united the Mongol tribes in 1206.
+9|The Meiji Restoration took place in which country?|Japan|China|Korea|Thailand||From 1868 Japan rapidly modernised.
+9|Which country was never colonised by a European power in Southeast Asia?|Thailand|Vietnam|Myanmar|Indonesia||Siam (Thailand) stayed independent.
+9|The Bretton Woods conference (1944) created…|the IMF and World Bank|the United Nations|NATO|the European Union||It also set up a system of fixed exchange rates.
+9|Who wrote "The Wealth of Nations" (1776)?|Adam Smith|Karl Marx|John Locke|David Hume||Often called the father of modern economics.`,
+maths:``};
+/* ---- Common Sense City (all ages): year|q|answer|wrong|wrong|wrong||explanation ---- */
+const BANK_LIFE=`1|What do you do if a fire alarm rings at home?|get out and stay out|hide under the bed|look for your toys|open every door||Get out fast, stay out, and call 995.
+1|Which is a healthy snack?|an apple|a bag of crisps|a chocolate bar|a fizzy drink||Fruit gives you energy and vitamins.
+1|Why should you not talk to strangers online?|you can't be sure who they really are|they are always friendly|it costs money|computers break||People online may not be who they say. Tell a grown-up.
+2|What should you do before crossing at a crossing with no lights?|stop, look right, look left, listen|run across|walk with your eyes on your phone|cross between parked cars||Stop, look and listen — check both ways.
+2|Your friend dares you to touch a plug socket with a fork. What do you do?|say no — electricity can kill|try it quickly|let your friend try first|use a spoon instead||Never put anything into a plug socket.
+2|You want a toy that costs $12 and you have $9. How much more do you need?|$3|$21|$2|$4||12 − 9 = 3 dollars.
+3|What is the best way to cool down on a very hot day?|drink water and stay in the shade|run around in the sun|wear a thick jumper|drink fizzy drinks||Keep cool and drink plenty of water.
+3|A website pops up saying "You've won an iPad! Enter your parent's card number." What do you do?|close it and tell a grown-up|enter the number|share it with friends|click the link||It's a scam. Never enter card numbers.
+3|What does a red traffic light mean for cars?|stop|go faster|turn left only|honk||Red means stop for everyone.
+4|What should you do if you see someone being bullied?|tell a teacher and be kind to them|join in|walk away and say nothing|film it||Speaking up helps stop bullying.
+4|Pocket money: $10 a week. You spend $6. How much can you save in 5 weeks?|$20|$50|$30|$16||$4 a week × 5 weeks = $20.
+4|Why should you wear sunscreen at the beach?|to protect skin from sunburn|to swim faster|to keep mosquitoes away|to stay warm||UV rays burn skin even on cloudy days.
+5|Which is the safest thing to post online?|a drawing you made|your home address|your school uniform with name tag|your phone number||Keep personal details private.
+5|A medicine label says "take one tablet every 8 hours". How many tablets in a day?|3|8|1|24||24 hours ÷ 8 = 3 tablets.
+6|You're offered a phone plan: $30/month for 24 months, or $600 upfront. Which costs less overall?|$600 upfront|$30/month|they are the same|can't tell||$30 × 24 = $720, which is more than $600.
+6|Someone online asks you to keep your chats a secret from your parents. What does that suggest?|something is wrong — tell a trusted adult|they are a good friend|it's a game|it's normal||Safe friends don't ask you to keep secrets from your family.
+7|What does "net pay" mean?|pay after tax and deductions|pay before tax|your pay plus bonus|pay for overtime only||Gross pay minus deductions = net pay (take-home pay).
+1|What number do you call in Singapore for an ambulance or fire?|995|999|911|112||995 is for ambulance and fire. 999 is for the police.
+1|What number do you call in Singapore for the police?|999|995|911|100||999 is the police emergency number.
+1|When can you cross the road at a crossing?|when the green man shows|when the red man shows|whenever you are in a hurry|when a car is coming||Wait for the green man, then look left and right before crossing.
+1|Someone you don't know offers you sweets to come with them. What do you do?|say no and tell a grown-up you trust|go with them|take the sweets|keep it a secret||Never go with a stranger. Always tell a trusted adult.
+1|How long should you wash your hands with soap?|about 20 seconds|1 second|1 minute of water only|you don't need soap||About as long as singing "Happy Birthday" twice.
+2|You find a wallet on the floor. What is the right thing to do?|give it to a teacher, shop staff or the police|keep it|take the money|throw it away||Returning lost things is honest — someone is worried about it.
+2|Which coins make 50 cents?|20c + 20c + 10c|20c + 20c|10c + 10c + 20c + 5c|50c + 10c||20 + 20 + 10 = 50 cents.
+2|You have $5. A toy costs $3. How much change do you get?|$2|$3|$8|$1||5 − 3 = 2 dollars.
+2|Why do we wear a helmet when cycling?|to protect our head if we fall|to look cool|to keep the rain off|to go faster||A helmet protects your brain.
+2|Which is the safest place to play ball?|a park or playground|the road|a car park|near a pool edge||Roads and car parks have cars. Parks are made for playing.
+3|A video game asks for your home address. What should you do?|not give it, and tell a parent|type it in|give your school instead|share your password too||Never share personal details online.
+3|You are saving $2 a week. How many weeks to save $20?|10|5|20|40||20 ÷ 2 = 10 weeks.
+3|What should you do if there is a fire alarm at school?|leave calmly by the fire exit|hide under the desk|go back for your bag|use the lift||Follow your teacher, walk calmly, and never use the lift in a fire.
+3|Which breakfast keeps you full the longest?|wholegrain toast with egg|a can of fizzy drink|a bag of sweets|nothing||Protein and fibre release energy slowly.
+4|A shirt costs $20 and is 50% off. What do you pay?|$10|$15|$5|$20||Half of $20 is $10.
+4|Your friend shares a mean joke about a classmate online. Best response?|don't share it and support the classmate|share it|add a comment|laugh and forward it||Not passing it on stops cyberbullying.
+4|What does a "best before" date mean?|food is best quality before then|food is poisonous after it|food must be eaten that day|the shop's opening date||"Use by" is the safety date; "best before" is about quality.
+4|Someone cuts their finger and it is bleeding. First thing to do?|press on it with a clean cloth|put butter on it|run it under hot water|ignore it||Firm pressure helps stop bleeding.
+5|Which password is the strongest?|Blue!Tiger7#Rain|password123|12345678|your birthday||Long passwords mixing words, numbers and symbols are hardest to guess.
+5|An email says "You won $1,000! Click here and enter your bank details." What is it?|a scam|a real prize|a bank message|a birthday card||Real prizes never ask for bank details by email.
+5|Pack A: 4 bottles for $6. Pack B: 6 bottles for $8.40. Which is cheaper per bottle?|Pack B|Pack A|They are the same|Can't tell||A = $1.50 each. B = $1.40 each.
+5|You burn your hand on a hot pan. What should you do?|cool it under running water for 20 minutes|put ice straight on it|put toothpaste on it|pop any blisters||Cool running water is the right first aid for burns.
+6|What is "interest" on savings?|extra money the bank pays you for keeping money there|a fee for opening an account|the money you spend|a type of tax||Interest rewards you for saving.
+6|Why should you not charge a phone under your pillow?|it can overheat and start a fire|it charges too slowly|the battery gets bigger|it erases photos||Batteries need air to cool down.
+6|You earn $50 and decide on the rule "save 20%". How much do you save?|$10|$5|$20|$15||20% of $50 = $10.
+7|What does "APR" on a credit card describe?|the yearly interest rate on what you owe|the number of points you earn|the card's expiry date|the minimum payment||Paying only the minimum lets interest pile up.
+8|A caller says they're from the police and you must transfer money to a "safe account". You should…|hang up and call 999 or check with the ScamShield helpline|transfer quickly|give them your OTP|follow their instructions secretly||Real police never ask you to transfer money. Never share OTPs.
+8|What is the correct rate for CPR chest compressions on an adult?|100–120 per minute|30–40 per minute|200 per minute|10 per minute||Push hard and fast — about the beat of "Stayin' Alive".
+8|Someone is choking and can't speak or cough. Best first action?|back blows, then abdominal thrusts|give them water|lie them down|wait for it to pass||Five back blows, then five abdominal thrusts; call 995 if it doesn't clear.
+8|What does "diversification" mean in investing?|spreading money across different investments|putting everything in one stock|saving only cash|buying only property||Don't put all your eggs in one basket.
+8|You should keep an emergency fund of roughly…|3–6 months of expenses|1 week of expenses|10 years of expenses|nothing — use credit cards||It covers job loss or surprises without debt.
+8|A grease fire starts in a frying pan. What should you do?|turn off the heat and cover with a lid or fire blanket|throw water on it|carry the pan outside|fan it||Water on burning oil causes a fireball.
+8|Before signing a contract, the most important step is to…|read it fully, especially fees and cancellation terms|sign quickly|only read the first page|ask the salesperson to summarise it||The fine print matters.
+8|A deal "ends in 10 minutes — act now!" is mostly designed to…|stop you thinking it through|help you save|be kind|follow the law||Pressure tactics rush decisions. Sleep on big purchases.
+8|What is inflation?|prices rising over time, so money buys less|prices falling|interest on savings|a type of tax||At 3% inflation, $100 buys about $97 worth next year.
+8|Which drink is best when rehydrating after exercise in Singapore's heat?|water (plus electrolytes if very sweaty)|coffee|beer|fizzy soft drink||Water first; electrolytes help after heavy sweating.
+9|What is "compound interest"?|interest earned on your interest as well as your savings|interest paid only once|a bank fee|interest on loans only||Over time it makes savings grow faster and faster.
+9|What is "sunk cost"?|money already spent that you can't get back|a cost that is rising|a hidden fee|a tax refund||Good decisions ignore sunk costs and look forward.
+9|You get a text with a bank link asking you to "verify your account". Best move?|don't click; contact the bank via its official app or number|click and check|reply with your details|forward to friends||Banks in Singapore don't send clickable links by SMS.
+9|What is "opportunity cost"?|what you give up by choosing one option over another|the price on the tag|a discount|a delivery fee||Spending an hour scrolling costs an hour you could have used elsewhere.
+9|An investment promises 30% a month with "no risk". It is most likely…|a scam|a great opportunity|a government bond|a normal savings account||High return always comes with high risk; "guaranteed" big returns are a red flag.`;
+const ADULT_SPELL='accommodate,necessary,rhythm,conscience,embarrass,occurrence,questionnaire,liaison,millennium,separate,definitely,mischievous,pharaoh,privilege,receive,threshold,bureaucracy,entrepreneur,acquaintance,guarantee'.split(',');
+
+/* ---- generators ---- */
+const optsOf=(ans,pool,n=3)=>shuffle([ans,...strOpts(ans,pool).slice(0,n)]);
+function genLittle(sid){
+  if(sid==='maths'){const t=pick(['count','count','add','more','next','shape','pattern','size']);
+    if(t==='count'){const [nm,e]=pick(COUNT_EMO),n=ri(1,Math.random()<.7?5:10);return{q:`How many ${nm}? Count them!`,vis:e.repeat(n),ans:String(n),opts:optsOf(String(n),[n-1,n+1,n+2,n-2,n+3].filter(x=>x>0).map(String)),big:true,key:'lc'+nm+n,e:`Touch each one as you count: ${Array.from({length:n},(_,i)=>i+1).join(', ')}. There are ${n}!`}}
+    if(t==='add'){const [nm,e]=pick(COUNT_EMO),a=ri(1,3),b=ri(1,2);return{q:`${a} ${nm} and ${b} more. How many altogether?`,vis:e.repeat(a)+' ➕ '+e.repeat(b),ans:String(a+b),opts:optsOf(String(a+b),['1','2','3','4','5','6']),big:true,key:'la'+a+b+nm,e:`Count them all: ${a} and ${b} make ${a+b}.`}}
+    if(t==='more'){const [nm,e]=pick(COUNT_EMO),ns=shuffle([1,2,3,4,5]).slice(0,3),mx=Math.max(...ns),many=Math.random()<.65;const tgt=many?mx:Math.min(...ns);
+      const sn=shuffle(ns);return{q:`Which group has ${many?'MORE':'FEWER'} ${nm}?`,ans:e.repeat(tgt),opts:sn.map(n=>e.repeat(n)),optSay:sn.map(n=>n+' '+nm),key:'lm'+ns.join(''),e:`That group has ${tgt} — ${many?'the most':'the fewest'}.`}}
+    if(t==='next'){const n=ri(1,8);return{q:`What number comes after ${n}?`,vis:Array.from({length:n},(_,i)=>i+1).join(' ')+' ❓',ans:String(n+1),opts:optsOf(String(n+1),[n,n+2,n-1,n+3].filter(x=>x>0).map(String)),big:true,key:'ln'+n,e:`Count on: ${n}, ${n+1}.`}}
+    if(t==='shape'){const s=pick(L_SHAPES),o=shuffle([s,...shuffle(L_SHAPES.filter(x=>x!==s)).slice(0,3)]);return{q:`Which one is a ${s[0]}?`,ans:s[1],opts:o.map(x=>x[1]),optSay:o.map(x=>'a '+x[0]),pic:1,key:'ls'+s[0],e:`That's a ${s[0]}!`}}
+    if(t==='pattern'){const [a,b]=pick([['🔴','🔵'],['🍎','🍌'],['⭐','🌙'],['🐶','🐱'],['🟩','🟨']]),c=pick(['🟣','🍇','☀️','🐭','🟥']);const seq=[a,b,a,b,a],ans=b;return{q:'What comes next in the pattern?',vis:seq.join('')+'❓',ans,opts:shuffle([a,b,c,'❓'].filter(x=>x!=='❓').concat(['⚪'])),pic:1,key:'lp'+a+b,e:`The pattern goes ${a} ${b}, ${a} ${b}… so next is ${b}.`}}
+    const set=pick(SIZE_SETS),big=Math.random()<.6,ans=big?set[0]:set[2];const so=shuffle([0,2,4,6]);return{q:`Which one is the ${big?'BIGGEST':'SMALLEST'}?`,ans,opts:so.map(i=>set[i]),optSay:so.map(i=>'the '+set[i+1]),pic:1,key:'lz'+ans+big,e:`The ${big?set[1]+' is the biggest':set[3]+' is the smallest'}.`}}
+  if(sid==='lang'){const t=pick(['starts','starts','letter','upper','rhyme']);
+    if(t==='starts'){const w=pick(PW),others=shuffle(PW.filter(x=>x.l!==w.l)).slice(0,3);const o=shuffle([w,...others]);
+      return{q:`Which picture starts with the letter ${w.l}?`,vis:w.l.toUpperCase()+' '+w.l,ans:w.e,opts:o.map(x=>x.e),optSay:o.map(x=>x.w),pic:1,key:'ps'+w.w,e:`${w.l.toUpperCase()} is for ${w.w} ${w.e}!`}}
+    if(t==='letter'){const w=pick(PW),ls=shuffle([...'abcdefghijklmnopqrstwyz'].filter(c=>c!==w.l)).slice(0,3);
+      return{q:`${w.w[0].toUpperCase()+w.w.slice(1)} starts with which letter?`,vis:w.e,ans:w.l,opts:shuffle([w.l,...ls]),big:true,key:'pl'+w.w,e:`${w.w} — ${w.l}, ${w.l}, ${w.w}! It starts with ${w.l}.`}}
+    if(t==='upper'){const L=pick([...'ABDEFGHMNQRT']),look={b:'d',d:'b',p:'q',q:'p',m:'n',n:'m'},l=L.toLowerCase(),tricky=look[l]||pick('aceosu'.split(''));
+      return{q:`Find the small letter for ${L}`,vis:L,ans:l,opts:shuffle([...new Set([l,tricky,...shuffle('abcdefghmnpqrstu'.split('').filter(c=>c!==l&&c!==tricky)).slice(0,2)])]),big:true,key:'pu'+L,e:`Big ${L} and small ${l} are the same letter.`}}
+    const r=pick(RHYMES),wrong=shuffle(PW.filter(x=>!x.w.endsWith(r[0].slice(-2))&&!x.w.endsWith(r[2].slice(-2)))).slice(0,3);const o=shuffle([{w:r[2],e:r[3]},...wrong]);
+    return{q:`Which one rhymes with ${r[0]}?`,vis:r[1],ans:r[3],opts:o.map(x=>x.e),optSay:o.map(x=>x.w),pic:1,key:'pr'+r[0],e:`${r[0]} and ${r[2]} rhyme — they end with the same sound!`}}
+  if(sid==='zh'){if(Math.random()<.3){const n=ri(1,5),[nm,e]=pick(COUNT_EMO);return{q:'几个？How many?',vis:e.repeat(n),ans:ZH_NUM[n-1],opts:shuffle([ZH_NUM[n-1],...strOpts(ZH_NUM[n-1],ZH_NUM.slice(0,6))]),zhOpts:1,big:true,key:'zn'+n+nm,e:`${ZH_NUM[n-1]} = ${n}`}}
+    const w=pick(ZH_PIC),o=shuffle([w,...shuffle(ZH_PIC.filter(x=>x!==w)).slice(0,3)]);
+    return{q:`哪个是 ${w.h}？`,ans:w.e,opts:o.map(x=>x.e),pic:1,key:'zpic'+w.h,say:{t:w.h,l:'zh'},e:`${w.h} (${w.py}) = ${w.m} ${w.e}`}}
+  const pool=LITTLE.filter(x=>x.s===(sid==='life'?'life':sid));const it=pick(pool);
+  const order=shuffle([0,1,2,3]),all=[it.a,...it.w];
+  return{q:it.q,vis:it.vis,ans:it.a,opts:order.map(i=>all[i]),optSay:order.map(i=>it.names[i]),pic:1,key:'L'+it.q,e:it.e};
+}
+const GB={};Object.keys(GROWN).forEach(k=>{GB[k]=GROWN[k]?parse(GROWN[k]):[]});
+const LIFE=parse(BANK_LIFE);
+const money=v=>'$'+(Math.round(v*100)/100).toLocaleString('en-SG',{minimumFractionDigits:2,maximumFractionDigits:2});
+function genGrownMaths(y){
+  const fs=[
+   ()=>{const p=ri(4,30)*10-.1+.1,d=pick([15,20,25,30,40]),a=p*(1-d/100);return{q:`A $${p} jacket is ${d}% off. What is the sale price?`,ans:money(a),opts:optsOf(money(a),[money(p*d/100),money(p-d),money(a+5),money(a-5),money(p*.9)]),e:`${d}% of $${p} is ${money(p*d/100)}. ${money(p)} − ${money(p*d/100)} = ${money(a)}.`}},
+   ()=>{const p=ri(2,40)*5,a=p*1.09;return{q:`An item costs $${p} before 9% GST. What is the total?`,ans:money(a),opts:optsOf(money(a),[money(p+9),money(p*1.08),money(p*1.9),money(p*1.1)]),e:`9% of ${p} = ${money(p*.09)}, so total = ${money(a)}.`}},
+   ()=>{const n=pick([3,4,5,6,8]),b=n*ri(18,60),a=b*1.1/n;return{q:`A $${b} dinner bill has a 10% service charge, split equally between ${n} people. How much each?`,ans:money(a),opts:optsOf(money(a),[money(b/n),money(b*1.1),money(b/n+10),money((b+10)/n)]),e:`$${b} × 1.1 = ${money(b*1.1)}; ÷ ${n} = ${money(a)}.`}},
+   ()=>{const a=ri(3,8)*10,b=a+pick([5,10,15,20,25]),pc=Math.round((b-a)/a*1000)/10;return{q:`A price rises from $${a} to $${b}. What is the percentage increase?`,ans:pc+'%',opts:optsOf(pc+'%',[(b-a)+'%',Math.round((b-a)/b*1000)/10+'%',(pc*2)+'%',(pc/2)+'%']),e:`Increase ÷ original = ${b-a} ÷ ${a} = ${pc}%.`}},
+   ()=>{const r=pick([2,3,4,6,8,9,12]),yrs=Math.round(72/r);return{q:`Roughly how many years does it take money to double at ${r}% a year?`,ans:yrs+' years',opts:optsOf(yrs+' years',[r*2+' years',(100/r|0)+' years',yrs*2+' years',(yrs+4)+' years',Math.max(1,yrs-3)+' years']),e:`Rule of 72: 72 ÷ ${r} ≈ ${yrs} years.`}},
+   ()=>{const d=pick([90,120,150,180,240,300]),t=pick([1.5,2,2.5,3]),s=Math.round(d/t);if(d%t)return fs[0]();return{q:`A train travels ${d} km in ${t} hours. What is its average speed?`,ans:s+' km/h',opts:optsOf(s+' km/h',[d*t+' km/h',(s+10)+' km/h',(s-15)+' km/h',d+' km/h']),e:`Speed = distance ÷ time = ${d} ÷ ${t} = ${s} km/h.`}},
+   ()=>{const [city,off]=pick([['London',8],['Paris',7],['Dubai',4],['Sydney',-3],['Tokyo',-1],['New York',13]]),h=ri(7,20);let t=(h-off+24)%24;const f=x=>{const hh=x%12||12;return `${hh} ${x<12?'am':'pm'}`};return{q:`It's ${f(h)} in Singapore. What time is it in ${city}?`,ans:f(t),opts:optsOf(f(t),[f((h+off)%24),f((t+1)%24),f((t+23)%24),f((t+12)%24)]),e:`${city} is ${Math.abs(off)} hours ${off>0?'behind':'ahead of'} Singapore (standard time).`}},
+   ()=>{const a=pick([15,25,35,45,55,65,75,85,95]),b=a*a;return{q:`What is ${a}²?`,ans:b.toLocaleString('en-SG'),opts:optsOf(b.toLocaleString('en-SG'),[(b+10).toLocaleString('en-SG'),(b-25).toLocaleString('en-SG'),(a*20).toLocaleString('en-SG'),(b+100).toLocaleString('en-SG')]),e:`Trick for numbers ending in 5: ${Math.floor(a/10)} × ${Math.floor(a/10)+1} = ${Math.floor(a/10)*(Math.floor(a/10)+1)}, then add 25 → ${b}.`}},
+   ()=>{const n=pick([3,5,7]),d=8,amt=d*ri(20,120),a=amt*n/d;return{q:`What is ${n}/${d} of ${amt.toLocaleString('en-SG')}?`,ans:String(a),opts:optsOf(String(a),[String(amt/d),String(a+amt/d),String(a-amt/d),String(amt*n)]),e:`${amt} ÷ ${d} = ${amt/d}; × ${n} = ${a}.`}}];
+  const hard=[
+   ()=>{const P=pick([1000,2000,5000,10000]),r=pick([3,4,5,6]),a=P*(1+r/100)**2;return{q:`$${P.toLocaleString('en-SG')} earns ${r}% a year, compounded yearly. What is it worth after 2 years?`,ans:money(a),opts:optsOf(money(a),[money(P*(1+2*r/100)),money(P*(1+r/100)),money(a+P*.01),money(P*(1+r/50)**2)]),e:`${P} × ${1+r/100}² = ${money(a)}. Interest earns interest!`}},
+   ()=>{const [q,a,w]=pick([['Rolling two dice, what is the probability of a total of 7?','1/6',['1/12','1/7','1/36','1/3']],['Rolling two dice, what is the probability of a double?','1/6',['1/36','1/12','1/2','1/3']],['Flipping 3 coins, what is the probability of 3 heads?','1/8',['1/3','1/6','1/2','3/8']],['Drawing one card from a deck, what is the probability of an ace?','1/13',['1/52','1/4','4/13','1/26']]]);return{q,ans:a,opts:optsOf(a,w),e:{'1/6':'6 of the 36 equally likely outcomes.','1/8':'½ × ½ × ½ = 1/8.','1/13':'4 aces in 52 cards = 1/13.'}[a]}},
+   ()=>{const x=ri(2,9),y=ri(1,8),s=x+y,d=x-y;return{q:`x + y = ${s} and x − y = ${d}. What is x?`,ans:String(x),opts:optsOf(String(x),[String(y),String(s),String(d),String(x+1)]),e:`Add the equations: 2x = ${s+d}, so x = ${x}.`}},
+   ()=>{const p=ri(3,9)*100,l=pick([20,25,40]);const after=p*(1+l/100)*(1-l/100);return{q:`A price goes up ${l}% and then down ${l}%. If it started at $${p}, what is it now?`,ans:money(after),opts:optsOf(money(after),[money(p),money(p*1.01),money(p+l),money(p*(1-l/100))]),e:`${p} × ${1+l/100} × ${1-l/100} = ${money(after)} — less than you started with!`}}];
+  return pick(y>=9&&Math.random()<.6?hard:fs)();
+}
+function genGrown(sid,y){
+  if(sid==='maths'){const r=genGrownMaths(y);r.key='gm'+r.q;r.big=true;r.long=1;return r}
+  if(sid==='life'){if(Math.random()<.25){const r=genGrownMaths(8);r.key='gm'+r.q;r.big=true;r.long=1;return r}const rows=LIFE.filter(f=>+f[0]>=8);return fromEntry(pick(y>=9&&Math.random()<.6?rows.filter(f=>+f[0]===9):rows))}
+  if(sid==='geo'&&Math.random()<.35){const hard=CAPS.filter(c=>c.y>=6);if(hard.length)return genCapital(pick(hard).y)}
+  if(sid==='hist'&&Math.random()<.3){const q=genHist(7,'time');q.q=q.q.replace('FIRST','FIRST (careful — they may be close)');return q}
+  const rows=GB[sid]||[];if(!rows.length)return null;
+  const tier=rows.filter(f=>+f[0]===y);return fromEntry(pick(tier.length&&Math.random()<.7?tier:rows));
+}
+function genLife(y){
+  const r=Math.random();
+  if(y<=3&&r<.25){const c=ri(1,9),paid=c<5?5:10;return{q:`You buy a snack for $${c} and pay with a $${paid} note. How much change?`,ans:'$'+(paid-c),opts:optsOf('$'+(paid-c),['$'+(paid-c+1),'$'+Math.max(1,paid-c-1),'$'+c,'$'+(paid+c)]),key:'lch'+c+paid,e:`$${paid} − $${c} = $${paid-c}.`}}
+  if(y>=4&&y<=7&&r<.25){const p=ri(2,12)*5,d=pick([10,20,25,50]),a=p*(1-d/100);return{q:`A $${p} game is ${d}% off. What is the sale price?`,ans:money(a),opts:optsOf(money(a),[money(p-d),money(p*d/100),money(a+2),money(a-1)]),key:'lsd'+p+d,e:`${d}% of $${p} = ${money(p*d/100)}; ${money(p)} − that = ${money(a)}.`}}
+  let rows=LIFE.filter(f=>+f[0]===y);if(!rows.length)rows=LIFE.filter(f=>Math.abs(+f[0]-y)<=1&&+f[0]<=7);if(!rows.length)rows=LIFE.filter(f=>+f[0]<=y);
+  return fromEntry(pick(rows));
+}
+/* ---- route questions by tier ---- */
+const _genQT=genQ;
+genQ=function(sid,level,seen){
+  const y=Math.round(level);
+  let make=null;
+  if(y<=0)make=()=>genLittle(sid);
+  else if(y>=8){if(Math.random()<.18&&sid!=='life')return _genQT(sid,7,seen);make=()=>genGrown(sid,y)||_genQT(sid,7,null)}
+  else if(sid==='life')make=()=>genLife(y);
+  if(!make)return _genQT(sid,level,seen);
+  const rec=recentSet(sid),has=k=>(seen&&seen.has(k))||(rec&&rec.has(k));
+  let q,t=0;do{q=make();t++}while(q&&has(q.key)&&t<20);
+  if(seen)seen.add(q.key);noteSeen(sid,q.key);
+  if(q.pic)q.layout='pic';else if(q.optSay&&!q.pic)q.layout='one grp';else{const L=Math.max(...q.opts.map(o=>String(o).length));q.layout=q.big?(L>9?'two':''):(L>16?'one':L>7?'two':'')}
+  return q;
+};
+const _spellWordT=spellWord;
+spellWord=function(y){if(Math.round(y)>=8)return pick(ADULT_SPELL);return _spellWordT(Math.max(1,y))};
+const _canSpeakT=canSpeak;
+canSpeak=function(sid,p){if((p.year??3)>=8)return false;return _canSpeakT(sid,p)};
+
+/* ---- new all-ages stage ---- */
+STAGES.push({id:'life',icon:'🧭',name:'Common Sense City',subj:'Common Sense',age:'Street-smart age',test:['🧭','Street-Smart Test'],chapters:[
+  CH('Home & Safety','#bbf7d0','🏠 Safe Home,🚦 Road Crossing,🧯 Fire Drill,🩹 First-Aid Post,🧼 Clean Hands',['🚒','Fire Station']),
+  CH('Money & Shopping','#fde68a','🪙 Coin Corner,🛒 Supermarket,🏷️ Sale Street,🏦 Savings Bank,📱 Scam Spotter',['🏪','Market Boss']),
+  CH('Out in the World','#bae6fd','🚌 Bus Stop,🧭 Map Reader,🍳 Kitchen Lab,🌦️ Weather Watch,🤝 Good Manners',['🏙️','City Hall'])]});
+S.profiles.forEach(p=>{if(p.subj&&!p.subj.life)p.subj.life=emptySubj()});
+BADGES.find(b=>b.id==='allround').d='Take the test in all 7 stages';
+BADGES.find(b=>b.id==='grand').d='Beat the Boss in all 7 stages';
+
+/* ---- tier helpers for display ---- */
+const isGrown=p=>(p.year??3)>=8,isLittle=p=>p.year===0;
+function tierName(p){return isLittle(p)?'Little Explorer (pre-school)':isGrown(p)?'Grown-up':'Year '+p.year}
+function ageRange(p){return isGrown(p)?[15,85]:isLittle(p)?[3,9]:[4,13]}
+function ageTicks(p){return isGrown(p)?[20,35,50,65,80]:isLittle(p)?[3,4,5,6,7,8]:[5,7,9,11,13]}
+function better(p,a){return a!=null&&(isGrown(p)?a<p.age:a>p.age)}
+function ageWord(p){return isGrown(p)?'Brain age':'Learning age'}
+function stAge(p,st){return isGrown(p)?st.subj+' brain age':st.age}
+
 
 /* ============ AVATAR v3: chibi bodies, shading, outfits, pets, backgrounds, magic ============ */
 AV_SPECIES.length=0;
@@ -2726,6 +3179,119 @@ avatarSVG=function(a,size=72){
   return svg;
 };
 
+/* ============ THEME SKINS — whole-app look per festival / season ============ */
+const svgU=(w,h,body)=>`url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='0 0 ${w} ${h}'>${body}</svg>`)}")`;
+const SV=(b,vb='0 0 100 100')=>`<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg">${b}</svg>`;
+/* ---- scenery art (viewBox 100×100) ---- */
+const ART={
+ pine:(snow=1,c='#166534')=>SV(`<rect x="45" y="78" width="10" height="16" fill="#78350f"/><path d="M50 6 L78 44 H62 L84 70 H58 L90 84 H10 L42 70 H16 L38 44 H22Z" fill="${c}"/>${snow?`<path d="M50 6 L62 22 Q56 26 50 20 Q44 26 38 22Z M28 44 Q40 50 50 44 Q60 50 72 44 L66 38 H34Z M20 70 Q36 76 50 70 Q64 76 80 70 L74 64 H26Z" fill="#fff"/>`:''}<circle cx="50" cy="6" r="4" fill="#facc15"/>`),
+ gift:(a='#dc2626',b='#facc15')=>SV(`<rect x="16" y="40" width="68" height="52" rx="4" fill="${a}"/><rect x="10" y="28" width="80" height="16" rx="4" fill="${shade(a,-15)}"/><rect x="44" y="28" width="12" height="64" fill="${b}"/><path d="M50 28 Q30 4 22 18 Q20 28 50 28 Q80 28 78 18 Q70 4 50 28Z" fill="none" stroke="${b}" stroke-width="6"/>`),
+ snowman:()=>SV(`<circle cx="50" cy="72" r="24" fill="#fff" stroke="#cbd5e1" stroke-width="2"/><circle cx="50" cy="36" r="17" fill="#fff" stroke="#cbd5e1" stroke-width="2"/><rect x="36" y="8" width="28" height="14" fill="#1e293b"/><rect x="30" y="20" width="40" height="5" fill="#1e293b"/><circle cx="44" cy="34" r="2.5" fill="#1e293b"/><circle cx="56" cy="34" r="2.5" fill="#1e293b"/><path d="M50 39 L64 42 L50 43Z" fill="#f97316"/><path d="M34 50 Q50 58 66 50 L66 56 Q50 62 34 56Z" fill="#dc2626"/><circle cx="50" cy="66" r="2.5" fill="#1e293b"/><circle cx="50" cy="76" r="2.5" fill="#1e293b"/>`),
+ cane:()=>SV(`<path d="M60 94 V30 Q60 10 42 10 Q26 10 26 26" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/><path d="M60 94 V30 Q60 10 42 10 Q26 10 26 26" fill="none" stroke="#dc2626" stroke-width="12" stroke-linecap="round" stroke-dasharray="8 8"/>`),
+ bauble:(c='#dc2626')=>SV(`<line x1="50" y1="0" x2="50" y2="18" stroke="#94a3b8" stroke-width="2"/><rect x="42" y="16" width="16" height="10" rx="2" fill="#cbd5e1"/><circle cx="50" cy="58" r="32" fill="${c}"/><path d="M20 52 Q50 64 80 52" stroke="#fde68a" stroke-width="4" fill="none"/><circle cx="38" cy="44" r="7" fill="#fff" opacity=".5"/>`),
+ lantern:(c='#dc2626',g='#facc15')=>SV(`<line x1="50" y1="0" x2="50" y2="14" stroke="${g}" stroke-width="2"/><rect x="36" y="12" width="28" height="8" rx="2" fill="${g}"/><ellipse cx="50" cy="48" rx="32" ry="30" fill="${c}"/>${[-18,-6,6,18].map(o=>`<path d="M${50+o} 20 Q${50+o*1.6} 48 ${50+o} 76" stroke="${shade(c,-25)}" stroke-width="2" fill="none"/>`).join('')}<rect x="36" y="74" width="28" height="8" rx="2" fill="${g}"/><path d="M44 82 V98 M50 82 V100 M56 82 V98" stroke="${g}" stroke-width="2.5"/><text x="50" y="56" text-anchor="middle" font-size="22" font-weight="700" fill="${g}">福</text>`),
+ blossom:(c='#f9a8d4')=>SV(`<path d="M6 94 Q30 70 46 62 Q66 52 94 20 M46 62 Q50 40 40 22 M66 46 Q80 52 92 62" stroke="#5b3a29" stroke-width="5" fill="none" stroke-linecap="round"/>${[[40,22],[94,20],[92,62],[60,50],[28,76],[74,34],[46,40]].map(([x,y])=>`<g transform="translate(${x} ${y})">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="-6" rx="4.5" ry="6.5" fill="${c}" transform="rotate(${a})"/>`).join('')}<circle r="2.6" fill="#facc15"/></g>`).join('')}`),
+ orange:()=>SV(`<circle cx="50" cy="58" r="32" fill="#f97316"/><circle cx="40" cy="48" r="7" fill="#fff" opacity=".35"/><path d="M50 26 Q62 10 78 16 Q66 30 50 26Z" fill="#16a34a"/><rect x="48" y="20" width="4" height="10" fill="#78350f"/>`),
+ cloud:(c='#facc15')=>SV(`<path d="M14 66 Q8 48 26 46 Q28 28 48 34 Q60 18 74 32 Q94 30 90 52 Q100 66 82 70 H20 Q14 70 14 66Z" fill="none" stroke="${c}" stroke-width="5"/><path d="M34 58 Q40 50 48 56 Q54 62 60 54" fill="none" stroke="${c}" stroke-width="4"/>`),
+ diya:()=>SV(`<defs><radialGradient id="fl"><stop offset="0" stop-color="#fff7ae"/><stop offset=".6" stop-color="#fbbf24" stop-opacity=".6"/><stop offset="1" stop-color="#f97316" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="40" r="30" fill="url(#fl)"/><path d="M50 18 Q60 34 50 50 Q40 34 50 18Z" fill="#fde047" stroke="#f97316" stroke-width="2"/><path d="M12 56 Q50 96 88 56 Q50 66 12 56Z" fill="#c2410c"/><path d="M12 56 Q50 66 88 56" fill="none" stroke="#fbbf24" stroke-width="3"/>${[24,38,50,62,76].map(x=>`<circle cx="${x}" cy="72" r="2.5" fill="#fde68a"/>`).join('')}`),
+ rangoli:()=>SV(`${[0,45,90,135,180,225,270,315].map((a,i)=>`<ellipse cx="50" cy="22" rx="9" ry="20" fill="${['#ec4899','#f59e0b','#8b5cf6','#10b981'][i%4]}" transform="rotate(${a} 50 50)"/>`).join('')}${[22.5,67.5,112.5,157.5,202.5,247.5,292.5,337.5].map(a=>`<circle cx="50" cy="14" r="4" fill="#fde047" transform="rotate(${a} 50 50)"/>`).join('')}<circle cx="50" cy="50" r="16" fill="#f97316"/><circle cx="50" cy="50" r="9" fill="#fde047"/><circle cx="50" cy="50" r="4" fill="#db2777"/>`),
+ marigold:()=>SV(`${[0,30,60,90,120,150,180,210,240,270,300,330].map(a=>`<ellipse cx="50" cy="26" rx="9" ry="16" fill="${a%60?'#f59e0b':'#f97316'}" transform="rotate(${a} 50 50)"/>`).join('')}<circle cx="50" cy="50" r="18" fill="#fb923c"/><circle cx="50" cy="50" r="10" fill="#fbbf24"/>`),
+ ketupat:()=>SV(`<line x1="50" y1="0" x2="50" y2="18" stroke="#65a30d" stroke-width="3"/><path d="M50 16 L82 50 L50 84 L18 50Z" fill="#84cc16" stroke="#3f6212" stroke-width="3"/><path d="M34 33 L66 67 M66 33 L34 67 M42 25 L74 59 M58 25 L26 59 M26 41 L58 75 M74 41 L42 75" stroke="#facc15" stroke-width="3.5"/><path d="M50 84 Q44 94 40 100 M50 84 Q56 94 62 98" stroke="#65a30d" stroke-width="3" fill="none"/>`),
+ crescent:(c='#fde68a')=>SV(`<path d="M58 12 A38 38 0 1 0 58 88 A30 30 0 1 1 58 12Z" fill="${c}"/><path d="M76 32 l3 9 9 0 -7 6 3 9 -8 -5 -8 5 3 -9 -7 -6 9 0Z" fill="${c}"/>`),
+ pelita:()=>SV(`<rect x="47" y="44" width="6" height="56" fill="#78350f"/><path d="M34 40 H66 L60 50 H40Z" fill="#a16207"/><path d="M50 10 Q60 26 50 40 Q40 26 50 10Z" fill="#fde047" stroke="#f97316" stroke-width="2"/><circle cx="50" cy="28" r="18" fill="#fde047" opacity=".25"/>`),
+ dome:()=>SV(`<rect x="10" y="62" width="80" height="34" fill="#047857"/><path d="M22 62 Q22 28 50 22 Q78 28 78 62Z" fill="#10b981"/><path d="M50 22 V10" stroke="#fde68a" stroke-width="3"/><path d="M53 4 A6 6 0 1 0 53 14 A4.5 4.5 0 1 1 53 4Z" fill="#fde68a"/><rect x="2" y="40" width="8" height="56" fill="#059669"/><rect x="90" y="40" width="8" height="56" fill="#059669"/><path d="M2 40 L6 30 L10 40Z M90 40 L94 30 L98 40Z" fill="#fde68a"/>${[26,44,62].map(x=>`<path d="M${x} 96 V80 Q${x+6} 70 ${x+12} 80 V96Z" fill="#064e3b"/>`).join('')}`),
+ pumpkin:()=>SV(`<rect x="46" y="10" width="8" height="16" rx="3" fill="#15803d"/><ellipse cx="34" cy="58" rx="24" ry="32" fill="#ea580c"/><ellipse cx="66" cy="58" rx="24" ry="32" fill="#ea580c"/><ellipse cx="50" cy="58" rx="22" ry="34" fill="#f97316"/><path d="M34 48 L42 40 L46 50Z M66 48 L58 40 L54 50Z" fill="#422006"/><path d="M30 66 Q50 84 70 66 L64 68 L60 74 L54 69 L48 75 L42 69 L36 72Z" fill="#422006"/>`),
+ spooktree:()=>SV(`<path d="M46 98 Q48 70 40 54 Q30 40 14 36 M42 56 Q44 40 34 22 M44 64 Q58 52 70 30 Q74 22 86 18 M66 38 Q78 42 90 38 M36 30 Q30 22 24 20" stroke="#1e1b2e" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M40 98 Q46 78 46 60 L52 60 Q52 80 60 98Z" fill="#1e1b2e"/>`),
+ ghost:()=>SV(`<path d="M22 90 V44 Q22 12 50 12 Q78 12 78 44 V90 L68 82 L59 92 L50 82 L41 92 L32 82Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><ellipse cx="40" cy="42" rx="5" ry="8" fill="#1e293b"/><ellipse cx="60" cy="42" rx="5" ry="8" fill="#1e293b"/><ellipse cx="50" cy="60" rx="6" ry="8" fill="#1e293b"/>`),
+ bat:()=>SV(`<path d="M50 44 Q44 36 38 42 Q30 30 8 34 Q18 44 16 56 Q26 50 34 58 Q40 50 50 58 Q60 50 66 58 Q74 50 84 56 Q82 44 92 34 Q70 30 62 42 Q56 36 50 44Z" fill="#1e1b2e"/><circle cx="46" cy="47" r="1.6" fill="#facc15"/><circle cx="54" cy="47" r="1.6" fill="#facc15"/>`),
+ moon:(c='#fef3c7')=>SV(`<defs><radialGradient id="mg"><stop offset=".7" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="50" r="48" fill="url(#mg)" opacity=".5"/><circle cx="50" cy="50" r="34" fill="${c}"/><circle cx="40" cy="42" r="6" fill="#000" opacity=".06"/><circle cx="60" cy="58" r="8" fill="#000" opacity=".06"/><circle cx="58" cy="36" r="4" fill="#000" opacity=".06"/>`),
+ mooncake:()=>SV(`<circle cx="50" cy="54" r="38" fill="#b45309"/><circle cx="50" cy="54" r="30" fill="#d97706"/>${Array.from({length:12},(_,i)=>`<circle cx="50" cy="20" r="5" fill="#b45309" transform="rotate(${i*30} 50 54)"/>`).join('')}<rect x="38" y="42" width="24" height="24" rx="3" fill="none" stroke="#fde68a" stroke-width="3"/><text x="50" y="61" text-anchor="middle" font-size="16" font-weight="700" fill="#fde68a">月</text>`),
+ rabbit:()=>SV(`<ellipse cx="38" cy="18" rx="7" ry="20" fill="#fff" stroke="#e2e8f0" stroke-width="2" transform="rotate(-12 38 18)"/><ellipse cx="58" cy="18" rx="7" ry="20" fill="#fff" stroke="#e2e8f0" stroke-width="2" transform="rotate(12 58 18)"/><ellipse cx="50" cy="72" rx="28" ry="24" fill="#fff"/><circle cx="50" cy="44" r="18" fill="#fff"/><circle cx="44" cy="42" r="2.5" fill="#be185d"/><circle cx="56" cy="42" r="2.5" fill="#be185d"/><ellipse cx="50" cy="50" rx="3" ry="2" fill="#f9a8d4"/>`),
+ palm:()=>SV(`<path d="M50 98 Q46 70 54 40" stroke="#92400e" stroke-width="7" fill="none"/>${[[-70,'#16a34a'],[-30,'#22c55e'],[10,'#15803d'],[50,'#16a34a'],[100,'#22c55e']].map(([a,c])=>`<path d="M54 40 Q${54+Math.cos(a*Math.PI/180)*24} ${40+Math.sin(a*Math.PI/180)*24-12} ${54+Math.cos(a*Math.PI/180)*44} ${40+Math.sin(a*Math.PI/180)*44}" stroke="${c}" stroke-width="9" fill="none" stroke-linecap="round"/>`).join('')}<circle cx="52" cy="44" r="5" fill="#78350f"/><circle cx="58" cy="46" r="5" fill="#78350f"/>`),
+ sun:()=>SV(`${Array.from({length:12},(_,i)=>`<rect x="47" y="2" width="6" height="16" rx="3" fill="#f59e0b" transform="rotate(${i*30} 50 50)"/>`).join('')}<circle cx="50" cy="50" r="26" fill="#fde047"/><circle cx="42" cy="46" r="3" fill="#92400e"/><circle cx="58" cy="46" r="3" fill="#92400e"/><path d="M40 56 Q50 66 60 56" stroke="#92400e" stroke-width="3" fill="none"/>`),
+ brolly:()=>SV(`<path d="M50 30 V88 Q50 96 42 94" stroke="#475569" stroke-width="4" fill="none"/><path d="M8 34 Q50 -6 92 34Z" fill="#ef4444"/><path d="M8 34 Q22 26 36 34 Q50 26 64 34 Q78 26 92 34" fill="#fff" opacity=".9"/><path d="M36 34 Q43 4 50 4 Q57 4 64 34" fill="#fde047" opacity=".9"/>`),
+ starfish:()=>SV(`<path d="M50 8 L61 38 L94 40 L68 60 L78 92 L50 74 L22 92 L32 60 L6 40 L39 38Z" fill="#fb923c" stroke="#ea580c" stroke-width="3" stroke-linejoin="round"/>${[[50,30],[66,46],[60,66],[40,66],[34,46]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.5" fill="#fff7ed"/>`).join('')}`),
+ roundtree:(c='#22c55e',f='')=>SV(`<rect x="45" y="60" width="10" height="36" fill="#78350f"/><circle cx="50" cy="40" r="32" fill="${c}"/><circle cx="30" cy="52" r="18" fill="${shade(c,-10)}"/><circle cx="70" cy="52" r="18" fill="${shade(c,-10)}"/>${f?Array.from({length:9},(_,i)=>`<circle cx="${22+(i*23)%60}" cy="${22+(i*17)%42}" r="4" fill="${f}"/>`).join(''):''}`),
+ tulip:(c='#f43f5e')=>SV(`<path d="M50 96 V50" stroke="#16a34a" stroke-width="5"/><path d="M50 80 Q30 70 26 52 Q44 58 50 74Z" fill="#22c55e"/><path d="M30 20 L40 34 L50 16 L60 34 L70 20 Q74 50 50 56 Q26 50 30 20Z" fill="${c}"/>`),
+ butterfly:()=>SV(`<ellipse cx="32" cy="38" rx="20" ry="24" fill="#a855f7"/><ellipse cx="68" cy="38" rx="20" ry="24" fill="#a855f7"/><ellipse cx="34" cy="70" rx="14" ry="16" fill="#f472b6"/><ellipse cx="66" cy="70" rx="14" ry="16" fill="#f472b6"/><circle cx="32" cy="36" r="7" fill="#fde047"/><circle cx="68" cy="36" r="7" fill="#fde047"/><rect x="47" y="24" width="6" height="58" rx="3" fill="#1e293b"/><path d="M48 24 Q40 10 36 8 M52 24 Q60 10 64 8" stroke="#1e293b" stroke-width="2" fill="none"/>`),
+ egg:(a='#a78bfa',b='#fde047')=>SV(`<ellipse cx="50" cy="56" rx="30" ry="40" fill="${a}"/><path d="M22 46 L32 38 L42 46 L52 38 L62 46 L72 38 L80 46" stroke="${b}" stroke-width="5" fill="none"/><path d="M22 66 Q50 76 78 66" stroke="#fff" stroke-width="5" fill="none"/>${[30,50,70].map(x=>`<circle cx="${x}" cy="56" r="3.5" fill="#fff"/>`).join('')}`),
+ chick:()=>SV(`<ellipse cx="50" cy="64" rx="30" ry="28" fill="#fde047"/><circle cx="50" cy="34" r="20" fill="#fde047"/><circle cx="43" cy="32" r="3" fill="#1e293b"/><circle cx="57" cy="32" r="3" fill="#1e293b"/><path d="M45 40 L55 40 L50 47Z" fill="#f97316"/><path d="M20 74 L30 64 L40 76 L50 64 L60 76 L70 64 L80 74 V92 H20Z" fill="#fff" stroke="#e2e8f0"/>`),
+ burst:(c1='#f472b6',c2='#facc15')=>SV(`${Array.from({length:16},(_,i)=>`<line x1="50" y1="50" x2="${50+Math.cos(i*Math.PI/8)*44}" y2="${50+Math.sin(i*Math.PI/8)*44}" stroke="${i%2?c1:c2}" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5"/>`).join('')}${Array.from({length:16},(_,i)=>`<circle cx="${50+Math.cos(i*Math.PI/8)*46}" cy="${50+Math.sin(i*Math.PI/8)*46}" r="3" fill="${i%2?c2:c1}"/>`).join('')}<circle cx="50" cy="50" r="5" fill="#fff"/>`),
+ orchid:()=>SV(`${[0,72,144,216,288].map((a,i)=>`<ellipse cx="50" cy="26" rx="${i===0?14:12}" ry="22" fill="${i===0?'#a21caf':'#d946ef'}" transform="rotate(${a} 50 50)"/>`).join('')}<circle cx="50" cy="50" r="10" fill="#fde047"/><path d="M44 54 Q50 66 56 54" fill="#be123c"/>`),
+ skyline:()=>SV(`<path d="M0 100 V70 H10 V54 H18 V70 H24 V40 H34 V70 H40 V58 L46 50 L52 58 V100Z" fill="#7f1d1d"/><path d="M52 100 V34 H60 V100Z M62 100 V30 H70 V100Z M72 100 V34 H80 V100Z" fill="#991b1b"/><path d="M50 30 H84 Q86 26 80 26 H54 Q48 26 50 30Z" fill="#b91c1c"/><path d="M84 100 V62 Q92 50 100 62 V100Z" fill="#7f1d1d"/>`),
+ acorn:()=>SV(`<path d="M50 4 V16" stroke="#78350f" stroke-width="5"/><path d="M18 36 Q50 6 82 36 Q82 44 50 44 Q18 44 18 36Z" fill="#92400e"/><path d="M24 44 Q24 86 50 96 Q76 86 76 44Z" fill="#d97706"/><ellipse cx="40" cy="62" rx="5" ry="10" fill="#fff" opacity=".25"/>`),
+ leaf:(c='#ea580c')=>SV(`<path d="M50 96 V58 M50 58 L20 70 L28 52 L8 44 L26 38 L18 20 L38 28 L50 4 L62 28 L82 20 L74 38 L92 44 L72 52 L80 70Z" fill="${c}" stroke="${shade(c,-20)}" stroke-width="3" stroke-linejoin="round"/>`),
+ flake:(c='#e0f2fe')=>SV(`${[0,60,120].map(a=>`<g transform="rotate(${a} 50 50)"><line x1="50" y1="6" x2="50" y2="94" stroke="${c}" stroke-width="5" stroke-linecap="round"/><path d="M38 16 L50 26 L62 16 M38 84 L50 74 L62 84" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/></g>`).join('')}`)
+};
+/* ---- header garlands (repeating 120×44 units) ---- */
+const GARL={
+ lights:(cs=['#ef4444','#22c55e','#facc15','#3b82f6'])=>svgU(120,44,`<path d='M0 6 Q30 22 60 6 Q90 22 120 6' stroke='#14532d' stroke-width='2' fill='none'/>${[[15,13],[45,13],[75,13],[105,13]].map(([x,y],i)=>`<rect x='${x-2}' y='${y-1}' width='4' height='5' fill='#475569'/><ellipse cx='${x}' cy='${y+10}' rx='5' ry='8' fill='${cs[i%cs.length]}'/><ellipse cx='${x-1.5}' cy='${y+7}' rx='1.5' ry='3' fill='#fff' opacity='.6'/>`).join('')}`),
+ lanterns:(c='#dc2626',g='#facc15')=>svgU(120,44,`<path d='M0 4 Q60 14 120 4' stroke='${g}' stroke-width='1.5' fill='none'/><line x1='60' y1='9' x2='60' y2='13' stroke='${g}' stroke-width='1.5'/><rect x='54' y='12' width='12' height='3' fill='${g}'/><ellipse cx='60' cy='24' rx='12' ry='10' fill='${c}'/><rect x='54' y='33' width='12' height='3' fill='${g}'/><path d='M57 36 V43 M60 36 V44 M63 36 V43' stroke='${g}' stroke-width='1.3'/>`),
+ toran:()=>svgU(120,44,`<path d='M0 4 Q60 10 120 4' stroke='#65a30d' stroke-width='2' fill='none'/>${[10,30,50,70,90,110].map((x,i)=>i%2?`<path d='M${x} 7 Q${x+7} 22 ${x} 34 Q${x-7} 22 ${x} 7Z' fill='#16a34a'/>`:`<circle cx='${x}' cy='12' r='6' fill='#f97316'/><circle cx='${x}' cy='23' r='5.5' fill='#fbbf24'/><circle cx='${x}' cy='33' r='5' fill='#f97316'/>`).join('')}`),
+ bunting:(cs)=>svgU(120,44,`<path d='M0 4 Q60 12 120 4' stroke='#fff' stroke-width='1.5' fill='none' opacity='.8'/>${[0,30,60,90].map((x,i)=>`<path d='M${x+3} 6 L${x+27} 7 L${x+15} 30Z' fill='${cs[i%cs.length]}'/>`).join('')}`),
+ ketupat:()=>svgU(120,44,`<path d='M0 4 Q60 12 120 4' stroke='#65a30d' stroke-width='1.5' fill='none'/>${[30,90].map(x=>`<line x1='${x}' y1='7' x2='${x}' y2='12' stroke='#65a30d' stroke-width='1.5'/><path d='M${x} 12 L${x+11} 24 L${x} 36 L${x-11} 24Z' fill='#84cc16' stroke='#3f6212' stroke-width='1.2'/><path d='M${x-5} 18 L${x+5} 30 M${x+5} 18 L${x-5} 30' stroke='#facc15' stroke-width='1.6'/>`).join('')}<path d='M60 10 l2 5 5 0 -4 3 2 5 -5 -3 -5 3 2 -5 -4 -3 5 0Z' fill='#fde68a'/>`),
+ icicles:()=>svgU(120,44,`<rect width='120' height='5' fill='#f8fafc'/>${[[4,20],[16,32],[28,16],[40,26],[54,38],[66,18],[78,30],[92,22],[104,34],[114,16]].map(([x,h])=>`<path d='M${x-5} 4 L${x+5} 4 L${x} ${h}Z' fill='#e0f2fe' opacity='.95'/>`).join('')}`),
+ blossoms:(c='#f9a8d4')=>svgU(120,44,`<path d='M0 6 Q40 18 70 8 Q100 0 120 6' stroke='#5b3a29' stroke-width='3' fill='none'/>${[[14,12],[46,14],[74,8],[104,6]].map(([x,y])=>`<g transform='translate(${x} ${y+6})'>${[0,72,144,216,288].map(a=>`<ellipse cx='0' cy='-4.5' rx='3.5' ry='5' fill='${c}' transform='rotate(${a})'/>`).join('')}<circle r='2' fill='#facc15'/></g>`).join('')}`),
+ bats:()=>svgU(120,44,`<path d='M0 4 Q60 14 120 4' stroke='#f97316' stroke-width='1.5' fill='none'/>${[[20,'#f97316'],[50,'#7c3aed'],[80,'#f97316'],[110,'#1e1b2e']].map(([x,c])=>`<path d='M${x-12} 8 L${x+12} 9 L${x} 30Z' fill='${c}'/>`).join('')}<path d='M50 18 q-3 -3 -6 0 q-4 -4 -10 -2 q4 3 3 6 q3 -2 5 1 q2 -3 8 -5Z' fill='#1e1b2e' transform='translate(16 4)'/>`)
+};
+/* ---- body background patterns (tiles) ---- */
+const PAT={
+ flakes:c=>svgU(140,140,`<g stroke='${c}' stroke-width='2' stroke-linecap='round' opacity='.22'>${[[30,30,10],[100,90,7],[90,20,5],[30,110,6]].map(([x,y,r])=>[0,60,120].map(a=>`<line x1='${x}' y1='${y-r}' x2='${x}' y2='${y+r}' transform='rotate(${a} ${x} ${y})'/>`).join('')).join('')}</g>`),
+ clouds:c=>svgU(160,120,`<g fill='none' stroke='${c}' stroke-width='2' opacity='.18'><path d='M20 70 q-8 -16 8 -20 q4 -16 22 -10 q12 -12 24 2 q16 0 12 18 Z'/><path d='M100 30 q6 -10 16 -6 q8 -10 18 0'/><circle cx='118' cy='92' r='9'/><circle cx='118' cy='92' r='4'/></g>`),
+ rangoli:c=>svgU(120,120,`<g opacity='.11'>${[0,45,90,135,180,225,270,315].map(a=>`<ellipse cx='60' cy='44' rx='4' ry='12' fill='${c}' transform='rotate(${a} 60 60)'/>`).join('')}<circle cx='60' cy='60' r='5' fill='${c}'/><circle cx='0' cy='0' r='4' fill='${c}'/><circle cx='120' cy='0' r='4' fill='${c}'/><circle cx='0' cy='120' r='4' fill='${c}'/><circle cx='120' cy='120' r='4' fill='${c}'/></g>`),
+ diamonds:c=>svgU(80,80,`<g fill='none' stroke='${c}' stroke-width='2' opacity='.18'><path d='M40 8 L72 40 L40 72 L8 40Z'/><path d='M40 24 L56 40 L40 56 L24 40Z'/></g>`),
+ stars:c=>svgU(140,140,`<g fill='${c}' opacity='.35'><circle cx='20' cy='30' r='1.6'/><circle cx='90' cy='14' r='1.2'/><circle cx='120' cy='80' r='1.8'/><circle cx='54' cy='96' r='1.2'/><circle cx='30' cy='124' r='1.5'/><path d='M80 60 l2 5 5 1 -5 2 -2 5 -2 -5 -5 -2 5 -1Z'/></g>`),
+ petals:c=>svgU(140,140,`<g fill='${c}' opacity='.22'><ellipse cx='30' cy='30' rx='5' ry='9' transform='rotate(30 30 30)'/><ellipse cx='100' cy='70' rx='4' ry='8' transform='rotate(-40 100 70)'/><ellipse cx='50' cy='110' rx='5' ry='8' transform='rotate(70 50 110)'/></g>`),
+ dots:c=>svgU(60,60,`<circle cx='30' cy='30' r='2.5' fill='${c}' opacity='.18'/>`)
+};
+/* ---- skins ---- */
+const SKINS={
+ christmas:{v:{kid:'#dc2626',kidsh:'#991b1b',adult:'#15803d',adultsh:'#14532d',gold:'#fbbf24',card:'#fffdf8',opt:'#fef2f2',optsh:'#fecaca',head:'rgba(5,46,22,.86)',bg:'radial-gradient(1200px 700px at 50% -10%,#16a34a 0%,#14532d 40%,#052e16 100%)',strip:'repeating-linear-gradient(45deg,#dc2626 0 10px,#fff 10px 20px)',ring:'#dc2626',mapb:'#fff'},
+   pat:PAT.flakes('#fff'),garland:GARL.lights(),ground:[['#dbeafe','#f8fafc'],['#e0f2fe','#f1f5f9'],['#f1f5f9','#ffffff']],road:['#ffffff','#dc2626'],art:[ART.pine(1),ART.gift(),ART.snowman(),ART.cane(),ART.pine(1,'#15803d'),ART.gift('#16a34a','#fde68a'),ART.bauble('#dc2626'),ART.bauble('#2563eb')],fx:'snow',node:'bauble'},
+ winter:{v:{kid:'#2563eb',kidsh:'#1e40af',adult:'#0891b2',adultsh:'#155e75',gold:'#bae6fd',card:'#f8fbff',opt:'#eff6ff',optsh:'#bfdbfe',head:'rgba(15,23,42,.86)',bg:'radial-gradient(1200px 700px at 50% -10%,#3b82f6 0%,#1e3a8a 40%,#0f172a 100%)',strip:'linear-gradient(90deg,#bfdbfe,#e0f2fe,#bfdbfe)',ring:'#60a5fa',mapb:'#e0f2fe'},
+   pat:PAT.flakes('#e0f2fe'),garland:GARL.icicles(),ground:[['#dbeafe','#f8fafc'],['#e0f2fe','#f1f5f9'],['#f1f5f9','#ffffff']],road:['#ffffff','#60a5fa'],art:[ART.pine(1),ART.snowman(),ART.flake('#93c5fd'),ART.pine(1,'#0f766e')],fx:'snow'},
+ lny:{v:{kid:'#dc2626',kidsh:'#7f1d1d',adult:'#b45309',adultsh:'#78350f',gold:'#facc15',card:'#fffbeb',opt:'#fef3c7',optsh:'#fcd34d',head:'rgba(127,29,29,.88)',bg:'radial-gradient(1200px 700px at 50% -10%,#dc2626 0%,#991b1b 40%,#450a0a 100%)',strip:'repeating-linear-gradient(90deg,#b91c1c 0 14px,#facc15 14px 18px)',ring:'#dc2626',mapb:'#facc15'},
+   pat:PAT.clouds('#facc15'),garland:GARL.lanterns(),ground:[['#fed7aa','#fff7ed'],['#fecaca','#fff1f2'],['#fde68a','#fffbeb']],road:['#fffbeb','#dc2626'],art:[ART.lantern(),ART.blossom('#fda4af'),ART.orange(),ART.cloud('#dc2626'),ART.lantern('#ef4444','#fde047')],fx:'petal',node:'lantern'},
+ deepavali:{v:{kid:'#db2777',kidsh:'#9d174d',adult:'#7c3aed',adultsh:'#5b21b6',gold:'#fbbf24',card:'#fffaf0',opt:'#fff7ed',optsh:'#fed7aa',head:'rgba(59,7,100,.88)',bg:'radial-gradient(1200px 700px at 50% -10%,#db2777 0%,#6b21a8 40%,#1e0b3a 100%)',strip:'repeating-linear-gradient(90deg,#f97316 0 10px,#fbbf24 10px 20px,#db2777 20px 30px)',ring:'#f59e0b',mapb:'#fbbf24'},
+   pat:PAT.rangoli('#fbbf24'),garland:GARL.toran(),ground:[['#fef3c7','#fffbeb'],['#fce7f3','#fdf2f8'],['#ede9fe','#f5f3ff']],road:['#fff7ed','#db2777'],art:[ART.diya(),ART.rangoli(),ART.marigold(),ART.diya(),ART.lantern('#f59e0b','#db2777')],fx:'twinkle',node:'glow'},
+ hariraya:{v:{kid:'#059669',kidsh:'#065f46',adult:'#b45309',adultsh:'#78350f',gold:'#fde68a',card:'#fffef5',opt:'#ecfdf5',optsh:'#a7f3d0',head:'rgba(2,44,34,.88)',bg:'radial-gradient(1200px 700px at 50% -10%,#059669 0%,#065f46 40%,#022c22 100%)',strip:'repeating-linear-gradient(45deg,#059669 0 8px,#fde68a 8px 12px)',ring:'#10b981',mapb:'#fde68a'},
+   pat:PAT.diamonds('#fde68a'),garland:GARL.ketupat(),ground:[['#d1fae5','#f0fdf4'],['#fef3c7','#fffbeb'],['#ccfbf1','#f0fdfa']],road:['#fffbeb','#059669'],art:[ART.ketupat(),ART.crescent('#f59e0b'),ART.pelita(),ART.dome(),ART.palm()],fx:'twinkle',node:'glow'},
+ spooky:{v:{kid:'#f97316',kidsh:'#9a3412',adult:'#7c3aed',adultsh:'#4c1d95',gold:'#facc15',card:'#fff7ed',opt:'#ffedd5',optsh:'#fdba74',head:'rgba(28,10,46,.9)',bg:'radial-gradient(1200px 700px at 50% -10%,#7c2d12 0%,#431407 35%,#1c0a2e 100%)',strip:'repeating-linear-gradient(-45deg,#f97316 0 10px,#1e1b2e 10px 20px)',ring:'#f97316',mapb:'#7c3aed'},
+   pat:PAT.stars('#fde68a'),garland:GARL.bats(),ground:[['#4c1d95','#6d28d9'],['#3b0764','#581c87'],['#1e1b4b','#312e81']],road:['#fde68a','#f97316'],art:[ART.pumpkin(),ART.spooktree(),ART.ghost(),ART.bat(),ART.moon('#fef9c3'),ART.pumpkin()],fx:'leaf',node:'pumpkin',dark:1},
+ autumn:{v:{kid:'#ea580c',kidsh:'#9a3412',adult:'#b45309',adultsh:'#78350f',gold:'#fbbf24',card:'#fffbf5',opt:'#fff7ed',optsh:'#fed7aa',head:'rgba(59,26,11,.88)',bg:'radial-gradient(1200px 700px at 50% -10%,#b45309 0%,#7c2d12 40%,#3b1a0b 100%)',strip:'linear-gradient(90deg,#ea580c,#f59e0b,#b91c1c,#ea580c)',ring:'#ea580c',mapb:'#fed7aa'},
+   pat:PAT.petals('#fdba74'),garland:GARL.bunting(['#ea580c','#f59e0b','#b91c1c','#a16207']),ground:[['#fde68a','#fef3c7'],['#fed7aa','#ffedd5'],['#fecaca','#fef2f2']],road:['#fffbeb','#ea580c'],art:[ART.roundtree('#ea580c','#fbbf24'),ART.acorn(),ART.leaf(),ART.roundtree('#f59e0b'),ART.leaf('#b91c1c')],fx:'leaf'},
+ spring:{v:{kid:'#ec4899',kidsh:'#9d174d',adult:'#8b5cf6',adultsh:'#5b21b6',gold:'#fde047',card:'#fffafd',opt:'#fdf2f8',optsh:'#fbcfe8',head:'rgba(46,16,101,.86)',bg:'radial-gradient(1200px 700px at 50% -10%,#ec4899 0%,#7e22ce 45%,#2e1065 100%)',strip:'linear-gradient(90deg,#f9a8d4,#c4b5fd,#86efac,#f9a8d4)',ring:'#ec4899',mapb:'#fbcfe8'},
+   pat:PAT.petals('#fbcfe8'),garland:GARL.blossoms(),ground:[['#dcfce7','#f0fdf4'],['#fce7f3','#fdf2f8'],['#ede9fe','#faf5ff']],road:['#ffffff','#ec4899'],art:[ART.roundtree('#f9a8d4','#fff'),ART.tulip(),ART.butterfly(),ART.tulip('#a855f7'),ART.blossom()],fx:'petal'},
+ easter:{v:{kid:'#a855f7',kidsh:'#6b21a8',adult:'#ec4899',adultsh:'#9d174d',gold:'#fde047',card:'#fffdf7',opt:'#faf5ff',optsh:'#e9d5ff',head:'rgba(59,7,100,.86)',bg:'radial-gradient(1200px 700px at 50% -10%,#f9a8d4 0%,#a855f7 45%,#3b0764 100%)',strip:'repeating-linear-gradient(90deg,#c4b5fd 0 12px,#fde68a 12px 24px,#a7f3d0 24px 36px,#fbcfe8 36px 48px)',ring:'#a855f7',mapb:'#e9d5ff'},
+   pat:PAT.dots('#fde68a'),garland:GARL.bunting(['#c4b5fd','#fde68a','#a7f3d0','#fbcfe8']),ground:[['#dcfce7','#f0fdf4'],['#fef9c3','#fefce8'],['#fae8ff','#fdf4ff']],road:['#ffffff','#a855f7'],art:[ART.egg(),ART.egg('#34d399','#fff'),ART.chick(),ART.rabbit(),ART.tulip('#f472b6')],fx:'petal'},
+ summer:{v:{kid:'#0ea5e9',kidsh:'#075985',adult:'#f59e0b',adultsh:'#b45309',gold:'#fde047',card:'#fffdf5',opt:'#ecfeff',optsh:'#a5f3fc',head:'rgba(12,74,110,.86)',bg:'radial-gradient(1200px 700px at 50% -10%,#06b6d4 0%,#2563eb 40%,#1e1b4b 100%)',strip:'repeating-linear-gradient(90deg,#0ea5e9 0 16px,#fde047 16px 32px)',ring:'#0ea5e9',mapb:'#fde68a'},
+   pat:PAT.dots('#e0f2fe'),garland:GARL.bunting(['#ef4444','#f59e0b','#22c55e','#3b82f6']),ground:[['#fef3c7','#fffbeb'],['#bae6fd','#e0f2fe'],['#bbf7d0','#f0fdf4']],road:['#ffffff','#0ea5e9'],art:[ART.palm(),ART.sun(),ART.brolly(),ART.starfish(),ART.palm()],fx:'none'},
+ midautumn:{v:{kid:'#f59e0b',kidsh:'#b45309',adult:'#7c3aed',adultsh:'#4c1d95',gold:'#fcd34d',card:'#fffbeb',opt:'#fef3c7',optsh:'#fcd34d',head:'rgba(15,10,46,.9)',bg:'radial-gradient(1200px 700px at 50% -10%,#6d28d9 0%,#312e81 40%,#0f0a2e 100%)',strip:'repeating-linear-gradient(90deg,#f59e0b 0 12px,#dc2626 12px 16px)',ring:'#f59e0b',mapb:'#fcd34d'},
+   pat:PAT.stars('#fde68a'),garland:GARL.lanterns('#f59e0b','#dc2626'),ground:[['#312e81','#4338ca'],['#1e1b4b','#3730a3'],['#0f0a2e','#312e81']],road:['#fde68a','#f59e0b'],art:[ART.moon('#fde68a'),ART.lantern('#f97316','#fde047'),ART.mooncake(),ART.rabbit(),ART.lantern('#dc2626','#fde047')],fx:'rise',node:'lantern',dark:1},
+ nationalday:{v:{kid:'#dc2626',kidsh:'#991b1b',adult:'#334155',adultsh:'#0f172a',gold:'#fecaca',card:'#ffffff',opt:'#fef2f2',optsh:'#fecaca',head:'rgba(127,29,29,.9)',bg:'radial-gradient(1200px 700px at 50% -10%,#ef4444 0%,#991b1b 40%,#2b0a0a 100%)',strip:'linear-gradient(180deg,#dc2626 0 50%,#fff 50% 100%)',ring:'#dc2626',mapb:'#fff'},
+   pat:PAT.stars('#fff'),garland:GARL.bunting(['#dc2626','#ffffff']),ground:[['#fee2e2','#fff'],['#fff','#fef2f2'],['#fee2e2','#fff']],road:['#ffffff','#dc2626'],art:[ART.burst(),ART.orchid(),ART.skyline(),ART.burst('#ef4444','#fff'),ART.crescent('#ef4444')],fx:'twinkle'}
+};
+let SKIN=SKINS.autumn;
+function applySkin(){
+  SKIN=SKINS[SEASON.id]||SKINS[SEASON.alias]||SKINS.autumn;const r=document.documentElement.style;
+  Object.entries(SKIN.v).forEach(([k,v])=>r.setProperty('--'+k,v));
+  r.setProperty('--garland',SKIN.garland);r.setProperty('--pat',SKIN.pat);
+  document.body.dataset.skin=SEASON.id;document.body.dataset.node=SKIN.node||'';
+  document.body.style.background=`${SKIN.pat}, ${SKIN.v.bg}`;document.body.style.backgroundAttachment='fixed';
+  const fx=document.getElementById('fx');if(!fx)return;const t=SKIN.fx,R=Math.random;
+  if(t==='none'){fx.innerHTML='';return}
+  if(t==='snow')fx.innerHTML=Array.from({length:42},()=>`<i class="sn" style="left:${(R()*100).toFixed(1)}%;width:${(3+R()*6).toFixed(1)}px;height:auto;animation-duration:${(8+R()*10).toFixed(1)}s;animation-delay:-${(R()*18).toFixed(1)}s;opacity:${(.5+R()*.5).toFixed(2)}"></i>`).join('');
+  else if(t==='twinkle')fx.innerHTML=Array.from({length:28},()=>`<i class="tw" style="left:${(R()*100).toFixed(1)}%;top:${(R()*100).toFixed(1)}%;animation-delay:-${(R()*3).toFixed(1)}s;transform:scale(${(.6+R()*.9).toFixed(2)})"></i>`).join('');
+  else if(t==='petal')fx.innerHTML=Array.from({length:18},()=>`<i class="pt" style="left:${(R()*100).toFixed(1)}%;background:${pick(SEASON.id==='lny'?['#ef4444','#facc15','#fda4af']:['#f9a8d4','#fbcfe8','#fff'])};animation-duration:${(10+R()*10).toFixed(1)}s;animation-delay:-${(R()*18).toFixed(1)}s"></i>`).join('');
+  else if(t==='rise')fx.innerHTML=Array.from({length:9},(_,i)=>`<span class="rs" style="left:${(i*11+R()*6).toFixed(1)}%;animation-duration:${(16+R()*10).toFixed(1)}s;animation-delay:-${(R()*24).toFixed(1)}s;font-size:${22+Math.round(R()*16)}px">🏮</span>`).join('');
+  else fx.innerHTML=Array.from({length:10},(_,i)=>`<span style="left:${(i*10+R()*6).toFixed(1)}%;animation-duration:${(12+R()*10).toFixed(1)}s;animation-delay:-${(R()*15).toFixed(1)}s;font-size:${18+Math.round(R()*12)}px">${pick(['🍂','🍁'])}</span>`).join('');
+}
+const _applySeasonS=applySeason;
+applySeason=function(){_applySeasonS();applySkin()};
+function sceneDecos(H){const n=Math.round(H/190);return Array.from({length:n},(_,i)=>{const left=i%2===0,x=left?1+Math.random()*5:79+Math.random()*5,sz=64+Math.round(Math.random()*30);
+  return `<div class="deco art" style="left:${x}%;top:${i*190+50}px;width:${sz}px;height:${sz}px;transform:rotate(${(Math.random()*10-5).toFixed(0)}deg)">${SKIN.art[i%SKIN.art.length]}</div>`}).join('')}
+function bandBg(tint,c){const g=SKIN.ground&&SKIN.ground[c%SKIN.ground.length];return g?`linear-gradient(180deg,${g[0]},${g[1]})`:`linear-gradient(180deg,${shade(tint,-25)},${tint})`}
+
 /* ============ working paper pad ============ */
 let PADBIG=false;
 function padHTML(id,hint=true,expand=true){return `<div class="pad ${PADBIG&&expand?'big':''}" id="${id}-wrap"><canvas id="${id}"></canvas>${hint?'<span class="padhint">✏️ Working paper — write here</span>':''}<div class="padbar">${expand?`<button class="padexp" onclick="PADBIG=!PADBIG;renderQ()">${PADBIG?'⤡ Smaller':'⤢ Bigger'}</button>`:''}<button onclick="padClear('${id}')">🧽 Clear</button></div></div>`}
@@ -2755,7 +3321,7 @@ function intro(){
    <div class="card center"><div style="font-size:80px">${n[0]}</div>
    <h2>What's your ${st.age.toLowerCase()}?</h2>
    <p class="muted">12 ${st.subj.split(' ')[0].toLowerCase()} questions. The first ones are easy, then they get harder when you're right and easier when you're wrong — so it's okay to miss some!</p>
-   <p class="muted small">Starts at Year ${kidStart(p)} level for ${esc(p.name)} (school year ${p.year}). Grown-ups: please let ${esc(p.name)} answer alone. Reading the questions aloud is fine — or use the 🔊 button.</p>
+   <p class="muted small">Starts at ${tierName(p)} level for ${esc(p.name)}. Grown-ups: please let ${esc(p.name)} answer alone. Reading the questions aloud is fine — or use the 🔊 button.</p>
    <button class="btn block" onclick="primeSpeech();startQuiz('test')">Start ✨</button></div>`;
 }
 function startQuiz(mode,c,l){
@@ -2769,9 +3335,9 @@ function startQuiz(mode,c,l){
 /* question difficulty: tests warm up easy then climb; practice levels ramp from easier to harder within the level */
 function qLevel(){
   const p=cur(),mx=kidMax(p);
-  if(Q.mode==='test')return clamp(Q.level,1,mx);
+  if(Q.mode==='test')return clamp(Q.level,kidMin(p),mx);
   const ramp=-0.6+1.0*(Q.i/(Q.n-1));
-  return clamp(Q.ability+lvlOff(Q.ch,Q.lv)+ramp,1,mx);
+  return clamp(Q.ability+lvlOff(Q.ch,Q.lv)+ramp,kidMin(p),mx);
 }
 function nextQ(){
   if(Q.i>=Q.n)return Q.mode==='test'?finishTest():finishLevel();
@@ -2800,7 +3366,7 @@ function renderQ(){
     ${c.vis?`<div class="qvis ${c.vis.length>12?'many':''}">${c.vis}</div>`:''}
     ${c.say?`<button class="listen" onclick="speakParts([Q.cur.say])">🔊 ${listen?'Play again':'Hear it'}</button>`:''}</div>
     ${Q.pad?padHTML('qpad'):''}
-    <div class="opts ${c.layout} ${c.zhOpts?'zh':''}">${c.opts.map((o,k)=>`<button class="opt" data-k="${k}" onclick="answer(${k},this)">${esc(o)}</button>`).join('')}</div>
+    <div class="opts ${c.layout} ${c.zhOpts&&!c.pic?'zh':''}">${c.opts.map((o,k)=>`<button class="opt" data-k="${k}" onclick="answer(${k},this)">${esc(o)}</button>`).join('')}</div>
     <div class="fb" id="fb"></div></div>`;
   if(Q.pad)padInit('qpad',()=>{if(!Q.padUsed){Q.padUsed=true;const p=cur();p.stats.padQs++;save();checkStatBadges(p)}});
   if(Q.locked)showFeedback();
@@ -2820,10 +3386,10 @@ function answer(k,el){
     if(Q.i>=2){
       if(ok){if(!Q.missed)Q.level+=0.5;else if(++Q.run>=2){Q.level+=0.5;Q.run=0}}
       else{Q.missed=true;Q.run=0;Q.level-=0.5}
-      Q.level=clamp(Q.level,1,kidMax(p));
+      Q.level=clamp(Q.level,kidMin(p),kidMax(p));
     }
     Q.trail.push(Q.level);
-  }else Q.ability=clamp(Q.ability+(ok?.04:-.04),0.5,kidMax(p));
+  }else Q.ability=clamp(Q.ability+(ok?.04:-.04),kidMin(p),kidMax(p));
   Q.i++;save();
   showFeedback();
   const tok=Q.token;
@@ -2850,38 +3416,39 @@ function finishTest(){
   p.tokens=(p.tokens||0)+2;save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
 }
 function verdict(p,sid){
+  if(isGrown(p)){const d=Math.round(p.age-ageOf(p,sid));if(d>=1)return{e:'🚀',t:`${d} year${d===1?'':'s'} younger than your real age!`,c:'var(--good)'};if(d>-1)return{e:'🎯',t:'Right on your real age.',c:'var(--adult)'};return{e:'🌱',t:'Keep training — the levels will sharpen you up!',c:'var(--kid)'}}
   const diff=Math.round((ageOf(p,sid)-p.age)*10)/10;
   if(diff>=0.5)return{e:'🚀',t:`${diff} year${diff===1?'':'s'} ahead of your age!`,c:'var(--good)'};
   if(diff>-0.5)return{e:'🎯',t:'Right on track for your age!',c:'var(--adult)'};
   return{e:'🌱',t:'Lots of room to grow — the levels will power you up!',c:'var(--kid)'};
 }
 function ageBars(p){
-  const lo=4,hi=13,pos=x=>clamp((x-lo)/(hi-lo)*100,0,100);
+  const [lo,hi]=ageRange(p),pos=x=>clamp((x-lo)/(hi-lo)*100,0,100);
   return `<div class="agebars">${STAGES.map(s=>{const a=ageOf(p,s.id);
-    return `<div class="agebar"><span>${s.icon} ${s.subj.split(' ')[0]}</span><div class="tr">${a!=null?`<i style="width:${pos(a)}%;background:${a>p.age?'var(--good)':'var(--adult)'}"></i>`:''}<b style="left:${pos(p.age)}%" title="Real age"></b></div><span>${a??'–'}</span></div>`}).join('')}
+    return `<div class="agebar"><span>${s.icon} ${s.subj.split(' ')[0]}</span><div class="tr">${a!=null?`<i style="width:${pos(a)}%;background:${better(p,a)?'var(--good)':'var(--adult)'}"></i>`:''}<b style="left:${pos(p.age)}%" title="Real age"></b></div><span>${a??'–'}</span></div>`}).join('')}
     <div class="small muted" style="text-align:right">▮ black mark = real age (${p.age})</div></div>`;
 }
 function showAgeResult(sid,fresh,log){
   STAGE=sid;
   const p=cur(),st=stageById(sid),a=ageOf(p,sid),v=verdict(p,sid);
-  const lo=5,hi=13,pos=x=>clamp((x-lo)/(hi-lo)*100,2,98);
+  const [lo,hi]=ageRange(p),pos=x=>clamp((x-lo)/(hi-lo)*100,2,98);
   const H=sub(p,sid).history.slice(-8),mx=Math.max(...H.map(h=>h.age),p.age);
   const capped=sub(p,sid).ability>=kidMax(p)-0.05;
-  if(fresh&&a>p.age){confetti(60);sWin()}
-  app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${st.icon} Your ${st.age}</h1></div>
+  if(fresh&&better(p,a)){confetti(60);sWin()}
+  app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${st.icon} Your ${stAge(p,st)}</h1></div>
    <div class="card center">${avatar(p,84)}
-    <div class="qlabel" style="margin-top:14px">${esc(p.name)}'s ${st.age}</div>
+    <div class="qlabel" style="margin-top:14px">${esc(p.name)}'s ${stAge(p,st)}</div>
     <div class="big" style="color:${v.c}">${a}${capped?'+':''}</div>
     <div class="verdict">${v.e} ${v.t}</div>
     <div class="gauge"><div class="bar"></div>
-      ${[5,7,9,11,13].map(t=>`<div class="tick" style="left:${pos(t)}%">${t}</div>`).join('')}
+      ${ageTicks(p).map(t=>`<div class="tick" style="left:${pos(t)}%">${t}</div>`).join('')}
       <div class="mk up" style="left:${pos(p.age)}%">🎂 Real ${p.age}</div>
       <div class="mk" style="left:${pos(a)}%;top:24px">${avMini(p,40)}</div></div>
-    ${capped?`<p class="small muted">Top score for school year ${p.year} — questions stop at 2 years above. Change the school year in the profile to stretch further.</p>`:''}
+    ${capped&&!isGrown(p)?`<p class="small muted">Top score for school year ${p.year} — questions stop at 2 years above. Change the school year in the profile to stretch further.</p>`:''}
     ${H.length>1?`<div class="qlabel" style="margin-top:18px">Progress</div><div class="hist">${H.map(h=>`<div style="height:${Math.max(10,h.age/mx*70)}px"><span>${h.age}</span></div>`).join('')}</div>`:''}
     ${log?reviewHTML(log):''}
-    <div class="qlabel" style="margin:20px 0 8px">All subjects · Learning age ${learningAge(p)??'?'}</div>${ageBars(p)}
-    <p class="muted small" style="margin-top:18px">Compares answers with what the UK primary curriculum expects at each year group${sid==='zh'?' (Chinese: a second-language learner path)':''}. A fun guide, not a formal assessment.</p>
+    <div class="qlabel" style="margin:20px 0 8px">All subjects · ${ageWord(p)} ${learningAge(p)??'?'}</div>${ageBars(p)}
+    <p class="muted small" style="margin-top:18px">${isGrown(p)?'Brain age compares your score with typical adult general knowledge — lower than your real age means a sharper-than-average mind':'Compares answers with what the UK curriculum expects at each year group (Reception to Year 6)'}${sid==='zh'?' (Chinese: a second-language learner path)':''}. A fun guide, not a formal assessment.</p>
     <button class="btn block" onclick="map()">Back to the map 🗺️</button></div>`;
 }
 function finishLevel(){
@@ -2940,9 +3507,9 @@ function bossSetup(adultId,ch){
 }
 const LIMIT=6;
 function newB(kid,ad,extra){
-  const c=bossOpts.ch,ab=sub(kid,STAGE).ability||kidStart(kid);
+  const c=bossOpts.ch,ab=sub(kid,STAGE).ability??kidStart(kid);
   return Object.assign({sid:STAGE,ch:c,kid,ad,p:bossOpts.strength==='gentle'?1:0,t:90,sides:{kid:{},adult:{}},over:false,ks:0,as:0,seenK:new Set(),seenA:new Set(),
-    kpad:STAGE==='maths'?padDefault(kid):false,kLvl:clamp(ab-0.8+c*0.3,1,kidMax(kid)),kCap:Math.min(kidMax(kid),ab+0.6+c*0.3)},extra||{});
+    kpad:STAGE==='maths'?padDefault(kid):false,kLvl:clamp(ab-0.8+c*0.3,kidMin(kid),kidMax(kid)),kCap:Math.min(kidMax(kid),ab+0.6+c*0.3)},extra||{});
 }
 function startBoss(){primeSpeech();
   const kid=cur(),robo=bossOpts.adult==='robo',ad=robo?ROBO:getP(bossOpts.adult);if(!ad)return;
@@ -3054,20 +3621,20 @@ function home(){
        ${avatar(p,96,true)}<div class="nm">${esc(p.name)}</div>
        <div class="sub">Lv ${lv.n} ${lv.title}</div><div class="xpbar sm"><i style="width:${lv.pct}%"></i></div>
        <div class="kpis"><span>⭐ ${totalStars(p)}</span><span>🏆 ${p.trophies.length}</span><span>🪙 ${p.tokens||0}</span></div>
-       <span class="tag">${la!=null?'🧠 Learning age '+la:'✨ New player'}</span>
+       <span class="tag">${la!=null?'🧠 '+ageWord(p)+' '+la:'✨ New player'}</span>
        <button class="btn block playbtn">▶ Play</button></div>`}
     return `<div class="pcard" onclick="editProfile('${p.id}')" style="--c:${avOf(p).col}">
        <button class="edit" onclick="event.stopPropagation();editProfile('${p.id}')">✏️</button>
        ${avatar(p,80)}<div class="nm">${esc(p.name)}</div><div class="sub">Boss record</div>
        <span class="tag ad">${p.boss.w}W · ${p.boss.l}L${p.boss.d?' · '+p.boss.d+'D':''}</span></div>`};
   app().innerHTML=`
-   <div class="hero">
+   <div class="hero"><div class="garland hero-g"></div><div class="heroart l">${SKIN.art[0]}</div><div class="heroart r">${SKIN.art[1%SKIN.art.length]}</div>
      <div class="mascot">${avatarSVG(Object.assign({},MASCOT,{hat:mascotHat}),110)}<div class="bubble">${esc(SEASON.hello)}</div></div>
      <div class="logo">Quest <span>PK</span></div><div class="logosub">闯关PK · learn · battle · level up</div></div>
-   <div class="sect">🧒 Young adventurers</div>
-   <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')">＋<br>Add child</button></div>
-   <div class="sect">🐲 Grown-up bosses</div>
-   <div class="players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')">＋<br>Add grown-up</button></div>
+   <div class="sect">🎮 Players</div>
+   <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')">＋<br>Add player</button></div>
+   <div class="sect">🐲 Boss-only grown-ups</div>
+   <div class="players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')">＋<br>Add boss</button></div>
    ${REMOTE_OK?`<div class="center" style="margin-top:24px"><button class="btn purple" onclick="joinScreen('')">🌏 Join a far-away Boss PK</button></div>`:''}
    <div class="center homefoot">
      <button class="back" onclick="backupScreen()">💾 Save / restore</button>
@@ -3088,10 +3655,12 @@ function drawEditor(){
    <div class="avedit" onclick="AVTAB='sp';avatarEditor()">${avatarSVG(p.av,120)}<span class="btn ghost" style="padding:10px 14px;font-size:16px">🎨 Customise avatar</span></div>
    <label class="l">Name</label><input type="text" value="${esc(p.name)}" placeholder="e.g. Ethan, Mummy" maxlength="14" oninput="E.name=this.value">
    <label class="l">Player type</label>
-   <div class="seg"><button class="${p.kind==='kid'?'on':''}" onclick="E.kind='kid';drawEditor()">🧒 Child</button><button class="${p.kind==='adult'?'on':''}" onclick="E.kind='adult';drawEditor()">🐲 Grown-up (Boss)</button></div>
-   ${p.kind==='kid'?`<label class="l">Real age (years)</label><input type="number" min="4" max="14" step="0.5" value="${p.age}" oninput="E.age=parseFloat(this.value)||E.age">
-   <label class="l">School year <span class="muted small">(sets where questions start)</span></label>
-   <div class="seg">${[1,2,3,4,5,6].map(y=>`<button class="${(E.year||clamp(Math.round(E.age-5),1,6))===y?'on':''}" onclick="E.year=${y};drawEditor()">Y${y}</button>`).join('')}</div>
+   <div class="seg"><button class="${p.kind==='kid'?'on':''}" onclick="E.kind='kid';drawEditor()">🎮 Player</button><button class="${p.kind==='adult'?'on':''}" onclick="E.kind='adult';drawEditor()">🐲 Boss only</button></div>
+   <div class="muted small" style="margin-top:6px">Players go on the quest (any age — pick Pre-school or Adult below). "Boss only" grown-ups just play the Boss PK.</div>
+   ${p.kind==='kid'?`<label class="l">Real age (years)</label><input type="number" min="3" max="99" step="0.5" value="${p.age}" oninput="E.age=parseFloat(this.value)||E.age">
+   <label class="l">Level <span class="muted small">(sets where questions start)</span></label>
+   <div class="seg yrseg">${[[0,'🧸 Pre'],[1,'Y1'],[2,'Y2'],[3,'Y3'],[4,'Y4'],[5,'Y5'],[6,'Y6'],[8,'🧑 Adult']].map(([y,l])=>`<button class="${(E.year??clamp(Math.round(E.age-5),1,6))===y?'on':''}" onclick="E.year=${y};if(${y}===0&&E.age>6)E.age=4;if(${y}===8&&E.age<16)E.age=35;if(${y}>0&&${y}<8&&(E.age<4||E.age>14))E.age=${y}+5;drawEditor()">${l}</button>`).join('')}</div>
+   <div class="muted small" style="margin-top:6px">${E.year===0?'Pre-school: picture questions — counting, "a is for apple", animals, shapes. Questions are read aloud.':E.year>=8?'Adult: general knowledge, everyday maths, money, first aid and common sense. You get a Brain age (lower is better!).':'UK school year (Singapore P1 ≈ Year 2).'}</div>
    <label class="l">Read questions aloud 🔊</label>
    <div class="seg"><button class="${readDefault(p)?'on':''}" onclick="E.readAloud=true;drawEditor()">🔊 Automatically</button><button class="${!readDefault(p)?'on':''}" onclick="E.readAloud=false;drawEditor()">Only when tapped</button></div>
    <label class="l">Working paper</label>
@@ -3107,7 +3676,7 @@ function drawEditor(){
 function closeEditor(){setLayer('');E=null}
 function saveEditor(){
   const nm=(E.name||'').trim();if(!nm){miniToast('Please add a name');return}
-  E.name=nm;E.age=clamp(E.age||8,4,14);if(!E.year)E.year=clamp(Math.round(E.age-5),1,6);
+  E.name=nm;E.age=clamp(E.age||8,3,99);if(E.year==null)E.year=clamp(Math.round(E.age-5),1,6);
   /* seasonal items worn during their season are kept for good */
   for(const k of Object.keys(AV_ITEMS)){const it=(AV_ITEMS[k]||[]).find(i=>i[0]===E.av[k]);if(it&&it[2].season){E.seasonItems=E.seasonItems||[];if(!E.seasonItems.includes(it[2].season))E.seasonItems.push(it[2].season)}}
   const isNew=E._new;delete E._new;migrate(E);
@@ -3159,7 +3728,7 @@ function arcade(){
   stopGame();
   const p=cur();if(!p)return home();STAGE='arcade';
   const open=arcadeOpen(p),ts=totalStars(p);
-  app().innerHTML=`<div class="stickyhead"><div class="top"><button class="back" onclick="STAGE='maths';map()">‹</button>${avatar(p,52,true)}<h1>🕹️ Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div>
+  app().innerHTML=`<div class="stickyhead"><div class="garland"></div><div class="top"><button class="back" onclick="STAGE='maths';map()">‹</button>${avatar(p,52,true)}<h1>🕹️ Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div>
    <div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">🕹️ Arcade</button></div></div>
    ${!open?`<div class="card center"><div style="font-size:70px">🏝️🔒</div><h2>Arcade Island is locked</h2>
      <p class="muted">Collect <b>${ARCADE_NEED} stars</b> on the learning maps (you have ${ts}) — or get a <b>10-answer streak</b> (best: ${p.stats.bestStreak}).</p>
@@ -3606,7 +4175,7 @@ function spark(vals,w=150,h=46,col='#fb2c6b',bars=true){
     :(()=>{const mn=Math.min(...vals),rg=(Math.max(...vals)-mn)||1;const pts=vals.map((v,i)=>[i*(w/(vals.length-1||1)),h-6-((v-mn)/rg)*(h-12)]);
       return `<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="${col}"/>`).join('')}`})()}</svg>`;
 }
-function dashTop(p,title,back){return `<div class="stickyhead"><div class="top"><button class="back" onclick="${back||'map()'}">‹</button>${avatar(p,46,true)}<h1>${title}</h1></div></div>`}
+function dashTop(p,title,back){return `<div class="stickyhead"><div class="garland"></div><div class="top"><button class="back" onclick="${back||'map()'}">‹</button>${avatar(p,46,true)}<h1>${title}</h1></div></div>`}
 function cabinet(){dash()}
 function dash(){
   const p=cur(),lv=levelOf(p),R=rings(p),la=learningAge(p),d14=lastDays(p,14),streak=dayStreak(p);
@@ -3635,7 +4204,7 @@ function dash(){
 function dashLearn(){
   const p=cur();
   app().innerHTML=dashTop(p,'🧠 Learning age','dash()')+`
-   <div class="dcard center"><div class="big" style="font-size:56px">${learningAge(p)??'–'}</div><div class="muted">Learning age (average of tested subjects) · real age ${p.age} · school year ${p.year}</div></div>
+   <div class="dcard center"><div class="big" style="font-size:56px">${learningAge(p)??'–'}</div><div class="muted">${ageWord(p)} (average of tested subjects) · real age ${p.age} · school year ${p.year}</div></div>
    ${STAGES.map(s=>{const a=ageOf(p,s.id),h=sub(p,s.id).history,stars=starsIn(p,s.id);
      return `<div class="dcard"><div class="row" style="justify-content:space-between"><b style="font-size:18px">${s.icon} ${s.subj}</b><span class="big2" style="color:${a&&a>p.age?'#16a34a':'#6d28d9'}">${a??'–'}</span></div>
        <div class="row" style="gap:14px;align-items:flex-end"><div style="flex:1">${h.length>1?spark(h.slice(-10).map(x=>x.age),220,50,'#7c3aed',false):'<div class="small muted">Take the test again later to see a trend line.</div>'}</div>
@@ -3680,7 +4249,7 @@ function dashArcade(){
 
 /* ============ SPORTS GAMES ============ */
 GAMES.push(
- {id:'penalty',name:()=>'Penalty Shootout',icon:()=>'⚽',desc:()=>'Take 5 penalties against Robo-Keeper, then dive to save its shots. Best of 5, then sudden death!',need:{}},
+ {id:'penalty',name:()=>'Penalty Shootout',icon:()=>'⚽',desc:()=>'Stadium shootout! Drag to aim past Robo-Keeper, then go in goal and dive to save. Best of 5, then sudden death.',need:{}},
  {id:'keepy',name:()=>'Keepy-Uppy',icon:()=>'🦶',desc:()=>'Tap the ball to keep it in the air. How many touches can you do?',need:{stars:20}},
  {id:'hoops',name:()=>'Hoop Shot',icon:()=>'🏀',desc:()=>'Time your shot to sink as many baskets as you can in 45 seconds.',need:{stars:30}}
 );
@@ -3692,50 +4261,213 @@ playGame=function(id){
   p.tokens--;save();fn();
 };
 
-/* ---- Penalty Shootout ---- */
+/* ============ PENALTY SHOOTOUT v2 — 3D stadium ============ */
+function crowdSound(d=1.4,v=.14,f=900){try{if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();const n=Math.floor(AC.sampleRate*d),buf=AC.createBuffer(1,n,AC.sampleRate),a=buf.getChannelData(0);
+  for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(0.6+0.4*Math.sin(i/AC.sampleRate*14));
+  const s=AC.createBufferSource();s.buffer=buf;const fl=AC.createBiquadFilter();fl.type='bandpass';fl.frequency.value=f;fl.Q.value=.5;const gn=AC.createGain(),t=AC.currentTime;
+  gn.gain.setValueAtTime(0.0001,t);gn.gain.linearRampToValueAtTime(v,t+.12);gn.gain.exponentialRampToValueAtTime(.0005,t+d);s.connect(fl);fl.connect(gn);gn.connect(AC.destination);s.start()}catch(e){}}
+const sWhistle=()=>{beep(2350,.12,'square',.03);setTimeout(()=>beep(2350,.28,'square',.03),160)};
+const sKick=()=>beep(85,.09,'sine',.25);
+function rr(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
+
 function gPenalty(){
-  const g=shell('penalty','⚽ Penalty Shootout','<div id="pturn" class="pturn"></div>'),p=cur();$('.gctl').classList.add('pen');
-  const W=g.W,H=g.H,gw=Math.min(W*.8,520),gh=gw*.38,gx=(W-gw)/2,gy=H*.12,spotX=W/2,spotY=H*.82;
-  let me=0,robo=0,round=0,phase='shoot',ball=null,keeper={x:W/2,dive:0,t:0},msg='',msgT=0,busy=false,kickN=0;
-  const zoneOf=x=>x<gx+gw/3?0:x<gx+2*gw/3?1:2,zoneX=z=>gx+gw*(z*2+1)/6;
-  const info=()=>{if(g.dead||GAME!==g)return;const txt=`${avMini(p,30)} <b>${me}</b> – <b>${robo}</b> ${avMini(ROBO,30)} · ${phase==='shoot'?'⚽ Tap the goal to shoot!':'🧤 Dive: tap ◀ ● ▶'}${Math.floor(kickN/2)>=5?' · Sudden death!':''}`;
-    const c=$('.gctl');if(c)c.innerHTML=`<div class="pturn">${txt}</div>`+(phase==='save'&&!keeper.dive?`<button onpointerdown="GAME.dive(0)">◀</button><button onpointerdown="GAME.dive(1)">●</button><button onpointerdown="GAME.dive(2)">▶</button>`:'')};
+  const g=shell('penalty','⚽ Penalty Shootout',''),p=cur(),x=g.x,W=g.W,H=g.H,dpr=window.devicePixelRatio||1;
+  const young=(p.year??3)<=2,av=avOf(p),kitCol=av.col||'#3b82f6';
+  /* ---- camera: world metres → screen ---- */
+  const f=Math.min(1.27*W,1.5*H),CH=clamp(H*.62*4/f,1.6,3.2),hY=H*.9-f*CH/4,GZ=15,GW=3.66,GH=2.44,KZ=14.6;
+  const P=(X,Y,Z)=>({x:W/2+f*X/Z,y:hY+f*(CH-Y)/Z,s:f/Z});
+  const toGoal=(sx,sy)=>({X:(sx-W/2)*GZ/f,Y:CH-(sy-hY)*GZ/f});
+  const off=()=>{const c=document.createElement('canvas');c.width=W*dpr;c.height=H*dpr;const k=c.getContext('2d');k.scale(dpr,dpr);return[c,k]};
+  /* ---- static background: sky, stands, boards, pitch, lines ---- */
+  const [bgC,b]=off(),[fanC,fz]=off();
+  const boardTop=P(0,.9,19).y,boardBot=P(0,0,19).y;
+  let gr=b.createLinearGradient(0,0,0,boardTop);gr.addColorStop(0,'#070b1f');gr.addColorStop(1,'#1b2550');b.fillStyle=gr;b.fillRect(0,0,W,boardTop);
+  // stand tiers
+  const tiers=[[0,.38,'#2a3366'],[.38,.72,'#232b59'],[.72,1,'#1c2349']];
+  tiers.forEach(([a,c,col])=>{b.fillStyle=col;b.fillRect(0,boardTop*a,W,boardTop*(c-a));b.fillStyle='rgba(255,255,255,.07)';b.fillRect(0,boardTop*c-3,W,3)});
+  // floodlights
+  [[W*.12,boardTop*.08],[W*.88,boardTop*.08]].forEach(([lx,ly])=>{const rg=b.createRadialGradient(lx,ly,0,lx,ly,W*.35);rg.addColorStop(0,'rgba(255,255,240,.55)');rg.addColorStop(.25,'rgba(255,255,220,.12)');rg.addColorStop(1,'rgba(255,255,220,0)');b.fillStyle=rg;b.fillRect(0,0,W,boardTop);
+    b.fillStyle='#e2e8f0';for(let i=0;i<3;i++)for(let j=0;j<4;j++){b.beginPath();b.arc(lx-15+j*10,ly-6+i*9,3.2,0,7);b.fill()}});
+  // fans (own layer so they can jump when someone scores)
+  const fanCols=['#ef4444','#f59e0b','#fde047','#22c55e','#3b82f6','#a855f7','#f472b6','#ffffff',kitCol,kitCol],skins=['#f1c27d','#e0ac69','#c68642','#8d5524','#ffdbac'];
+  for(let row=0;row<26;row++){const yy=boardTop*(.06+row*.036),sz=2.2+row*.17,step=sz*2.5;
+    for(let xx=(row%2)*step/2;xx<W+step;xx+=step*(.85+Math.random()*.3)){if(Math.random()<.08)continue;
+      fz.fillStyle=pick(fanCols);rr(fz,xx-sz,yy,sz*2,sz*2.2,sz*.6);fz.fill();fz.fillStyle=pick(skins);fz.beginPath();fz.arc(xx,yy-sz*.4,sz*.8,0,7);fz.fill();
+      if(Math.random()<.06){fz.fillStyle=pick(fanCols);fz.fillRect(xx-sz*1.6,yy-sz*3,sz*3.2,sz*1.6)}}}
+  // advertising boards
+  const ads=[['QUEST PK','#7c3aed'],['LEARN · PLAY · WIN','#0ea5e9'],['STAR LEAGUE','#f59e0b'],['ROBO CUP','#ef4444'],['BRAIN POWER','#10b981']];
+  let bx0=-((W*.2)%170);for(let i=0;bx0<W;i++){const [t,c]=ads[i%ads.length],bw=Math.max(150,W*.24);b.fillStyle=c;b.fillRect(bx0,boardTop,bw-3,boardBot-boardTop);
+    b.fillStyle='rgba(255,255,255,.18)';b.fillRect(bx0,boardTop,bw-3,(boardBot-boardTop)*.35);b.fillStyle='#fff';{let fs=Math.max(9,(boardBot-boardTop)*.55);b.font=`700 ${fs}px Fredoka, sans-serif`;while(fs>8&&b.measureText(t).width>bw*.86){fs--;b.font=`700 ${fs}px Fredoka, sans-serif`}}b.textAlign='center';b.textBaseline='middle';b.fillText(t,bx0+bw/2,(boardTop+boardBot)/2+1);bx0+=bw}
+  // grass bands in perspective
+  const zs=[19];for(let z=18;z>.7;z-=z>8?2:1.2)zs.push(z);zs.push(.5);
+  zs.forEach((z,i)=>{if(i===zs.length-1)return;const y1=P(0,0,z).y,y2=Math.min(H,P(0,0,zs[i+1]).y);b.fillStyle=i%2?'#2f9e44':'#37b24d';b.fillRect(0,y1,W,y2-y1+1)});
+  gr=b.createLinearGradient(0,boardBot,0,H);gr.addColorStop(0,'rgba(0,0,0,.25)');gr.addColorStop(.4,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.18)');b.fillStyle=gr;b.fillRect(0,boardBot,W,H-boardBot);
+  // pitch markings
+  const line=(pts,w=.12)=>{b.strokeStyle='rgba(255,255,255,.85)';b.lineCap='round';b.lineJoin='round';b.beginPath();pts.forEach(([X,Z],i)=>{const q=P(X,0,Z);b.lineWidth=Math.max(1.2,w*q.s*.5);i?b.lineTo(q.x,q.y):b.moveTo(q.x,q.y)});b.stroke()};
+  line([[-40,GZ],[40,GZ]]);line([[-9.16,GZ],[-9.16,9.5],[9.16,9.5],[9.16,GZ]]);line([[-20.16,GZ],[-20.16,.8]]);line([[20.16,GZ],[20.16,.8]]);
+  {const q=P(0,0,4);b.fillStyle='#fff';b.beginPath();b.ellipse(q.x,q.y,.1*q.s,.1*q.s*.32,0,0,7);b.fill()}
+  // goal shadow
+  {const a=P(-GW,0,GZ),c=P(GW,0,GZ),d=P(GW+.6,0,GZ+1.6),e=P(-GW+.6,0,GZ+1.6);b.fillStyle='rgba(0,0,0,.18)';b.beginPath();b.moveTo(a.x,a.y);b.lineTo(c.x,c.y);b.lineTo(d.x,d.y);b.lineTo(e.x,e.y);b.fill()}
+  /* ---- avatar head for the child's keeper ---- */
+  const head=new Image();let headOk=false;head.onload=()=>headOk=true;head.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(avatarSVG(av,160));
+  /* ---- game state ---- */
+  let me=0,robo=0,saves=0,kickN=0,meK=[],roK=[],phase='aim',aim=null,ball=null,banner=null,cheer=0,bulge=null,lastT=performance.now(),hint=true;
+  const kp={x:0,fromX:0,tx:0,ty:1,t0:0,diving:false,ang:0,lift:0,armA:0};
+  const resetKeeper=()=>{Object.assign(kp,{x:0,fromX:0,diving:false,ang:0,lift:0,armA:0,t0:0})};
+  const startDive=(tx,ty,now)=>{if(kp.diving)return;kp.diving=true;kp.t0=now;kp.fromX=kp.x;kp.tx=tx;kp.ty=clamp(ty,.15,2.6)};
+  const pose=now=>{
+    if(!kp.diving){kp.x=kp.fromX+Math.sin(now/330)*.14;kp.ang=0;kp.lift=0;kp.armA=0;return}
+    const e=clamp((now-kp.t0)/420,0,1),ee=1-(1-e)*(1-e),dx=clamp(kp.tx-kp.fromX,-1.4,1.4),X=kp.fromX+dx*ee;
+    const jump=Math.abs(kp.tx-kp.fromX)<.9&&kp.ty>1.7,lift=jump?Math.min(.55,kp.ty-1.7+.25)*Math.sin(Math.min(1,e*1.2)*Math.PI*.5):Math.max(0,kp.ty-1.4)*.45*Math.sin(e*Math.PI);
+    const ang=jump?(kp.tx-X)*.25:clamp(Math.atan2(kp.tx-X,Math.max(.2,kp.ty-.9-lift)),-1.45,1.45);
+    kp.x=X;kp.lift=lift;kp.ang=ang*ee;kp.armA=ee};
+  const hand=()=>{const hipY=kp.lift+.9,L=1.38;return{hx:kp.x,hy:hipY,ex:kp.x+Math.sin(kp.ang)*L,ey:hipY+Math.cos(kp.ang)*L}};
+  const segDist=(px,py,ax,ay,bx,by)=>{const vx=bx-ax,vy=by-ay,t=clamp(((px-ax)*vx+(py-ay)*vy)/(vx*vx+vy*vy||1),0,1);return Math.hypot(px-ax-vx*t,py-ay-vy*t)};
+  const keeperCovers=(bx,by)=>{const h=hand();return segDist(bx,by,h.hx,h.hy-.75,h.ex,h.ey)<.34};
   const done=()=>{const mk=Math.ceil(kickN/2),rk=Math.floor(kickN/2);
     if(mk<=5&&rk<=5&&(me+(5-mk)<robo||robo+(5-rk)<me))return true;
     return kickN%2===0&&mk>=5&&me!==robo};
-  const finish=()=>{setScore(me*10+Math.max(0,me-robo)*20);if(me>robo){sWin();confetti(100);gameOver(`You win ${me}–${robo}! 🏆`)}else gameOver(`Robo-Keeper wins ${robo}–${me}`)};
-  const next=()=>{if(g.dead||GAME!==g)return;kickN++;if(done())return setTimeout(finish,500);phase=kickN%2===0?'shoot':'save';keeper={x:W/2,dive:0,t:0};ball=null;busy=false;info();
-    if(phase==='save')setTimeout(()=>{if(!g.dead&&GAME===g)roboShoot()},900)};
-  const show=(m)=>{msg=m;msgT=performance.now()};
-  g.c.addEventListener('pointerdown',e=>{if(phase!=='shoot'||busy||g.over)return;const r=g.c.getBoundingClientRect(),tx=e.clientX-r.left,ty=e.clientY-r.top;if(ty>spotY-40)return;
-    busy=true;info();const kz=Math.random()<.62?ri(0,2):zoneOf(tx);keeper.dive=kz;keeper.t=performance.now();
-    const onTarget=tx>gx+6&&tx<gx+gw-6&&ty>gy+6&&ty<gy+gh;const post=onTarget&&(tx<gx+gw*.06||tx>gx+gw*.94)&&Math.random()<.35;
-    ball={x0:spotX,y0:spotY,x1:tx,y1:ty,t:performance.now(),dur:520,res:null};
-    setTimeout(()=>{let res;if(!onTarget)res='Wide! 😬';else if(post)res='Off the post! 😱';else if(zoneOf(tx)===kz&&ty>gy+gh*.12)res='Saved! 🧤';else{res='GOAL! ⚽';me++;beep(880,.2,'triangle');confetti(30)}
-      if(res!=='GOAL! ⚽')sBad();show(res);info();setTimeout(next,1200)},560)});
-  const roboShoot=()=>{if(g.over)return;const z=ri(0,2),tx=zoneX(z)+ri(-20,20),ty=gy+gh*(.25+Math.random()*.6),miss=Math.random()<.12;
-    ball={x0:spotX,y0:gy-40>0?spotY:spotY,x1:miss?(z===0?gx-30:gx+gw+30):tx,y1:ty,t:performance.now()+800,dur:600,res:null,robo:true,z,miss};g.window=performance.now()+800;
-    setTimeout(()=>{busy=true;info();let res;if(miss)res='Robo missed! 🙌';else if(keeper.dive===z+1){res='SAVED! 🧤🎉';beep(880,.2,'triangle');confetti(30)}else{res='Robo scores 🤖';robo++;sBad()}
-      show(res);info();setTimeout(next,1200)},1450)};
-  g.dive=z=>{if(phase!=='save'||keeper.dive)return;keeper.dive=z+1;keeper.t=performance.now();info()};
-  info();
-  const draw=t=>{if(g.dead)return;const x=g.x;x.clearRect(0,0,W,H);
-    x.fillStyle='#16a34a';x.fillRect(0,0,W,H);for(let i=0;i<8;i++){x.fillStyle=i%2?'#15803d':'#16a34a';x.fillRect(0,i*H/8,W,H/8)}
-    x.strokeStyle='#fff';x.lineWidth=3;x.strokeRect(gx-gw*.25,gy+gh,gw*1.5,H*.3);x.beginPath();x.arc(spotX,spotY,4,0,7);x.fillStyle='#fff';x.fill();
-    x.fillStyle='rgba(255,255,255,.18)';x.fillRect(gx,gy,gw,gh);x.strokeStyle='rgba(255,255,255,.5)';x.lineWidth=1;for(let i=0;i<=gw;i+=14){x.beginPath();x.moveTo(gx+i,gy);x.lineTo(gx+i,gy+gh);x.stroke()}for(let j=0;j<=gh;j+=14){x.beginPath();x.moveTo(gx,gy+j);x.lineTo(gx+gw,gy+j);x.stroke()}
-    x.strokeStyle='#fff';x.lineWidth=7;x.beginPath();x.moveTo(gx,gy+gh);x.lineTo(gx,gy);x.lineTo(gx+gw,gy);x.lineTo(gx+gw,gy+gh);x.stroke();
-    // keeper
-    const dz=phase==='shoot'?keeper.dive:keeper.dive?keeper.dive-1:1,prog=keeper.t?Math.min(1,(t-keeper.t)/300):0,kx=W/2+(zoneX(dz)-W/2)*prog,ky=gy+gh*.62;
-    const kp=phase==='shoot'?ROBO:p;x.save();x.translate(kx,ky);x.rotate((dz-1)*prog*.9);x.fillStyle=phase==='shoot'?'#f59e0b':'#3b82f6';x.fillRect(-gh*.12,-gh*.18,gh*.24,gh*.42);
-    x.fillStyle='#fde68a';x.beginPath();x.arc(-gh*.2,-gh*.12,gh*.07,0,7);x.arc(gh*.2,-gh*.12,gh*.07,0,7);x.fill();x.restore();
-    emo(x,phase==='shoot'?'🤖':'🧤',kx,ky-gh*.3,gh*.3);
-    // shooter
-    if(phase==='save')emo(x,'🤖',spotX+30,spotY+10,40);
-    // ball
-    let bx=spotX,by=spotY,bs=34;if(ball){const k=clamp((t-ball.t)/ball.dur,0,1),e=1-(1-k)*(1-k);bx=ball.x0+(ball.x1-ball.x0)*e;by=ball.y0+(ball.y1-ball.y0)*e-Math.sin(k*Math.PI)*30;bs=34-14*e}
-    emo(x,'⚽',bx,by,bs);
-    if(msg&&t-msgT<1100){x.fillStyle='rgba(0,0,0,.45)';x.fillRect(0,H*.45-34,W,68);x.fillStyle='#fff';x.font='700 34px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(msg,W/2,H*.45)}
-    g.raf=requestAnimationFrame(draw)};g.raf=requestAnimationFrame(draw);
+  const finish=()=>{setScore(me*10+saves*5+(me>robo?20:0));if(me>robo){sWin();confetti(120);gameOver(`You win ${me}–${robo}! 🏆`)}else gameOver(`Robo-Keeper wins ${robo}–${me}`)};
+  const alive=()=>!g.dead&&GAME===g;
+  const next=()=>{if(!alive())return;kickN++;if(done())return setTimeout(()=>alive()&&finish(),700);ball=null;aim=null;bulge=null;resetKeeper();
+    if(kickN%2===0){phase='aim'}else{phase='robowait';roboPrep()}};
+  const show=(t,c)=>{banner={t,c,t0:performance.now()}};
+  /* ---- kid shoots ---- */
+  const evtPt=e=>{const r=g.c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  g.c.addEventListener('pointerdown',e=>{if(g.over)return;const q=evtPt(e);
+    if(phase==='aim'){aim=q;hint=false;try{g.c.setPointerCapture(e.pointerId)}catch(_){}}
+    else if(phase==='robowait'||phase==='robofly'){const w=toGoal(q.x,q.y);startDive(w.X,w.Y,performance.now())}});
+  g.c.addEventListener('pointermove',e=>{if(phase==='aim'&&aim)aim=evtPt(e)});
+  g.c.addEventListener('pointerup',e=>{if(phase!=='aim'||!aim)return;const w=toGoal(aim.x,aim.y);aim=null;
+    const err=young?.1:.14,tx=w.X+(Math.random()*2-1)*err,ty=Math.max(.12,w.Y+(Math.random()*2-1)*err);shoot(tx,ty,false)});
+  const shoot=(tx,ty,byRobo)=>{const now=performance.now();sKick();
+    ball={st:'fly',t0:now,T:byRobo?(young?1150:880):760,tx,ty,curve:(Math.random()*2-1)*.5,arc:.25+Math.random()*.25,x:0,y:.11,z:4,spin:0,res:null};
+    phase=byRobo?'robofly':'kidfly';
+    if(!byRobo){const smart=Math.random()<(young?.3:.48),err=(Math.random()*2-1)*.35;
+      const gx=smart?tx+err:pick([-1,1])*(.8+Math.random()*2.2),gy=smart?ty+err*.5:.3+Math.random()*1.8;
+      setTimeout(()=>{if(alive()&&ball)startDive(gx,gy,performance.now())},smart?120:60)}};
+  /* ---- robot shoots ---- */
+  let robo1=null;
+  const roboPrep=()=>{const side=Math.random()<.5?-1:1,max=young?3.2:3.8;
+    const tx=Math.random()<.18?(Math.random()*2-1)*.6:side*(1+Math.random()*(max-1)),ty=.2+Math.random()*(young?1.9:2.4);
+    robo1={t0:performance.now(),tx,ty,tell:Math.random()<.6?Math.sign(tx):-Math.sign(tx)};sWhistle();
+    setTimeout(()=>{if(alive()&&phase==='robowait')shoot(robo1.tx,robo1.ty,true)},1500)};
+  /* ---- resolve when the ball reaches the goal line ---- */
+  const resolve=()=>{const {tx,ty}=ball,ax=Math.abs(tx);let res;
+    if((ax>GW-.11&&ax<GW+.14&&ty<GH+.1)||(ty>GH-.1&&ty<GH+.14&&ax<GW+.1))res='post';
+    else if(ax>=GW+.11||ty>=GH+.11)res='miss';
+    else if(keeperCovers(tx,ty))res='save';else res='goal';
+    ball.res=res;ball.st='after';const kid=phase==='kidfly';
+    if(res==='goal'){ball.vx=0;ball.vy=0;ball.vz=7;bulge={x:tx,y:ty,t0:performance.now()};cheer=performance.now();
+      if(kid){me++;meK.push(1);show('GOAL!','#fde047');crowdSound(2.2,.2);beep(880,.2,'triangle');confetti(40)}else{robo++;roK.push(1);show('Robo scores','#fca5a5');crowdSound(.9,.06,500);sBad()}}
+    else if(res==='save'){ball.vx=Math.sign(tx||1)*(2+Math.random()*2);ball.vy=3;ball.vz=-7;
+      if(kid){meK.push(0);show('SAVED!','#fca5a5');crowdSound(1,.08,600);sBad()}else{saves++;roK.push(0);show('WHAT A SAVE!','#86efac');crowdSound(2,.2);cheer=performance.now();beep(880,.2,'triangle');confetti(40)}}
+    else if(res==='post'){ball.vx=-Math.sign(tx)*4;ball.vy=1.5;ball.vz=-5;beep(1200,.15,'triangle',.06);
+      if(kid){meK.push(0);show('OFF THE POST!','#fdba74');sBad()}else{roK.push(0);show('Off the post!','#86efac');crowdSound(1.4,.15)}}
+    else{ball.vx=Math.sign(tx)*1;ball.vy=0;ball.vz=11;
+      if(kid){meK.push(0);show(ty>GH?'OVER THE BAR!':'WIDE!','#fdba74');crowdSound(1,.08,500);sBad()}else{roK.push(0);show('Robo missed!','#86efac');crowdSound(1.6,.16);cheer=performance.now()}}
+    phase='result';setScore(me*10+saves*5);setTimeout(next,1900)};
+  /* ---- drawing helpers ---- */
+  const drawBall=(cx,cy,r,rot)=>{x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
+    const rg=x.createRadialGradient(cx-r*.35,cy-r*.4,r*.1,cx,cy,r*1.05);rg.addColorStop(0,'#fff');rg.addColorStop(.7,'#e5e7eb');rg.addColorStop(1,'#9ca3af');x.fillStyle=rg;x.fillRect(cx-r,cy-r,2*r,2*r);
+    const pent=(px,py,pr,a)=>{x.beginPath();for(let i=0;i<5;i++){const t=a+i*Math.PI*2/5;x.lineTo(px+Math.cos(t)*pr,py+Math.sin(t)*pr)}x.closePath();x.fill()};
+    x.fillStyle='#1f2937';const ox=Math.sin(rot)*r*.25,oy=Math.cos(rot*.7)*r*.12;pent(cx+ox,cy+oy,r*.36,rot);
+    for(let i=0;i<5;i++){const a=rot+i*Math.PI*2/5+Math.PI/5;pent(cx+ox+Math.cos(a)*r*.98,cy+oy+Math.sin(a)*r*.98,r*.32,a+Math.PI)}
+    x.strokeStyle='rgba(31,41,55,.55)';x.lineWidth=Math.max(.6,r*.05);for(let i=0;i<5;i++){const a=rot+i*Math.PI*2/5;x.beginPath();x.moveTo(cx+ox+Math.cos(a)*r*.36,cy+oy+Math.sin(a)*r*.36);x.lineTo(cx+ox+Math.cos(a)*r*.66,cy+oy+Math.sin(a)*r*.66);x.stroke()}
+    x.restore();x.strokeStyle='rgba(0,0,0,.25)';x.lineWidth=1;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke()};
+  const ballAt=(bx,by,bz,rot)=>{const sh=P(bx,0,bz),q=P(bx,by,bz),r=Math.max(3,.11*q.s*1.35);
+    x.fillStyle=`rgba(0,0,0,${clamp(.35-by*.08,.08,.35)})`;x.beginPath();x.ellipse(sh.x,sh.y,r*1.1,r*.32,0,0,7);x.fill();drawBall(q.x,q.y,r,rot)};
+  const drawNet=now=>{const amp=bulge?Math.max(0,.75*(1-(now-bulge.t0)/900))*Math.max(0,Math.sin((now-bulge.t0)/90)*.4+.6):0;
+    const BZ=GZ+1.8,BH=2.0,dz=(X,Y)=>bulge&&amp?amp*Math.exp(-((X-bulge.x)**2+(Y-bulge.y)**2)/.6):0;
+    const pt=(X,Y,Z)=>P(X,Y,Z+dz(X,Y));
+    // back panel fill
+    const a=pt(-GW,0,BZ),c=pt(GW,0,BZ),d=pt(GW,BH,BZ),e=pt(-GW,BH,BZ);x.fillStyle='rgba(255,255,255,.07)';x.beginPath();x.moveTo(a.x,a.y);x.lineTo(c.x,c.y);x.lineTo(d.x,d.y);x.lineTo(e.x,e.y);x.fill();
+    x.strokeStyle='rgba(255,255,255,.5)';x.lineWidth=.8;
+    for(let X=-GW;X<=GW+.01;X+=.3){x.beginPath();for(let Y=0;Y<=BH+.01;Y+=.25){const q=pt(X,Y,BZ);Y?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)}x.stroke()}
+    for(let Y=0;Y<=BH+.01;Y+=.3){x.beginPath();for(let X=-GW;X<=GW+.01;X+=.3){const q=pt(X,Y,BZ);X>-GW?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)}x.stroke()}
+    // roof + sides
+    x.strokeStyle='rgba(255,255,255,.32)';
+    for(let X=-GW;X<=GW+.01;X+=.3){const q1=P(X,GH,GZ),q2=pt(X,BH,BZ);x.beginPath();x.moveTo(q1.x,q1.y);x.lineTo(q2.x,q2.y);x.stroke()}
+    [-GW,GW].forEach(X=>{for(let k=0;k<=6;k++){const Z=GZ+1.8*k/6,Y=GH+(BH-GH)*k/6,q1=P(X,0,Z),q2=P(X,Y,Z);x.beginPath();x.moveTo(q1.x,q1.y);x.lineTo(q2.x,q2.y);x.stroke()}
+      for(let Y=0;Y<=GH;Y+=.3){const q1=P(X,Y,GZ),q2=P(X,Math.min(Y,BH),BZ);x.beginPath();x.moveTo(q1.x,q1.y);x.lineTo(q2.x,q2.y);x.stroke()}
+      const s1=P(X,GH,GZ),s2=P(X,BH,BZ),s3=P(X,0,BZ);x.strokeStyle='rgba(226,232,240,.8)';x.lineWidth=2;x.beginPath();x.moveTo(s1.x,s1.y);x.lineTo(s2.x,s2.y);x.lineTo(s3.x,s3.y);x.stroke();x.strokeStyle='rgba(255,255,255,.32)';x.lineWidth=.8})};
+  const drawFrame=()=>{const pw=Math.max(4,.12*f/GZ),a=P(-GW,0,GZ),b2=P(-GW,GH,GZ),c=P(GW,GH,GZ),d=P(GW,0,GZ);
+    const bar=(x1,y1,x2,y2)=>{x.strokeStyle='rgba(0,0,0,.25)';x.lineWidth=pw+2;x.lineCap='round';x.beginPath();x.moveTo(x1+2,y1+2);x.lineTo(x2+2,y2+2);x.stroke();
+      x.strokeStyle='#f8fafc';x.lineWidth=pw;x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();x.strokeStyle='rgba(148,163,184,.6)';x.lineWidth=pw*.3;x.beginPath();x.moveTo(x1+pw*.25,y1+pw*.25);x.lineTo(x2+pw*.25,y2+pw*.25);x.stroke()};
+    bar(a.x,a.y,b2.x,b2.y);bar(d.x,d.y,c.x,c.y);bar(b2.x-pw/2,b2.y,c.x+pw/2,c.y)};
+  const drawKeeper=(robot,now)=>{const sh=P(kp.x,0,KZ),F=P(kp.x,kp.lift,KZ),s=F.s;
+    x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(sh.x+Math.sin(kp.ang)*s*.5,sh.y,s*(.45+Math.abs(kp.ang)*.5),s*.1,0,0,7);x.fill();
+    x.save();x.translate(F.x,F.y);x.scale(s,s);x.translate(0,-.9);x.rotate(kp.ang);
+    const crouch=kp.diving?0:.06+Math.sin(now/180)*.015,kit=robot?'#f59e0b':kitCol,dark=shade(kit,-35),sp=kp.diving?.07:.2;
+    // legs
+    [-1,1].forEach(sd=>{x.fillStyle=robot?'#64748b':'#1e293b';rr(x,sd*sp-.08,-crouch,.16,.46,.06);x.fill();x.fillStyle=robot?'#94a3b8':kit;rr(x,sd*sp-.07,.42-crouch,.14,.4,.05);x.fill();
+      x.fillStyle='#111827';x.beginPath();x.ellipse(sd*sp+sd*.04,.86-crouch,.12,.065,0,0,7);x.fill()});
+    // arms (behind torso)
+    [-1,1].forEach(sd=>{const th=sd*(2.15*(1-kp.armA)+.22*kp.armA)+(kp.diving?0:sd*Math.sin(now/250)*.12);
+      x.save();x.translate(sd*.23,-.56-crouch);x.rotate(th);x.fillStyle=dark;rr(x,-.065,-.62,.13,.62,.06);x.fill();
+      x.fillStyle='#bef264';x.strokeStyle='#4d7c0f';x.lineWidth=.025;x.beginPath();x.arc(0,-.68,.11,0,7);x.fill();x.stroke();
+      x.fillStyle='#84cc16';[-.06,-.02,.02,.06].forEach(o=>{rr(x,o-.017,-.85,.034,.12,.017);x.fill()});x.restore()});
+    // shorts + torso
+    x.fillStyle=robot?'#334155':'#111827';rr(x,-.25,-.06-crouch,.5,.3,.07);x.fill();
+    const tg=x.createLinearGradient(-.27,0,.27,0);tg.addColorStop(0,dark);tg.addColorStop(.35,kit);tg.addColorStop(1,dark);x.fillStyle=tg;rr(x,-.27,-.66-crouch,.54,.66,.12);x.fill();
+    x.fillStyle='rgba(255,255,255,.85)';x.fillRect(-.27,-.36-crouch,.54,.05);
+    x.save();x.scale(.01,.01);x.fillStyle='#fff';x.font='700 28px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('1',0,(-.5-crouch)*100);x.restore();
+    // head
+    if(robot){const hg=x.createLinearGradient(0,-1.12,0,-.72);hg.addColorStop(0,'#e2e8f0');hg.addColorStop(1,'#94a3b8');x.fillStyle=hg;rr(x,-.17,-1.08-crouch,.34,.36,.1);x.fill();
+      x.fillStyle='#0f172a';rr(x,-.14,-.98-crouch,.28,.12,.06);x.fill();const look=kp.diving?Math.sign(kp.ang)*.04:Math.sin(now/400)*.04;
+      x.fillStyle='#22d3ee';x.shadowColor='#22d3ee';x.shadowBlur=.08*s;x.beginPath();x.arc(-.06+look,-.92-crouch,.03,0,7);x.arc(.06+look,-.92-crouch,.03,0,7);x.fill();x.shadowBlur=0;
+      x.strokeStyle='#94a3b8';x.lineWidth=.025;x.beginPath();x.moveTo(0,-1.08-crouch);x.lineTo(0,-1.2-crouch);x.stroke();x.fillStyle='#ef4444';x.beginPath();x.arc(0,-1.22-crouch,.04,0,7);x.fill()}
+    else{x.fillStyle='#f1c27d';rr(x,-.06,-.76-crouch,.12,.12,.04);x.fill();
+      if(headOk)x.drawImage(head,-.3,-1.32-crouch,.6,.6);else{x.fillStyle=kit;x.beginPath();x.arc(0,-.92-crouch,.16,0,7);x.fill()}}
+    x.restore()};
+  const drawRobotKicker=now=>{if(!robo1)return;const run=clamp((now-robo1.t0)/1500,0,1),kick=phase!=='robowait'?clamp((now-(ball?ball.t0:now))/250,0,1):0;
+    const X=-1.25+.85*run,Z=2.4+1.25*run,F=P(X,0,Z),s=F.s*.5;x.save();x.translate(F.x,F.y);x.scale(s,s);
+    const bob=run<1?Math.abs(Math.sin(run*14))*.05:0;
+    x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(0,0,.4,.08,0,0,7);x.fill();
+    // legs
+    x.fillStyle='#64748b';rr(x,-.2,-.5-bob,.14,.5,.05);x.fill();x.save();x.translate(.13,-.48-bob);x.rotate(-kick*1.1+(run<1?Math.sin(run*14)*.4:0));rr(x,-.07,0,.14,.5,.05);x.fill();x.restore();
+    [-1,1].forEach(sd=>{x.save();x.translate(sd*.34,-1.05-bob);x.rotate(sd*(.35+(run<1?Math.sin(run*14+sd)*.3:.6)));x.fillStyle='#94a3b8';rr(x,-.06,0,.12,.5,.06);x.fill();x.fillStyle='#e2e8f0';x.beginPath();x.arc(0,.54,.08,0,7);x.fill();x.restore()});
+    // body from behind
+    const bg2=x.createLinearGradient(-.32,0,.32,0);bg2.addColorStop(0,'#94a3b8');bg2.addColorStop(.5,'#e2e8f0');bg2.addColorStop(1,'#94a3b8');x.fillStyle=bg2;rr(x,-.32,-1.15-bob,.64,.68,.16);x.fill();
+    x.fillStyle='#f59e0b';rr(x,-.32,-1.05-bob,.64,.2,.06);x.fill();x.save();x.scale(.01,.01);x.fillStyle='#fff';x.font='700 17px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('ROBO 9',0,(-.95-bob)*100);x.restore();
+    // head turns to the "tell" side
+    const lean=phase==='robowait'&&run>.5?robo1.tell*.08:0;x.fillStyle='#cbd5e1';rr(x,-.2+lean,-1.5-bob,.4,.34,.12);x.fill();
+    x.strokeStyle='#94a3b8';x.lineWidth=.03;x.beginPath();x.moveTo(lean,-1.5-bob);x.lineTo(lean,-1.64-bob);x.stroke();x.fillStyle='#ef4444';x.beginPath();x.arc(lean,-1.66-bob,.05,0,7);x.fill();
+    x.restore()};
+  const pill=(t,y,bgc='rgba(15,23,42,.72)')=>{x.font=`700 ${Math.max(15,W*.024)}px Fredoka, sans-serif`;const tw=x.measureText(t).width+34;rr(x,W/2-tw/2,y-20,tw,40,20);x.fillStyle=bgc;x.fill();x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.fillText(t,W/2,y+1)};
+  const scoreboard=()=>{const bw=Math.min(W*.94,560),bh=58,X0=(W-bw)/2,Y0=10;rr(x,X0,Y0,bw,bh,18);x.fillStyle='rgba(10,15,40,.82)';x.fill();x.strokeStyle='rgba(255,255,255,.15)';x.lineWidth=1.5;x.stroke();
+    x.textBaseline='middle';x.font='700 15px Fredoka, sans-serif';x.fillStyle='#fff';x.textAlign='left';x.fillText(p.name.slice(0,10),X0+16,Y0+18);x.textAlign='right';x.fillText('Robo-Keeper',X0+bw-16,Y0+18);
+    const dots=(arr,x0,dir)=>{const st=Math.max(0,arr.length-5);for(let i=0;i<5;i++){const v=arr[st+i],cx=x0+dir*i*19,cy=Y0+40;x.beginPath();x.arc(cx,cy,7,0,7);x.fillStyle=v===1?'#22c55e':v===0?'#ef4444':'rgba(255,255,255,.18)';x.fill();if(v===0){x.strokeStyle='#fff';x.lineWidth=2;x.beginPath();x.moveTo(cx-3,cy-3);x.lineTo(cx+3,cy+3);x.moveTo(cx+3,cy-3);x.lineTo(cx-3,cy+3);x.stroke()}}};
+    dots(meK,X0+23,1);dots(roK,X0+bw-23,-1);x.textAlign='center';x.font='700 30px Fredoka, sans-serif';x.fillStyle='#fde047';x.fillText(`${me} – ${robo}`,W/2,Y0+bh/2+1);
+    if(Math.floor(kickN/2)>=5){x.font='700 11px Fredoka, sans-serif';x.fillStyle='#fca5a5';x.fillText('SUDDEN DEATH',W/2,Y0+bh-7)}};
+  /* ---- main loop ---- */
+  const draw=now=>{if(g.dead)return;const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
+    x.drawImage(bgC,0,0,W,H);const jumpY=cheer&&now-cheer<1800?-Math.abs(Math.sin((now-cheer)/90))*4:0;x.drawImage(fanC,0,jumpY,W,H);
+    pose(now);
+    // ball update
+    if(ball){if(ball.st==='fly'){const u=clamp((now-ball.t0)/ball.T,0,1),k=4*u*(1-u);ball.x=ball.tx*u+ball.curve*k;ball.y=.11+(ball.ty-.11)*u+ball.arc*k;ball.z=4+(GZ-4)*u;ball.spin+=dt*14;if(u>=1)resolve()}
+      else{ball.x+=ball.vx*dt;ball.z+=ball.vz*dt;ball.vy-=9.8*dt;ball.y+=ball.vy*dt;ball.spin+=dt*6;if(ball.y<.11){ball.y=.11;ball.vy=Math.abs(ball.vy)*.45;ball.vx*=.8;ball.vz*=.8}
+        if(ball.res==='goal'&&ball.z>GZ+1.6){ball.z=GZ+1.6;ball.vz=0;ball.vx=0}if(ball.res==='miss'&&ball.z>19){ball.z=19;ball.vz=0;ball.vx=0}if(ball.z<2.5){ball.z=2.5;ball.vz=0}}}
+    drawNet(now);
+    const behind=ball&&ball.z>GZ;if(behind)ballAt(ball.x,ball.y,ball.z,ball.spin);
+    drawFrame();
+    const robotKeeper=kickN%2===0;drawKeeper(robotKeeper,now);
+    if(!behind)ballAt(ball?ball.x:0,ball?ball.y:.11,ball?ball.z:4,ball?ball.spin:0);
+    if(!robotKeeper)drawRobotKicker(now);
+    // aiming reticle + trajectory preview
+    if(phase==='aim'&&aim){const w=toGoal(aim.x,aim.y),s0=P(0,.11,4);x.setLineDash([4,7]);x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=2.5;x.beginPath();
+      for(let i=0;i<=20;i++){const u=i/20,k=4*u*(1-u),q=P(w.X*u,.11+(w.Y-.11)*u+.3*k,4+(GZ-4)*u);i?x.lineTo(q.x,q.y):x.moveTo(s0.x,s0.y)}x.stroke();x.setLineDash([]);
+      const on=Math.abs(w.X)<GW&&w.Y<GH&&w.Y>0;x.strokeStyle=on?'#fde047':'#f87171';x.lineWidth=3;x.beginPath();x.arc(aim.x,aim.y,16,0,7);x.stroke();x.beginPath();x.arc(aim.x,aim.y,5,0,7);x.fillStyle=x.strokeStyle;x.fill();
+      x.beginPath();x.moveTo(aim.x-24,aim.y);x.lineTo(aim.x-10,aim.y);x.moveTo(aim.x+10,aim.y);x.lineTo(aim.x+24,aim.y);x.moveTo(aim.x,aim.y-24);x.lineTo(aim.x,aim.y-10);x.moveTo(aim.x,aim.y+10);x.lineTo(aim.x,aim.y+24);x.stroke()}
+    scoreboard();
+    const py=H-34;
+    if(phase==='aim')pill(hint?'👆 Touch the goal, drag to aim, let go to shoot!':'⚽ Your kick — aim for the corners!',py,'rgba(124,58,237,.85)');
+    else if(phase==='robowait'||phase==='robofly')pill(kp.diving?'🧤 Diving…':'🧤 You\'re in goal! Tap where to dive — watch Robo\'s head…',py,'rgba(14,116,144,.88)');
+    if(phase==='aim'&&hint){const a=P(-2.6,1.6,GZ),pulse=1+Math.sin(now/200)*.15;x.font=`${36*pulse}px system-ui`;x.textAlign='center';x.fillText('👆',a.x,a.y+30)}
+    if(banner){const e=(now-banner.t0)/1000;if(e<1.7){const sc=e<.25?.4+e/.25*.75:e<.4?1.15-(e-.25)/.15*.15:1;x.save();x.translate(W/2,H*.5);x.scale(sc,sc);x.globalAlpha=e>1.4?1-(e-1.4)/.3:1;
+      x.font=`700 ${Math.min(76,W*.11)}px Fredoka, sans-serif`;x.textAlign='center';x.textBaseline='middle';x.lineWidth=10;x.strokeStyle='rgba(15,23,42,.85)';x.lineJoin='round';x.strokeText(banner.t,0,0);x.fillStyle=banner.c;x.fillText(banner.t,0,0);x.restore()}else banner=null}
+    g.raf=requestAnimationFrame(draw)};
+  sWhistle();g.raf=requestAnimationFrame(draw);
 }
 
 /* ---- Keepy-Uppy ---- */
@@ -3777,9 +4509,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='2.4';
-const APP_DATE='9 Nov 2026';
+const APP_VERSION='2.5';
+const APP_DATE='10 Nov 2026';
 const CHANGES=[
+ ['2.5','New 3D Penalty Shootout; pre-school (Little Explorers) and grown-up players with Brain age; new Common Sense City stage; full festival themes'],
  ['2.4','New History stage (Time Tunnel) and sports games: Penalty Shootout, Keepy-Uppy, Hoop Shot'],
  ['2.3','Festival themes (Deepavali, Christmas, Hari Raya, National Day, Easter…), spelling builder, 4 new arcade games (2048, Bubble Pop, Gem Swap, Sudoku), sticky stage header, new summary dashboard'],
  ['2.2','Speaking bonus works without Siri/Dictation (record & compare), with a fix-it checklist'],
