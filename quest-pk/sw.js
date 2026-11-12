@@ -2,8 +2,8 @@
 // The game page is fetched fresh whenever the iPad is online (so updates arrive on their own),
 // and the saved copy is used when offline. Player progress lives in the browser's storage,
 // which this file never touches.
-const CACHE = "questpk-v15";
-const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./assets/companions.png", "./assets/worlds.png"];
+const CACHE = "questpk-v16";
+const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./assets/companions.png", "./assets/worlds.png", "./assets/arcade-sprites.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
