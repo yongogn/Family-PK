@@ -1237,9 +1237,10 @@ const L_SPELL=`
 6|correspondence|correspondance|corespondence|correspondanse
 6|sincerely|sincerly|sincerelly|sinserely
 `;
-const L_CLASS={noun:'dog,apple,school,river,teacher,pencil,castle,mountain,banana,window,rocket,garden,elephant,library'.split(','),
- verb:'run,jump,eat,swim,write,laugh,climb,throw,sing,build,shout,whisper,carry,explore'.split(','),
- adjective:'happy,blue,tiny,fluffy,loud,cold,shiny,brave,huge,soft,smelly,bright,gentle,enormous'.split(','),
+/* words chosen so they only work as one word class (no 'run'/'jump' that can also be nouns) */
+const L_CLASS={noun:'apple,teacher,pencil,castle,mountain,banana,elephant,library,river,school,giraffe,sandwich,umbrella,kitchen'.split(','),
+ verb:'eat,write,explore,arrive,choose,forget,borrow,bring,imagine,describe,decide,gather,pretend,disappear'.split(','),
+ adjective:'happy,tiny,fluffy,loud,shiny,brave,huge,smelly,gentle,enormous,noisy,hungry,friendly,curious'.split(','),
  adverb:'quickly,slowly,loudly,quietly,happily,carefully,bravely,softly,sadly,gently,suddenly,neatly,rarely,eagerly'.split(',')};
 const L_CLASSNAME={noun:'a noun (naming word)',verb:'a verb (doing word)',adjective:'an adjective (describing word)',adverb:'an adverb (tells how)'};
 
@@ -1733,7 +1734,7 @@ function eAdd(a,b){
   const s=a+b;
   if(b<10&&a%10+b>10&&a>=10){const t=10-a%10;return `Make the next ten first: ${a} + ${t} = ${a+t}, then ${b-t} more makes ${s}.`}
   if(b%100===0&&b>=100)return `Add ${b/100} hundred${b>100?'s':''}: ${a} → ${s}.`;
-  if(b%10===0&&b>=10)return `Add ${b/10} ten${b>10?'s':''}: ${a} → ${s}. Only the tens digit changes.`;
+  if(b%10===0&&b>=10)return `Add ${b/10} ten${b>10?'s':''}: ${a} → ${s}. `+((a%100)+b<100?'The ones digit stays the same; only the tens change.':'The ones digit stays the same; the tens go past 9, so we regroup 10 tens into 1 more hundred.');
   if(a<=10&&b<=10)return `Start at ${a} and count on ${b}: ${s}.`;
   return `${a} + ${b} = ${s}.`;
 }
@@ -2112,7 +2113,8 @@ const ARCADE_NEED=15;
 function arcadeOpen(p){return p.unlockAll||totalStars(p)>=ARCADE_NEED||p.stats.bestStreak>=10}
 
 /* ============ MAP ============ */
-function map(){
+function killQuiz(){if(Q){Q.dead=true;Q.token++}try{speechSynthesis.cancel()}catch(e){}}
+function map(){if(Q&&!Q.dead)killQuiz();
   if(RM.role)rmClose();
   const p=cur();if(!p)return home();
   if(STAGE==='arcade')return arcade();
@@ -2907,7 +2909,7 @@ function genGrownMaths(y){
    ()=>{const a=ri(3,8)*10,b=a+pick([5,10,15,20,25]),pc=Math.round((b-a)/a*1000)/10;return{q:`A price rises from $${a} to $${b}. What is the percentage increase?`,ans:pc+'%',opts:optsOf(pc+'%',[(b-a)+'%',Math.round((b-a)/b*1000)/10+'%',(pc*2)+'%',(pc/2)+'%']),e:`Increase ÷ original = ${b-a} ÷ ${a} = ${pc}%.`}},
    ()=>{const r=pick([2,3,4,6,8,9,12]),yrs=Math.round(72/r);return{q:`Roughly how many years does it take money to double at ${r}% a year?`,ans:yrs+' years',opts:optsOf(yrs+' years',[r*2+' years',(100/r|0)+' years',yrs*2+' years',(yrs+4)+' years',Math.max(1,yrs-3)+' years']),e:`Rule of 72: 72 ÷ ${r} ≈ ${yrs} years.`}},
    ()=>{const d=pick([90,120,150,180,240,300]),t=pick([1.5,2,2.5,3]),s=Math.round(d/t);if(d%t)return fs[0]();return{q:`A train travels ${d} km in ${t} hours. What is its average speed?`,ans:s+' km/h',opts:optsOf(s+' km/h',[d*t+' km/h',(s+10)+' km/h',(s-15)+' km/h',d+' km/h']),e:`Speed = distance ÷ time = ${d} ÷ ${t} = ${s} km/h.`}},
-   ()=>{const [city,off]=pick([['London',8],['Paris',7],['Dubai',4],['Sydney',-3],['Tokyo',-1],['New York',13]]),h=ri(7,20);let t=(h-off+24)%24;const f=x=>{const hh=x%12||12;return `${hh} ${x<12?'am':'pm'}`};return{q:`It's ${f(h)} in Singapore. What time is it in ${city}?`,ans:f(t),opts:optsOf(f(t),[f((h+off)%24),f((t+1)%24),f((t+23)%24),f((t+12)%24)]),e:`${city} is ${Math.abs(off)} hours ${off>0?'behind':'ahead of'} Singapore (standard time).`}},
+   ()=>{const [city,off,zl]=pick([['London (in December)',8,'UTC+0'],['Dubai',4,'UTC+4'],['Bangkok',1,'UTC+7'],['Tokyo',-1,'UTC+9'],['New York (in January)',13,'UTC−5'],['Sydney (in July)',-2,'UTC+10']]),h=ri(7,20);let t=(h-off+24)%24;const f=x=>{const hh=x%12||12;return `${hh} ${x<12?'am':'pm'}`};return{q:`It's ${f(h)} in Singapore (UTC+8). What time is it in ${city}, which is ${zl}?`,ans:f(t),opts:optsOf(f(t),[f((h+off)%24),f((t+1)%24),f((t+23)%24),f((t+12)%24)]),e:`${zl} is ${Math.abs(off)} hour${Math.abs(off)===1?'':'s'} ${off>0?'behind':'ahead of'} Singapore's UTC+8, so ${f(h)} becomes ${f(t)}${h-off<0?' (the day before)':h-off>=24?' (the next day)':''}. Places with daylight saving change offset during the year.`}},
    ()=>{const a=pick([15,25,35,45,55,65,75,85,95]),b=a*a;return{q:`What is ${a}²?`,ans:b.toLocaleString('en-SG'),opts:optsOf(b.toLocaleString('en-SG'),[(b+10).toLocaleString('en-SG'),(b-25).toLocaleString('en-SG'),(a*20).toLocaleString('en-SG'),(b+100).toLocaleString('en-SG')]),e:`Trick for numbers ending in 5: ${Math.floor(a/10)} × ${Math.floor(a/10)+1} = ${Math.floor(a/10)*(Math.floor(a/10)+1)}, then add 25 → ${b}.`}},
    ()=>{const n=pick([3,5,7]),d=8,amt=d*ri(20,120),a=amt*n/d;return{q:`What is ${n}/${d} of ${amt.toLocaleString('en-SG')}?`,ans:String(a),opts:optsOf(String(a),[String(amt/d),String(a+amt/d),String(a-amt/d),String(amt*n)]),e:`${amt} ÷ ${d} = ${amt/d}; × ${n} = ${a}.`}}];
   const hard=[
@@ -3410,6 +3412,7 @@ function qLevel(){
   return clamp(Q.ability+lvlOff(Q.ch,Q.lv)+ramp,kidMin(p),mx);
 }
 function nextQ(){
+  if(!Q||Q.dead)return;
   if(Q.i>=Q.n)return Q.mode==='test'?finishTest():finishLevel();
   if(Q.mode==='level'&&Q.i===4&&!Q.spoke&&canSpeak(Q.sid,cur())){Q.spoke=true;return speakRound(()=>nextQ())}
   Q.cur=(Q.sid==='lang'&&Q.mode==='level'&&Math.random()<.28)?genSpellBuild(qLevel(),Q.seen):genQ(Q.sid,qLevel(),Q.seen);if(Q.cur.kind==='build'){Q.seen.add(Q.cur.key);noteSeen('lang',Q.cur.key)}
@@ -3463,14 +3466,14 @@ function answer(k,el){
   Q.i++;save();
   showFeedback();
   const tok=Q.token;
-  if(ok)setTimeout(()=>{if(Q&&Q.token===tok&&Q.locked)nextQ()},c.big?2200:2800);
+  const sess=Q;if(ok)setTimeout(()=>{if(Q===sess&&!sess.dead&&Q.token===tok&&Q.locked&&document.getElementById('qc'))nextQ()},c.big?2200:2800);
 }
 function showFeedback(){
   const c=Q.cur,ok=Q.lastOk;
   document.querySelectorAll('.opt').forEach(b=>{const v=c.opts[+b.dataset.k];if(v===c.ans)b.classList.add('right');else if(v===Q.picked)b.classList.add('wrong')});
   $('#fb').innerHTML=`<div class="verdict-line" style="color:${ok?'var(--good)':'var(--bad)'}">${ok?pick(['Brilliant! ✨','Correct! 🎉','Super! 💪','Nailed it! 🌟']):`Not quite — the answer is <b>${esc(c.ans)}</b>`}</div>
     ${c.e?`<div class="explain"><b>Why?</b> ${esc(c.e)}</div>`:''}
-    <button class="btn ${ok?'ghost':''} block" style="margin-top:12px" onclick="Q.token++;nextQ()">${Q.i>=Q.n?'See results':'Next'} ▶</button>`;
+    <button class="btn ${ok?'ghost':''} block" style="margin-top:12px" onclick="if(Q&&!Q.dead){Q.token++;nextQ()}">${Q.i>=Q.n?'See results':'Next'} ▶</button>`;
   const fb=$('#fb');if(fb&&!ok)setTimeout(()=>fb.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
 }
 function reviewHTML(log){
@@ -3480,10 +3483,11 @@ function reviewHTML(log){
       <div>${x.ok?'✅':'❌ You chose <b>'+esc(x.picked)+'</b> ·'} Answer: <b>${esc(x.ans)}</b></div>${x.e?`<div class="muted small">${esc(x.e)}</div>`:''}</div>`).join('')}</details>`;
 }
 function finishTest(){
+  if(Q.finished)return;Q.finished=true;
   const p=cur(),s=sub(p,Q.sid),last=Q.trail.slice(-6);
   s.ability=last.reduce((a,b)=>a+b,0)/last.length;
   s.history.push({d:today(),age:ageOf(p,Q.sid)});
-  p.tokens=(p.tokens||0)+2;save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
+  p.testPaid=p.testPaid||{};if(p.testPaid[Q.sid]!==today()){p.testPaid[Q.sid]=today();p.tokens=(p.tokens||0)+2}save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
 }
 function verdict(p,sid){
   if(isGrown(p)){const d=Math.round(p.age-ageOf(p,sid));if(d>=1)return{e:'🚀',t:`${d} year${d===1?'':'s'} younger than your real age!`,c:'var(--good)'};if(d>-1)return{e:'🎯',t:'Right on your real age.',c:'var(--adult)'};return{e:'🌱',t:'Keep training — the levels will sharpen you up!',c:'var(--kid)'}}
@@ -3522,10 +3526,13 @@ function showAgeResult(sid,fresh,log){
     <button class="btn block" onclick="map()">Back to the map 🗺️</button></div>`;
 }
 function finishLevel(){
+  if(Q.finished)return;Q.finished=true;
   const p=cur(),s=sub(p,Q.sid),i=Q.ch*NLV+Q.lv,node=stageById(Q.sid).chapters[Q.ch].levels[Q.lv];
   const stars=Q.correct>=8?3:Q.correct>=6?2:Q.correct>=4?1:0;
   const before=ageOf(p,Q.sid);s.ability=Q.ability;const after=ageOf(p,Q.sid);
-  if(stars>s.stars[i])s.stars[i]=stars;p.tokens=(p.tokens||0)+stars;track(p,'s',stars);save();
+  const prevBest=s.stars[i]||0,newStars=Math.max(0,stars-prevBest);if(stars>prevBest)s.stars[i]=stars;
+  p.practice=p.practice||{};const pk=Q.sid+':'+i,practiceToken=newStars===0&&stars>=2&&p.practice[pk]!==today();if(practiceToken)p.practice[pk]=today();
+  const earned=newStars+(practiceToken?1:0);Q.earned=earned;p.tokens=(p.tokens||0)+earned;track(p,'s',newStars);save();
   if(stars===3)award(p,'perfect');
   const avg=Q.times.reduce((a,b)=>a+b,0)/Q.times.length;if(stars>=1&&avg<4)award(p,'speedy');
   if(s.stars.slice(Q.ch*NLV,Q.ch*NLV+NLV).every(x=>x>0))award(p,'path');
@@ -3536,7 +3543,7 @@ function finishLevel(){
    <div class="card center">
     <div class="stars3">${[0,1,2].map(k=>`<span class="${k<stars?'':'off'}">⭐</span>`).join('')}</div>
     <h2>${['Keep trying!','Level cleared!','Great job!','PERFECT!'][stars]}</h2>
-    <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer${stars?` · <b>+${stars} 🪙</b>`:''}</p>
+    <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer${Q.earned?` · <b>+${Q.earned} 🪙</b>`:stars?' · <span class="small">already mastered — practice token once a day</span>':''}</p>
     <div class="chip" style="background:#efeaff;color:var(--ink);font-size:16px">🧠 ${stageById(Q.sid).age} ${after} ${delta>0?`<b style="color:var(--good)">▲ ${delta}</b>`:delta<0?`<b style="color:var(--bad)">▼ ${Math.abs(delta)}</b>`:''}</div>
     ${stars===0?'<p class="muted">Get 4 or more right to unlock the next level.</p>':''}
     ${reviewHTML(Q.log)}
@@ -3629,7 +3636,7 @@ function drawSide(side){
   if(showPad)padInit('bpad',()=>{B.kid.stats.padQs++;save()});
 }
 function bossAns(side,k,el){
-  if(!B||B.over)return;const s=B.sides[side];if(s.lock)return;
+  if(!B||B.over)return;const s=B.sides[side];if(!s||s.lock||s.done)return;s.done=true;
   const ok=s.q.opts[k]===s.q.ans;
   if(ok){el.classList.add('right');sGood();if(side==='kid'){B.p++;B.ks++;B.kLvl=Math.min(B.kLvl+0.2,B.kCap)}else{B.p--;B.as++}moveKnot();
     if(Math.abs(B.p)>=LIMIT)return endBoss(B.p>0?'kid':'adult');
@@ -4615,9 +4622,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='2.9';
+const APP_VERSION='2.9.1';
 const APP_DATE='13 Nov 2026';
 const CHANGES=[
+ ['2.9.1','Fixes: Boss answers score once, leaving a quiz can no longer reopen it, replayed levels only pay for new stars (plus one practice token a day), clearer time-zone and place-value explanations, unambiguous word-class questions.'],
  ['2.9','A brighter arcade island, tactile raised game pieces and trays, reflective bubbles and gems, and cleaner game controls.'],
  ['2.8','Arcade-only game characters, improved controls and feedback, pause/resume, safer game timers, puzzle hints and undo, and clearer game objectives.'],
  ['2.7','Detailed 3D-rendered adventure companions, painted arcade worlds, richer game objects, and a choice between companions and the custom avatar builder.'],
@@ -4772,7 +4780,7 @@ function hostData(m){
     RM.guest={name:String(m.name||'Boss').slice(0,14),av:m.av||GUEST_AVS[0]};
     miniToast(`⚔️ ${esc(RM.guest.name)} has joined!`);beep(880,.15,'triangle');
     startRemoteBoss();
-  }else if(m.t==='pull'&&B&&B.remote&&!B.over){
+  }else if(m.t==='pull'&&B&&B.remote&&!B.over&&!(m.qid!=null&&m.qid<=(B.lastPull||0))){if(m.qid!=null)B.lastPull=m.qid;
     B.p--;B.as++;sBad();moveKnot();drawRemotePanel();
     if(Math.abs(B.p)>=LIMIT)endBoss('adult');
   }else if(m.t==='quit'){if(B&&B.remote&&!B.over){miniToast(RM.guest.name+' left the game');endBoss('draw')}}
@@ -4893,7 +4901,7 @@ function guestDrawQ(){
 }
 function guestAns(k,el){
   const g=GG;if(!g||g.over||g.lock||!g.started)return;
-  if(g.q.opts[k]===g.q.ans){el.classList.add('right');sGood();rmSend({t:'pull'});g.as++;setTimeout(guestNewQ,250)}
+  if(g.q.opts[k]===g.q.ans){g.lock=true;g.qn=(g.qn||0)+1;el.classList.add('right');sGood();rmSend({t:'pull',qid:g.qn});g.as++;setTimeout(guestNewQ,250)}
   else{el.classList.add('wrong');sBad();g.lock=true;const fr=g.strength==='gentle'?2500:1300;
     setTimeout(()=>{if(!GG||GG.over)return;guestDrawQ();setTimeout(()=>{if(GG&&!GG.over)guestNewQ()},fr)},350)}
 }
