@@ -2109,8 +2109,8 @@ function unlockedN(p,sid,n){
   for(let l=0;l<NLV;l++)if(s.stars[n.c*NLV+l]<1)return false;return true;
 }
 function doneN(p,sid,n){const s=sub(p,sid);return n.t==='test'?s.ability!=null:n.t==='lvl'?s.stars[n.c*NLV+n.l]>0:bossWon(p,sid,n.c)}
-const ARCADE_NEED=15;
-function arcadeOpen(p){return p.unlockAll||totalStars(p)>=ARCADE_NEED||p.stats.bestStreak>=10}
+const ARCADE_NEED=15,GAME_COST=3; /* every arcade game costs 3 freshly earned stars (shown as 🪙) */
+function arcadeOpen(p){return p.unlockAll||totalStars(p)>=ARCADE_NEED}
 
 /* ============ MAP ============ */
 function killQuiz(){if(Q){Q.dead=true;Q.token++}try{speechSynthesis.cancel()}catch(e){}}
@@ -2161,7 +2161,7 @@ function map(){if(Q&&!Q.dead)killQuiz();
   const target=document.getElementById('node'+(nextI>=0?nextI:nodes.length-1));
   if(target)setTimeout(()=>{const r=target.getBoundingClientRect();window.scrollTo({top:window.scrollY+r.top-window.innerHeight/2+60})},30);
 }
-function toggleUnlock(){const p=cur();p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
+function toggleUnlock(){const p=cur();if(!p.unlockAll){const x=ri(13,19),y=ri(13,19),ans=prompt(`Grown-ups only 🔑\nWhat is ${x} × ${y}?`);if(ans==null)return;if(parseInt(ans,10)!==x*y){miniToast('Not quite — ask a grown-up!');return}}p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
 function tapNode(i){
   const p=cur(),sid=STAGE,n=stageNodes()[i];
   if(!unlockedN(p,sid,n)){miniToast(n.t==='boss'?'🔒 Get a star on all 5 levels of this chapter first':n.l===0&&n.c>0?'🔒 Beat the previous chapter\'s Boss first':n.t==='lvl'&&n.c===0&&n.l===0?'🔒 Do the test first':'🔒 Get at least 1 star on the previous level');return}
@@ -3531,8 +3531,8 @@ function finishLevel(){
   const stars=Q.correct>=8?3:Q.correct>=6?2:Q.correct>=4?1:0;
   const before=ageOf(p,Q.sid);s.ability=Q.ability;const after=ageOf(p,Q.sid);
   const prevBest=s.stars[i]||0,newStars=Math.max(0,stars-prevBest);if(stars>prevBest)s.stars[i]=stars;
-  p.practice=p.practice||{};const pk=Q.sid+':'+i,practiceToken=newStars===0&&stars>=2&&p.practice[pk]!==today();if(practiceToken)p.practice[pk]=today();
-  const earned=newStars+(practiceToken?1:0);Q.earned=earned;p.tokens=(p.tokens||0)+earned;track(p,'s',newStars);save();
+  p.practice=p.practice||{};const pk=Q.sid+':'+i,replay=newStars===0&&stars>=1&&p.practice[pk]!==today();if(newStars>0||replay)p.practice[pk]=today();
+  const earned=newStars+(replay?stars:0);Q.earned=earned;p.tokens=(p.tokens||0)+earned;track(p,'s',newStars);save();
   if(stars===3)award(p,'perfect');
   const avg=Q.times.reduce((a,b)=>a+b,0)/Q.times.length;if(stars>=1&&avg<4)award(p,'speedy');
   if(s.stars.slice(Q.ch*NLV,Q.ch*NLV+NLV).every(x=>x>0))award(p,'path');
@@ -3543,7 +3543,7 @@ function finishLevel(){
    <div class="card center">
     <div class="stars3">${[0,1,2].map(k=>`<span class="${k<stars?'':'off'}">⭐</span>`).join('')}</div>
     <h2>${['Keep trying!','Level cleared!','Great job!','PERFECT!'][stars]}</h2>
-    <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer${Q.earned?` · <b>+${Q.earned} 🪙</b>`:stars?' · <span class="small">already mastered — practice token once a day</span>':''}</p>
+    <p class="muted">${Q.correct}/${Q.n} correct · ${avg.toFixed(1)}s per answer${Q.earned?` · <b>+${Q.earned} 🪙</b>`:stars?' · <span class="small">already counted today — come back tomorrow, or try a new level</span>':''}</p>
     <div class="chip" style="background:#efeaff;color:var(--ink);font-size:16px">🧠 ${stageById(Q.sid).age} ${after} ${delta>0?`<b style="color:var(--good)">▲ ${delta}</b>`:delta<0?`<b style="color:var(--bad)">▼ ${Math.abs(delta)}</b>`:''}</div>
     ${stars===0?'<p class="muted">Get 4 or more right to unlock the next level.</p>':''}
     ${reviewHTML(Q.log)}
@@ -3829,16 +3829,16 @@ function arcade(){
   stopGame();const p=cur();if(!p)return home();STAGE='arcade';
   const open=arcadeOpen(p),ts=totalStars(p),available=GAMES.filter(g=>gameOpen(p,g)).length;
   app().innerHTML=`<main class="arcade-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to learning map" onclick="STAGE='maths';map()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div><div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">Arcade</button></div></div>
-  <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Your next challenge is just one token away.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 1 token per play</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span></div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
-  ${!open?`<section class="arcade-unlock"><b>🔒 Your island is almost within reach</b><p>Collect ${ARCADE_NEED} stars or reach a 10-answer streak to start playing.</p><div class="xpbar"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div><span>${ts} / ${ARCADE_NEED} stars · Best streak: ${p.stats.bestStreak}</span></section>`:''}
+  <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Every ${GAME_COST} stars you earn learning = 1 game.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 ${GAME_COST} stars per game · you have ${p.tokens||0}</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span></div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
+  ${!open?`<section class="arcade-unlock"><b>🔒 Your island is almost within reach</b><p>Collect ${ARCADE_NEED} stars to open the island. After that, every ${GAME_COST} stars you earn = 1 game.</p><div class="xpbar"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div><span>${ts} / ${ARCADE_NEED} stars · Best streak: ${p.stats.bestStreak}</span></section>`:''}
   <div class="arcade-section"><h2>Pick your next challenge</h2><span>Personal bests. Family rivalries. Just one more go.</span></div>
-  <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?'1 🪙 per play':'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-earn">Need more tokens? Every star earns 1 · Every test earns 2 · Every boss win earns 3.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
+  <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?`${GAME_COST} 🪙 per play`:'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-earn">Need more tokens? Every star earns 1 · Every test earns 2 · Every boss win earns 3.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
 }
 function playGame(id){
   const p=cur();
-  if((p.tokens||0)<1){miniToast('Out of 🪙 — finish a level to earn more!');return}
+  if((p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
   if(id==='penguin')return gPenguinMenu();
-  p.tokens--;save();
+  p.tokens-=GAME_COST;save();
   ({pop:gPop,snake:gSnake,bunny:gBunny,stack:gStack,penguin:gPenguinMenu})[id]();
 }
 let GAME=null;
@@ -3877,7 +3877,7 @@ function gameOver(msg){
   const ov=document.createElement('div');ov.className='gover';
   ov.innerHTML=`<div class="card center pop"><div style="font-size:60px">${best&&sc>0?'🏅':'🎮'}</div><h2>${msg||'Game over'}</h2>
     <div class="big" style="font-size:52px">${sc}</div><p class="muted">${best&&sc>0?'New best score!':'Best: '+(p.hi[id]||0)}</p>
-    <div class="row"><button class="btn" style="flex:1" onclick="playGame('${id}')">↻ Again · 1 🪙</button><button class="btn ghost" style="flex:1" onclick="stopGame();setLayer('');arcade()">Arcade</button></div></div>`;
+    <div class="row"><button class="btn" style="flex:1" onclick="playGame('${id}')">↻ Again · ${GAME_COST} 🪙</button><button class="btn ghost" style="flex:1" onclick="stopGame();setLayer('');arcade()">Arcade</button></div></div>`;
   const sh=$('.gshell');if(sh)sh.appendChild(ov);
 }
 function swipe(el,cb){let sx,sy;el.addEventListener('touchstart',e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
@@ -3978,7 +3978,7 @@ function gStack(){
 }
 
 /* ---- Penguin Pop (turn-based ice PK) ---- */
-function startArcadeMode(id,mode){const p=cur();if(!p||(p.tokens||0)<1){miniToast('Earn a token by finishing a learning level.');return}p.tokens--;save();if(id==='penguin')gPenguin(mode);else if(id==='sudoku')gSudoku(mode)}
+function startArcadeMode(id,mode){const p=cur();if(!p||(p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙. Earn stars in a level to get more!`);return}p.tokens-=GAME_COST;save();if(id==='penguin')gPenguin(mode);else if(id==='sudoku')gSudoku(mode)}
 function gPenguinMenu(){
   const p=cur();
   setLayer(`<div class="modal"><div class="card center pop"><div style="font-size:70px">🐧</div><h2>Penguin Pop</h2>
@@ -4164,9 +4164,9 @@ const _playGame=playGame;
 playGame=function(id){
   const extra={g2048:g2048,bubble:gBubble,gems:gGems,sudoku:gSudokuMenu}[id];
   if(!extra)return _playGame(id);
-  const p=cur();if((p.tokens||0)<1){miniToast('Out of 🪙 — finish a level to earn more!');return}
+  const p=cur();if((p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
   if(id==='sudoku')return gSudokuMenu();
-  p.tokens--;save();extra();
+  p.tokens-=GAME_COST;save();extra();
 };
 
 /* ---- 2048 ---- */
@@ -4360,7 +4360,7 @@ function dashRivals(){
 }
 function dashArcade(){
   const p=cur();
-  app().innerHTML=dashTop(p,'🎮 Arcade','dash()')+`<div class="dcard center"><div class="big2">${p.tokens||0} 🪙</div><div class="small muted">Earn tokens: 1 per star · 2 per test · 3 per Boss win · 1 per spoken word</div>
+  app().innerHTML=dashTop(p,'🎮 Arcade','dash()')+`<div class="dcard center"><div class="big2">${p.tokens||0} 🪙</div><div class="small muted">1 🪙 per new star (replaying a mastered level counts once a day) · 2 per test (once a day) · 3 per Boss win · 1 per spoken word · each game costs ${GAME_COST} 🪙</div>
    <button class="btn" style="margin-top:10px" onclick="STAGE='arcade';arcade()">🕹️ Go to Arcade Island</button></div>
    <div class="dcard">${GAMES.map(g=>`<div class="trow"><span style="font-size:30px">${g.icon()}</span><b style="flex:1">${g.name()}</b><span>${(p.hi||{})[g.id]!=null?'🏅 '+p.hi[g.id]:(gameOpen(p,g)?'Not played yet':'🔒')}</span></div>`).join('')}</div>`;
 }
@@ -4375,8 +4375,8 @@ const _playGame2=playGame;
 playGame=function(id){
   const fn={penalty:gPenalty,keepy:gKeepy,hoops:gHoops}[id];
   if(!fn)return _playGame2(id);
-  const p=cur();if((p.tokens||0)<1){miniToast('Out of 🪙 — finish a level to earn more!');return}
-  p.tokens--;save();fn();
+  const p=cur();if((p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
+  p.tokens-=GAME_COST;save();fn();
 };
 
 /* ============ PENALTY SHOOTOUT v2 — 3D stadium ============ */
@@ -4622,9 +4622,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='2.9.1';
+const APP_VERSION='2.9.2';
 const APP_DATE='13 Nov 2026';
 const CHANGES=[
+ ['2.9.2','Arcade: every game now costs 3 🪙 — earned 1 per new star (replays of a mastered level count once a day), 3 per Boss win. Parent unlock needs a grown-up sum.'],
  ['2.9.1','Fixes: Boss answers score once, leaving a quiz can no longer reopen it, replayed levels only pay for new stars (plus one practice token a day), clearer time-zone and place-value explanations, unambiguous word-class questions.'],
  ['2.9','A brighter arcade island, tactile raised game pieces and trays, reflective bubbles and gems, and cleaner game controls.'],
  ['2.8','Arcade-only game characters, improved controls and feedback, pause/resume, safer game timers, puzzle hints and undo, and clearer game objectives.'],
