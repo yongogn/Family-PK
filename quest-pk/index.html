@@ -540,7 +540,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 @media(max-width:600px){.duel-feature{flex-wrap:wrap}.duel-feature .btn{margin-left:0;width:100%;text-align:center}}
 .duel-page .duel-hero{border:1px solid #8e739d55;border-radius:25px;background:linear-gradient(110deg,#1f4f8a,#3b2d6b);padding:28px 30px;margin:14px 0 18px}
 .duel-hero h2{font-size:30px;margin:6px 0 8px;line-height:1.1}.duel-hero h2 span{color:#ffdf99}.duel-hero p{opacity:.85;margin:0}
-.duel-picks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.duel-picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
 .duel-pick,.duel-mode{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:18px;border-radius:20px;border:2px solid #ffffff1f;background:#ffffff0d;color:#f8f2ff;font:inherit;cursor:pointer}
 .duel-pick.on{border-color:#ffdf99;background:#ffdf9918;box-shadow:0 0 0 4px #ffdf9922}
 .duel-ico{font-size:40px}.duel-pick b,.duel-mode b{font-size:18px}.duel-pick small,.duel-mode small{opacity:.78;line-height:1.35}.duel-to{color:#ffdf99;opacity:1!important;font-weight:700}
@@ -550,7 +550,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-note{opacity:.75;font-size:14px;margin-top:14px;text-align:center}
 .duel-wait{text-align:center;padding:30px 20px;border-radius:24px;background:#ffffff0d;border:1px solid #ffffff1f;margin-top:16px;color:#f8f2ff}
 .duel-big{font-size:64px}.duel-code-in{font:700 40px Fredoka,sans-serif;letter-spacing:12px;text-align:center;text-transform:uppercase;width:min(280px,90%);padding:12px;border-radius:16px;border:2px solid #ffffff44;background:#0b0f26;color:#fff;margin-top:10px}
-.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice{display:none}
+.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice{display:none}
 .gshell[data-game^="duel-"] .garea{background:#0b0f26}
 
 /* Cuddly companions: presentation only; quiz, reward and match rules are unchanged. */
@@ -568,6 +568,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-page .duel-wait{background:#fff;border:2px solid #e7e0f0;color:#2a1f3d}.duel-page .duel-wait p{color:#4b4463}
 .duel-page .duel-note{color:#4b4463;opacity:1}
 .sky-pilots span{background:#fff;color:#2a1f3d}
+.mz-tally{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 16px}.mz-tally div{border:2px solid;border-radius:14px;padding:6px 12px;display:flex;flex-direction:column;align-items:center;min-width:90px}.mz-tally span{font-size:18px}
 </style>
 </head>
 <body>
@@ -3887,7 +3888,7 @@ function arcade(){
   app().innerHTML=`<main class="arcade-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to learning map" onclick="STAGE='maths';map()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div><div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">Arcade</button></div></div>
   <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Every ${GAME_COST} stars you earn learning = 1 game.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 ${GAME_COST} stars per game · you have ${p.tokens||0}</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span></div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
   ${!open?`<section class="arcade-unlock"><b>🔒 Your island is almost within reach</b><p>Collect ${ARCADE_NEED} stars to open the island. After that, every ${GAME_COST} stars you earn = 1 game.</p><div class="xpbar"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div><span>${ts} / ${ARCADE_NEED} stars · Best streak: ${p.stats.bestStreak}</span></section>`:''}
-  <section class="duel-feature" onclick="duelMenu()" role="button" tabindex="0"><div class="duel-feature-ico" aria-hidden="true">✈️🏓</div><div><div class="quest-eyebrow">NEW · PLAY TOGETHER</div><h2>Duel Table</h2><p>Sky Squadron, Ping Pong and Air Hockey — on one iPad, or two iPads side by side.</p></div><span class="btn">Play together →</span></section>
+  <section class="duel-feature" onclick="duelMenu()" role="button" tabindex="0"><div class="duel-feature-ico" aria-hidden="true">💦✈️</div><div><div class="quest-eyebrow">NEW · PLAY TOGETHER</div><h2>Duel Table</h2><p>Splash Maze, Sky Squadron, Ping Pong and Air Hockey — up to 4 players, on one iPad or several.</p></div><span class="btn">Play together →</span></section>
   <div class="arcade-section"><h2>Pick your next challenge</h2><span>Personal bests. Family rivalries. Just one more go.</span></div>
   <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?`${GAME_COST} 🪙 per play`:'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-section"><h2>Coming soon</h2><span>More two-player games are on the way.</span></div><div class="soon-grid">${SOON_GAMES.map(soonTile).join('')}</div><div class="arcade-earn">Every new star earns 1 🪙 · tests earn 2 · boss wins earn 3 · each game costs ${GAME_COST} 🪙.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
 }
@@ -4679,9 +4680,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.5.1';
+const APP_VERSION='3.6';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+ ['3.6','New Splash Maze: water-balloon maze battles for up to 4 players — solo vs robots, two on one iPad, or one per iPad.'],
  ['3.5.1','Restored the previous Custom builder avatar proportions, eyes and cheeks.'],
  ['3.5','Sky Squadron gets painted toy planes and robot aircraft, tropical ocean scenery, cloud layers, sparkling power-ups and star-and-smoke effects. Flight rules and multiplayer stay the same.'],
  ['3.4','Sky Squadron now takes up to 4 pilots on 4 iPads side by side. The original 3D companions are back (and the default). The cuddly set stays as an option in the Character Studio.'],
@@ -5022,6 +5024,7 @@ function soonHome(){return `<div class="sect"><span>What's next</span><span clas
 const DUEL_GAMES={
   pong:{name:'Ping Pong',icon:'🏓',to:7,desc:'Bat the ball past your rival — it speeds up with every hit.'},
   hockey:{name:'Air Hockey',icon:'🥅',to:7,desc:'Slide the puck into the other goal. Hit it hard and bank it off the walls!'},
+  maze:{name:'Splash Maze',icon:'💦',max:4,party:1,desc:'Drop water balloons, pop crates and soak your rivals. Last one dry wins!'},
   sky:{name:'Sky Squadron',icon:'✈️',coop:1,max:4,desc:'Fly together against waves of robot drones and the giant Sky Fortress.'}};
 const DU={peer:null,conn:null,conns:[],code:null,role:null,game:null,other:null};
 const duelPeerId=c=>'questduel-'+c.toUpperCase();
@@ -5034,15 +5037,15 @@ let DUEL_PICK='hockey';
 function duelMenu(){
   stopGame();setLayer('');duClose();const p=cur();
   app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to Arcade" onclick="arcade()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Duel Table</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div></div>
-   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':'Settle it on the table.'}</span></h2>
-     <p>${DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
-   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':'First to '+g.to}</small></button>`).join('')}</div>
+   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':DUEL_PICK==='maze'?'Last one dry wins.':'Settle it on the table.'}</span></h2>
+     <p>${DUEL_PICK==='maze'?'Up to four players on one maze: two on one iPad, or one per iPad. Robots join in when you need more players.':DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
+   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':g.party?'1–4 players · robots fill in':'First to '+g.to}</small></button>`).join('')}</div>
    <div class="duel-modes">
-     ${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
-     <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>${DUEL_PICK==='sky'?'2–4 iPads — start a squadron':'Two iPads — start a table'}</b><small>${DUEL_PICK==='sky'?'Others join with your 4-letter code.':'You get a 4-letter code for the other iPad.'}</small><em>${GAME_COST} 🪙</em></button>
+     ${DUEL_PICK==='maze'?`<button class="duel-mode" onclick="mazeSolo()"><span>🤖</span><b>Solo vs robots</b><small>You against three robots.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
+     <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>${DUEL_PICK==='sky'?'2–4 iPads — start a squadron':DUEL_PICK==='maze'?'2–4 iPads — start a game':'Two iPads — start a table'}</b><small>${DUEL_PICK==='sky'?'Others join with your 4-letter code.':'You get a 4-letter code for the other iPad.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelJoinScreen()"><span>🔗</span><b>Join a table</b><small>Type the code shown on the other iPad.</small><em>Free</em></button>
    </div>
-   <p class="duel-note">For two iPads: both need to be online (same Wi-Fi is best). ${DUEL_PICK==='sky'?'Stand both upright, side by side.':'Turn both sideways and put them edge to edge.'}</p></main>`;
+   ${DUEL_PICK==='maze'?`<div class="duel-note"><button class="btn ghost" onclick="MAZE_BOTS=!MAZE_BOTS;duelMenu()">🤖 Robots fill empty spots: <b>${MAZE_BOTS?'On':'Off'}</b></button></div>`:''}<p class="duel-note">For two iPads: both need to be online (same Wi-Fi is best). ${DUEL_PICK==='maze'?'Each iPad shows the whole maze.':DUEL_PICK==='sky'?'Stand both upright, side by side.':'Turn both sideways and put them edge to edge.'}</p></main>`;
 }
 function duelPay(){const p=cur();if(p.unlockAll)return true;if((p.tokens||0)<GAME_COST){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level first!`);return false}p.tokens-=GAME_COST;save();return true}
 function duelLocal(){if(!duelPay())return;duelStart(DUEL_PICK,'local',{a:cur().name,b:'Player 2'})}
@@ -5056,16 +5059,16 @@ function duelHost(){
    <section class="duel-wait" id="duwait"><div class="duel-big">📡</div><h2>Getting the table ready…</h2></section></main>`;
   let peer;try{peer=new Peer(duelPeerId(DU.code),PEER_OPTS)}catch(e){return duelFail('This iPad can\'t start a two-iPad game.')}
   DU.peer=peer;
-  peer.on('open',()=>{const w=$('#duwait');if(!w)return;w.innerHTML=`<div class="duel-big">${DUEL_GAMES[DU.game].icon}</div><h2>${DU.game==='sky'?'Waiting for pilots to join…':'Waiting for the other iPad…'}</h2>
+  peer.on('open',()=>{const w=$('#duwait');if(!w)return;w.innerHTML=`<div class="duel-big">${DUEL_GAMES[DU.game].icon}</div><h2>${DU.game==='sky'?'Waiting for pilots to join…':DU.game==='maze'?'Waiting for players to join…':'Waiting for the other iPad…'}</h2>
      <p>On the other iPad: <b>Arcade → Duel Table → Join a table</b>, then type:</p>
      <div class="roomcode">${DU.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>
-     <p class="duel-note">${DU.game==='sky'?'Up to 4 iPads, standing upright side by side. This iPad goes on the <b>far left</b>; the others line up in the order they join.':'Turn both iPads sideways. This iPad goes on the <b>left</b>.'}</p><div id="skylobby"></div>`;if(DU.game==='sky')skyLobby()});
+     <p class="duel-note">${DU.game==='maze'?'Up to 4 iPads (or phones). Each one shows the whole maze — sit anywhere.'+(MAZE_BOTS?' Robots fill any empty spots.':''):DU.game==='sky'?'Up to 4 iPads, standing upright side by side. This iPad goes on the <b>far left</b>; the others line up in the order they join.':'Turn both iPads sideways. This iPad goes on the <b>left</b>.'}</p><div id="skylobby"></div>`;if((DUEL_GAMES[DU.game].max||2)>2)skyLobby()});
   peer.on('error',err=>{if(err.type==='unavailable-id')return duelHost();if(DU.role==='host'&&!GAME)duelFail(err.type==='network'||err.type==='server-error'||err.type==='socket-error'?'Can\'t reach the game server. Check this iPad is online.':'Couldn\'t start the table ('+err.type+').')});
   peer.on('connection',conn=>{
-    if(DU.game==='sky'){if(GAME||DU.conns.length>=3){conn.on('open',()=>{try{conn.send({t:'full'})}catch(e){}setTimeout(()=>{try{conn.close()}catch(e){}},300)});return}
+    if((DUEL_GAMES[DU.game].max||2)>2){if(GAME||DU.conns.length>=3){conn.on('open',()=>{try{conn.send({t:'full'})}catch(e){}setTimeout(()=>{try{conn.close()}catch(e){}},300)});return}
       DU.conns.push(conn);conn.slot=DU.conns.length;DU.conn=DU.conns[0];
       conn.on('data',m=>duelData(m,conn));
-      conn.on('close',()=>{if(GAME&&GAME.sky){skyPilotLeft(conn.slot)}else{DU.conns=DU.conns.filter(c=>c!==conn);DU.conns.forEach((c,i)=>{c.slot=i+1;try{c.send({t:'lobby',slot:c.slot})}catch(e){}});DU.conn=DU.conns[0]||null;skyLobby()}});
+      conn.on('close',()=>{if(GAME&&GAME.sky){skyPilotLeft(conn.slot)}else if(GAME&&GAME.maze){mazeLeft(conn.slot)}else{DU.conns=DU.conns.filter(c=>c!==conn);DU.conns.forEach((c,i)=>{c.slot=i+1;try{c.send({t:'lobby',slot:c.slot,game:DU.game})}catch(e){}});DU.conn=DU.conns[0]||null;skyLobby()}});
       return}
     if(DU.conn&&DU.conn.open){try{conn.close()}catch(e){}return}
     DU.conn=conn;
@@ -5098,13 +5101,14 @@ function duelJoin(){
   peer.on('error',err=>{clearTimeout(to);if(err.type==='peer-unavailable')duelFail('Table '+code+' wasn\'t found. Check the code on the other iPad.');else if(!GAME)duelFail('Connection problem ('+err.type+'). Check you\'re online.')});
 }
 function duelFail(msg){duClose();app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duelMenu()">‹</button><h1>Duel Table</h1></div></div><section class="duel-wait"><div class="duel-big">😕</div><h2>${esc(msg)}</h2><button class="btn" onclick="duelMenu()">Back</button></section></main>`}
-function duelLost(){if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
+function duelLost(){if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.maze){GAME.maze.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
 function duelData(m,conn){
-  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;const D=GAME&&GAME.duel;
-  if(DU.game==='sky'&&DU.role==='host'&&m.t==='hi'&&conn&&!GAME){conn.pname=(m.name||'Pilot').slice(0,12);try{conn.send({t:'lobby',slot:conn.slot})}catch(e){}skyLobby();return}
+  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;if(GAME&&GAME.maze&&mazeData(m,conn))return;const D=GAME&&GAME.duel;
+  if((DUEL_GAMES[DU.game]||{}).max>2&&DU.role==='host'&&m.t==='hi'&&conn&&!GAME){conn.pname=(m.name||'Player').slice(0,12);try{conn.send({t:'lobby',slot:conn.slot,game:DU.game})}catch(e){}skyLobby();return}
+  if(m.t==='lobby'&&DU.role==='guest'&&!GAME&&m.game==='maze'){const w=$('#skywait');if(w)w.innerHTML=`You're <b>player ${m.slot+1}</b> 💦 Waiting for the first iPad to start…`;return}
   if(m.t==='lobby'&&DU.role==='guest'&&!GAME){const w=$('#skywait');if(w)w.innerHTML=`You're <b>pilot ${m.slot+1}</b>. Stand this iPad upright, <b>${m.slot+1}${['','st','nd','rd','th'][Math.min(4,m.slot+1)]||'th'} from the left</b>. Waiting for the first iPad to start the mission…`;return}
   if(m.t==='full'&&DU.role==='guest'){duelFail('That squadron is full (4 pilots) or already flying.');return}
-  if(m.t==='go'&&m.game==='sky'&&DU.role==='guest'&&!GAME){duelStart('sky','guest',{list:m.names},{n:m.n,slot:m.slot});return}
+  if(m.t==='go'&&(m.game==='sky'||m.game==='maze')&&DU.role==='guest'&&!GAME){duelStart(m.game,'guest',{list:m.names},{n:m.n,slot:m.slot,bots:false});return}
   if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();p.tokens-=GAME_COST;save()}duSend({t:'go',game:DU.game,a:cur().name,b:DU.other});duelStart(DU.game,'host',{a:cur().name,b:DU.other})}
   else if(m.t==='go'&&DU.role==='guest'&&!D){duelStart(m.game,'guest',{a:m.a,b:m.b})}
   else if(m.t==='in'&&D&&DU.role==='host'){D.tb.x=m.x;D.tb.y=m.y}
@@ -5117,6 +5121,7 @@ function duelData(m,conn){
 const HL=1.333,LEN=HL*2; /* world: table is LEN long, 1 wide; player A defends x=0, player B defends x=LEN */
 function duelStart(game,mode,names,meta){
   if(game==='sky')return skyStart(mode,names,meta);
+  if(game==='maze')return mazeStart(mode,names,meta);
   const g=shell('duel-'+game,DUEL_GAMES[game].icon+' '+DUEL_GAMES[game].name,'');
   const D=g.duel={game,mode,names,sa:0,sb:0,to:DUEL_GAMES[game].to,ended:false,lost:false,trail:[],sparks:[],flash:null,serveAt:0,t0:performance.now(),
     ta:{x:game==='pong'?.06:.35,y:.5},tb:{x:game==='pong'?LEN-.06:LEN-.35,y:.5},
@@ -5250,7 +5255,7 @@ function duelDraw(g,D,now){
 
 /* ---------- hook into Arcade ---------- */
 const _stopGameD=stopGame;
-stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&(GAME.duel||GAME.sky)&&DU.role)duClose();_stopGameD()};
+stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&(GAME.duel||GAME.sky||GAME.maze)&&DU.role)duClose();_stopGameD()};
 ARCADE_HELP['duel-pong']=['Drag your paddle up and down. Each hit speeds the ball up.','Hit with the edge of the paddle to angle the ball.'];
 ARCADE_HELP['duel-hockey']=['Drag your mallet to hit the puck into the other goal.','Bank shots off the side walls are hard to stop!'];
 
@@ -5492,15 +5497,216 @@ ARCADE_HELP.sky=['Drag anywhere to fly. Your plane fires by itself.','Grab P for
 
 function skyLobby(){const L=$('#skylobby');if(!L)return;const p=cur(),ready=DU.conns.filter(c=>c.pname);
   L.innerHTML=`<div class="sky-lobby"><div class="sky-pilots">${[p.name,...DU.conns.map(c=>c.pname||'joining…')].map((n,i)=>`<span style="border-color:${SKY_COL[i]}"><b style="color:${SKY_COL[i]}">✈️ ${i+1}</b> ${esc(n)}</span>`).join('')}</div>
-   <button class="btn block" ${ready.length?'':'disabled'} onclick="skyLaunch()">${ready.length?`Start mission · ${ready.length+1} pilots ▶`:'Waiting for at least one more iPad…'}</button></div>`}
+   <button class="btn block" ${ready.length?'':'disabled'} onclick="skyLaunch()">${ready.length?(DU.game==='maze'?`Start · ${ready.length+1} players${MAZE_BOTS&&ready.length<3?' + robots':''} ▶`:`Start mission · ${ready.length+1} pilots ▶`):'Waiting for at least one more iPad…'}</button></div>`}
 function skyLaunch(){const ready=DU.conns.filter(c=>c.pname&&c.open);if(!ready.length)return;const p=cur();
   if(!p.unlockAll){if((p.tokens||0)<GAME_COST){miniToast(`Sky Squadron needs ${GAME_COST} 🪙`);return}p.tokens-=GAME_COST;save()}
   DU.conns.filter(c=>!ready.includes(c)).forEach(c=>{try{c.close()}catch(e){}});DU.conns=ready;ready.forEach((c,i)=>c.slot=i+1);DU.conn=ready[0];
-  const names=[p.name,...ready.map(c=>c.pname)],n=names.length;ready.forEach(c=>{try{c.send({t:'go',game:'sky',slot:c.slot,n,names})}catch(e){}});
+  const names=[p.name,...ready.map(c=>c.pname)],n=names.length;
+  if(DU.game==='maze'){const full=names.concat(MAZE_BOTS?['Robo Red','Robo Blu','Robo Max'].slice(0,4-n):[]);ready.forEach(c=>{try{c.send({t:'go',game:'maze',slot:c.slot,n,names:full})}catch(e){}});return mazeStart('host',{list:names},{n,slot:0,bots:MAZE_BOTS})}
+  ready.forEach(c=>{try{c.send({t:'go',game:'sky',slot:c.slot,n,names})}catch(e){}});
   skyStart('host',{list:names},{n,slot:0})}
 function skyPilotLeft(slot){const K=GAME&&GAME.sky;if(!K)return;const P=K.pl[slot];if(P){P.gone=true;P.alive=false}
   skyBanner(K,`${(K.list[slot]||'A pilot').slice(0,10)} left the squadron`,'#fca5a5');if(!K.pl.some(p=>!p.gone&&p!==K.pl[0])&&K.pl.length>1){} }
 function skySolo(){if(!duelPay())return;skyStart('solo',{a:cur().name})}
+
+/* ============ SPLASH MAZE — water-balloon maze battle for up to 4 (robots fill empty spots) ============ */
+const MZ_W=13,MZ_H=11,MZ_COL=['#ff7a45','#3fa7ff','#34d399','#f472b6'],MZ_START=[[1,1],[11,9],[11,1],[1,9]];
+let MAZE_BOTS=true;
+function mazeStart(mode,names,meta){
+  const g=shell('maze','💦 Splash Maze','');
+  const net=mode==='host'||mode==='guest',humans=net?(meta&&meta.n||2):mode==='local'?2:1,slot=net?(meta&&meta.slot||0):0;
+  const list=mode==='guest'?(names.list||[]).slice():(names.list||[names.a,names.b||'Player 2']).slice(0,humans),bots=mode==='guest'?0:(meta&&meta.bots!=null?meta.bots:MAZE_BOTS)?4-humans:0;
+  for(let i=0;i<bots;i++)list.push(['Robo Red','Robo Blu','Robo Max'][i]);
+  const M=g.maze={mode,slot,humans,list,n:list.length,wins:Array(list.length).fill(0),round:0,grid:[],bal:[],spl:[],items:[],pl:[],ev:[],state:'intro',stateT:0,t:0,lost:false,
+    acc:0,lastStep:performance.now(),lastSend:0,rev:0,netRev:-1,ctl:new Map(),inputs:Array.from({length:list.length},()=>({dx:0,dy:0,bomb:false}))};
+  const fit=()=>{const area=$('#garea');if(!area)return;const r=area.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
+    const land=g.W>=g.H,two=mode==='local',hud=46;
+    /* leave room for touch controls: side strips in landscape, a bottom band in portrait */
+    let aw,ah,ax,ay;if(land){const side=two?Math.max(150,g.W*.2):Math.max(130,g.W*.17);aw=g.W-side*2;ah=g.H-hud-8;ax=side;ay=hud}else{aw=g.W-16;ah=g.H-hud-Math.max(200,g.H*.26);ax=8;ay=hud}
+    const cs=Math.floor(Math.min(aw/MZ_W,ah/MZ_H));M.v={cs,ox:Math.round(ax+(aw-cs*MZ_W)/2),oy:Math.round(ay+(ah-cs*MZ_H)/2),land,two};mazeLayoutCtl(g,M)};
+  fit();const onR=()=>{if(GAME===g)fit()};window.addEventListener('resize',onR);g.offResize=()=>window.removeEventListener('resize',onR);
+  /* touch: a joystick that appears wherever you press in your zone, plus a big splash button */
+  g.c.style.touchAction='none';const pos=e=>{const r=g.c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  g.c.addEventListener('pointerdown',e=>{const q=pos(e),z=mazeZone(M,q);if(!z)return;try{g.c.setPointerCapture(e.pointerId)}catch(_){}
+    if(z.kind==='bomb'){mazeInput(M,z.p,{bomb:true});M.ctl.set(e.pointerId,{kind:'bomb',p:z.p})}else M.ctl.set(e.pointerId,{kind:'stick',p:z.p,ox:q.x,oy:q.y,x:q.x,y:q.y})});
+  g.c.addEventListener('pointermove',e=>{const c=M.ctl.get(e.pointerId);if(!c||c.kind!=='stick')return;const q=pos(e);c.x=q.x;c.y=q.y;
+    const dx=q.x-c.ox,dy=q.y-c.oy;let ix=0,iy=0;if(Math.hypot(dx,dy)>14){if(Math.abs(dx)>Math.abs(dy))ix=Math.sign(dx);else iy=Math.sign(dy)}mazeInput(M,c.p,{dx:ix,dy:iy})});
+  const up=e=>{const c=M.ctl.get(e.pointerId);if(c&&c.kind==='stick')mazeInput(M,c.p,{dx:0,dy:0});M.ctl.delete(e.pointerId)};g.c.addEventListener('pointerup',up);g.c.addEventListener('pointercancel',up);
+  M.key=e=>{const k=e.key,map={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(map[k]){const d=e.type==='keydown'?map[k]:[0,0];mazeInput(M,slot,{dx:d[0],dy:d[1]});e.preventDefault()}else if(k===' '&&e.type==='keydown'){mazeInput(M,slot,{bomb:true});e.preventDefault()}};
+  window.addEventListener('keydown',M.key);window.addEventListener('keyup',M.key);const oR=g.offResize;g.offResize=()=>{oR();window.removeEventListener('keydown',M.key);window.removeEventListener('keyup',M.key)};
+  if(mode!=='guest')mazeNewRound(M);
+  const loop=now=>{if(g.dead)return;
+    if(mode!=='guest'){const dt=Math.min(.05,(now-M.lastStep)/1000);M.lastStep=now;M.acc+=dt;while(M.acc>=1/60){mazeStep(M,1/60);M.acc-=1/60}
+      if(mode==='host'&&now-M.lastSend>45){M.lastSend=now;duSend(mazeSnap(M));M.ev=[]}else if(mode!=='host')M.ev=[]}
+    else mazeGuestTick(M);
+    mazeDraw(g,M,now);g.raf=requestAnimationFrame(loop)};
+  g.raf=requestAnimationFrame(loop);
+}
+function mazeLayoutCtl(g,M){const W=g.W,H=g.H,v=M.v,r=Math.max(44,Math.min(64,Math.min(W,H)*.075));
+  if(v.two){M.zones=[{p:0,x0:0,x1:v.ox,bomb:{x:v.ox/2,y:H-r-26,r}},{p:1,x0:v.ox+v.cs*MZ_W,x1:W,bomb:{x:(v.ox+v.cs*MZ_W+W)/2,y:H-r-26,r}}]}
+  else if(v.land){M.zones=[{p:M.slot,x0:0,x1:W,stickMaxX:v.ox,bomb:{x:W-(W-v.ox-v.cs*MZ_W)/2,y:H-r-30,r}}]}
+  else{const top=v.oy+v.cs*MZ_H;M.zones=[{p:M.slot,x0:0,x1:W,y0:top,bomb:{x:W-r-34,y:(top+H)/2,r}}]}}
+function mazeZone(M,q){for(const z of M.zones||[])if(Math.hypot(q.x-z.bomb.x,q.y-z.bomb.y)<z.bomb.r+12)return{kind:'bomb',p:z.p};
+  if(M.v.two){for(const z of M.zones)if(q.x>=z.x0&&q.x<=z.x1)return{kind:'stick',p:z.p};return null}
+  const z=(M.zones||[])[0];return z?{kind:'stick',p:z.p}:null}
+function mazeInput(M,p,inp){if(M.mode==='guest'){if(inp.bomb)duSend({t:'bm'});else duSend({t:'in',dx:inp.dx,dy:inp.dy});return}
+  const I=M.inputs[p];if(!I)return;if(inp.bomb)I.bomb=true;else{I.dx=inp.dx;I.dy=inp.dy}}
+
+/* ---------- rules ---------- */
+function mazeNewRound(M){M.round++;M.t=0;M.bal=[];M.spl=[];M.items=[];M.state='intro';M.stateT=2;M.timeLeft=150;M.nid=1;
+  const G=[];for(let y=0;y<MZ_H;y++){const row=[];for(let x=0;x<MZ_W;x++){let c='.';if(x===0||y===0||x===MZ_W-1||y===MZ_H-1||(x%2===0&&y%2===0))c='#';row.push(c)}G.push(row)}
+  const safe=new Set();MZ_START.forEach(([sx,sy])=>[[0,0],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2]].forEach(([a,b])=>safe.add((sx+a)+','+(sy+b))));
+  for(let y=1;y<MZ_H-1;y++)for(let x=1;x<MZ_W-1;x++)if(G[y][x]==='.'&&!safe.has(x+','+y)&&Math.random()<.68)G[y][x]=Math.random()<.32?pick(['B','R','S']):'C';
+  /* C = crate, B/R/S = crate hiding a balloon/range/speed power-up */
+  M.grid=G;M.rev++;
+  M.pl=M.list.map((n,i)=>({x:MZ_START[i][0]+.5,y:MZ_START[i][1]+.5,alive:true,cap:1,range:2,spd:0,dir:[0,1],bot:i>=M.humans,think:0,path:null,soakT:0,gone:M.pl[i]&&M.pl[i].gone}));
+  M.pl.forEach(p=>{if(p.gone)p.alive=false});mazeEmit(M,['b',`Round ${M.round}`])}
+function mazeEmit(M,e){M.ev.push(e);if(M.mode!=='guest')mazeLocalEvent(M,e)}
+const mzCell=(M,x,y)=>(x<0||y<0||x>=MZ_W||y>=MZ_H)?'#':M.grid[y][x];
+const mzSolid=c=>c==='#'||c==='C'||c==='B'||c==='R'||c==='S';
+function mzBlocked(M,cx,cy,p){if(mzSolid(mzCell(M,cx,cy)))return true;const b=M.bal.find(b=>b.x===cx&&b.y===cy);if(!b)return false;return !(p&&Math.floor(p.x)===cx&&Math.floor(p.y)===cy)}
+function mazeMove(M,p,dx,dy,dt){let sp=(3.1+p.spd*.55)*dt;if(dx)p.dir=[dx,0];else if(dy)p.dir=[0,dy];if(!dx&&!dy)return;
+  const ax=dx?'y':'x',main=dx?'x':'y',d=dx||dy,center=Math.floor(p[ax])+.5,off=p[ax]-center;
+  if(Math.abs(off)>.02){const st=Math.min(Math.abs(off),sp);p[ax]-=Math.sign(off)*st;sp-=st;if(sp<=0)return}
+  const cx=Math.floor(p.x),cy=Math.floor(p.y),nc=dx?[cx+dx,cy]:[cx,cy+dy],cur=p[main],cc=Math.floor(cur)+.5;
+  if(mzBlocked(M,nc[0],nc[1],p)){/* stop at the centre of our cell */if((cur-cc)*d<0)p[main]=d>0?Math.min(cc,cur+sp):Math.max(cc,cur-sp);return}
+  p[main]+=d*sp}
+function mazeStep(M,dt){M.t+=dt;if(M.state==='scores')return;
+  if(M.state==='intro'){M.stateT-=dt;if(M.stateT<=0)M.state='play';return}
+  if(M.state==='over'){M.stateT-=dt;if(M.stateT<=0&&M.mode!=='guest'){mazeEmit(M,['ro'])}return}
+  M.timeLeft-=dt;
+  M.pl.forEach((p,i)=>{if(!p.alive)return;const I=M.inputs[i];if(p.bot)mazeBot(M,p,i,dt);
+    mazeMove(M,p,I.dx,I.dy,dt);if(I.bomb){I.bomb=false;mazePlace(M,p,i)}
+    const cx=Math.floor(p.x),cy=Math.floor(p.y),it=M.items.findIndex(t=>t.x===cx&&t.y===cy);
+    if(it>=0){const t=M.items[it];M.items.splice(it,1);if(t.ty==='B')p.cap=Math.min(6,p.cap+1);else if(t.ty==='R')p.range=Math.min(7,p.range+1);else p.spd=Math.min(4,p.spd+1);mazeEmit(M,['p',t.ty,cx,cy])}});
+  M.bal.forEach(b=>b.t-=dt);
+  let boom=M.bal.filter(b=>b.t<=0);while(boom.length){const b=boom.shift();if(b.done)continue;mazeBurst(M,b);boom=boom.concat(M.bal.filter(c=>!c.done&&c.t<=0&&!boom.includes(c)))}
+  M.bal=M.bal.filter(b=>!b.done);
+  M.spl.forEach(s=>s.t-=dt);M.spl=M.spl.filter(s=>s.t>0);
+  /* soak anyone standing in a splash */
+  M.pl.forEach((p,i)=>{if(!p.alive)return;const cx=Math.floor(p.x),cy=Math.floor(p.y);if(M.spl.some(s=>s.x===cx&&s.y===cy)){p.alive=false;p.soakT=M.t;mazeEmit(M,['s',i,+p.x.toFixed(2),+p.y.toFixed(2)])}});
+  const alive=M.pl.filter(p=>p.alive);
+  if(alive.length<=1||M.timeLeft<=0){M.state='over';M.stateT=3.2;let w=-1;if(alive.length===1&&M.timeLeft>0){w=M.pl.indexOf(alive[0]);M.wins[w]++}mazeEmit(M,['w',w])}
+}
+function mazePlace(M,p,i){const cx=Math.floor(p.x),cy=Math.floor(p.y);if(M.bal.some(b=>b.x===cx&&b.y===cy))return;if(M.bal.filter(b=>b.o===i).length>=p.cap)return;
+  M.bal.push({id:M.nid++,x:cx,y:cy,t:2.4,r:p.range,o:i});mazeEmit(M,['d'])}
+function mazeBlast(M,b){const cells=[[b.x,b.y,0]];[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy],k)=>{for(let s=1;s<=b.r;s++){const x=b.x+dx*s,y=b.y+dy*s,c=mzCell(M,x,y);if(c==='#')break;cells.push([x,y,k+1,s===b.r]);if(mzSolid(c))break}});return cells}
+function mazeBurst(M,b){b.done=true;const cells=mazeBlast(M,b);
+  cells.forEach(([x,y,k,end])=>{const c=mzCell(M,x,y);
+    if(mzSolid(c)&&c!=='#'){M.grid[y][x]='.';M.rev++;if(c!=='C')M.items.push({x,y,ty:c,fresh:true})}
+    else{M.items=M.items.filter(t=>!(t.x===x&&t.y===y&&!t.fresh))}
+    const o=M.bal.find(q=>q.x===x&&q.y===y&&!q.done);if(o)o.t=Math.min(o.t,.08);
+    M.spl.push({x,y,k,end:!!end,t:.5})});
+  M.items.forEach(t=>t.fresh=false);mazeEmit(M,['x',b.x,b.y])}
+/* ---------- robots ---------- */
+function mazeDanger(M){const D=new Map();M.bal.forEach(b=>mazeBlast(M,b).forEach(([x,y])=>{const k=x+','+y;D.set(k,Math.min(D.get(k)??9,b.t))}));M.spl.forEach(s=>D.set(s.x+','+s.y,0));return D}
+function mazeBFS(M,sx,sy,goal,avoid,max=60){const q=[[sx,sy]],prev=new Map([[sx+','+sy,null]]);
+  while(q.length){const [x,y]=q.shift();if(goal(x,y)&&!(x===sx&&y===sy)){const path=[];let k=x+','+y;while(k&&k!==sx+','+sy){const [a,b]=k.split(',').map(Number);path.unshift([a,b]);k=prev.get(k)}return path}
+    if(prev.size>max*4)break;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]].sort(()=>Math.random()-.5)){const nx=x+dx,ny=y+dy,k=nx+','+ny;if(prev.has(k)||mzBlocked(M,nx,ny,null)||avoid(nx,ny))continue;prev.set(k,x+','+y);q.push([nx,ny])}}
+  return null}
+function mazeBot(M,p,i,dt){const I=M.inputs[i],cx=Math.floor(p.x),cy=Math.floor(p.y);p.think-=dt;
+  const atCentre=Math.abs(p.x-cx-.5)<.12&&Math.abs(p.y-cy-.5)<.12;
+  if(p.path&&p.path.length){const [nx,ny]=p.path[0];if(cx===nx&&cy===ny&&atCentre)p.path.shift()}
+  const steer=()=>{const [nx,ny]=p.path[0],ex=nx+.5-p.x,ey=ny+.5-p.y;I.dx=I.dy=0;if(Math.abs(ex)>=Math.abs(ey)){if(Math.abs(ex)>.06)I.dx=Math.sign(ex)}else if(Math.abs(ey)>.06)I.dy=Math.sign(ey)};
+  if(p.think>0&&p.path&&p.path.length){steer();return}
+  if(p.think>0){I.dx=I.dy=0;return}
+  p.think=.22+Math.random()*.25;const D=mazeDanger(M),danger=(x,y)=>D.has(x+','+y);
+  if(danger(cx,cy)){p.path=mazeBFS(M,cx,cy,(x,y)=>!danger(x,y),()=>false);if(p.path&&p.path.length)steer();else I.dx=I.dy=0;return}
+  const enemyNear=M.pl.some((q,j)=>j!==i&&q.alive&&((Math.floor(q.x)===cx&&Math.abs(Math.floor(q.y)-cy)<=p.range)||(Math.floor(q.y)===cy&&Math.abs(Math.floor(q.x)-cx)<=p.range)));
+  const crateNext=[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>{const c=mzCell(M,cx+dx,cy+dy);return c!=='#'&&mzSolid(c)});
+  if((crateNext||enemyNear&&Math.random()<.6)&&M.bal.filter(b=>b.o===i).length<p.cap&&atCentre){
+    const fake={x:cx,y:cy,r:p.range,t:2.4},blast=new Set(mazeBlast(M,fake).map(([x,y])=>x+','+y));
+    const esc=mazeBFS(M,cx,cy,(x,y)=>!blast.has(x+','+y)&&!danger(x,y),(x,y)=>D.has(x+','+y)&&D.get(x+','+y)<1.2,12);
+    if(esc&&esc.length<=4){I.bomb=true;p.path=esc;steer();return}}
+  const item=(x,y)=>M.items.some(t=>t.x===x&&t.y===y);
+  const goal=(x,y)=>item(x,y)||[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>{const c=mzCell(M,x+dx,y+dy);return c!=='#'&&mzSolid(c)})||M.pl.some((q,j)=>j!==i&&q.alive&&Math.floor(q.x)===x&&Math.floor(q.y)===y);
+  p.path=mazeBFS(M,cx,cy,goal,danger)||mazeBFS(M,cx,cy,()=>Math.random()<.2,danger,8);if(p.path&&p.path.length)steer();else I.dx=I.dy=0}
+
+/* ---------- network ---------- */
+function mazeSnap(M){const f=v=>+v.toFixed(2),s={t:'mz',st:M.state,tl:Math.round(M.timeLeft),r:M.round,w:M.wins,rev:M.rev,
+  p:M.pl.map(p=>[f(p.x),f(p.y),p.alive?1:0,p.dir[0],p.dir[1],p.cap,p.range,p.spd,p.gone?1:0]),b:M.bal.map(b=>[b.x,b.y,f(b.t),b.o]),s:M.spl.map(q=>[q.x,q.y,q.k,q.end?1:0,f(q.t)]),i:M.items.map(t=>[t.x,t.y,t.ty]),ev:M.ev};
+  if(M.rev!==M.sentRev){s.g=M.grid.map(r=>r.join('')).join('|');M.sentRev=M.rev}else if(Math.random()<.05)s.g=M.grid.map(r=>r.join('')).join('|');return s}
+function mazeData(m,conn){const M=GAME&&GAME.maze;if(!M)return false;
+  if(m.t==='in'&&M.mode==='host'&&conn){const I=M.inputs[conn.slot];if(I){I.dx=m.dx;I.dy=m.dy}return true}
+  if(m.t==='bm'&&M.mode==='host'&&conn){const I=M.inputs[conn.slot];if(I)I.bomb=true;return true}
+  if(m.t==='mz'&&M.mode==='guest'){M.net=m;M.state=m.st;M.timeLeft=m.tl;M.round=m.r;M.wins=m.w;if(m.g)M.grid=m.g.split('|').map(r=>r.split(''));
+    M.bal=m.b.map(b=>({x:b[0],y:b[1],t:b[2],o:b[3]}));M.spl=m.s.map(q=>({x:q[0],y:q[1],k:q[2],end:!!q[3],t:q[4]}));M.items=m.i.map(t=>({x:t[0],y:t[1],ty:t[2]}));
+    m.p.forEach((q,i)=>{const P=M.pl[i]||(M.pl[i]={x:q[0],y:q[1]});Object.assign(P,{tx:q[0],ty:q[1],alive:!!q[2],dir:[q[3],q[4]],cap:q[5],range:q[6],spd:q[7],gone:!!q[8]})});
+    (m.ev||[]).forEach(e=>mazeLocalEvent(M,e));return true}
+  if(m.t==='nr'&&M.mode==='guest'){const ov=$('.gover');if(ov)ov.remove();return true}
+  if(m.t==='rq'&&M.mode==='host'){mazeNext();return true}
+  return false}
+function mazeGuestTick(M){M.pl.forEach(p=>{if(p.tx==null)return;p.x+=(p.tx-p.x)*.35;p.y+=(p.ty-p.y)*.35})}
+function mazeLeft(slot){const M=GAME&&GAME.maze;if(!M)return;const P=M.pl[slot];if(P){P.gone=true;P.alive=false;P.bot=false}mazeEmit(M,['b',`${(M.list[slot]||'A player').slice(0,10)} left`])}
+function mazeLocalEvent(M,e){const c=e[0];
+  if(c==='x'){beep(160+Math.random()*60,.18,'sine',.09);M.shake=.25}
+  else if(c==='d'){beep(420,.05,'sine',.04)}
+  else if(c==='p'){beep(880,.07,'triangle');setTimeout(()=>beep(1320,.1,'triangle'),60)}
+  else if(c==='s'){beep(240,.25,'square',.05)}
+  else if(c==='b'){M.banner={t:e[1],at:performance.now()}}
+  else if(c==='w'){M.winner=e[1];M.banner={t:e[1]<0?'Draw!':`${M.list[e[1]]} wins the round!`,at:performance.now()};if(e[1]>=0&&!M.pl[e[1]]?.bot){sWin();confetti(50)}}
+  else if(c==='ro'){mazeRoundOver(M)}}
+function mazeRoundOver(M){if($('.gover'))return;if(M.mode!=='guest')M.state='scores';
+  const ov=document.createElement('div');ov.className='gover';const best=Math.max(...M.wins);
+  ov.innerHTML=`<div class="card center pop"><div style="font-size:52px">💦</div><h2>${M.winner<0?'It’s a draw!':esc(M.list[M.winner])+' wins round '+M.round+'!'}</h2>
+    <div class="mz-tally">${M.list.map((n,i)=>`<div style="border-color:${MZ_COL[i]}"><b style="color:${MZ_COL[i]}">${esc(n)}</b><span>${'🏆'.repeat(M.wins[i])||'—'}</span></div>`).join('')}</div>
+    <div class="row">${M.mode==='guest'?'<button class="btn" style="flex:1" onclick="duSend({t:\'rq\'})">▶ Next round</button>':'<button class="btn" style="flex:1" onclick="mazeNext()">▶ Next round</button>'}<button class="btn ghost" style="flex:1" onclick="duelExit()">Leave</button></div></div>`;
+  const sh=$('.gshell');if(sh)sh.appendChild(ov);if(best>0&&M.mode!=='guest'){const p=cur();p.hi=p.hi||{};p.hi.maze=Math.max(p.hi.maze||0,M.wins[0]);save()}}
+function mazeNext(){const M=GAME&&GAME.maze;if(!M||M.mode==='guest')return;const ov=$('.gover');if(ov)ov.remove();mazeNewRound(M);if(M.mode==='host')duSend({t:'nr'})}
+
+/* ---------- drawing ---------- */
+function mazeDraw(g,M,now){const x=g.x,W=g.W,H=g.H,v=M.v,cs=v.cs;
+  const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#bde8ff');bg.addColorStop(1,'#e8f7ff');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  x.save();if(M.shake>0){M.shake-=1/60;x.translate((Math.random()-.5)*6*M.shake/.25,(Math.random()-.5)*6*M.shake/.25)}
+  const X=c=>v.ox+c*cs,Y=r=>v.oy+r*cs;
+  x.fillStyle='rgba(0,0,0,.12)';rr(x,X(0)+4,Y(0)+8,cs*MZ_W,cs*MZ_H,cs*.5);x.fill();
+  for(let r=0;r<MZ_H;r++)for(let c=0;c<MZ_W;c++){const k=M.grid[r]&&M.grid[r][c];x.fillStyle=(r+c)%2?'#7fd36e':'#8fdc7c';x.fillRect(X(c),Y(r),cs+.5,cs+.5);
+    if(k==='#'){x.fillStyle='#64748b';rr(x,X(c)+1,Y(r)+1,cs-2,cs-2,cs*.18);x.fill();x.fillStyle='#94a3b8';rr(x,X(c)+3,Y(r)+2,cs-6,cs*.62,cs*.14);x.fill();x.fillStyle='rgba(255,255,255,.35)';rr(x,X(c)+cs*.18,Y(r)+cs*.12,cs*.35,cs*.12,cs*.06);x.fill()}
+    else if(k&&k!=='.'){x.fillStyle='#b7793c';rr(x,X(c)+2,Y(r)+2,cs-4,cs-4,cs*.12);x.fill();x.fillStyle='#d99a55';rr(x,X(c)+4,Y(r)+4,cs-8,cs-8,cs*.08);x.fill();
+      x.strokeStyle='#9a6330';x.lineWidth=Math.max(2,cs*.07);x.beginPath();x.moveTo(X(c)+5,Y(r)+5);x.lineTo(X(c)+cs-5,Y(r)+cs-5);x.moveTo(X(c)+cs-5,Y(r)+5);x.lineTo(X(c)+5,Y(r)+cs-5);x.stroke()}}
+  /* power-ups */
+  M.items.forEach(t=>{const cx=X(t.x)+cs/2,cy=Y(t.y)+cs/2+Math.sin(now/200+t.x)*2;x.fillStyle={B:'#60a5fa',R:'#22d3ee',S:'#facc15'}[t.ty];x.beginPath();x.arc(cx,cy,cs*.36,0,7);x.fill();x.strokeStyle='#fff';x.lineWidth=3;x.stroke();
+    x.font=`${Math.round(cs*.42)}px system-ui`;x.textAlign='center';x.textBaseline='middle';x.fillText({B:'🎈',R:'💧',S:'👟'}[t.ty],cx,cy+1)});
+  /* water balloons */
+  M.bal.forEach(b=>{const cx=X(b.x)+cs/2,cy=Y(b.y)+cs/2,wob=1+Math.sin(now/90)*.06*(b.t<.8?2:1),col=MZ_COL[b.o]||'#60a5fa',r=cs*.36;
+    x.fillStyle='rgba(0,0,0,.18)';x.beginPath();x.ellipse(cx,cy+r*.9,r*.8,r*.25,0,0,7);x.fill();
+    x.save();x.translate(cx,cy);x.scale(wob,2-wob);const gr=x.createRadialGradient(-r*.3,-r*.35,r*.1,0,0,r);gr.addColorStop(0,'#fff');gr.addColorStop(.25,shade(col,30));gr.addColorStop(1,col);x.fillStyle=gr;
+    x.beginPath();x.arc(0,0,r,0,7);x.fill();x.fillStyle=shade(col,-20);x.beginPath();x.moveTo(-r*.15,r*.95);x.lineTo(r*.15,r*.95);x.lineTo(0,r*1.18);x.fill();x.restore();
+    if(b.t<.8&&Math.floor(now/80)%2){x.fillStyle='rgba(255,255,255,.5)';x.beginPath();x.arc(cx,cy,r,0,7);x.fill()}});
+  /* splashes */
+  M.spl.forEach(s=>{const a=Math.min(1,s.t/.2),px=X(s.x),py=Y(s.y),hor=s.k===1||s.k===2,pad=cs*.14;x.globalAlpha=a;x.fillStyle='#38bdf8';
+    if(s.k===0){x.beginPath();x.arc(px+cs/2,py+cs/2,cs*.48,0,7);x.fill()}else if(hor)rr(x,px-1,py+pad,cs+2,cs-pad*2,cs*.3);else rr(x,px+pad,py-1,cs-pad*2,cs+2,cs*.3);x.fill();
+    x.fillStyle='#e0f7ff';if(s.k===0){x.beginPath();x.arc(px+cs/2,py+cs/2,cs*.26,0,7);x.fill()}else if(hor)rr(x,px,py+cs*.38,cs,cs*.24,cs*.12);else rr(x,px+cs*.38,py,cs*.24,cs,cs*.12);x.fill();
+    for(let d=0;d<3;d++){x.fillStyle='#fff';x.beginPath();x.arc(px+cs*(.2+((d*37+s.x*13)%60)/100),py+cs*(.2+((d*53+s.y*7)%60)/100),cs*.05,0,7);x.fill()}x.globalAlpha=1});
+  /* players */
+  M.pl.forEach((p,i)=>{if(p.gone)return;const cx=X(p.x),cy=Y(p.y),r=cs*.38,col=MZ_COL[i];
+    if(!p.alive){x.globalAlpha=.55;x.fillStyle='rgba(56,189,248,.35)';x.beginPath();x.arc(cx,cy-cs*.05,r*1.2,0,7);x.fill();x.strokeStyle='#e0f2fe';x.lineWidth=2;x.stroke()}
+    const bob=p.alive?Math.abs(Math.sin(now/110+i))*cs*.04:0;
+    x.fillStyle='rgba(0,0,0,.2)';x.beginPath();x.ellipse(cx,cy+r*.95,r*.8,r*.25,0,0,7);x.fill();
+    x.fillStyle=shade(col,-25);x.beginPath();x.ellipse(cx-r*.4,cy+r*.85-bob*.5,r*.28,r*.18,0,0,7);x.ellipse(cx+r*.4,cy+r*.85-bob*.5,r*.28,r*.18,0,0,7);x.fill();
+    const gr=x.createRadialGradient(cx-r*.3,cy-r*.45-bob,r*.1,cx,cy-bob,r*1.05);gr.addColorStop(0,shade(col,35));gr.addColorStop(1,col);x.fillStyle=gr;x.beginPath();x.arc(cx,cy-bob,r,0,7);x.fill();
+    x.fillStyle='#fff8ef';x.beginPath();x.ellipse(cx,cy+r*.35-bob,r*.55,r*.4,0,0,7);x.fill();
+    const lx=p.dir[0]*r*.14,ly=p.dir[1]*r*.1;[-1,1].forEach(s=>{x.fillStyle='#fff';x.beginPath();x.ellipse(cx+s*r*.33+lx,cy-r*.22-bob+ly,r*.2,r*.25,0,0,7);x.fill();x.fillStyle='#1e1b4b';x.beginPath();x.arc(cx+s*r*.33+lx*1.6,cy-r*.2-bob+ly*1.6,r*.11,0,7);x.fill()});
+    if(p.bot){x.strokeStyle='#475569';x.lineWidth=2;x.beginPath();x.moveTo(cx,cy-r-bob);x.lineTo(cx,cy-r*1.45-bob);x.stroke();x.fillStyle='#ef4444';x.beginPath();x.arc(cx,cy-r*1.5-bob,r*.13,0,7);x.fill()}
+    x.globalAlpha=1;x.font=`700 ${Math.max(10,Math.round(cs*.26))}px Fredoka, sans-serif`;x.textAlign='center';x.fillStyle=col;x.strokeStyle='#fff';x.lineWidth=3;x.strokeText(M.list[i].slice(0,8),cx,cy-r*1.75-bob);x.fillText(M.list[i].slice(0,8),cx,cy-r*1.75-bob)});
+  x.restore();
+  /* HUD */
+  const n=M.list.length,cw=Math.min(170,(W-120)/n);x.textBaseline='middle';
+  M.list.forEach((nm,i)=>{const px=12+i*(cw+6),p=M.pl[i];rr(x,px,8,cw,30,15);x.fillStyle=p&&p.alive?'#fff':'#e2e8f0';x.fill();x.fillStyle=MZ_COL[i];x.beginPath();x.arc(px+15,23,8,0,7);x.fill();
+    x.fillStyle='#1e1b4b';x.font='700 12px Fredoka, sans-serif';x.textAlign='left';x.fillText(`${nm.slice(0,8)} ${'🏆'.repeat(Math.min(3,M.wins[i]||0))}`,px+28,23)});
+  x.textAlign='right';x.font='700 15px Fredoka, sans-serif';x.fillStyle='#1e1b4b';const tl=Math.max(0,Math.ceil(M.timeLeft||0));x.fillText(`⏱ ${Math.floor(tl/60)}:${String(tl%60).padStart(2,'0')}`,W-12,23);
+  /* touch controls */
+  (M.zones||[]).forEach(z=>{const b=z.bomb;x.fillStyle='rgba(56,189,248,.85)';x.beginPath();x.arc(b.x,b.y,b.r,0,7);x.fill();x.strokeStyle='#fff';x.lineWidth=4;x.stroke();x.font=`${Math.round(b.r*.8)}px system-ui`;x.textAlign='center';x.textBaseline='middle';x.fillText('💦',b.x,b.y+2);
+    if(M.v.two){x.fillStyle=MZ_COL[z.p];x.font='700 13px Fredoka, sans-serif';x.fillText(`${M.list[z.p]} — drag here to move`,(z.x0+z.x1)/2,H*.3)}});
+  M.ctl.forEach(c=>{if(c.kind!=='stick')return;x.strokeStyle='rgba(30,27,75,.35)';x.lineWidth=3;x.beginPath();x.arc(c.ox,c.oy,46,0,7);x.stroke();const dx=c.x-c.ox,dy=c.y-c.oy,d=Math.min(40,Math.hypot(dx,dy)),a=Math.atan2(dy,dx);x.fillStyle='rgba(30,27,75,.4)';x.beginPath();x.arc(c.ox+Math.cos(a)*d,c.oy+Math.sin(a)*d,22,0,7);x.fill()});
+  if(!M.ctl.size&&M.state!=='scores'&&!M.v.two){x.fillStyle='rgba(30,27,75,.55)';x.font='600 13px Fredoka, sans-serif';x.textAlign='center';x.fillText('Drag here to move',M.v.land?v.ox/2:W/2-60,M.v.land?H*.5:(v.oy+cs*MZ_H+H)/2)}
+  if(M.banner&&now-M.banner.at<1800){const e=(now-M.banner.at)/1000,sc=e<.2?.5+e*2.5:1;x.save();x.translate(W/2,v.oy+cs*MZ_H/2);x.scale(sc,sc);x.globalAlpha=e>1.4?(1.8-e)/.4:1;x.font=`700 ${Math.min(42,W*.07)}px Fredoka, sans-serif`;x.textAlign='center';x.lineWidth=7;x.strokeStyle='rgba(15,23,42,.8)';x.strokeText(M.banner.t,0,0);x.fillStyle='#fde047';x.fillText(M.banner.t,0,0);x.restore()}
+  if(M.lost){x.fillStyle='rgba(10,15,40,.75)';x.fillRect(0,0,W,H);x.font='700 24px Fredoka, sans-serif';x.fillStyle='#fff';x.textAlign='center';x.fillText('📴 The host iPad disconnected',W/2,H/2-12);x.font='16px Fredoka, sans-serif';x.fillText('Tap ✕ to leave',W/2,H/2+20)}
+  if(M.mode==='guest'&&!M.net){x.font='700 18px Fredoka, sans-serif';x.fillStyle='#1e1b4b';x.textAlign='center';x.fillText('Connecting…',W/2,H/2)}
+}
+function mazeSolo(){if(!duelPay())return;mazeStart('solo',{a:cur().name})}
+ARCADE_HELP.maze=['Drag to walk, tap 💦 to drop a water balloon.','Hide from the splash! Last one dry wins the round.'];
 
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
 function checkJoinLink(){
