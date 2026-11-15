@@ -556,6 +556,18 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 /* Cuddly companions: presentation only; quiz, reward and match rules are unchanged. */
 .cute-avatar{overflow:visible;filter:drop-shadow(0 5px 4px #36214c18)}.av2>.cute-avatar{width:108%;height:108%;margin-top:-3%}.avmini .cute-avatar{width:100%;height:100%}.avopt>.cute-avatar{width:84px;height:84px}.toy-stage>.cute-avatar{width:190px;height:190px}.owl-companion{display:inline-block;object-fit:contain;vertical-align:middle;flex-shrink:0;filter:drop-shadow(0 5px 4px #422c6120)}.quest-scene>.owl-companion{position:relative;width:225px;height:225px;z-index:2;animation:owl-breathe 3.4s ease-in-out infinite}.q-companion{display:flex;align-items:center;justify-content:center;gap:9px;margin:-10px 0 8px;color:#777092;font-size:12px;font-weight:500}.q-companion .owl-companion{width:56px;height:56px}.feedback-with-owl{display:flex;justify-content:center;align-items:center;gap:12px;margin:7px auto 2px}.feedback-with-owl .verdict-line{text-align:left;font-size:18px;line-height:1.4}.feedback-with-owl .owl-companion{width:78px;height:78px}.feedback-with-owl [data-owl-expression=happy]{animation:owl-hello .42s ease-out 1}.opt:has(.answer-owl){position:relative}.answer-owl{position:absolute;right:-7px;top:-20px;pointer-events:none;z-index:2}.answer-owl .owl-companion{width:38px;height:38px;filter:drop-shadow(0 3px 2px #37224c33)}.boss-celebration{display:flex;align-items:center;justify-content:center;gap:12px}.boss-celebration .trophy{font-size:95px}.boss-celebration [data-owl-expression=cheering]{animation:owl-cheer .65s ease-out 1}.avgrid:has(.cute-avatar){grid-template-columns:repeat(auto-fill,minmax(85px,1fr))}@keyframes owl-breathe{50%{transform:translateY(-5px) rotate(-2deg)}}@keyframes owl-hello{from{transform:scale(.88) rotate(-7deg)}to{transform:scale(1) rotate(0)}}@keyframes owl-cheer{0%{transform:translateY(0) scale(.9)}45%{transform:translateY(-10px) rotate(-5deg)}100%{transform:translateY(0) scale(1)}}@media(max-width:480px){.quest-scene>.owl-companion{width:130px;height:145px}.toy-stage>.cute-avatar{width:165px;height:165px}.avopt>.cute-avatar{width:67px;height:74px}.avgrid:has(.cute-avatar){grid-template-columns:repeat(4,minmax(0,1fr))}.q-companion{font-size:11px;margin-top:-5px}.q-companion .owl-companion{width:46px;height:46px}.feedback-with-owl{gap:9px}.feedback-with-owl .owl-companion{width:64px;height:64px}.feedback-with-owl .verdict-line{font-size:16px}.boss-celebration>.owl-companion{width:112px;height:112px}.boss-celebration .trophy{font-size:78px}}@media(prefers-reduced-motion:reduce){.owl-companion,.boss-celebration .owl-companion{animation:none!important}}
 
+.sky-lobby{margin-top:18px}.sky-pilots{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:14px}.sky-pilots span{padding:8px 14px;border-radius:14px;border:2px solid;background:#ffffff10;font-weight:600}
+.btn[disabled]{opacity:.5;pointer-events:none}
+
+/* duel screens on the light arcade background */
+.duel-page .duel-hero{color:#f8f2ff}.duel-page .duel-hero h2{color:#fff}.duel-page .duel-hero p{color:#e9e4ff;opacity:1}
+.duel-page .duel-pick,.duel-page .duel-mode{background:#fff;border:2px solid #e7e0f0;color:#2a1f3d;box-shadow:0 6px 0 #e9e2f2}
+.duel-page .duel-pick small,.duel-page .duel-mode small{color:#5b5470;opacity:1}
+.duel-page .duel-pick.on{border-color:#f59e0b;background:#fff8e8;box-shadow:0 6px 0 #f5d48b}
+.duel-page .duel-to,.duel-page .duel-mode em{color:#b45309}
+.duel-page .duel-wait{background:#fff;border:2px solid #e7e0f0;color:#2a1f3d}.duel-page .duel-wait p{color:#4b4463}
+.duel-page .duel-note{color:#4b4463;opacity:1}
+.sky-pilots span{background:#fff;color:#2a1f3d}
 </style>
 </head>
 <body>
@@ -3024,7 +3036,8 @@ let AVN=0;
 // Small, original vinyl-toy artwork. Existing species and unlock requirements are retained.
 const COMPANION_CELLS={fox:0,cat:1,bear:2,bunny:3,panda:4,monkey:5,owl:6,penguin:7,tiger:8,dino:9,axolotl:10,robot:11,unicorn:12,dragon:13};
 const OWL_ART={happy:'owl-happy',cheering:'owl-cheering',thinking:'owl-thinking',sad:'owl-encouraging'};
-function companionSVG(sp,size){const key=Object.prototype.hasOwnProperty.call(COMPANION_CELLS,sp)?sp:'fox',file=key==='owl'?'owl-happy':key;return `<svg class="companion-avatar toy-avatar cute-avatar" viewBox="0 0 352 352" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${key}"><image href="assets/avatars/${file}.webp" width="352" height="352"/></svg>`}
+const ORIG_CELLS={fox:0,cat:1,bear:2,bunny:3,panda:4,owl:5,penguin:6,dragon:7};
+function companionSVG(sp,size,style){if(style!=='cuddly'&&ORIG_CELLS[sp]!=null){const n=ORIG_CELLS[sp];return `<svg class="companion-avatar toy-avatar" viewBox="0 0 384 512" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${sp}"><svg viewBox="${n%4*384} ${Math.floor(n/4)*512} 384 512" width="384" height="512"><image href="assets/companions.png" width="1536" height="1024"/></svg></svg>`}const key=Object.prototype.hasOwnProperty.call(COMPANION_CELLS,sp)?sp:'fox',file=key==='owl'?'owl-happy':key;return `<svg class="companion-avatar toy-avatar cute-avatar" viewBox="0 0 352 352" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${key}"><image href="assets/avatars/${file}.webp" width="352" height="352"/></svg>`}
 function owlCompanion(expression='happy',size=72){const mood=Object.prototype.hasOwnProperty.call(OWL_ART,expression)?expression:'happy',label=mood==='sad'?'gently encouraging':mood;return `<img class="owl-companion" data-owl-expression="${mood}" src="assets/avatars/${OWL_ART[mood]}.webp" width="${size}" height="${size}" alt="${label} owl companion" decoding="async">`}
 function thinkingCompanion(){return Q.locked?'':`<div class="q-companion">${owlCompanion('thinking',60)}<span>Let’s work it out together.</span></div>`}
 function showAnswerOwl(el,ok){if(!el)return;el.querySelector('.answer-owl')?.remove();el.insertAdjacentHTML('beforeend',`<span class="answer-owl" aria-hidden="true">${owlCompanion(ok?'happy':'sad',38)}</span>`)}
@@ -3032,7 +3045,7 @@ function showAnswerOwl(el,ok){if(!el)return;el.querySelector('.answer-owl')?.rem
 const OWL_IMAGES=Object.values(OWL_ART).map(file=>{const img=new Image();img.src=`assets/avatars/${file}.webp`;return img});
 const OL='#2a2340';
 function avatarSVG(a,size=72){
-  a=a||{};if(a.render!=='classic'&&COMPANION_CELLS[a.sp||'fox']!==undefined)return companionSVG(a.sp||'fox',size);const id='a'+(++AVN);
+  a=a||{};if(a.render!=='classic'&&COMPANION_CELLS[a.sp||'fox']!==undefined)return companionSVG(a.sp||'fox',size,a.render);const id='a'+(++AVN);
   const sp=a.sp||'fox',col=a.col||'#ff8a3d',dk=shade(col,-50),lt=shade(col,80);
   const panda=sp==='panda',peng=sp==='penguin',robot=sp==='robot',axo=sp==='axolotl',uni=sp==='unicorn',drag=sp==='dragon',tiger=sp==='tiger';
   const head=panda?'#ffffff':peng?'#334155':robot?'#cbd5e1':axo?shade(col,40):col;
@@ -3178,7 +3191,7 @@ function avatarEditor(){
   setLayer(`<div class="modal"><div class="card avcard">
     <div class="avstage toy-stage"><div class="toy-label">CHARACTER STUDIO</div>${avatarSVG(a,200)}<div class="toy-pedestal"></div><div class="toy-caption">${collectible?'Choose your next adventure companion.':'Make your adventure look like you.'}</div></div>
     ${lv?`<div class="lvline">Level ${lv.n} · ${lv.title} <div class="xpbar"><i style="width:${lv.pct}%"></i></div><span class="small muted">${lv.next} XP to level ${lv.n+1} · 🎁 ${owned}/${total} items unlocked</span></div>`:''}
-    <div class="avatar-mode seg"><button class="${collectible?'on':''}" onclick="E.av.render='collectible';AVTAB='sp';avatarEditor()">3D companions</button><button class="${!collectible?'on':''}" onclick="E.av.render='classic';AVTAB='sp';avatarEditor()">Custom builder</button></div><p class="avatar-mode-note">${collectible?'Collect a crew of detailed adventure companions. Outfits and colours are available in Custom builder.':'Create your own look with colours, outfits, accessories and effects.'}</p>
+    <div class="avatar-mode seg"><button class="${collectible&&a.render!=='cuddly'?'on':''}" onclick="E.av.render='collectible';AVTAB='sp';avatarEditor()">Original 3D</button><button class="${a.render==='cuddly'?'on':''}" onclick="E.av.render='cuddly';AVTAB='sp';avatarEditor()">Cuddly</button><button class="${!collectible?'on':''}" onclick="E.av.render='classic';AVTAB='sp';avatarEditor()">Custom builder</button></div><p class="avatar-mode-note">${collectible?'Collect a crew of detailed adventure companions. Outfits and colours are available in Custom builder.':'Create your own look with colours, outfits, accessories and effects.'}</p>
     <div class="avtabs" ${collectible?'hidden':''}>${(collectible?[]:AVTABS).map(([k,l])=>`<button class="${AVTAB===k?'on':''}" onclick="AVTAB='${k}';avatarEditor()">${l}</button>`).join('')}</div>
     <div class="avgrid">${grid}</div>
     <div class="row" style="margin-top:14px"><button class="btn ghost" style="flex:1" onclick="avRandom()">🎲 Surprise me</button><button class="btn" style="flex:2" onclick="drawEditor()">✓ Done</button></div>
@@ -3751,7 +3764,7 @@ function home(){
    <header class="quest-nav"><div class="quest-brand"><span class="quest-emblem" aria-hidden="true">✦</span><span>Kin<b>quest</b></span></div><span class="quest-edition">A little learning. A big adventure.</span></header>
    <section class="hero" aria-label="Welcome to Kinquest">
      <div class="quest-hero-copy"><div class="quest-eyebrow">The family learning adventure</div><h1>Small quests.<br><span>Legendary moments.</span></h1><p>Build your brain. Challenge your family.<br>Your next adventure starts here.</p><div class="quest-subjects"><span>＋ Maths</span><span>Aa English</span><span>文 Chinese</span><span>✦ Boss battles</span></div></div>
-     <div class="quest-scene" aria-hidden="true">${owlCompanion('happy',190)}<span class="quest-star a">✦</span><span class="quest-star b">✧</span><span class="quest-star c">✦</span><span class="quest-mascot-label">Your quest companion</span></div>
+     <div class="quest-scene" aria-hidden="true">${avatarSVG(Object.assign({},MASCOT,{hat:mascotHat}),190)}<span class="quest-star a">✦</span><span class="quest-star b">✧</span><span class="quest-star c">✦</span><span class="quest-mascot-label">Your quest companion</span></div>
    </section>
    <div class="sect"><span>Choose your adventurer</span><span class="quest-count">${kids.length} player${kids.length===1?'':'s'}</span></div>
    <p class="quest-section-note">${kids.length?'Pick a player to continue the journey.':'Every great quest starts with you. Create your first player to begin.'}</p>
@@ -4666,9 +4679,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.3';
+const APP_VERSION='3.4';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+ ['3.4','Sky Squadron now takes up to 4 pilots on 4 iPads side by side. The original 3D companions are back (and the default). The cuddly set stays as an option in the Character Studio.'],
  ['3.3','New Sky Squadron air battle in the Duel Table: fly solo, two pilots on one iPad, or two iPads side by side against drone waves and the Sky Fortress boss.'],
  ['3.2','Cuter vinyl-toy avatars for all 14 species, four expressive owl companions for learning feedback and Boss celebrations, and small offline-ready WebP artwork.'],
  ['3.1','Quest PK is now Kinquest — same game, same progress, new name.'],
@@ -5006,11 +5020,11 @@ function soonHome(){return `<div class="sect"><span>What's next</span><span clas
 const DUEL_GAMES={
   pong:{name:'Ping Pong',icon:'🏓',to:7,desc:'Bat the ball past your rival — it speeds up with every hit.'},
   hockey:{name:'Air Hockey',icon:'🥅',to:7,desc:'Slide the puck into the other goal. Hit it hard and bank it off the walls!'},
-  sky:{name:'Sky Squadron',icon:'✈️',coop:1,desc:'Fly together against waves of robot drones and the giant Sky Fortress.'}};
-const DU={peer:null,conn:null,code:null,role:null,game:null,other:null};
+  sky:{name:'Sky Squadron',icon:'✈️',coop:1,max:4,desc:'Fly together against waves of robot drones and the giant Sky Fortress.'}};
+const DU={peer:null,conn:null,conns:[],code:null,role:null,game:null,other:null};
 const duelPeerId=c=>'questduel-'+c.toUpperCase();
-function duClose(){try{DU.conn&&DU.conn.close()}catch(e){}try{DU.peer&&DU.peer.destroy()}catch(e){}Object.assign(DU,{peer:null,conn:null,code:null,role:null,other:null})}
-function duSend(m){try{if(DU.conn&&DU.conn.open)DU.conn.send(m)}catch(e){}}
+function duClose(){[DU.conn,...(DU.conns||[])].forEach(c=>{try{c&&c.close()}catch(e){}});try{DU.peer&&DU.peer.destroy()}catch(e){}Object.assign(DU,{peer:null,conn:null,conns:[],code:null,role:null,other:null})}
+function duSend(m){const cs=DU.role==='host'&&DU.conns&&DU.conns.length?DU.conns:[DU.conn];cs.forEach(c=>{try{if(c&&c.open)c.send(m)}catch(e){}})}
 function duelExit(){duClose();stopGame();setLayer('');arcade()}
 
 /* ---------- menu ---------- */
@@ -5018,12 +5032,12 @@ let DUEL_PICK='hockey';
 function duelMenu(){
   stopGame();setLayer('');duClose();const p=cur();
   app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to Arcade" onclick="arcade()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Duel Table</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div></div>
-   <section class="duel-hero"><div><div class="quest-eyebrow">TWO PLAYERS · FACE TO FACE</div><h2>Grab a grown-up.<br><span>Settle it on the table.</span></h2>
+   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':'Settle it on the table.'}</span></h2>
      <p>${DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
-   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–2 pilots':'First to '+g.to}</small></button>`).join('')}</div>
+   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':'First to '+g.to}</small></button>`).join('')}</div>
    <div class="duel-modes">
      ${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
-     <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>Two iPads — start a table</b><small>You get a 4-letter code for the other iPad.</small><em>${GAME_COST} 🪙</em></button>
+     <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>${DUEL_PICK==='sky'?'2–4 iPads — start a squadron':'Two iPads — start a table'}</b><small>${DUEL_PICK==='sky'?'Others join with your 4-letter code.':'You get a 4-letter code for the other iPad.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelJoinScreen()"><span>🔗</span><b>Join a table</b><small>Type the code shown on the other iPad.</small><em>Free</em></button>
    </div>
    <p class="duel-note">For two iPads: both need to be online (same Wi-Fi is best). ${DUEL_PICK==='sky'?'Stand both upright, side by side.':'Turn both sideways and put them edge to edge.'}</p></main>`;
@@ -5040,12 +5054,17 @@ function duelHost(){
    <section class="duel-wait" id="duwait"><div class="duel-big">📡</div><h2>Getting the table ready…</h2></section></main>`;
   let peer;try{peer=new Peer(duelPeerId(DU.code),PEER_OPTS)}catch(e){return duelFail('This iPad can\'t start a two-iPad game.')}
   DU.peer=peer;
-  peer.on('open',()=>{const w=$('#duwait');if(!w)return;w.innerHTML=`<div class="duel-big">${DUEL_GAMES[DU.game].icon}</div><h2>Waiting for the other iPad…</h2>
+  peer.on('open',()=>{const w=$('#duwait');if(!w)return;w.innerHTML=`<div class="duel-big">${DUEL_GAMES[DU.game].icon}</div><h2>${DU.game==='sky'?'Waiting for pilots to join…':'Waiting for the other iPad…'}</h2>
      <p>On the other iPad: <b>Arcade → Duel Table → Join a table</b>, then type:</p>
      <div class="roomcode">${DU.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>
-     <p class="duel-note">${DU.game==='sky'?'Stand both iPads upright, side by side.':'Turn both iPads sideways.'} This iPad goes on the <b>left</b>.</p>`});
+     <p class="duel-note">${DU.game==='sky'?'Up to 4 iPads, standing upright side by side. This iPad goes on the <b>far left</b>; the others line up in the order they join.':'Turn both iPads sideways. This iPad goes on the <b>left</b>.'}</p><div id="skylobby"></div>`;if(DU.game==='sky')skyLobby()});
   peer.on('error',err=>{if(err.type==='unavailable-id')return duelHost();if(DU.role==='host'&&!GAME)duelFail(err.type==='network'||err.type==='server-error'||err.type==='socket-error'?'Can\'t reach the game server. Check this iPad is online.':'Couldn\'t start the table ('+err.type+').')});
   peer.on('connection',conn=>{
+    if(DU.game==='sky'){if(GAME||DU.conns.length>=3){conn.on('open',()=>{try{conn.send({t:'full'})}catch(e){}setTimeout(()=>{try{conn.close()}catch(e){}},300)});return}
+      DU.conns.push(conn);conn.slot=DU.conns.length;DU.conn=DU.conns[0];
+      conn.on('data',m=>duelData(m,conn));
+      conn.on('close',()=>{if(GAME&&GAME.sky){skyPilotLeft(conn.slot)}else{DU.conns=DU.conns.filter(c=>c!==conn);DU.conns.forEach((c,i)=>{c.slot=i+1;try{c.send({t:'lobby',slot:c.slot})}catch(e){}});DU.conn=DU.conns[0]||null;skyLobby()}});
+      return}
     if(DU.conn&&DU.conn.open){try{conn.close()}catch(e){}return}
     DU.conn=conn;
     conn.on('open',()=>{duSend({t:'cfg',game:DU.game,name:p.name})});
@@ -5068,7 +5087,7 @@ function duelJoin(){
   const code=(($('#ducode')||{}).value||'').trim().toUpperCase();
   if(code.length!==4){miniToast('Type the 4-letter code');return}
   duClose();DU.role='guest';DU.code=code;const p=cur();
-  app().innerHTML=`<main class="arcade-page duel-page"><section class="duel-wait" style="margin-top:40px"><div class="duel-big">📡</div><h2>Joining table ${esc(code)}…</h2><button class="btn ghost" onclick="duClose();duelJoinScreen('${esc(code)}')">Cancel</button></section></main>`;
+  app().innerHTML=`<main class="arcade-page duel-page"><section class="duel-wait" style="margin-top:40px"><div class="duel-big">📡</div><h2>Joining table ${esc(code)}…</h2><p id="skywait"></p><button class="btn ghost" onclick="duClose();duelJoinScreen('${esc(code)}')">Cancel</button></section></main>`;
   let peer;try{peer=new Peer(PEER_OPTS)}catch(e){return duelFail('This iPad can\'t join two-iPad games.')}
   DU.peer=peer;const to=setTimeout(()=>{if(!(DU.conn&&DU.conn.open))duelFail('No answer from table '+code+'. Check the code, and that the other iPad is still on the waiting screen.')},20000);
   peer.on('open',()=>{const conn=peer.connect(duelPeerId(code),{reliable:true});DU.conn=conn;
@@ -5078,8 +5097,12 @@ function duelJoin(){
 }
 function duelFail(msg){duClose();app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duelMenu()">‹</button><h1>Duel Table</h1></div></div><section class="duel-wait"><div class="duel-big">😕</div><h2>${esc(msg)}</h2><button class="btn" onclick="duelMenu()">Back</button></section></main>`}
 function duelLost(){if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
-function duelData(m){
-  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m))return;const D=GAME&&GAME.duel;
+function duelData(m,conn){
+  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;const D=GAME&&GAME.duel;
+  if(DU.game==='sky'&&DU.role==='host'&&m.t==='hi'&&conn&&!GAME){conn.pname=(m.name||'Pilot').slice(0,12);try{conn.send({t:'lobby',slot:conn.slot})}catch(e){}skyLobby();return}
+  if(m.t==='lobby'&&DU.role==='guest'&&!GAME){const w=$('#skywait');if(w)w.innerHTML=`You're <b>pilot ${m.slot+1}</b>. Stand this iPad upright, <b>${m.slot+1}${['','st','nd','rd','th'][Math.min(4,m.slot+1)]||'th'} from the left</b>. Waiting for the first iPad to start the mission…`;return}
+  if(m.t==='full'&&DU.role==='guest'){duelFail('That squadron is full (4 pilots) or already flying.');return}
+  if(m.t==='go'&&m.game==='sky'&&DU.role==='guest'&&!GAME){duelStart('sky','guest',{list:m.names},{n:m.n,slot:m.slot});return}
   if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();p.tokens-=GAME_COST;save()}duSend({t:'go',game:DU.game,a:cur().name,b:DU.other});duelStart(DU.game,'host',{a:cur().name,b:DU.other})}
   else if(m.t==='go'&&DU.role==='guest'&&!D){duelStart(m.game,'guest',{a:m.a,b:m.b})}
   else if(m.t==='in'&&D&&DU.role==='host'){D.tb.x=m.x;D.tb.y=m.y}
@@ -5090,8 +5113,8 @@ function duelData(m){
 
 /* ---------- engine ---------- */
 const HL=1.333,LEN=HL*2; /* world: table is LEN long, 1 wide; player A defends x=0, player B defends x=LEN */
-function duelStart(game,mode,names){
-  if(game==='sky')return skyStart(mode,names);
+function duelStart(game,mode,names,meta){
+  if(game==='sky')return skyStart(mode,names,meta);
   const g=shell('duel-'+game,DUEL_GAMES[game].icon+' '+DUEL_GAMES[game].name,'');
   const D=g.duel={game,mode,names,sa:0,sb:0,to:DUEL_GAMES[game].to,ended:false,lost:false,trail:[],sparks:[],flash:null,serveAt:0,t0:performance.now(),
     ta:{x:game==='pong'?.06:.35,y:.5},tb:{x:game==='pong'?LEN-.06:LEN-.35,y:.5},
@@ -5231,14 +5254,15 @@ ARCADE_HELP['duel-hockey']=['Drag your mallet to hit the puck into the other goa
 
 /* ============ SKY SQUADRON — co-op air battle (solo, one iPad, or two iPads side by side) ============ */
 /* World units: each screen-half is 1 wide and SKY_H tall; y grows downward. Two iPads = 2 wide. Host runs the game; the other iPad mirrors it. */
-const SKY_H=1.4,SKY_COL=['#ff7a45','#3fa7ff'];
-function skyStart(mode,names){
+const SKY_H=1.4,SKY_COL=['#ff7a45','#3fa7ff','#34d399','#f472b6'];
+function skyStart(mode,names,meta){
   const g=shell('sky','✈️ Sky Squadron','');
-  const halves=mode==='host'||mode==='guest'?2:1,two=mode==='local'||halves===2;
-  const K=g.sky={mode,names,halves,two,t:0,score:0,wave:0,state:'intro',stateT:0,ended:false,lost:false,
-    pl:[skyPlayer(halves===2?.5:(two?.33:.5)),...(two?[skyPlayer(halves===2?1.5:.67)]:[])],
+  const net=mode==='host'||mode==='guest',halves=net?(meta&&meta.n||2):1,slot=net?(meta&&meta.slot||0):0,two=mode==='local'||halves>=2;
+  const list=names.list||[names.a,names.b];
+  const K=g.sky={mode,names,list,slot,halves,two,t:0,score:0,wave:0,state:'intro',stateT:0,ended:false,lost:false,
+    pl:net?Array.from({length:halves},(_,i)=>skyPlayer(i+.5)):mode==='local'?[skyPlayer(.33),skyPlayer(.67)]:[skyPlayer(.5)],
     pb:[],eb:[],en:[],it:[],fx:[],ev:[],spawnQ:[],nid:1,lastStep:performance.now(),acc:0,lastSend:0,lastIn:0,ptr:new Map(),net:null,netAt:0,banner:null,shake:0};
-  const view=mode==='guest'?[1,2]:mode==='host'?[0,1]:[0,1];
+  const view=[slot,slot+1];
   const fit=()=>{const area=$('#garea');if(!area)return;const r=area.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
     g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
     const s=Math.min(g.W/1,g.H/SKY_H);K.v={s,x0:view[0],ox:(g.W-s)/2,oy:(g.H-SKY_H*s)/2}};
@@ -5246,7 +5270,7 @@ function skyStart(mode,names){
   K.w2s=(x,y)=>({x:K.v.ox+(x-K.v.x0)*K.v.s,y:K.v.oy+y*K.v.s});
   K.s2w=(sx,sy)=>({x:K.v.x0+(sx-K.v.ox)/K.v.s,y:(sy-K.v.oy)/K.v.s});
   /* relative drag: the plane moves with your finger, so your finger never hides it */
-  const me=mode==='guest'?1:0,pt=e=>{const r=g.c.getBoundingClientRect();return{sx:e.clientX-r.left,sy:e.clientY-r.top}};
+  const me=slot,pt=e=>{const r=g.c.getBoundingClientRect();return{sx:e.clientX-r.left,sy:e.clientY-r.top}};
   g.c.style.touchAction='none';
   g.c.addEventListener('pointerdown',e=>{const q=pt(e),w=K.s2w(q.sx,q.sy);let i=me;if(mode==='local')i=w.x<.5?0:1;const P=K.pl[i];if(!P)return;
     K.ptr.set(e.pointerId,{i,fx:w.x,fy:w.y,px:P.tx,py:P.ty});try{g.c.setPointerCapture(e.pointerId)}catch(_){}});
@@ -5292,7 +5316,7 @@ function skyStep(K,dt){
   /* spawn queue */
   if(K.state==='play'){K.waveT+=dt;while(K.spawnQ.length&&K.spawnQ[0].t<=K.waveT)K.spawnQ.shift().f();
     if(!K.spawnQ.length&&!K.en.length){K.state='gap';K.stateT=2.4;
-      K.revived=false;K.pl.forEach(p=>{if(!p.alive){K.revived=true;p.alive=true;p.lives=1;p.inv=2.5;p.x=p.tx;p.y=p.ty=SKY_H-.18;skyEmit(K,['r',p.x,p.y])}});
+      K.revived=false;K.pl.forEach(p=>{if(!p.alive&&!p.gone){K.revived=true;p.alive=true;p.lives=1;p.inv=2.5;p.x=p.tx;p.y=p.ty=SKY_H-.18;skyEmit(K,['r',p.x,p.y])}});
       if(K.pl.length>1&&K.revived)skyBanner(K,'Teammate back in the sky!','#86efac')}}
   if(K.state==='gap'){K.stateT-=dt;if(K.stateT<=0){K.state='play';skyWave(K)}}
   /* players */
@@ -5344,16 +5368,16 @@ function skySnap(K){const f=v=>+v.toFixed(3);return{t:'sk',gt:f(K.t),sc:K.score,
   p:K.pl.map(p=>[f(p.x),f(p.y),p.alive?1:0,p.lives,p.shield>0?1:0,p.inv>0?1:0,p.power]),
   e:K.en.map(e=>[e.type[0],f(e.x),f(e.y),f(e.type==='swoop'?e.dir*.42:0),f(e.type==='drone'||e.type==='gun'&&e.y<.3?e.vy:0),f(e.hp/e.max),e.flash>0?1:0,f(e.t)]),
   b:K.eb.map(b=>[f(b.x),f(b.y),f(b.vx),f(b.vy)]),q:K.pb.map(b=>[f(b.x),f(b.y),f(b.vx)]),i:K.it.map(it=>[f(it.x),f(it.y),it.ty]),ev:K.ev,end:K.ended?1:0}}
-function skyData(m){const K=GAME&&GAME.sky;if(!K)return false;
-  if(m.t==='in'&&K.mode==='host'&&K.pl[1]){K.pl[1].tx=clamp(m.x,.04,K.halves-.04);K.pl[1].ty=clamp(m.y,.1,SKY_H-.06);return true}
+function skyData(m,conn){const K=GAME&&GAME.sky;if(!K)return false;
+  if(m.t==='in'&&K.mode==='host'){const P=K.pl[conn&&conn.slot||1];if(P){P.tx=clamp(m.x,.04,K.halves-.04);P.ty=clamp(m.y,.1,SKY_H-.06)}return true}
   if(m.t==='sk'&&K.mode==='guest'){K.net=m;K.netAt=performance.now();K.t=m.gt;K.score=m.sc;K.wave=m.w;K.state=m.st;
     (m.ev||[]).forEach(e=>skyLocalEvent(K,e));if(m.end&&!K.ended){K.ended=true;setTimeout(()=>skyOver(K),900)}return true}
   if((m.t==='re'||m.t==='rq')&&K){if(K.mode==='host'){skyRestart();duSend({t:'re'})}else if(m.t==='re'){skyRestart()}return true}
   return false}
 function skyGuestTick(K,now){const n=K.net;if(!n)return;const a=Math.min(.12,(now-K.netAt)/1000);
-  const me=K.pl[1],mine=n.p[1];
-  if(me&&mine){const dx=me.tx-me.x,dy=me.ty-me.y,d=Math.hypot(dx,dy),mv=Math.min(d,2.4/60);if(d){me.x+=dx/d*mv;me.y+=dy/d*mv}Object.assign(me,{alive:!!mine[2],lives:mine[3],shield:mine[4],inv:mine[5],power:mine[6]})}
-  const o=n.p[0];if(o)Object.assign(K.pl[0],{x:o[0],y:o[1],alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6]});
+  n.p.forEach((o,i)=>{const P=K.pl[i];if(!P)return;
+    if(i===K.slot){const dx=P.tx-P.x,dy=P.ty-P.y,d=Math.hypot(dx,dy),mv=Math.min(d,2.4/60);if(d){P.x+=dx/d*mv;P.y+=dy/d*mv}Object.assign(P,{alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6]})}
+    else Object.assign(P,{x:o[0],y:o[1],alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6]})});
   const T={d:'drone',s:'swoop',g:'gun',b:'boss'};
   K.en=n.e.map(e=>({type:T[e[0]],x:e[1]+e[3]*a,y:e[2]+e[4]*a,hp:e[5],max:1,flash:e[6],t:e[7]+a,r:{d:.034,s:.03,g:.062,b:.17}[e[0]]}));
   K.eb=n.b.map(b=>({x:b[0]+b[2]*a,y:b[1]+b[3]*a}));K.pb=n.q.map(b=>({x:b[0]+b[2]*a,y:b[1]-1.7*a}));K.it=n.i.map(it=>({x:it[0],y:it[1]+.16*a,ty:it[2],t:K.t}));
@@ -5380,7 +5404,7 @@ function skyAgain(){const K=GAME&&GAME.sky;if(!K)return;if(K.mode==='guest'){duS
   if(K.mode==='solo'&&!duelPay())return;skyRestart()}
 function skyRestart(){const K=GAME&&GAME.sky;if(!K)return;const ov=$('.gover');if(ov)ov.remove();
   Object.assign(K,{t:0,score:0,wave:0,state:'intro',stateT:2.2,ended:false,pb:[],eb:[],en:[],it:[],fx:[],spawnQ:[],net:null});
-  K.pl.forEach((p,i)=>Object.assign(p,skyPlayer(K.halves===2?(i?1.5:.5):(K.pl.length>1?(i?.67:.33):.5))));skyBanner(K,'Round 2 — take off!','#fde047')}
+  K.pl.forEach((p,i)=>{const gone=p.gone;Object.assign(p,skyPlayer(K.mode==='host'||K.mode==='guest'?i+.5:(K.pl.length>1?(i?.67:.33):.5)));if(gone){p.gone=true;p.alive=false}});skyBanner(K,'Round 2 — take off!','#fde047')}
 
 /* ---------- drawing ---------- */
 function skyDraw(g,K,now){
@@ -5434,8 +5458,8 @@ function skyDraw(g,K,now){
   {const gs=document.getElementById('gscore');if(gs&&gs.textContent!==String(K.score))gs.textContent=K.score}
   x.textBaseline='middle';x.font='700 22px Fredoka, sans-serif';x.textAlign='center';x.fillStyle='#fff';x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=6;
   x.fillText(K.score.toLocaleString('en-SG'),W/2,K.en.some(e=>e.type==='boss')?44:22);x.font='700 13px Fredoka, sans-serif';x.fillText('WAVE '+Math.max(1,K.wave),W/2,K.en.some(e=>e.type==='boss')?64:42);
-  const lives=(i,ax)=>{const p=K.pl[i];if(!p)return;x.textAlign=ax<W/2?'left':'right';x.font='700 14px Fredoka, sans-serif';x.fillStyle=SKY_COL[i];x.fillText((K.names[i?'b':'a']||('Pilot '+(i+1))).slice(0,10),ax,22);x.fillStyle='#fff';x.fillText(p.alive?'♥'.repeat(Math.max(0,p.lives))+(p.power>1?'  P'+p.power:''):'down',ax,40)};
-  if(K.mode==='host')lives(0,12);else if(K.mode==='guest')lives(1,W-12);else{lives(0,12);if(K.pl[1])lives(1,W-12)}
+  const lives=(i,ax)=>{const p=K.pl[i];if(!p)return;x.textAlign=ax<W/2?'left':'right';x.font='700 14px Fredoka, sans-serif';x.fillStyle=SKY_COL[i];x.fillText((K.list[i]||('Pilot '+(i+1))).slice(0,10),ax,22);x.fillStyle='#fff';x.fillText(p.alive?'♥'.repeat(Math.max(0,p.lives))+(p.power>1?'  P'+p.power:''):'down',ax,40)};
+  if(K.mode==='host'||K.mode==='guest')lives(K.slot,12);else{lives(0,12);if(K.pl[1])lives(1,W-12)}
   x.shadowBlur=0;
   if(K.banner&&K.t-K.banner.at<2){const e=K.t-K.banner.at,sc=e<.2?.5+e/.2*.5:1;x.save();x.translate(W/2,H*.42);x.scale(sc,sc);x.globalAlpha=e>1.6?(2-e)/.4:1;x.font=`700 ${Math.min(44,W*.08)}px Fredoka, sans-serif`;x.textAlign='center';x.lineWidth=7;x.strokeStyle='rgba(15,23,42,.8)';x.strokeText(K.banner.t,0,0);x.fillStyle=K.banner.c;x.fillText(K.banner.t,0,0);x.restore()}
   if(K.state==='intro'&&K.mode!=='guest'||K.mode==='guest'&&K.state==='intro'){x.font='600 15px Fredoka, sans-serif';x.fillStyle='rgba(255,255,255,.9)';x.textAlign='center';x.fillText(K.mode==='local'?'Each pilot drags anywhere on their half of the screen':'Drag anywhere to fly — your plane fires by itself',W/2,H*.52)}
@@ -5444,6 +5468,16 @@ function skyDraw(g,K,now){
 }
 ARCADE_HELP.sky=['Drag anywhere to fly. Your plane fires by itself.','Grab P for more guns, S for a shield, ♥ for a life, B to clear the sky.'];
 
+function skyLobby(){const L=$('#skylobby');if(!L)return;const p=cur(),ready=DU.conns.filter(c=>c.pname);
+  L.innerHTML=`<div class="sky-lobby"><div class="sky-pilots">${[p.name,...DU.conns.map(c=>c.pname||'joining…')].map((n,i)=>`<span style="border-color:${SKY_COL[i]}"><b style="color:${SKY_COL[i]}">✈️ ${i+1}</b> ${esc(n)}</span>`).join('')}</div>
+   <button class="btn block" ${ready.length?'':'disabled'} onclick="skyLaunch()">${ready.length?`Start mission · ${ready.length+1} pilots ▶`:'Waiting for at least one more iPad…'}</button></div>`}
+function skyLaunch(){const ready=DU.conns.filter(c=>c.pname&&c.open);if(!ready.length)return;const p=cur();
+  if(!p.unlockAll){if((p.tokens||0)<GAME_COST){miniToast(`Sky Squadron needs ${GAME_COST} 🪙`);return}p.tokens-=GAME_COST;save()}
+  DU.conns.filter(c=>!ready.includes(c)).forEach(c=>{try{c.close()}catch(e){}});DU.conns=ready;ready.forEach((c,i)=>c.slot=i+1);DU.conn=ready[0];
+  const names=[p.name,...ready.map(c=>c.pname)],n=names.length;ready.forEach(c=>{try{c.send({t:'go',game:'sky',slot:c.slot,n,names})}catch(e){}});
+  skyStart('host',{list:names},{n,slot:0})}
+function skyPilotLeft(slot){const K=GAME&&GAME.sky;if(!K)return;const P=K.pl[slot];if(P){P.gone=true;P.alive=false}
+  skyBanner(K,`${(K.list[slot]||'A pilot').slice(0,10)} left the squadron`,'#fca5a5');if(!K.pl.some(p=>!p.gone&&p!==K.pl[0])&&K.pl.length>1){} }
 function skySolo(){if(!duelPay())return;skyStart('solo',{a:cur().name})}
 
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
