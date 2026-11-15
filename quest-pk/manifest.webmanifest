@@ -1,7 +1,7 @@
 {
-  "name": "Quest PK 闯关PK",
-  "short_name": "Quest PK",
-  "description": "Map-based learning quests with a grown-up boss PK",
+  "name": "Kinquest 亲子闯关",
+  "short_name": "Kinquest",
+  "description": "Kinquest: family brain duels — learning quests for kids, with grown-ups as the bosses",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

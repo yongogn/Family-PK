@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Quest PK 闯关PK</title>
+<title>Kinquest 亲子闯关</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Quest PK">
+<meta name="apple-mobile-web-app-title" content="Kinquest">
 <meta name="theme-color" content="#1d1b4b">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -455,7 +455,7 @@ body[data-skin=spooky] .chhead,body[data-skin=midautumn] .chhead{background:#fff
 
 .opts.grp .opt{font-size:44px;letter-spacing:2px;padding:12px 6px}
 
-/* Quest PK visual refresh: home presentation only; game and saved data unchanged. */
+/* Kinquest visual refresh: home presentation only; game and saved data unchanged. */
 body:has(.quest-home){background:radial-gradient(ellipse at 80% 0%,#292451,transparent 55%),#111126!important;background-attachment:fixed!important;background-repeat:no-repeat!important}
 body:has(.quest-home) #fx{opacity:.12}
 #app:has(.quest-home){max-width:1120px;padding:30px 32px 40px}
@@ -512,7 +512,7 @@ body:has(.arcade-page){background:radial-gradient(ellipse at 70% 0%,#332955,tran
 .arcade-mark{width:42px;height:42px;border:1px solid #bba4e955;display:grid;place-items:center;border-radius:13px;color:#e9d2ff;background:#8471b622;font-size:25px}.game-notice{min-height:36px;text-align:center;padding:9px 18px;background:#12212c;color:#c9dce4;font:400 12px/1.5 system-ui,sans-serif;border-bottom:1px solid #ffffff0a}.arcade-metrics{padding:8px 14px;min-height:31px;text-align:center;background:#0e1b28;color:#f8dfab;font:600 11px/1.4 system-ui,sans-serif;letter-spacing:1.2px}.arcade-metrics:empty{display:none}.arcade-paused{position:absolute;inset:0;background:#07131ac9;backdrop-filter:blur(13px);display:grid;place-items:center;z-index:4;padding:22px}.pause-card{max-width:420px;width:100%;padding:32px;border-radius:25px;background:#1d3040;border:1px solid #badce633;box-shadow:0 25px 90px #0005;color:#e6f4f4}.pause-card h2{font-size:32px;font-weight:500;margin:16px 0}.pause-card p{font:14px/1.7 system-ui,sans-serif;color:#bcd2de}.pause-card .btn{background:#d8ecce;color:#254443;border:0;box-shadow:0 4px 0 #8ea799;border-radius:13px;font-size:16px;margin-top:22px}.pause-card .back{font-size:13px;margin:18px auto 0;display:block;background:transparent}.gctl .numpad{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:740px;margin:auto}.gctl .numpad button{min-width:45px;flex:1 0 45px;max-width:76px;padding:11px 6px;font-size:19px}.gctl button{min-height:48px}.turn-marker{color:#a4f0f2}.gbar #game-pause-button{font:700 16px system-ui,sans-serif}.gbar #game-pause-button:hover{background:#ffffff22}.gshell[data-game=stack] .garea,.gshell[data-game=g2048] .garea,.gshell[data-game=sudoku] .garea{background:#141b2b}
 @media(max-width:480px){.game-notice{font-size:11px;min-height:34px;padding:8px 12px}.arcade-metrics{font-size:9px;letter-spacing:.7px;padding:7px 8px}.gctl{gap:7px;padding-block:10px max(12px,env(safe-area-inset-bottom))}.gctl button{font-size:14px;padding:10px 6px}.gctl .numpad{gap:5px}.gctl .numpad button{font-size:16px;min-width:36px;flex-basis:36px;min-height:40px;padding:8px 4px}.gbar .bossexit{width:32px;height:34px}.gbar b{font-size:14px}.gbar{gap:7px}.pause-card{padding:24px}.pturn{font-size:15px}}
 
-/* A bright, tactile arcade world, with original Quest PK artwork. */
+/* A bright, tactile arcade world, with original Kinquest artwork. */
 body:has(.arcade-page){background:radial-gradient(ellipse at 50% 0%,#c5f0ee 0,#eef7f1 45%,#f5f1e6 100%)!important;background-attachment:fixed!important}body:has(.arcade-page) #fx{display:none}.arcade-page{--kid:#24ac98;--kidsh:#177c73;--adult:#26aa9d;--adultsh:#177c73;--gold:#ffc75b;color:#234e62}.arcade-page .stickyhead{background:#f6fbf4ed;border-bottom:1px solid #b7d8ce;box-shadow:0 4px 18px #1e677810;backdrop-filter:blur(18px)}.arcade-page .top h1{color:#214e62;font-weight:600}.arcade-page .top .back{color:#347084;background:linear-gradient(#fff,#e4f3e9);border:1px solid #c0d9cc;box-shadow:0 3px 0 #b9d2c5}.arcade-mark{background:linear-gradient(#fff2b5,#f6b94c);color:#ad742a;border:2px solid #fff7d8;box-shadow:0 3px 0 #d49a3c,0 4px 8px #b38b4c33}.arcade-page .chip.tok{background:linear-gradient(#fff5ca,#ffe099);border:2px solid #fff9df;color:#986b24;box-shadow:0 3px 0 #dbb768}.arcade-page .stage{background:#fff9;border:1px solid #c2dbd1;color:#64818a}.arcade-page .stage:hover{background:#fff}.arcade-page .stage.on{background:linear-gradient(#4dc9ad,#2bac97);color:#fff;border-color:#c0f2d8;box-shadow:0 3px 0 #1c8e7e}.arcade-welcome{min-height:345px;border:3px solid #fff9;border-radius:27px;background:linear-gradient(90deg,#064f726b 0,#08779b26 45%,transparent 70%),url('assets/arcade-island.png') center 53%/cover;box-shadow:0 7px 0 #99cfcc77,0 15px 35px #237d8d24;padding:36px;margin:25px 0 40px}.arcade-welcome>div:first-child{max-width:64%}.arcade-welcome .quest-eyebrow{color:#e5ffef;text-shadow:0 2px 5px #07516c77}.arcade-welcome h2{font-size:clamp(32px,4.2vw,49px);max-width:500px;color:#fffaf0;text-shadow:0 3px 0 #22617b55,0 5px 12px #03446555;font-weight:600;letter-spacing:-.6px}.arcade-welcome h2 span{color:#fff1ac}.arcade-welcome p{color:#edfffc;max-width:300px;text-shadow:0 2px 5px #064b64;font-size:14px;line-height:1.6}.arcade-summary{gap:8px}.arcade-summary span{background:#ffffffdf;box-shadow:0 3px 0 #12617b33;color:#2c6c7d;border:1px solid #fff;border-radius:999px;padding:7px 12px;font-size:11px}.arcade-hero-art{display:none}.arcade-section h2{color:#2f5d6f;font-weight:600}.arcade-section>span{color:#708e93}.arcade-page .gcard{border:2px solid #fff;border-radius:23px;background:#fffcf4;box-shadow:0 5px 0 #c2d7cb,0 12px 25px #397b8e16;transition:transform .18s,box-shadow .18s}.arcade-page .gcard:hover{border-color:#fff;transform:translateY(-5px);box-shadow:0 8px 0 #b4d0c2,0 20px 30px #34788c24}.game-art-wrap{border-bottom:3px solid #ffffff99}.arcade-page .game-info{background:linear-gradient(#fffefa,#f8f5e8);padding:20px}.arcade-page .game-category{color:color-mix(in srgb,var(--game-accent) 55%,#245d6e);font-weight:600}.arcade-page .gname{color:#284f62;font-size:23px;font-weight:600}.arcade-page .game-desc{color:#71818a;line-height:1.65}.arcade-page .game-status{background:#fff7e7eb;border:1px solid #fff;color:#89672f;box-shadow:0 2px 5px #10293c22;font-weight:500}.arcade-page .game-best{background:#fff1b8ec;color:#986e29;border-color:#fff8d5}.arcade-page .btn.game-play{background:linear-gradient(#45c7aa,#24ad97);color:#fff;border:1px solid #a7ead0;box-shadow:0 4px 0 #198e7c,inset 0 2px 0 #ffffff33;border-radius:13px;font-weight:600;font-size:15px;padding:12px 16px}.arcade-page .btn.game-play:hover{background:linear-gradient(#5bd3b8,#2bbb9f);filter:none}.arcade-page .btn.game-play:active{transform:translateY(3px);box-shadow:0 1px 0 #198e7c}.arcade-page .needs{color:#8a948e;border-top:1px solid #d5ded4}.arcade-page .gcard.locked .game-art-wrap{filter:saturate(.65)}.arcade-unlock{background:#fffaf0;border:2px solid #fff;box-shadow:0 4px 0 #d5d6bd;color:#8d7540}.arcade-unlock p,.arcade-unlock>span{color:#8c9589}.arcade-unlock .xpbar{background:#e1e9dc}.arcade-unlock .xpbar i{background:linear-gradient(90deg,#6bd3ad,#f2d572)}.arcade-earn{border-color:#cfdfd2;color:#7c938b}.arcade-earn .back{border:1px solid #c5d9ca;background:#fff9;color:#447a7b;box-shadow:0 2px 0 #c2d6c8}
 .gshell .gbar{background:linear-gradient(#fffdf2,#edf5eb);color:#31596b;border-bottom:2px solid #c0d8cb;box-shadow:0 3px 10px #16466416;z-index:2}.gshell .gbar b{font-weight:600}.gshell .gbar .bossexit{background:#fff;border:1px solid #cadbd2;box-shadow:0 2px 0 #b8cdc1;color:#558183}.gshell .game-score-label{color:#839b96}.gshell #gscore{background:linear-gradient(#ffefb3,#fbd17c);color:#8c641f;box-shadow:0 3px 0 #dcb260,inset 0 1px 0 #fff7d0;border-radius:14px;border:1px solid #fff3bb}.gshell .arcade-metrics{background:#f3f8ed;color:#7b8254;border-bottom:1px solid #dde8d8}.gshell .game-notice{background:#e5f2ed;color:#6a8a8b;border-bottom:1px solid #c9dfd9}.gshell .gctl{background:linear-gradient(#f6f7ec,#e4f0e7);border-top:2px solid #c3dacf}.gshell .gctl button{background:linear-gradient(#53bfa9,#309b8c);color:#fffaf0;border:1px solid #a9deca;box-shadow:0 4px 0 #247b72,inset 0 2px 0 #ffffff30;border-radius:14px;transition:transform .08s}.gshell .gctl button:active{background:#3cae98;transform:translateY(3px);box-shadow:0 1px 0 #247b72}.gshell .gctl .pturn{color:#4e7c80}.gshell .turn-marker{color:#349e96}.gshell .pause-card{background:linear-gradient(#fffef6,#edf6ec);border:2px solid #fff;color:#346275;box-shadow:0 20px 80px #05283e66}.pause-card .quest-eyebrow{color:#4a9c97}.gshell .pause-card p{color:#7c9696}.gshell .pause-card .btn{background:linear-gradient(#48c5a4,#24a98e);color:#fff;box-shadow:0 4px 0 #1b8376}.gshell .pause-card .back{color:#68918e}.gshell .gover .card{background:linear-gradient(#fffef6,#edf6ec)!important;color:#315c6b;border:2px solid #fff;box-shadow:0 7px 0 #bfd7c6,0 25px 80px #09243277}.gshell .gover .btn:not(.ghost){background:linear-gradient(#48c5a4,#24a98e);box-shadow:0 4px 0 #1b8376}.gshell .gover .btn.ghost{background:#dceee5;color:#557d83;box-shadow:0 4px 0 #b8d2c3}
 @media(max-width:760px){.arcade-welcome{min-height:315px;padding:28px;background-position:56% center}.arcade-welcome>div:first-child{max-width:85%}.arcade-welcome h2{font-size:37px;max-width:370px}.arcade-summary span{padding:6px 10px;font-size:10px}}
@@ -3737,8 +3737,8 @@ function home(){
        <span class="tag ad">${p.boss.w}W · ${p.boss.l}L${p.boss.d?' · '+p.boss.d+'D':''}</span></div>`};
   app().innerHTML=`
    <main class="quest-home">
-   <header class="quest-nav"><div class="quest-brand"><span class="quest-emblem" aria-hidden="true">✦</span><span>Quest <b>PK</b></span></div><span class="quest-edition">A little learning. A big adventure.</span></header>
-   <section class="hero" aria-label="Welcome to Quest PK">
+   <header class="quest-nav"><div class="quest-brand"><span class="quest-emblem" aria-hidden="true">✦</span><span>Kin<b>quest</b></span></div><span class="quest-edition">A little learning. A big adventure.</span></header>
+   <section class="hero" aria-label="Welcome to Kinquest">
      <div class="quest-hero-copy"><div class="quest-eyebrow">The family learning adventure</div><h1>Small quests.<br><span>Legendary moments.</span></h1><p>Build your brain. Challenge your family.<br>Your next adventure starts here.</p><div class="quest-subjects"><span>＋ Maths</span><span>Aa English</span><span>文 Chinese</span><span>✦ Boss battles</span></div></div>
      <div class="quest-scene" aria-hidden="true">${avatarSVG(Object.assign({},MASCOT,{hat:mascotHat}),190)}<span class="quest-star a">✦</span><span class="quest-star b">✧</span><span class="quest-star c">✦</span><span class="quest-mascot-label">Your quest companion</span></div>
    </section>
@@ -3754,7 +3754,7 @@ function home(){
      <button class="back" onclick="backupScreen()">💾 Save / restore</button>
      <button class="back" onclick="seasonPicker()">${SEASON.icon} Theme</button>
      ${S.profiles.length&&backupNudge()?'<div class="small" style="color:#ffd27a;margin-top:8px">Tip: save a copy of progress before updating the app</div>':''}
-     <div class="small" style="margin-top:14px;opacity:.85">Quest PK v${APP_VERSION} · ${APP_DATE} · <a href="#" onclick="event.preventDefault();whatsNew()">What's new</a> · <a href="#" onclick="event.preventDefault();checkUpdate(true)">Check for updates</a></div>
+     <div class="small" style="margin-top:14px;opacity:.85">Kinquest v${APP_VERSION} · ${APP_DATE} · <a href="#" onclick="event.preventDefault();whatsNew()">What's new</a> · <a href="#" onclick="event.preventDefault();checkUpdate(true)">Check for updates</a></div>
      <div id="verstat" class="small" style="opacity:.85;margin-top:6px"></div></div></main>`;
 }
 function openProfile(id){S.cur=id;save();if(STAGE==='arcade')STAGE='maths';map()}
@@ -4106,7 +4106,7 @@ function autoBroken(code){
    <ol><li><b>Settings → Screen Time → Content & Privacy Restrictions → Allowed Apps</b>: turn on <b>Siri & Dictation</b>.</li>
    <li><b>Settings → General → Keyboard</b>: turn on <b>Enable Dictation</b>.</li>
    <li><b>Settings → Apps → Safari → Microphone</b>: set to <b>Ask</b> or <b>Allow</b>.</li>
-   ${IS_HOME_APP?'<li>Opened from the home-screen icon? Apple doesn\'t always allow listening there — try opening Quest PK in <b>Safari</b> instead.</li>':''}</ol>
+   ${IS_HOME_APP?'<li>Opened from the home-screen icon? Apple doesn\'t always allow listening there — try opening Kinquest in <b>Safari</b> instead.</li>':''}</ol>
    ${REC_OK?'For now, use <b>Record & compare</b> instead:':''}</div>
    <div class="row wrap" style="justify-content:center;gap:8px;margin-top:10px">${REC_OK?`<button class="btn" onclick="switchToRecord()">🎙️ Record & compare</button>`:''}
    <button class="btn ghost" onclick="S.srBroken=false;save();Q.sp.auto=true;$('#srout').innerHTML='';listen()">↻ Try listening again</button>
@@ -4118,7 +4118,7 @@ let REC=null;
 async function recStart(){
   const out=$('#srout'),btn=$('#micbtn');try{speechSynthesis.cancel()}catch(e){}
   let stream;try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){
-    out.innerHTML=`<div class="fixbox"><b>🎙️ The microphone is blocked.</b> A grown-up can check <b>Settings → Apps → Safari → Microphone</b> (set to Ask or Allow), and <b>Settings → Screen Time → Content & Privacy Restrictions → Microphone</b> (Allow changes).${IS_HOME_APP?' If it still won\'t work from the home-screen icon, open Quest PK in Safari.':''}</div><button class="btn ghost block" style="margin-top:10px" onclick="Q.sp.after()">Skip ▶</button>`;return}
+    out.innerHTML=`<div class="fixbox"><b>🎙️ The microphone is blocked.</b> A grown-up can check <b>Settings → Apps → Safari → Microphone</b> (set to Ask or Allow), and <b>Settings → Screen Time → Content & Privacy Restrictions → Microphone</b> (Allow changes).${IS_HOME_APP?' If it still won\'t work from the home-screen icon, open Kinquest in Safari.':''}</div><button class="btn ghost block" style="margin-top:10px" onclick="Q.sp.after()">Skip ▶</button>`;return}
   const chunks=[];let mr;try{mr=new MediaRecorder(stream)}catch(e){stream.getTracks().forEach(t=>t.stop());out.innerHTML='<span class="muted">Recording isn\'t supported here.</span>';return}
   REC={mr,stream};mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
   mr.onstop=()=>{stream.getTracks().forEach(t=>t.stop());if(REC&&REC.cancel){REC=null;return}
@@ -4655,9 +4655,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.0';
+const APP_VERSION='3.1';
 const APP_DATE='13 Nov 2026';
 const CHANGES=[
+ ['3.1','Quest PK is now Kinquest — same game, same progress, new name.'],
  ['3.0','New Duel Table: Ping Pong and Air Hockey for two, on one iPad or two iPads side by side. A peek at what\'s next: new worlds, Chapter 4 and family features (vote for your favourite). Brain age is now called Mind age.'],
  ['2.9.2','Arcade: every game now costs 3 🪙 — earned 1 per new star (replays of a mastered level count once a day), 3 per Boss win. Parent unlock needs a grown-up sum.'],
  ['2.9.1','Fixes: Boss answers score once, leaving a quiz can no longer reopen it, replayed levels only pay for new stars (plus one practice token a day), clearer time-zone and place-value explanations, unambiguous word-class questions.'],
@@ -4701,7 +4702,7 @@ function backupCode(){
 function readCode(code){
   code=(code||'').trim();
   if(code.startsWith('{'))return JSON.parse(code);
-  const m=code.match(/QPK1:([A-Za-z0-9+/=\s]+)/);if(!m)throw new Error('not a Quest PK code');
+  const m=code.match(/QPK1:([A-Za-z0-9+/=\s]+)/);if(!m)throw new Error('not a Kinquest code');
   return JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/\s/g,'')))));
 }
 function backupScreen(){
@@ -4790,18 +4791,18 @@ function rmWaiting(kid,st){
       <a class="btn" style="text-decoration:none" href="${rmSmsHref()}">💬 Send by iMessage</a>
       ${navigator.share?`<button class="btn ghost" onclick="rmShare()">📤 Other ways</button>`:''}
       <button class="btn ghost" onclick="rmCopy()">🔗 Copy link</button></div>
-    <p class="small muted" style="margin-top:14px">The Boss opens Quest PK → <b>Join a far-away Boss PK</b> → types <b>${RM.code}</b>.<br>Or taps the link: <span style="word-break:break-all">${esc(url)}</span></p>
+    <p class="small muted" style="margin-top:14px">The Boss opens Kinquest → <b>Join a far-away Boss PK</b> → types <b>${RM.code}</b>.<br>Or taps the link: <span style="word-break:break-all">${esc(url)}</span></p>
     <label class="l" style="text-align:left">Boss strength</label>
     <div class="seg"><button class="${bossOpts.strength==='gentle'?'on':''}" onclick="bossOpts.strength='gentle';rmWaiting(cur(),stageById(STAGE))">😊 Gentle</button><button class="${bossOpts.strength==='fierce'?'on':''}" onclick="bossOpts.strength='fierce';rmWaiting(cur(),stageById(STAGE))">😈 Fierce</button></div>
     <div class="waitdots" style="margin-top:18px">Waiting<span>.</span><span>.</span><span>.</span></div>`;
 }
-function rmInviteText(){const kid=cur(),st=stageById(STAGE);return `⚔️ ${kid.name} challenges you to a ${st.subj} Boss PK in Quest PK! Tap to join: ${joinUrl(RM.code)} (room code ${RM.code})`}
+function rmInviteText(){const kid=cur(),st=stageById(STAGE);return `⚔️ ${kid.name} challenges you to a ${st.subj} Boss PK in Kinquest! Tap to join: ${joinUrl(RM.code)} (room code ${RM.code})`}
 function rmSmsHref(){return 'sms:&body='+encodeURIComponent(rmInviteText())}
 function rmShare(){
   const kid=cur(),st=stageById(STAGE),url=joinUrl(RM.code);
-  navigator.share({title:'Quest PK challenge',text:`⚔️ ${kid.name} challenges you to a ${st.subj} Boss PK in Quest PK! Room code: ${RM.code}`,url}).catch(()=>{});
+  navigator.share({title:'Kinquest challenge',text:`⚔️ ${kid.name} challenges you to a ${st.subj} Boss PK in Kinquest! Room code: ${RM.code}`,url}).catch(()=>{});
 }
-function rmCopy(){const url=joinUrl(RM.code);try{navigator.clipboard.writeText(`Quest PK challenge — room ${RM.code}: ${url}`).then(()=>miniToast('✅ Link copied'),()=>miniToast(url))}catch(e){miniToast(url)}}
+function rmCopy(){const url=joinUrl(RM.code);try{navigator.clipboard.writeText(`Kinquest challenge — room ${RM.code}: ${url}`).then(()=>miniToast('✅ Link copied'),()=>miniToast(url))}catch(e){miniToast(url)}}
 function rmFail(msg){
   rmClose();
   app().innerHTML=`<div class="top"><button class="back" onclick="bossSetup()">‹</button><h1>🌏 Far-away Boss PK</h1></div>
