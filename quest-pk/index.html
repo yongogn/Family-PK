@@ -550,7 +550,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-note{opacity:.75;font-size:14px;margin-top:14px;text-align:center}
 .duel-wait{text-align:center;padding:30px 20px;border-radius:24px;background:#ffffff0d;border:1px solid #ffffff1f;margin-top:16px;color:#f8f2ff}
 .duel-big{font-size:64px}.duel-code-in{font:700 40px Fredoka,sans-serif;letter-spacing:12px;text-align:center;text-transform:uppercase;width:min(280px,90%);padding:12px;border-radius:16px;border:2px solid #ffffff44;background:#0b0f26;color:#fff;margin-top:10px}
-.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice,.gshell[data-game="island"] #game-notice,.gshell[data-game="island"] #game-pause-button,.gshell[data-game="island"] #game-metrics{display:none}
+.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice,.gshell[data-game="island"] #game-notice,.gshell[data-game="island"] #game-pause-button,.gshell[data-game="island"] #game-metrics,.gshell[data-game="brawl"] #game-notice,.gshell[data-game="brawl"] #game-pause-button,.gshell[data-game="brawl"] #game-metrics{display:none}
 .gshell[data-game^="duel-"] .garea{background:#0b0f26}
 
 /* Cuddly companions: presentation only; quiz, reward and match rules are unchanged. */
@@ -569,6 +569,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-page .duel-note{color:#4b4463;opacity:1}
 .sky-pilots span{background:#fff;color:#2a1f3d}
 .mz-tally{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 16px}.mz-tally div{border:2px solid;border-radius:14px;padding:6px 12px;display:flex;flex-direction:column;align-items:center;min-width:90px}.mz-tally span{font-size:18px}
+.br-pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 0}.br-pick span{font-weight:700;color:#2a1f3d;min-width:150px}.br-pick button{border:2px solid #e7e0f0;background:#fff;border-radius:14px;padding:8px 12px;font:600 14px Fredoka,sans-serif;color:#2a1f3d;cursor:pointer}.br-pick button.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 30%,#fff);box-shadow:0 4px 0 var(--c)}
 </style>
 </head>
 <body>
@@ -3888,7 +3889,7 @@ function arcade(){
   app().innerHTML=`<main class="arcade-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to learning map" onclick="STAGE='maths';map()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div><div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">Arcade</button></div></div>
   <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Every ${GAME_COST} stars you earn learning = 1 game.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 ${GAME_COST} stars per game · you have ${p.tokens||0}</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span></div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
   ${!open?`<section class="arcade-unlock"><b>🔒 Your island is almost within reach</b><p>Collect ${ARCADE_NEED} stars to open the island. After that, every ${GAME_COST} stars you earn = 1 game.</p><div class="xpbar"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div><span>${ts} / ${ARCADE_NEED} stars · Best streak: ${p.stats.bestStreak}</span></section>`:''}
-  <section class="duel-feature" onclick="duelMenu()" role="button" tabindex="0"><div class="duel-feature-ico" aria-hidden="true">💦✈️</div><div><div class="quest-eyebrow">NEW · PLAY TOGETHER</div><h2>Duel Table</h2><p>Splash Maze, Sky Squadron, Ping Pong and Air Hockey — up to 4 players, on one iPad or several.</p></div><span class="btn">Play together →</span></section>
+  <section class="duel-feature" onclick="duelMenu()" role="button" tabindex="0"><div class="duel-feature-ico" aria-hidden="true">🥊💦</div><div><div class="quest-eyebrow">NEW · PLAY TOGETHER</div><h2>Duel Table</h2><p>Toy Brawl, Splash Maze, Sky Squadron, Ping Pong and Air Hockey — up to 4 players, on one iPad or several.</p></div><span class="btn">Play together →</span></section>
   <div class="arcade-section"><h2>Pick your next challenge</h2><span>Personal bests. Family rivalries. Just one more go.</span></div>
   <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?`${GAME_COST} 🪙 per play`:'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-section"><h2>Coming soon</h2><span>More two-player games are on the way.</span></div><div class="soon-grid">${SOON_GAMES.map(soonTile).join('')}</div><div class="arcade-earn">Every new star earns 1 🪙 · tests earn 2 · boss wins earn 3 · each game costs ${GAME_COST} 🪙.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
 }
@@ -4680,9 +4681,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.7';
+const APP_VERSION='3.8';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+ ['3.8','New Toy Brawl: a friendly 1-vs-1 toy fighting game — vs robot, two on one iPad, or two iPads. Four fighters with their own special moves.'],
  ['3.7','New Island Dash: run and jump across tropical islands, eat fruit to keep your energy up, bop critters and find power-up eggs.'],
  ['3.6','New Splash Maze: water-balloon maze battles for up to 4 players — solo vs robots, two on one iPad, or one per iPad.'],
  ['3.5.1','Restored the previous Custom builder avatar proportions, eyes and cheeks.'],
@@ -5025,6 +5027,7 @@ function soonHome(){return `<div class="sect"><span>What's next</span><span clas
 const DUEL_GAMES={
   pong:{name:'Ping Pong',icon:'🏓',to:7,desc:'Bat the ball past your rival — it speeds up with every hit.'},
   hockey:{name:'Air Hockey',icon:'🥅',to:7,desc:'Slide the puck into the other goal. Hit it hard and bank it off the walls!'},
+  brawl:{name:'Toy Brawl',icon:'🥊',fight:1,desc:'Pick a toy fighter and bop your rival with foam gloves. Best of 3 rounds!'},
   maze:{name:'Splash Maze',icon:'💦',max:4,party:1,desc:'Drop water balloons, pop crates and soak your rivals. Last one dry wins!'},
   sky:{name:'Sky Squadron',icon:'✈️',coop:1,max:4,desc:'Fly together against waves of robot drones and the giant Sky Fortress.'}};
 const DU={peer:null,conn:null,conns:[],code:null,role:null,game:null,other:null};
@@ -5038,11 +5041,11 @@ let DUEL_PICK='hockey';
 function duelMenu(){
   stopGame();setLayer('');duClose();const p=cur();
   app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to Arcade" onclick="arcade()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Duel Table</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div></div>
-   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':DUEL_PICK==='maze'?'Last one dry wins.':'Settle it on the table.'}</span></h2>
-     <p>${DUEL_PICK==='maze'?'Up to four players on one maze: two on one iPad, or one per iPad. Robots join in when you need more players.':DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
-   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':g.party?'1–4 players · robots fill in':'First to '+g.to}</small></button>`).join('')}</div>
-   <div class="duel-modes">
-     ${DUEL_PICK==='maze'?`<button class="duel-mode" onclick="mazeSolo()"><span>🤖</span><b>Solo vs robots</b><small>You against three robots.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
+   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':DUEL_PICK==='maze'?'Last one dry wins.':DUEL_PICK==='brawl'?'Foam gloves on!':'Settle it on the table.'}</span></h2>
+     <p>${DUEL_PICK==='brawl'?'A friendly toy-box fighting game: bop, kick and use your special move. Turn the iPad sideways for two players.':DUEL_PICK==='maze'?'Up to four players on one maze: two on one iPad, or one per iPad. Robots join in when you need more players.':DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
+   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':g.party?'1–4 players · robots fill in':g.fight?'1v1 · best of 3':'First to '+g.to}</small></button>`).join('')}</div>
+   ${DUEL_PICK==='brawl'?brawlPicker('Your fighter',BRAWL_ME,'BRAWL_ME')+brawlPicker('Player 2 (one iPad)',BRAWL_P2,'BRAWL_P2'):''}<div class="duel-modes">
+     ${DUEL_PICK==='brawl'?`<button class="duel-mode" onclick="brawlRobot()"><span>🤖</span><b>Vs robot</b><small>Fight a computer-controlled toy.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='maze'?`<button class="duel-mode" onclick="mazeSolo()"><span>🤖</span><b>Solo vs robots</b><small>You against three robots.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>${DUEL_PICK==='sky'?'2–4 iPads — start a squadron':DUEL_PICK==='maze'?'2–4 iPads — start a game':'Two iPads — start a table'}</b><small>${DUEL_PICK==='sky'?'Others join with your 4-letter code.':'You get a 4-letter code for the other iPad.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelJoinScreen()"><span>🔗</span><b>Join a table</b><small>Type the code shown on the other iPad.</small><em>Free</em></button>
    </div>
@@ -5097,21 +5100,21 @@ function duelJoin(){
   let peer;try{peer=new Peer(PEER_OPTS)}catch(e){return duelFail('This iPad can\'t join two-iPad games.')}
   DU.peer=peer;const to=setTimeout(()=>{if(!(DU.conn&&DU.conn.open))duelFail('No answer from table '+code+'. Check the code, and that the other iPad is still on the waiting screen.')},20000);
   peer.on('open',()=>{const conn=peer.connect(duelPeerId(code),{reliable:true});DU.conn=conn;
-    conn.on('open',()=>{clearTimeout(to);duSend({t:'hi',name:p?p.name:'Player 2'})});
+    conn.on('open',()=>{clearTimeout(to);duSend({t:'hi',name:p?p.name:'Player 2',fighter:BRAWL_ME})});
     conn.on('data',m=>duelData(m));conn.on('close',()=>duelLost())});
   peer.on('error',err=>{clearTimeout(to);if(err.type==='peer-unavailable')duelFail('Table '+code+' wasn\'t found. Check the code on the other iPad.');else if(!GAME)duelFail('Connection problem ('+err.type+'). Check you\'re online.')});
 }
 function duelFail(msg){duClose();app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duelMenu()">‹</button><h1>Duel Table</h1></div></div><section class="duel-wait"><div class="duel-big">😕</div><h2>${esc(msg)}</h2><button class="btn" onclick="duelMenu()">Back</button></section></main>`}
-function duelLost(){if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.maze){GAME.maze.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
+function duelLost(){if(GAME&&GAME.brawl){GAME.brawl.lost=true;return}if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.maze){GAME.maze.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
 function duelData(m,conn){
-  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;if(GAME&&GAME.maze&&mazeData(m,conn))return;const D=GAME&&GAME.duel;
+  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;if(GAME&&GAME.maze&&mazeData(m,conn))return;if(GAME&&GAME.brawl&&brawlData(m))return;const D=GAME&&GAME.duel;
   if((DUEL_GAMES[DU.game]||{}).max>2&&DU.role==='host'&&m.t==='hi'&&conn&&!GAME){conn.pname=(m.name||'Player').slice(0,12);try{conn.send({t:'lobby',slot:conn.slot,game:DU.game})}catch(e){}skyLobby();return}
   if(m.t==='lobby'&&DU.role==='guest'&&!GAME&&m.game==='maze'){const w=$('#skywait');if(w)w.innerHTML=`You're <b>player ${m.slot+1}</b> 💦 Waiting for the first iPad to start…`;return}
   if(m.t==='lobby'&&DU.role==='guest'&&!GAME){const w=$('#skywait');if(w)w.innerHTML=`You're <b>pilot ${m.slot+1}</b>. Stand this iPad upright, <b>${m.slot+1}${['','st','nd','rd','th'][Math.min(4,m.slot+1)]||'th'} from the left</b>. Waiting for the first iPad to start the mission…`;return}
   if(m.t==='full'&&DU.role==='guest'){duelFail('That squadron is full (4 pilots) or already flying.');return}
   if(m.t==='go'&&(m.game==='sky'||m.game==='maze')&&DU.role==='guest'&&!GAME){duelStart(m.game,'guest',{list:m.names},{n:m.n,slot:m.slot,bots:false});return}
-  if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();p.tokens-=GAME_COST;save()}duSend({t:'go',game:DU.game,a:cur().name,b:DU.other});duelStart(DU.game,'host',{a:cur().name,b:DU.other})}
-  else if(m.t==='go'&&DU.role==='guest'&&!D){duelStart(m.game,'guest',{a:m.a,b:m.b})}
+  if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();p.tokens-=GAME_COST;save()}DU.otherF=m.fighter;duSend({t:'go',game:DU.game,a:cur().name,b:DU.other,fa:BRAWL_ME,fb:m.fighter});duelStart(DU.game,'host',{a:cur().name,b:DU.other,fa:BRAWL_ME,fb:m.fighter||'dino'})}
+  else if(m.t==='go'&&DU.role==='guest'&&!D&&!GAME){duelStart(m.game,'guest',{a:m.a,b:m.b,fa:m.fa,fb:m.fb})}
   else if(m.t==='in'&&D&&DU.role==='host'){D.tb.x=m.x;D.tb.y=m.y}
   else if(m.t==='st'&&D&&DU.role==='guest'){D.net=m;D.netAt=performance.now();if(m.ev)duelEvent(D,m.ev);D.sa=m.s[0];D.sb=m.s[1];if(m.end&&!D.ended)duelEnd(D)}
   else if(m.t==='re'&&D){duelReset(D)}
@@ -5123,6 +5126,7 @@ const HL=1.333,LEN=HL*2; /* world: table is LEN long, 1 wide; player A defends x
 function duelStart(game,mode,names,meta){
   if(game==='sky')return skyStart(mode,names,meta);
   if(game==='maze')return mazeStart(mode,names,meta);
+  if(game==='brawl')return brawlStart(mode,names);
   const g=shell('duel-'+game,DUEL_GAMES[game].icon+' '+DUEL_GAMES[game].name,'');
   const D=g.duel={game,mode,names,sa:0,sb:0,to:DUEL_GAMES[game].to,ended:false,lost:false,trail:[],sparks:[],flash:null,serveAt:0,t0:performance.now(),
     ta:{x:game==='pong'?.06:.35,y:.5},tb:{x:game==='pong'?LEN-.06:LEN-.35,y:.5},
@@ -5256,7 +5260,7 @@ function duelDraw(g,D,now){
 
 /* ---------- hook into Arcade ---------- */
 const _stopGameD=stopGame;
-stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&(GAME.duel||GAME.sky||GAME.maze)&&DU.role)duClose();_stopGameD()};
+stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&(GAME.duel||GAME.sky||GAME.maze||GAME.brawl)&&DU.role)duClose();_stopGameD()};
 ARCADE_HELP['duel-pong']=['Drag your paddle up and down. Each hit speeds the ball up.','Hit with the edge of the paddle to angle the ball.'];
 ARCADE_HELP['duel-hockey']=['Drag your mallet to hit the puck into the other goal.','Bank shots off the side walls are hard to stop!'];
 
@@ -5852,6 +5856,177 @@ ARCADE_META.island=['RUN & JUMP','#38bdf8'];
 ARCADE_HELP.island=['◀ ▶ to run, ⤒ to jump (hold for higher). Jump on critters to bop them.','Your energy drains — grab fruit! Eggs hide a boomerang 🪃, a skateboard or a super star.'];
 const _playGameI=playGame;
 playGame=function(id){if(id!=='island')return _playGameI(id);const p=cur();if(!p.unlockAll&&(p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}if(!p.unlockAll)p.tokens-=GAME_COST;save();gIsland()};
+
+/* ============ TOY BRAWL — kid-friendly 1v1 fighter (foam gloves, bonks, dizzy stars) ============ */
+const BRAWLERS={
+  bunny:{name:'Bun Bun',col:'#f9a8d4',dark:'#db2777',spd:4.1,pow:.85,jump:10.2,proj:'🥕',ears:'bunny'},
+  robo:{name:'Robo Bolt',col:'#93c5fd',dark:'#2563eb',spd:3.4,pow:1,jump:9.2,proj:'⚡',ears:'robo'},
+  dino:{name:'Dino Chomp',col:'#86efac',dark:'#16a34a',spd:2.9,pow:1.25,jump:8.6,proj:'💨',ears:'dino'},
+  cat:{name:'Ninja Kit',col:'#fcd34d',dark:'#d97706',spd:3.8,pow:.95,jump:10.8,proj:'⭐',ears:'cat'}};
+let BRAWL_ME='bunny',BRAWL_P2='dino';
+const BR_W=10,BR_MOVES={p:{dmg:6,rng:.95,up:.07,act:.1,rec:.16,kb:1.5,h:1.2},k:{dmg:10,rng:1.2,up:.15,act:.12,rec:.3,kb:3.2,h:.6},s:{dmg:11,up:.22,act:.05,rec:.35,cd:2.6}};
+function brawlFighter(id,x,face){const B=BRAWLERS[id]||BRAWLERS.bunny;return{id,x,y:0,vx:0,vy:0,face,hp:100,st:'idle',stT:0,mv:null,hit:false,stun:0,block:false,cd:0,flash:0,ko:false}}
+function brawlStart(mode,names){
+  const g=shell('brawl','🥊 Toy Brawl','');
+  const fa=names.fa||BRAWL_ME,fb=names.fb||(mode==='robot'?pick(Object.keys(BRAWLERS).filter(k=>k!==fa)):BRAWL_P2);
+  const F=g.brawl={mode,names:[names.a||'Player 1',mode==='robot'?BRAWLERS[fb].name:(names.b||'Player 2')],ids:[fa,fb],f:[brawlFighter(fa,3,1),brawlFighter(fb,7,-1)],proj:[],fx:[],ev:[],
+    inp:[{l:0,r:0,j:0,p:0,k:0,s:0},{l:0,r:0,j:0,p:0,k:0,s:0}],prev:[{},{}],round:1,wins:[0,0],timer:99,state:'intro',stateT:2,last:performance.now(),acc:0,lastSend:0,ptr:new Map(),ai:{t:0},banner:null};
+  const me=mode==='guest'?1:0;
+  const fit=()=>{const a=$('#garea');if(!a)return;const r=a.getBoundingClientRect(),dpr=window.devicePixelRatio||1;g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
+    const W=g.W,H=g.H,two=mode==='local',b=Math.max(30,Math.min(46,Math.min(W,H)*.06));F.u=Math.min(W/BR_W,H/5.2);F.floor=H*(two?.6:.66);F.ox=(W-BR_W*F.u)/2;
+    const pad=(side,pl)=>{const L=side==='L',bx=L?b*1.3:W-b*1.3,dx=L?1:-1,y=H-b*1.2;const mv={l:{x:L?b*1.2:W-b*3.4,y:H-b*2.6,r:b},r:{x:L?b*3.4:W-b*1.2,y:H-b*2.6,r:b},j:{x:L?b*2.3:W-b*2.3,y:H-b*4.6,r:b*.85}};
+      const at={p:{x:L?b*1.2:W-b*1.2,y:H-b*.95,r:b*.85},k:{x:L?b*3.2:W-b*3.2,y:H-b*.95,r:b*.85},s:{x:L?b*5:W-b*5,y:H-b*.95,r:b*.85}};return{pl,btn:Object.assign(mv,at)}};
+    if(two){const A=pad('L',0),B=pad('R',1);F.pads=[A,B]}
+    else{const r2=b,left={l:{x:r2*1.3,y:H-r2*1.5,r:r2},r:{x:r2*3.6,y:H-r2*1.5,r:r2},j:{x:r2*2.45,y:H-r2*3.6,r:r2*.85}},right={p:{x:W-r2*3.7,y:H-r2*1.4,r:r2},k:{x:W-r2*1.4,y:H-r2*1.4,r:r2},s:{x:W-r2*2.55,y:H-r2*3.5,r:r2*.9}};F.pads=[{pl:me,btn:Object.assign(left,right)}]}};
+  fit();const onR=()=>{if(GAME===g)fit()};window.addEventListener('resize',onR);
+  const keys=e=>{const d=e.type==='keydown'?1:0,m={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'j',z:'p',x:'k',c:'s'}[e.key];if(!m)return;e.preventDefault();brawlSet(F,me,m,d)};
+  window.addEventListener('keydown',keys);window.addEventListener('keyup',keys);g.offResize=()=>{window.removeEventListener('resize',onR);window.removeEventListener('keydown',keys);window.removeEventListener('keyup',keys)};
+  g.c.style.touchAction='none';const pos=e=>{const r=g.c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  const hitBtn=q=>{for(const pd of F.pads)for(const [k,b] of Object.entries(pd.btn))if(Math.hypot(q.x-b.x,q.y-b.y)<b.r+10)return{pl:pd.pl,k};return null};
+  g.c.addEventListener('pointerdown',e=>{const h=hitBtn(pos(e));if(!h)return;try{g.c.setPointerCapture(e.pointerId)}catch(_){}F.ptr.set(e.pointerId,h);brawlSet(F,h.pl,h.k,1)});
+  g.c.addEventListener('pointermove',e=>{const old=F.ptr.get(e.pointerId);if(!old||!'lr'.includes(old.k))return;const h=hitBtn(pos(e));if(h&&h.pl===old.pl&&'lr'.includes(h.k)&&h.k!==old.k){brawlSet(F,old.pl,old.k,0);brawlSet(F,h.pl,h.k,1);F.ptr.set(e.pointerId,h)}});
+  const up=e=>{const h=F.ptr.get(e.pointerId);if(h)brawlSet(F,h.pl,h.k,0);F.ptr.delete(e.pointerId)};g.c.addEventListener('pointerup',up);g.c.addEventListener('pointercancel',up);
+  F.banner={t:'Round 1 — BRAWL!',at:performance.now()};
+  const loop=now=>{if(g.dead)return;const dt=Math.min(.05,(now-F.last)/1000);F.last=now;
+    if(mode!=='guest'){F.acc+=dt;while(F.acc>=1/60){brawlStep(F,1/60);F.acc-=1/60}if(mode==='host'&&now-F.lastSend>40){F.lastSend=now;duSend(brawlSnap(F));F.ev=[]}else if(mode!=='host')F.ev=[]}
+    else brawlGuestTick(F);
+    brawlDraw(g,F,now);g.raf=requestAnimationFrame(loop)};
+  g.raf=requestAnimationFrame(loop);
+}
+function brawlSet(F,pl,k,v){if(F.mode==='guest'&&pl===1){F.inp[1][k]=v;duSend({t:'in',k:F.inp[1]});return}if(F.inp[pl])F.inp[pl][k]=v}
+function brawlEmit(F,e){F.ev.push(e);if(F.mode!=='guest')brawlLocalEvent(F,e)}
+function brawlStep(F,dt){
+  if(F.state==='intro'){F.stateT-=dt;if(F.stateT<=0)F.state='fight';return}
+  if(F.state==='ko'){F.stateT-=dt;F.f.forEach(f=>{f.vy-=25*dt;f.y=Math.max(0,f.y+f.vy*dt);f.x=clamp(f.x+f.vx*dt,.5,BR_W-.5);f.vx*=.92});if(F.stateT<=0)brawlNextRound(F);return}
+  if(F.state==='done')return;
+  F.timer-=dt;
+  if(F.mode==='robot')brawlAI(F,dt);
+  F.f.forEach((f,i)=>{const o=F.f[1-i],I=F.inp[i],P=F.prev[i],B=BRAWLERS[f.id];f.flash=Math.max(0,f.flash-dt);f.cd=Math.max(0,f.cd-dt);
+    if(f.st!=='atk'&&f.y===0)f.face=o.x>f.x?1:-1;
+    const away=(f.face>0&&I.l)||(f.face<0&&I.r);f.block=away&&f.y===0&&f.st==='idle';
+    if(f.stun>0){f.stun-=dt;f.st='hurt';if(f.stun<=0)f.st='idle'}
+    else if(f.st==='atk'){f.stT+=dt;const M=BR_MOVES[f.mv];
+      if(f.mv==='s'){if(!f.hit&&f.stT>=M.up){f.hit=true;F.proj.push({o:i,x:f.x+f.face*.6,y:f.y+1.1,vx:f.face*7.2,e:B.proj});brawlEmit(F,['sp',i])}}
+      else if(!f.hit&&f.stT>=M.up&&f.stT<=M.up+M.act){const reach=Math.abs(o.x-f.x)<=M.rng+.15&&Math.sign(o.x-f.x)===f.face&&Math.abs(o.y-f.y)<M.h+.6;if(reach){f.hit=true;brawlHit(F,i,M.dmg*B.pow,M.kb)}}
+      if(f.stT>=M.up+M.act+M.rec){f.st='idle';f.mv=null}}
+    else{const want=(I.p&&!P.p)?'p':(I.k&&!P.k)?'k':(I.s&&!P.s&&f.cd<=0)?'s':null;
+      if(want){f.st='atk';f.mv=want;f.stT=0;f.hit=false;if(want==='s')f.cd=BR_MOVES.s.cd;if(f.y===0)f.vx*=.3}
+      else{const dir=(I.r?1:0)-(I.l?1:0);f.vx=dir*B.spd*(f.block?.55:1);if(I.j&&!P.j&&f.y===0)f.vy=B.jump}}
+    if(f.st==='atk'&&f.y===0)f.vx*=.85;
+    f.vy-=25*dt;f.y+=f.vy*dt;if(f.y<=0){f.y=0;f.vy=0}f.x=clamp(f.x+f.vx*dt,.5,BR_W-.5);
+    if(f.st==='hurt'){f.vx*=.88}
+    Object.assign(P,I)});
+  /* keep fighters from walking through each other */
+  const [a,b]=F.f;if(Math.abs(a.x-b.x)<.75&&Math.abs(a.y-b.y)<1.4){const push=(.75-Math.abs(a.x-b.x))/2,s=Math.sign(a.x-b.x)||1;a.x=clamp(a.x+push*s,.5,BR_W-.5);b.x=clamp(b.x-push*s,.5,BR_W-.5)}
+  F.proj.forEach(p=>p.x+=p.vx*dt);
+  F.proj=F.proj.filter(p=>{const t=F.f[1-p.o];if(Math.abs(t.x-p.x)<.5&&p.y>t.y&&p.y<t.y+1.9){brawlHit(F,p.o,BR_MOVES.s.dmg*BRAWLERS[F.f[p.o].id].pow,2);return false}
+    const q=F.proj.find(r=>r!==p&&r.o!==p.o&&Math.abs(r.x-p.x)<.4);if(q){q.dead=true;brawlEmit(F,['pc',+p.x.toFixed(2),+p.y.toFixed(2)]);return false}return !p.dead&&p.x>-1&&p.x<BR_W+1});
+  if(F.timer<=0){const w=F.f[0].hp===F.f[1].hp?-1:F.f[0].hp>F.f[1].hp?0:1;brawlRoundEnd(F,w,'Time!')}}
+function brawlHit(F,i,dmg,kb){const t=F.f[1-i],a=F.f[i];if(t.ko)return;
+  if(t.block&&Math.sign(a.x-t.x)===t.face){t.hp-=dmg*.2;t.vx=-t.face*1.4;t.flash=.08;brawlEmit(F,['bl',+t.x.toFixed(2),+(t.y+1.2).toFixed(2)])}
+  else{t.hp-=dmg;t.stun=.28+kb*.04;t.vx=a.face*kb;if(t.y>0||kb>3)t.vy=3.5;t.flash=.15;t.st='hurt';t.mv=null;brawlEmit(F,['h',+t.x.toFixed(2),+(t.y+1.3).toFixed(2),Math.round(dmg)])}
+  t.hp=Math.max(0,t.hp);if(t.hp<=0){t.ko=true;t.vx=a.face*4;t.vy=6;brawlRoundEnd(F,i,'BONK OUT!')}}
+function brawlRoundEnd(F,w,why){if(F.state!=='fight')return;F.state='ko';F.stateT=2.6;if(w>=0)F.wins[w]++;
+  brawlEmit(F,['r',w,why]);}
+function brawlNextRound(F){if(F.wins[0]>=2||F.wins[1]>=2){F.state='done';brawlEmit(F,['end',F.wins[0]>=2?0:1]);return}
+  F.round++;F.timer=99;F.proj=[];F.f=[brawlFighter(F.ids[0],3,1),brawlFighter(F.ids[1],7,-1)];F.state='intro';F.stateT=1.6;brawlEmit(F,['b',`Round ${F.round} — BRAWL!`])}
+function brawlAI(F,dt){const ai=F.ai,me=F.f[1],o=F.f[0],I=F.inp[1];ai.t-=dt;
+  const d=Math.abs(o.x-me.x),incoming=F.proj.some(p=>p.o===0&&Math.sign(me.x-p.x)===Math.sign(p.vx)&&Math.abs(me.x-p.x)<3);
+  if(ai.t>0){I.p=I.k=I.s=0;return}ai.t=.18+Math.random()*.3;Object.assign(I,{l:0,r:0,j:0,p:0,k:0,s:0});
+  const toward=o.x>me.x?'r':'l',away=toward==='r'?'l':'r';
+  if(incoming&&Math.random()<.55){I.j=1;return}
+  if(o.st==='atk'&&d<1.6&&Math.random()<.4){I[away]=1;return}
+  if(d>4&&me.cd<=0&&Math.random()<.35){I.s=1;return}
+  if(d>1.1){I[toward]=1;if(Math.random()<.08)I.j=1;return}
+  const r=Math.random();if(r<.45)I.p=1;else if(r<.75)I.k=1;else if(r<.85)I[away]=1;else I.j=1}
+function brawlSnap(F){const f=v=>+v.toFixed(2);return{t:'bw',f:F.f.map(q=>[f(q.x),f(q.y),q.face,Math.round(q.hp),q.st,q.mv||'',f(q.stT),q.block?1:0,q.flash>0?1:0,q.ko?1:0,f(q.cd)]),pj:F.proj.map(p=>[f(p.x),f(p.y),p.vx>0?1:-1,p.e]),tm:Math.ceil(F.timer),r:F.round,w:F.wins,st:F.state,ev:F.ev}}
+function brawlData(m){const F=GAME&&GAME.brawl;if(!F)return false;
+  if(m.t==='in'&&F.mode==='host'){Object.assign(F.inp[1],m.k);return true}
+  if(m.t==='bw'&&F.mode==='guest'){F.net=m;F.timer=m.tm;F.round=m.r;F.wins=m.w;F.state=m.st;
+    m.f.forEach((q,i)=>{const P=F.f[i];Object.assign(P,{tx:q[0],ty:q[1],face:q[2],hp:q[3],st:q[4],mv:q[5]||null,stT:q[6],block:!!q[7],flash:q[8]?.1:0,ko:!!q[9],cd:q[10]})});
+    F.proj=m.pj.map(p=>({x:p[0],y:p[1],vx:p[2],e:p[3]}));(m.ev||[]).forEach(e=>brawlLocalEvent(F,e));return true}
+  if(m.t==='re'&&F){brawlRematch(true);return true}
+  if(m.t==='rq'&&F.mode==='host'){brawlRematch();return true}
+  return false}
+function brawlGuestTick(F){F.f.forEach(p=>{if(p.tx==null)return;p.x+=(p.tx-p.x)*.45;p.y+=(p.ty-p.y)*.45})}
+function brawlLocalEvent(F,e){const c=e[0];
+  if(c==='h'){beep(180+Math.random()*80,.09,'square',.07);F.shake=.18;F.fx.push({t:0,x:e[1],y:e[2],txt:pick(['BONK!','POW!','BOP!','WHAM!']),big:e[3]>8})}
+  else if(c==='bl'){beep(520,.05,'triangle',.04);F.fx.push({t:0,x:e[1],y:e[2],txt:'BLOCK',small:1})}
+  else if(c==='sp'){beep(720,.08,'sine',.05)}else if(c==='pc'){beep(900,.06,'triangle',.05);F.fx.push({t:0,x:e[1],y:e[2],txt:'✨'})}
+  else if(c==='r'){F.banner={t:e[2]+(e[1]>=0?` ${F.names[e[1]]} wins the round!`:' Draw!'),at:performance.now()};beep(300,.3,'sawtooth',.06)}
+  else if(c==='b'){F.banner={t:e[1],at:performance.now()}}
+  else if(c==='end'){const w=e[1],mine=F.mode==='local'||(F.mode==='robot'&&w===0)||(F.mode==='host'&&w===0)||(F.mode==='guest'&&w===1);if(mine){sWin();confetti(90)}else sBad();setTimeout(()=>brawlOver(F,w),900)}}
+function brawlOver(F,w){if(!GAME||GAME.brawl!==F||$('.gover'))return;const ov=document.createElement('div');ov.className='gover';
+  ov.innerHTML=`<div class="card center pop"><div style="font-size:56px">🏆</div><h2>${esc(F.names[w])} wins ${F.wins[w]}–${F.wins[1-w]}!</h2><p class="muted">${esc(BRAWLERS[F.ids[w]].name)} is the Toy Brawl champion.</p>
+    <div class="row"><button class="btn" style="flex:1" onclick="brawlRematch()">↻ Rematch</button><button class="btn ghost" style="flex:1" onclick="duelExit()">Leave</button></div></div>`;const sh=$('.gshell');if(sh)sh.appendChild(ov)}
+function brawlRematch(fromHost){const F=GAME&&GAME.brawl;if(!F)return;if(F.mode==='guest'&&!fromHost){duSend({t:'rq'});return}
+  const ov=$('.gover');if(ov)ov.remove();Object.assign(F,{round:1,wins:[0,0],timer:99,proj:[],state:'intro',stateT:1.6,f:[brawlFighter(F.ids[0],3,1),brawlFighter(F.ids[1],7,-1)]});F.banner={t:'Round 1 — BRAWL!',at:performance.now()};if(F.mode==='host')duSend({t:'re'})}
+
+/* ---------- drawing ---------- */
+function brawlDrawFighter(x,F,f,i,now){const B=BRAWLERS[f.id],u=F.u,sx=F.ox+f.x*u,sy=F.floor-f.y*u;x.save();x.translate(sx,sy);x.scale(f.face,1);
+  const idle=f.st==='idle'||f.st==='hurt'?Math.sin(now/180+i)*u*.03:0,atk=f.st==='atk'?f.mv:null,M=atk?BR_MOVES[atk]:null,ext=M?clamp((f.stT-M.up*.4)/(M.up*.6+.001),0,1)*(f.stT>M.up+M.act?Math.max(0,1-(f.stT-M.up-M.act)/M.rec):1):0;
+  const lean=f.st==='hurt'?-.25:atk==='k'?-.12:0;
+  x.fillStyle='rgba(0,0,0,.2)';x.beginPath();x.ellipse(0,(f.y*u),u*.5,u*.12,0,0,7);x.fill();
+  x.rotate(lean);
+  if(f.ko){x.rotate(-1.2)}
+  const body=B.col,dark=B.dark;
+  /* legs */
+  x.strokeStyle=dark;x.lineCap='round';x.lineWidth=u*.2;
+  const kick=atk==='k'?ext:0;x.beginPath();x.moveTo(-u*.15,-u*.6);x.lineTo(-u*.2,-u*.02+idle);x.stroke();
+  x.beginPath();x.moveTo(u*.15,-u*.6);x.lineTo(u*.15+kick*u*.75,-u*.02-kick*u*.5);x.stroke();
+  x.fillStyle=dark;x.beginPath();x.ellipse(-u*.22,0,u*.17,u*.09,0,0,7);x.ellipse(u*.17+kick*u*.75,-kick*u*.5,u*.17,u*.09,0,0,7);x.fill();
+  /* body */
+  const bg=x.createRadialGradient(-u*.12,-u*1.15,u*.1,0,-u*.95,u*.6);bg.addColorStop(0,shade(body,30));bg.addColorStop(1,body);x.fillStyle=f.flash?'#fff':bg;
+  x.beginPath();x.ellipse(0,-u*.95+idle,u*.42,u*.48,0,0,7);x.fill();x.fillStyle='rgba(255,255,255,.55)';x.beginPath();x.ellipse(0,-u*.85+idle,u*.24,u*.28,0,0,7);x.fill();
+  /* head */
+  const hy=-u*1.62+idle;x.fillStyle=f.flash?'#fff':body;x.beginPath();x.arc(0,hy,u*.36,0,7);x.fill();
+  if(B.ears==='bunny'){x.beginPath();x.ellipse(-u*.14,hy-u*.48,u*.09,u*.28,-.15,0,7);x.ellipse(u*.14,hy-u*.48,u*.09,u*.28,.15,0,7);x.fill();x.fillStyle='#fce7f3';x.beginPath();x.ellipse(-u*.14,hy-u*.48,u*.04,u*.2,-.15,0,7);x.ellipse(u*.14,hy-u*.48,u*.04,u*.2,.15,0,7);x.fill()}
+  else if(B.ears==='cat'){x.beginPath();x.moveTo(-u*.3,hy-u*.15);x.lineTo(-u*.2,hy-u*.48);x.lineTo(-u*.05,hy-u*.3);x.moveTo(u*.3,hy-u*.15);x.lineTo(u*.2,hy-u*.48);x.lineTo(u*.05,hy-u*.3);x.fill();x.fillStyle='#1f2937';x.fillRect(-u*.36,hy-u*.12,u*.72,u*.1)}
+  else if(B.ears==='robo'){x.strokeStyle='#64748b';x.lineWidth=u*.05;x.beginPath();x.moveTo(0,hy-u*.36);x.lineTo(0,hy-u*.56);x.stroke();x.fillStyle='#ef4444';x.beginPath();x.arc(0,hy-u*.58,u*.06,0,7);x.fill();x.fillStyle='#1e293b';rr(x,-u*.26,hy-u*.12,u*.52,u*.2,u*.08);x.fill()}
+  else if(B.ears==='dino'){x.fillStyle=dark;for(let s=0;s<3;s++){x.beginPath();x.moveTo(-u*.25+s*u*.14,hy-u*.3+s*-.02);x.lineTo(-u*.18+s*u*.14,hy-u*.48);x.lineTo(-u*.11+s*u*.14,hy-u*.3);x.fill()}}
+  const dizzy=f.ko||f.st==='hurt';
+  x.fillStyle=B.ears==='robo'?'#22d3ee':'#1e1b4b';if(dizzy){x.strokeStyle=x.fillStyle;x.lineWidth=u*.04;[[.06,1],[.2,1]].forEach(([ex])=>{x.beginPath();x.moveTo(ex*u-u*.05,hy-u*.08);x.lineTo(ex*u+u*.05,hy+u*.02);x.moveTo(ex*u+u*.05,hy-u*.08);x.lineTo(ex*u-u*.05,hy+u*.02);x.stroke()})}
+  else{x.beginPath();x.arc(u*.08,hy-u*.03,u*.055,0,7);x.arc(u*.22,hy-u*.03,u*.055,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(u*.095,hy-u*.05,u*.02,0,7);x.arc(u*.235,hy-u*.05,u*.02,0,7);x.fill()}
+  x.strokeStyle='#be123c';x.lineWidth=u*.035;x.beginPath();x.arc(u*.16,hy+u*.1,u*.07,.2,Math.PI-.2);x.stroke();
+  /* arms with foam gloves */
+  const punch=atk==='p'?ext:atk==='s'?ext*.7:0,guard=f.block;
+  x.strokeStyle=body;x.lineWidth=u*.15;
+  x.beginPath();x.moveTo(-u*.25,-u*1.15+idle);x.lineTo(guard?u*.25:-u*.1,guard?-u*1.45:-u*.95+idle);x.stroke();
+  x.beginPath();x.moveTo(u*.25,-u*1.15+idle);x.lineTo(u*(.45+punch*.75),guard?-u*1.5:-u*(1.15-punch*.05)+idle);x.stroke();
+  x.fillStyle='#ef4444';x.beginPath();x.arc(guard?u*.28:-u*.1,guard?-u*1.45:-u*.95+idle,u*.17,0,7);x.arc(u*(.5+punch*.75),guard?-u*1.5:-u*1.15+idle,u*.19,0,7);x.fill();x.fillStyle='rgba(255,255,255,.5)';x.beginPath();x.arc(u*(.45+punch*.75),guard?-u*1.56:-u*1.21+idle,u*.06,0,7);x.fill();
+  x.restore();
+  if(f.ko||f.st==='hurt'){for(let s=0;s<3;s++){const a=now/250+s*2.1;x.font=`${Math.round(u*.25)}px system-ui`;x.textAlign='center';x.fillText('⭐',sx+Math.cos(a)*u*.4,sy-u*2.15+Math.sin(a)*u*.12)}}}
+function brawlDraw(g,F,now){const x=g.x,W=g.W,H=g.H,u=F.u;
+  const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#fbcfe8');bg.addColorStop(.55,'#fde68a');bg.addColorStop(1,'#fcd34d');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  x.save();if(F.shake>0){F.shake-=1/60;x.translate((Math.random()-.5)*12*F.shake,(Math.random()-.5)*8*F.shake)}
+  /* toy-room stage: blocks, a bookshelf, a rug */
+  x.fillStyle='rgba(255,255,255,.35)';for(let i=0;i<6;i++){x.beginPath();x.arc(W*(.1+i*.17),H*.18+Math.sin(i)*20,30+i*4,0,7);x.fill()}
+  [['A','#ef4444'],['B','#3b82f6'],['C','#22c55e']].forEach(([l,c],i)=>{const bx=F.ox+u*(.3+i*.7),by=F.floor-u*(.7+(i===1?.7:0));x.fillStyle=c;rr(x,bx,by,u*.7,u*.7,u*.1);x.fill();x.fillStyle='#fff';x.font=`700 ${Math.round(u*.45)}px Fredoka, sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText(l,bx+u*.35,by+u*.37)});
+  x.fillStyle='#a16207';rr(x,F.ox+BR_W*u-u*1.8,F.floor-u*2.4,u*1.5,u*2.4,u*.1);x.fill();x.fillStyle='#fde68a';[0,1,2].forEach(r=>x.fillRect(F.ox+BR_W*u-u*1.7,F.floor-u*(2.25-r*.75),u*1.3,u*.06));
+  ['#f472b6','#60a5fa','#34d399','#fbbf24'].forEach((c,i)=>{x.fillStyle=c;x.fillRect(F.ox+BR_W*u-u*(1.65-i*.3),F.floor-u*2.2,u*.22,u*.6)});
+  x.fillStyle='#c084fc';x.beginPath();x.ellipse(F.ox+BR_W*u/2,F.floor+u*.18,BR_W*u*.48,u*.35,0,0,7);x.fill();x.fillStyle='#e9d5ff';x.beginPath();x.ellipse(F.ox+BR_W*u/2,F.floor+u*.18,BR_W*u*.38,u*.24,0,0,7);x.fill();
+  x.fillStyle='#d6a76a';x.fillRect(0,F.floor+u*.5,W,H);
+  F.proj.forEach(p=>{x.font=`${Math.round(u*.55)}px system-ui`;x.textAlign='center';x.textBaseline='middle';x.save();x.translate(F.ox+p.x*u,F.floor-p.y*u);x.rotate(now/100*Math.sign(p.vx));x.fillText(p.e,0,0);x.restore()});
+  F.f.forEach((f,i)=>brawlDrawFighter(x,F,f,i,now));
+  F.fx=F.fx.filter(q=>(q.t+=1/60)<.7);F.fx.forEach(q=>{x.globalAlpha=1-q.t/.7;x.font=`700 ${Math.round(u*(q.small?.3:q.big?.6:.45))}px Fredoka, sans-serif`;x.textAlign='center';x.lineWidth=5;x.strokeStyle='#1e1b4b';const qx=F.ox+q.x*u,qy=F.floor-q.y*u-q.t*u*.8;x.strokeText(q.txt,qx,qy);x.fillStyle=q.small?'#bae6fd':'#fde047';x.fillText(q.txt,qx,qy);x.globalAlpha=1});
+  x.restore();
+  /* HUD: energy bars, names, round wins, timer */
+  const bw=Math.min(W*.36,360);[0,1].forEach(i=>{const f=F.f[i],L=i===0,bx=L?14:W-14-bw,c=BRAWLERS[F.ids[i]];rr(x,bx,12,bw,20,10);x.fillStyle='rgba(30,27,75,.25)';x.fill();
+    const w=bw*Math.max(0,f.hp)/100;rr(x,L?bx:bx+bw-w,12,Math.max(0,w),20,10);x.fillStyle=f.hp<30?'#ef4444':c.dark;x.fill();
+    x.fillStyle='#1e1b4b';x.font='700 13px Fredoka, sans-serif';x.textAlign=L?'left':'right';x.textBaseline='middle';x.fillText(`${F.names[i]} · ${c.name} ${'🏆'.repeat(F.wins[i])}`,L?bx+2:bx+bw-2,44);
+    if(f.cd>0){x.font='600 11px Fredoka, sans-serif';x.fillStyle='#6b21a8';x.fillText(`special ${Math.ceil(f.cd)}s`,L?bx+2:bx+bw-2,60)}});
+  x.textAlign='center';x.font='700 26px Fredoka, sans-serif';x.fillStyle='#1e1b4b';x.fillText(Math.max(0,Math.ceil(F.timer)),W/2,24);x.font='700 11px Fredoka, sans-serif';x.fillText('ROUND '+F.round,W/2,46);
+  /* buttons */
+  const lab={l:'◀',r:'▶',j:'⤒',p:'👊',k:'🦶',s:'✨'};
+  (F.pads||[]).forEach(pd=>{const I=F.inp[pd.pl];Object.entries(pd.btn).forEach(([k,b])=>{const dim=k==='s'&&F.f[pd.pl].cd>0;x.globalAlpha=dim?.4:1;x.fillStyle=I[k]?'rgba(30,27,75,.55)':'rgba(30,27,75,.25)';x.beginPath();x.arc(b.x,b.y,b.r,0,7);x.fill();x.strokeStyle='rgba(255,255,255,.85)';x.lineWidth=3;x.stroke();x.fillStyle='#fff';x.font=`700 ${Math.round(b.r*.75)}px system-ui`;x.textAlign='center';x.textBaseline='middle';x.fillText(lab[k],b.x,b.y+2);x.globalAlpha=1})});
+  if(F.mode==='local'){x.font='700 12px Fredoka, sans-serif';x.fillStyle='#1e1b4b';x.textAlign='left';x.fillText(F.names[0],12,H-12);x.textAlign='right';x.fillText(F.names[1],W-12,H-12)}
+  if(F.banner&&now-F.banner.at<2000){const e=(now-F.banner.at)/1000,sc=e<.2?.5+e*2.5:1;x.save();x.translate(W/2,H*.3);x.scale(sc,sc);x.globalAlpha=e>1.6?(2-e)/.4:1;x.font=`700 ${Math.min(40,W*.055)}px Fredoka, sans-serif`;x.textAlign='center';x.lineWidth=7;x.strokeStyle='#1e1b4b';x.strokeText(F.banner.t,0,0);x.fillStyle='#fde047';x.fillText(F.banner.t,0,0);x.restore()}
+  if(F.lost){x.fillStyle='rgba(10,15,40,.75)';x.fillRect(0,0,W,H);x.font='700 24px Fredoka, sans-serif';x.fillStyle='#fff';x.textAlign='center';x.fillText('📴 The other iPad disconnected',W/2,H/2-12);x.font='16px Fredoka, sans-serif';x.fillText('Tap ✕ to leave',W/2,H/2+20)}
+  if(F.mode==='guest'&&!F.net){x.font='700 18px Fredoka, sans-serif';x.fillStyle='#1e1b4b';x.textAlign='center';x.fillText('Connecting…',W/2,H/2)}
+}
+function brawlRobot(){if(!duelPay())return;brawlStart('robot',{a:cur().name})}
+function brawlPicker(label,cur2,setter){return `<div class="br-pick"><span>${label}</span>${Object.entries(BRAWLERS).map(([k,b])=>`<button class="${cur2===k?'on':''}" style="--c:${b.col}" onclick="${setter}='${k}';duelMenu()">${{bunny:'🐰',robo:'🤖',dino:'🦖',cat:'🐱'}[k]} ${b.name}</button>`).join('')}</div>`}
+ARCADE_HELP.brawl=['◀ ▶ move, ⤒ jump. 👊 quick bop, 🦶 big kick, ✨ special (recharges).','Hold away from your rival to block. Win 2 rounds to be champion!'];
 
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
 function checkJoinLink(){
