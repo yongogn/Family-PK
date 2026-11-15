@@ -2159,6 +2159,20 @@ function unlockedN(p,sid,n){
 }
 function doneN(p,sid,n){const s=sub(p,sid);return n.t==='test'?s.ability!=null:n.t==='lvl'?s.stars[n.c*NLV+n.l]>0:bossWon(p,sid,n.c)}
 const ARCADE_NEED=15,GAME_COST=3; /* every arcade game costs 3 freshly earned stars (shown as 🪙) */
+const ARCADE_BATCH=5,LEARN_BATCH=5; /* 5 games, then 5 learning rounds to recharge */
+let NOPLAY_T=0;
+function playsLeft(p){return p.playsLeft==null?ARCADE_BATCH:p.playsLeft}
+function noPlay(p){if(p.unlockAll)return false;if(playsLeft(p)<=0){NOPLAY_T=Date.now();learnGate(p);return true}return (p.tokens||0)<GAME_COST}
+function chargeGame(p){if(p.unlockAll)return;p.tokens-=GAME_COST;p.playsLeft=playsLeft(p)-1;if(p.playsLeft<=0){p.playsLeft=0;p.learnLeft=LEARN_BATCH}}
+function learnRound(p){if(playsLeft(p)>0)return;p.learnLeft=Math.max(0,(p.learnLeft??LEARN_BATCH)-1);
+  if(!p.learnLeft){p.playsLeft=ARCADE_BATCH;setTimeout(()=>miniToast(`🎮 Arcade recharged — ${ARCADE_BATCH} more games!`),1200)}}
+function learnGate(p){document.getElementById('kqsheet')?.remove();const done=LEARN_BATCH-(p.learnLeft??LEARN_BATCH),el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
+  el.onclick=e=>{if(e.target===el)el.remove()};
+  el.innerHTML=`<div class="card center pop" style="max-width:420px"><div style="font-size:54px">📚🎮</div><h2>Time to learn a little!</h2>
+    <p>You've played your ${ARCADE_BATCH} arcade games. Finish <b>${LEARN_BATCH} learning rounds</b> (levels or tests) to unlock ${ARCADE_BATCH} more.</p>
+    <div class="xpbar" style="margin:12px 0"><i style="width:${done/LEARN_BATCH*100}%"></i></div><p class="muted">${done} / ${LEARN_BATCH} rounds done</p>
+    <div class="row"><button class="btn" style="flex:1" onclick="document.getElementById('kqsheet').remove();stopGame&&stopGame();setLayer('');STAGE='maths';map()">Go learn →</button><button class="btn ghost" style="flex:1" onclick="document.getElementById('kqsheet').remove()">OK</button></div></div>`;
+  document.body.appendChild(el)}
 function arcadeOpen(p){return p.unlockAll||totalStars(p)>=ARCADE_NEED}
 
 /* ============ MAP ============ */
@@ -2271,7 +2285,7 @@ function award(p,id){if(p.kind!=='kid'||p.badges.includes(id))return;p.badges.pu
 function runToast(){if(toastOn||!toastQ.length)return;toastOn=true;const b=toastQ.shift();const el=document.createElement('div');el.className='toast';
   el.innerHTML=`<div class="e">${b.e}</div><div><div class="small muted">New badge!</div><b>${b.n}</b></div>`;document.body.appendChild(el);beep(880,.15,'triangle');
   setTimeout(()=>{el.remove();toastOn=false;runToast()},2300)}
-function miniToast(t){const el=document.createElement('div');el.className='toast';el.innerHTML=`<b>${t}</b>`;document.body.appendChild(el);setTimeout(()=>el.remove(),1700)}
+function miniToast(t){if(Date.now()-NOPLAY_T<200)return;const el=document.createElement('div');el.className='toast';el.innerHTML=`<b>${t}</b>`;document.body.appendChild(el);setTimeout(()=>el.remove(),1700)}
 function confetti(n=90){const cs=['#ffc83d','#ff8a3d','#7b61ff','#22c55e','#2bb3ff','#ff5c8a'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';
   c.style.left=Math.random()*100+'vw';c.style.background=pick(cs);c.style.animationDuration=(2+Math.random()*2.5)+'s';c.style.animationDelay=Math.random()*.6+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),5500)}}
 function checkStatBadges(p){
@@ -3039,7 +3053,27 @@ let AVN=0;
 const COMPANION_CELLS={fox:0,cat:1,bear:2,bunny:3,panda:4,monkey:5,owl:6,penguin:7,tiger:8,dino:9,axolotl:10,robot:11,unicorn:12,dragon:13};
 const OWL_ART={happy:'owl-happy',cheering:'owl-cheering',thinking:'owl-thinking',sad:'owl-encouraging'};
 const ORIG_CELLS={fox:0,cat:1,bear:2,bunny:3,panda:4,owl:5,penguin:6,dragon:7};
-function companionSVG(sp,size,style){if(style!=='cuddly'&&ORIG_CELLS[sp]!=null){const n=ORIG_CELLS[sp];return `<svg class="companion-avatar toy-avatar" viewBox="0 0 384 512" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${sp}"><svg viewBox="${n%4*384} ${Math.floor(n/4)*512} 384 512" width="384" height="512"><image href="assets/companions.png" width="1536" height="1024"/></svg></svg>`}const key=Object.prototype.hasOwnProperty.call(COMPANION_CELLS,sp)?sp:'fox',file=key==='owl'?'owl-happy':key;return `<svg class="companion-avatar toy-avatar cute-avatar" viewBox="0 0 352 352" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${key}"><image href="assets/avatars/${file}.webp" width="352" height="352"/></svg>`}
+/* where each Original 3D companion's eyes (x,y,scale) and neck (x,y) sit inside its 384×512 cell */
+const ORIG_ANCHOR={fox:[214,130,2.2,206,212],cat:[204,140,2.1,196,206],bear:[200,98,2.25,195,182],bunny:[194,160,2.1,194,228],panda:[222,128,2.3,200,192],owl:[210,180,2.1,206,248],penguin:[218,144,2.2,208,218],dragon:[222,130,1.8,214,226]};
+const ORIG_ACC=['hat','face','neck','pet','bg','fx'];
+function accFree(k,id){if(!id)return true;const l=AV_ITEMS[k]||[];return l.findIndex(i=>i[0]===id)<=1}
+function accOK(k,id){return !!id&&(S.plus||accFree(k,id))}
+function origAccLayers(a,sp){
+  const g=k=>accOK(k,a[k])&&!(k==='hat'&&sp==='owl')?a[k]:'',has=ORIG_ACC.filter(g);if(!has.length)return null;const [ex,ey,sc,nx,ny]=ORIG_ANCHOR[sp];
+  const base={render:'classic',sp:'fox',col:a.col,outfit:'',eye:'',mouth:'',_acc:true};
+  const H=avatarSVG(Object.assign({},base,{hat:g('hat'),face:g('face'),neck:'',bg:g('bg'),fx:g('fx'),pet:g('pet')})),N=avatarSVG(Object.assign({},base,{neck:g('neck'),hat:'',face:''}));
+  const k=2.9,wide=`transform="translate(${192-60*k} ${262-68*k}) scale(${k})"`,head=`transform="translate(${ex-60*sc} ${ey-60*sc}) scale(${sc})"`,neck=`transform="translate(${nx-60*sc} ${ny-100*sc}) scale(${sc})"`;
+  return{defs:H.defs+N.defs,behind:`<g ${wide}>${H.bg}${H.fxb}</g><g ${neck}>${N.back}</g>`,front:`<g ${neck}>${N.over}</g><g ${head}>${H.over}</g><g ${wide}>${H.fxf}${H.pet}</g>`}}
+function plusSheet(){document.getElementById('kqsheet')?.remove();const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;el.onclick=e=>{if(e.target===el)el.remove()};
+  el.innerHTML=`<div class="card center pop" style="max-width:420px"><div style="font-size:54px">👑</div><h2>Kinquest Plus</h2>
+   <p>Dress up your Original 3D companion with every hat, pair of glasses, cape, pet pal, background and magic effect.</p>
+   <p class="muted small">A one-time purchase in the App Store version. Items still unlock as you level up.</p>
+   <button class="btn block" onclick="buyPlus()">${window.KQ_IAP?'Unlock Plus':'Grown-ups: unlock (test version)'}</button><button class="btn ghost block" style="margin-top:8px" onclick="document.getElementById('kqsheet').remove()">Maybe later</button></div>`;
+  document.body.appendChild(el)}
+function buyPlus(){const done=()=>{S.plus=true;save();document.getElementById('kqsheet')?.remove();miniToast('👑 Plus unlocked — dress up time!');if(typeof E!=='undefined'&&E&&E.av)avatarEditor()};
+  if(window.KQ_IAP){window.KQ_IAP('plus').then(ok=>{if(ok)done()});return}
+  const x=ri(13,19),y=ri(13,19),ans=prompt(`Grown-ups only 🔑\nWhat is ${x} × ${y}?`);if(ans==null)return;if(parseInt(ans,10)!==x*y){miniToast('Not quite — ask a grown-up!');return}done()}
+function companionSVG(sp,size,style,av){if(style!=='cuddly'&&ORIG_CELLS[sp]!=null){const n=ORIG_CELLS[sp],L=av?origAccLayers(av,sp):null;return `<svg class="companion-avatar toy-avatar" viewBox="0 0 384 512" width="${size}" height="${size}" overflow="visible" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${sp}">${L?L.defs+L.behind:''}<svg viewBox="${n%4*384} ${Math.floor(n/4)*512} 384 512" width="384" height="512"><image href="assets/companions.png" width="1536" height="1024"/></svg>${L?L.front:''}</svg>`}const key=Object.prototype.hasOwnProperty.call(COMPANION_CELLS,sp)?sp:'fox',file=key==='owl'?'owl-happy':key;return `<svg class="companion-avatar toy-avatar cute-avatar" viewBox="0 0 352 352" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${key}"><image href="assets/avatars/${file}.webp" width="352" height="352"/></svg>`}
 function owlCompanion(expression='happy',size=72){const mood=Object.prototype.hasOwnProperty.call(OWL_ART,expression)?expression:'happy',label=mood==='sad'?'gently encouraging':mood;return `<img class="owl-companion" data-owl-expression="${mood}" src="assets/avatars/${OWL_ART[mood]}.webp" width="${size}" height="${size}" alt="${label} owl companion" decoding="async">`}
 function thinkingCompanion(){return Q.locked?'':`<div class="q-companion">${owlCompanion('thinking',60)}<span>Let’s work it out together.</span></div>`}
 function showAnswerOwl(el,ok){if(!el)return;el.querySelector('.answer-owl')?.remove();el.insertAdjacentHTML('beforeend',`<span class="answer-owl" aria-hidden="true">${owlCompanion(ok?'happy':'sad',38)}</span>`)}
@@ -3047,7 +3081,7 @@ function showAnswerOwl(el,ok){if(!el)return;el.querySelector('.answer-owl')?.rem
 const OWL_IMAGES=Object.values(OWL_ART).map(file=>{const img=new Image();img.src=`assets/avatars/${file}.webp`;return img});
 const OL='#2a2340';
 function avatarSVG(a,size=72){
-  a=a||{};if(a.render!=='classic'&&COMPANION_CELLS[a.sp||'fox']!==undefined)return companionSVG(a.sp||'fox',size,a.render);const id='a'+(++AVN);
+  a=a||{};if(a.render!=='classic'&&COMPANION_CELLS[a.sp||'fox']!==undefined)return companionSVG(a.sp||'fox',size,a.render,a);const id='a'+(++AVN);
   const sp=a.sp||'fox',col=a.col||'#ff8a3d',dk=shade(col,-50),lt=shade(col,80);
   const panda=sp==='panda',peng=sp==='penguin',robot=sp==='robot',axo=sp==='axolotl',uni=sp==='unicorn',drag=sp==='dragon',tiger=sp==='tiger';
   const head=panda?'#ffffff':peng?'#334155':robot?'#cbd5e1':axo?shade(col,40):col;
@@ -3177,24 +3211,28 @@ function avatarSVG(a,size=72){
   if(X==='bubbles')fxf+=[[10,40,6],[108,30,8],[104,96,5],[14,98,7],[96,6,4]].map(([x,y,r])=>`<circle class="av-tw" cx="${x}" cy="${y}" r="${r}" fill="rgba(186,230,253,.5)" stroke="#fff" stroke-width="1.5"/>`).join('');
   if(X==='orbit')fxf+=`<ellipse cx="60" cy="66" rx="62" ry="16" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="4 6" transform="rotate(-15 60 66)"/>`+[[2,84],[118,48]].map(([x,y])=>`<path transform="translate(${x} ${y})" d="M0 -7 L2 -2 L7 -2 L3 1 L4 7 L0 4 L-4 7 L-3 1 L-7 -2 L-2 -2Z" fill="#fde047"/>`).join('');
   if(a.pet)pet=`<g class="av-pet"><ellipse cx="104" cy="136" rx="13" ry="3.5" fill="rgba(0,0,0,.18)"/><text x="104" y="132" font-size="26" text-anchor="middle">${a.pet}</text></g>`;
+  if(a._acc)return{defs,bg,fxb,back,over,fxf,pet};
   return `<svg viewBox="-8 -14 136 156" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="toy-avatar">${defs}${bg}<ellipse cx="60" cy="138" rx="34" ry="5" fill="#160d32" opacity=".16"/>${fxb}<g class="${size>=90?'av-bob':''}">${back}${body}<!--B-->${ears}${headShape}<ellipse cx="47" cy="43" rx="27" ry="15" fill="url(#${id}gloss)" transform="rotate(-22 47 43)"/>${face}${over}<!--T--></g>${fxf}${pet}</svg>`;
 }
 const AVTABS=[['sp','🐾 Animal'],['col','🎨 Colour'],['outfit','👕 Outfit'],['hat','🎩 Hats'],['eye','👀 Eyes'],['mouth','😄 Mouth'],['face','🕶️ Face'],['neck','🧣 Neck & wings'],['pet','🐾 Pet'],['bg','🌈 Background'],['fx','✨ Magic']];
 function avatarEditor(){
-  const p=E,a=p.av,lv=p.kind==='kid'?levelOf(p):null,collectible=a.render!=='classic';if(collectible)AVTAB='sp';
+  const p=E,a=p.av,lv=p.kind==='kid'?levelOf(p):null,collectible=a.render!=='classic',orig=collectible&&a.render!=='cuddly';if(collectible&&!(orig&&ORIG_ACC.includes(AVTAB)&&!(AVTAB==='hat'&&a.sp==='owl')))AVTAB='sp';
   const optBtn=(on,open,how,click,inner)=>`<button class="avopt ${on?'on':''} ${open?'':'locked'}" onclick="${open?click:`miniToast('🔒 ${esc(how).replace(/'/g,"\\'")}')`}">${inner}${open?'':'<span class="lk">🔒</span>'}</button>`;
   const prev=o=>avatarSVG(Object.assign({},a,o),70);
   let grid='';
   if(AVTAB==='sp')grid=AV_SPECIES.filter(([id])=>!collectible||COMPANION_CELLS[id]!==undefined).map(([id,lab,u])=>optBtn(a.sp===id,itemOpen(p,u),itemHow(u),`E.av.sp='${id}';avatarEditor()`,`${avatarSVG(Object.assign({},a,{sp:id,hat:'',face:'',neck:'',outfit:'',pet:'',bg:'',fx:''}),70)}<small>${lab.split(' ').slice(1).join(' ')}</small>`)).join('');
   else if(AVTAB==='col')grid=AV_COLORS.map(c=>optBtn(a.col===c,true,'',`E.av.col='${c}';avatarEditor()`,`<span class="swatch" style="background:${c}"></span>`)).join('');
+  else if(orig)grid=AV_ITEMS[AVTAB].map(([id,lab,u])=>{const lv=itemOpen(p,u),paid=S.plus||accFree(AVTAB,id);
+    if(lv&&!paid)return `<button class="avopt locked" onclick="plusSheet()">${prev({[AVTAB]:id})}<small>${lab}</small><span class="lk">👑</span></button>`;
+    return optBtn((a[AVTAB]||'')===id,lv,itemHow(u),`E.av.${AVTAB}='${id}';avatarEditor()`,`${prev({[AVTAB]:id})}<small>${lab}</small>`)}).join('');
   else grid=AV_ITEMS[AVTAB].map(([id,lab,u])=>optBtn((a[AVTAB]||'')===id,itemOpen(p,u),itemHow(u),`E.av.${AVTAB}='${id}';avatarEditor()`,`${prev({[AVTAB]:id})}<small>${lab}</small>`)).join('');
   const total=AV_SPECIES.length+Object.values(AV_ITEMS).reduce((s,l)=>s+l.length,0);
   const owned=AV_SPECIES.filter(s=>itemOpen(p,s[2])).length+Object.values(AV_ITEMS).reduce((s,l)=>s+l.filter(i=>itemOpen(p,i[2])).length,0);
   setLayer(`<div class="modal"><div class="card avcard">
     <div class="avstage toy-stage"><div class="toy-label">CHARACTER STUDIO</div>${avatarSVG(a,200)}<div class="toy-pedestal"></div><div class="toy-caption">${collectible?'Choose your next adventure companion.':'Make your adventure look like you.'}</div></div>
     ${lv?`<div class="lvline">Level ${lv.n} · ${lv.title} <div class="xpbar"><i style="width:${lv.pct}%"></i></div><span class="small muted">${lv.next} XP to level ${lv.n+1} · 🎁 ${owned}/${total} items unlocked</span></div>`:''}
-    <div class="avatar-mode seg"><button class="${collectible&&a.render!=='cuddly'?'on':''}" onclick="E.av.render='collectible';AVTAB='sp';avatarEditor()">Original 3D</button><button class="${a.render==='cuddly'?'on':''}" onclick="E.av.render='cuddly';AVTAB='sp';avatarEditor()">Cuddly</button><button class="${!collectible?'on':''}" onclick="E.av.render='classic';AVTAB='sp';avatarEditor()">Custom builder</button></div><p class="avatar-mode-note">${collectible?'Collect a crew of detailed adventure companions. Outfits and colours are available in Custom builder.':'Create your own look with colours, outfits, accessories and effects.'}</p>
-    <div class="avtabs" ${collectible?'hidden':''}>${(collectible?[]:AVTABS).map(([k,l])=>`<button class="${AVTAB===k?'on':''}" onclick="AVTAB='${k}';avatarEditor()">${l}</button>`).join('')}</div>
+    <div class="avatar-mode seg"><button class="${collectible&&a.render!=='cuddly'?'on':''}" onclick="E.av.render='collectible';AVTAB='sp';avatarEditor()">Original 3D</button><button class="${a.render==='cuddly'?'on':''}" onclick="E.av.render='cuddly';AVTAB='sp';avatarEditor()">Cuddly</button><button class="${!collectible?'on':''}" onclick="E.av.render='classic';AVTAB='sp';avatarEditor()">Custom builder</button></div><p class="avatar-mode-note">${orig?(S.plus?'👑 Plus: every accessory is yours to try on.':'Dress up your companion — tap 👑 items to see Kinquest Plus.'):collectible?'Collect a crew of detailed adventure companions. Outfits and colours are available in Custom builder.':'Create your own look with colours, outfits, accessories and effects.'}</p>
+    <div class="avtabs" ${collectible&&!orig?'hidden':''}>${(orig?AVTABS.filter(([k])=>k==='sp'||ORIG_ACC.includes(k)&&!(k==='hat'&&a.sp==='owl')):collectible?[]:AVTABS).map(([k,l])=>`<button class="${AVTAB===k?'on':''}" onclick="AVTAB='${k}';avatarEditor()">${l}</button>`).join('')}</div>
     <div class="avgrid">${grid}</div>
     <div class="row" style="margin-top:14px"><button class="btn ghost" style="flex:1" onclick="avRandom()">🎲 Surprise me</button><button class="btn" style="flex:2" onclick="drawEditor()">✓ Done</button></div>
   </div></div>`);
@@ -3544,7 +3582,7 @@ function finishTest(){
   const p=cur(),s=sub(p,Q.sid),last=Q.trail.slice(-6);
   s.ability=last.reduce((a,b)=>a+b,0)/last.length;
   s.history.push({d:today(),age:ageOf(p,Q.sid)});
-  p.testPaid=p.testPaid||{};if(p.testPaid[Q.sid]!==today()){p.testPaid[Q.sid]=today();p.tokens=(p.tokens||0)+2}save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
+  learnRound(p);p.testPaid=p.testPaid||{};if(p.testPaid[Q.sid]!==today()){p.testPaid[Q.sid]=today();p.tokens=(p.tokens||0)+2}save();award(p,'test');checkStatBadges(p);showAgeResult(Q.sid,true,Q.log);
 }
 function verdict(p,sid){
   if(isGrown(p)){const d=Math.round(p.age-ageOf(p,sid));if(d>=1)return{e:'🚀',t:`${d} year${d===1?'':'s'} younger than your real age!`,c:'var(--good)'};if(d>-1)return{e:'🎯',t:'Right on your real age.',c:'var(--adult)'};return{e:'🌱',t:'Keep training — the levels will sharpen you up!',c:'var(--kid)'}}
@@ -3585,7 +3623,7 @@ function showAgeResult(sid,fresh,log){
 function finishLevel(){
   if(Q.finished)return;Q.finished=true;
   const p=cur(),s=sub(p,Q.sid),i=Q.ch*NLV+Q.lv,node=stageById(Q.sid).chapters[Q.ch].levels[Q.lv];
-  const stars=Q.correct>=8?3:Q.correct>=6?2:Q.correct>=4?1:0;
+  const stars=Q.correct>=8?3:Q.correct>=6?2:Q.correct>=4?1:0;if(stars>=1)learnRound(p);
   const before=ageOf(p,Q.sid);s.ability=Q.ability;const after=ageOf(p,Q.sid);
   const prevBest=s.stars[i]||0,newStars=Math.max(0,stars-prevBest);if(stars>prevBest)s.stars[i]=stars;
   p.practice=p.practice||{};const pk=Q.sid+':'+i,replay=newStars===0&&stars>=1&&p.practice[pk]!==today();if(newStars>0||replay)p.practice[pk]=today();
@@ -3878,26 +3916,28 @@ function arcadeArt(game){
   else if(key==='penguin')art=`<path d="M0 190Q100 165 200 190T400 180V240H0Z" fill="#80c5db"/><g transform="translate(119 146)">${block(0,0,'#c3f0fc')}${block(52,0,'#a3dff6')}${block(104,0,'#c3f0fc')}</g><g transform="translate(133 17)">${arcadeSpriteSVG('penguin',140)}</g>${ball(79,96,9,'#d3f5ff')}${ball(312,75,7,'#d3f5ff')}`;
   else if(key==='bubble'||key==='gems')art=[[130,78,29,'#c5a2f6'],[196,61,32,'#f6adc5'],[258,89,27,'#80ddcf'],[152,143,31,'#ffda86'],[220,133,35,'#88bafa'],[285,154,23,'#c5a2f6']].map(([x,y,r,c])=>key==='bubble'?ball(x,y,r,c):`<g transform="translate(${x} ${y})"><path d="M0 -${r}L${r} -8L${r*.6} ${r*.7}L0 ${r}L-${r*.6} ${r*.7}L-${r} -8Z" fill="${c}"/><path d="M0 -${r}L-${r} -8H${r}Z" fill="#fff" opacity=".35"/><path d="M-${r} -8H0V${r}Z" fill="#fff" opacity=".15"/><path d="M0 -${r}L${r} -8L0 ${r}Z" fill="#fff" opacity=".15"/></g>`).join('');
   else if(key==='sudoku')art=`<g transform="translate(120 28) rotate(8 80 80)"><rect x="-9" y="-7" width="179" height="179" rx="18" fill="#dbe5fa"/>${Array.from({length:9},(_,i)=>block(i%3*54,Math.floor(i/3)*54,i===4?'#ffdb8f':'#f3f5ff',[1,3,'',2,'?',1,'',2,3][i])).join('')}</g>`;
+  else if(key==='island')art=`<path d="M40 196Q160 128 300 196Z" fill="#fcd9a0"/><path d="M60 196Q160 150 280 196Z" fill="#f6c27a"/><path d="M262 186Q258 120 246 70" stroke="#8b5a34" stroke-width="11" fill="none" stroke-linecap="round"/><g transform="translate(246 70)" fill="#3fb36b">${[-150,-110,-60,-20,25].map(r=>`<path d="M0 0Q30 -14 62 6Q30 2 0 4Z" transform="rotate(${r})"/>`).join('')}</g><circle cx="240" cy="80" r="7" fill="#7c4a24"/><circle cx="252" cy="83" r="7" fill="#6b3f1e"/><g transform="translate(118 46) rotate(-8 60 60)">${arcadeSpriteSVG('bunny',118)}</g><rect x="128" y="160" width="88" height="10" rx="5" fill="#ef4444" transform="rotate(-8 172 165)"/><circle cx="142" cy="174" r="7" fill="#334155"/><circle cx="200" cy="166" r="7" fill="#334155"/><g transform="translate(316 120)"><ellipse rx="17" ry="21" fill="#fff8e7" stroke="#e8c98a" stroke-width="2"/><circle cx="-5" cy="-6" r="4" fill="#f59e0b"/><circle cx="7" cy="5" r="3" fill="#60a5fa"/></g><g transform="translate(70 96)"><circle r="13" fill="#ef4444"/><path d="M0 -12q4 -10 10 -10" stroke="#3fb36b" stroke-width="4" fill="none"/></g><g transform="translate(338 60)"><path d="M-14 0Q0 -22 14 0Q0 8 -14 0Z" fill="#facc15"/></g>`;
   else if(key==='hoops')art=`<path d="M0 175L400 130V240H0Z" fill="#bb795f"/><path d="M0 202L400 158M260 145V240" stroke="#ffe7d7" stroke-width="2" opacity=".5"/><rect x="230" y="23" width="96" height="71" rx="8" fill="#e2edfd"/><rect x="250" y="47" width="52" height="37" rx="2" fill="none" stroke="#ed977a" stroke-width="4"/><path d="M249 91l9 43h40l9-43m-48 0 6 43m30-43-5 43m-39-22h53m-48 12h44" fill="none" stroke="#f6e6e1" stroke-width="2"/><ellipse cx="278" cy="91" rx="34" ry="7" fill="none" stroke="#ffac62" stroke-width="6"/>${ball(146,144,39,'#ef9f61')}<path d="M108 141h76m-39-35q-19 35 1 76m-2-77q30 40 1 77" fill="none" stroke="#8c563e" stroke-width="2"/>`;
   else art=`<path d="M0 160L400 145V240H0Z" fill="#4f8d7e"/><path d="M20 210L380 185M200 150V240" stroke="#ccebdd" stroke-width="2" opacity=".55"/><path d="M115 144V54H285V144" fill="none" stroke="#e5eef0" stroke-width="7" stroke-linejoin="round"/><path d="M121 60H279V141H121Z" fill="#ffffff08" stroke="#e5eef0"/>${Array.from({length:9},(_,i)=>`<path d="M${122+i*19} 60V141" stroke="#e5eef0" opacity=".3"/>`).join('')}${Array.from({length:5},(_,i)=>`<path d="M121 ${63+i*18}H279" stroke="#e5eef0" opacity=".3"/>`).join('')}${ball(key==='keepy'?200:236,172,33,'#f5f2e7')}<path d="M${key==='keepy'?200:236} 150l13 10-5 16h-16l-5-16Z" fill="#3d4656"/><path d="M${key==='keepy'?178:214} 185l10-5m29-1 9 8" stroke="#3d4656" stroke-width="8"/>`;
   const world=key==='penguin'?1:['pop','bunny','snake'].includes(key)?0:['penalty','keepy','hoops'].includes(key)?3:2;
-  return `<svg class="arcade-art" viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="${id}bg" cx="50%" cy="25%" r="85%"><stop stop-color="${accent}" stop-opacity=".55"/><stop offset="1" stop-color="#25213c"/></radialGradient><radialGradient id="${id}ball" cx="30%" cy="20%" r="80%"><stop stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#1c1736" stop-opacity=".4"/></radialGradient></defs><svg viewBox="${world%2*768} ${Math.floor(world/2)*512} 768 512" width="400" height="230" preserveAspectRatio="xMidYMid slice"><image href="assets/worlds.png" width="1536" height="1024"/></svg><rect width="400" height="230" fill="#17152b44"/><circle cx="200" cy="114" r="90" fill="none" stroke="#ffffff0d"/><circle cx="200" cy="114" r="116" fill="none" stroke="#ffffff09"/>${art}</svg>`;
+  return `<svg class="arcade-art" viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="${id}bg" cx="50%" cy="25%" r="85%"><stop stop-color="${accent}" stop-opacity=".55"/><stop offset="1" stop-color="#25213c"/></radialGradient><radialGradient id="${id}ball" cx="30%" cy="20%" r="80%"><stop stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#1c1736" stop-opacity=".4"/></radialGradient></defs>${key==='island'?`<svg viewBox="0 40 640 368" width="400" height="230" preserveAspectRatio="xMidYMid slice"><image href="assets/arcade-island.png" width="1536" height="1024"/></svg>`:`<svg viewBox="${world%2*768} ${Math.floor(world/2)*512} 768 512" width="400" height="230" preserveAspectRatio="xMidYMid slice"><image href="assets/worlds.png" width="1536" height="1024"/></svg>`}<rect width="400" height="230" fill="#17152b44"/><circle cx="200" cy="114" r="90" fill="none" stroke="#ffffff0d"/><circle cx="200" cy="114" r="116" fill="none" stroke="#ffffff09"/>${art}</svg>`;
 }
 function arcade(){
   stopGame();const p=cur();if(!p)return home();STAGE='arcade';
   const open=arcadeOpen(p),ts=totalStars(p),available=GAMES.filter(g=>gameOpen(p,g)).length;
   app().innerHTML=`<main class="arcade-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to learning map" onclick="STAGE='maths';map()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div><div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">Arcade</button></div></div>
-  <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Every ${GAME_COST} stars you earn learning = 1 game.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 ${GAME_COST} stars per game · you have ${p.tokens||0}</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span></div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
+  <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Every ${GAME_COST} stars you earn learning = 1 game.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 ${GAME_COST} stars per game · you have ${p.tokens||0}</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span>${open&&!p.unlockAll?(playsLeft(p)>0?`<span>🎮 ${playsLeft(p)} of ${ARCADE_BATCH} games left</span>`:`<span>📚 ${LEARN_BATCH-(p.learnLeft??LEARN_BATCH)}/${LEARN_BATCH} learning rounds to recharge</span>`):''}</div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
   ${!open?`<section class="arcade-unlock"><b>🔒 Your island is almost within reach</b><p>Collect ${ARCADE_NEED} stars to open the island. After that, every ${GAME_COST} stars you earn = 1 game.</p><div class="xpbar"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div><span>${ts} / ${ARCADE_NEED} stars · Best streak: ${p.stats.bestStreak}</span></section>`:''}
+  ${open&&!p.unlockAll&&playsLeft(p)<=0?`<section class="arcade-unlock"><b>📚 Arcade is resting</b><p>You've played your ${ARCADE_BATCH} games. Finish ${LEARN_BATCH} learning rounds (levels with at least 1 star, or tests) to unlock ${ARCADE_BATCH} more.</p><div class="xpbar"><i style="width:${(LEARN_BATCH-(p.learnLeft??LEARN_BATCH))/LEARN_BATCH*100}%"></i></div><span>${LEARN_BATCH-(p.learnLeft??LEARN_BATCH)} / ${LEARN_BATCH} rounds done</span></section>`:''}
   <section class="duel-feature" onclick="duelMenu()" role="button" tabindex="0"><div class="duel-feature-ico" aria-hidden="true">🥊💦</div><div><div class="quest-eyebrow">NEW · PLAY TOGETHER</div><h2>Duel Table</h2><p>Toy Brawl, Splash Maze, Sky Squadron, Ping Pong and Air Hockey — up to 4 players, on one iPad or several.</p></div><span class="btn">Play together →</span></section>
   <div class="arcade-section"><h2>Pick your next challenge</h2><span>Personal bests. Family rivalries. Just one more go.</span></div>
   <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?`${GAME_COST} 🪙 per play`:'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-section"><h2>Coming soon</h2><span>More two-player games are on the way.</span></div><div class="soon-grid">${SOON_GAMES.map(soonTile).join('')}</div><div class="arcade-earn">Every new star earns 1 🪙 · tests earn 2 · boss wins earn 3 · each game costs ${GAME_COST} 🪙.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
 }
 function playGame(id){
   const p=cur();
-  if((p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
+  if(noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
   if(id==='penguin')return gPenguinMenu();
-  p.tokens-=GAME_COST;save();
+  chargeGame(p);save();
   ({pop:gPop,snake:gSnake,bunny:gBunny,stack:gStack,penguin:gPenguinMenu})[id]();
 }
 let GAME=null;
@@ -4037,7 +4077,7 @@ function gStack(){
 }
 
 /* ---- Penguin Pop (turn-based ice PK) ---- */
-function startArcadeMode(id,mode){const p=cur();if(!p||(p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙. Earn stars in a level to get more!`);return}p.tokens-=GAME_COST;save();if(id==='penguin')gPenguin(mode);else if(id==='sudoku')gSudoku(mode)}
+function startArcadeMode(id,mode){const p=cur();if(!p||noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙. Earn stars in a level to get more!`);return}chargeGame(p);save();if(id==='penguin')gPenguin(mode);else if(id==='sudoku')gSudoku(mode)}
 function gPenguinMenu(){
   const p=cur();
   setLayer(`<div class="modal"><div class="card center pop"><div style="font-size:70px">🐧</div><h2>Penguin Pop</h2>
@@ -4223,9 +4263,9 @@ const _playGame=playGame;
 playGame=function(id){
   const extra={g2048:g2048,bubble:gBubble,gems:gGems,sudoku:gSudokuMenu}[id];
   if(!extra)return _playGame(id);
-  const p=cur();if((p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
+  const p=cur();if(noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
   if(id==='sudoku')return gSudokuMenu();
-  p.tokens-=GAME_COST;save();extra();
+  chargeGame(p);save();extra();
 };
 
 /* ---- 2048 ---- */
@@ -4434,8 +4474,8 @@ const _playGame2=playGame;
 playGame=function(id){
   const fn={penalty:gPenalty,keepy:gKeepy,hoops:gHoops}[id];
   if(!fn)return _playGame2(id);
-  const p=cur();if((p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
-  p.tokens-=GAME_COST;save();fn();
+  const p=cur();if(noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}
+  chargeGame(p);save();fn();
 };
 
 /* ============ PENALTY SHOOTOUT v2 — 3D stadium ============ */
@@ -4681,9 +4721,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.9';
+const APP_VERSION='4.0';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+  ['4.0','Arcade now runs in batches: 5 games, then 5 learning rounds (levels with a star, or tests) to recharge. Original 3D companions can wear hats, glasses, scarves, capes, pets, backgrounds and magic effects — the first of each is free, the rest come with Kinquest Plus. Island Dash gets its own island card art.'],
   ['3.9','Sky Squadron: power-ups now go up to level 5 (MAX fires a 7-shot spread). Beating the Sky Fortress earns every pilot a ⚡ Super Power — tap the ⚡ button any time for 8 seconds of mega blasters and invincibility.'],
  ['3.8','New Toy Brawl: a friendly 1-vs-1 toy fighting game — vs robot, two on one iPad, or two iPads. Four fighters with their own special moves.'],
  ['3.7','New Island Dash: run and jump across tropical islands, eat fruit to keep your energy up, bop critters and find power-up eggs.'],
@@ -5052,13 +5093,13 @@ function duelMenu(){
    </div>
    ${DUEL_PICK==='maze'?`<div class="duel-note"><button class="btn ghost" onclick="MAZE_BOTS=!MAZE_BOTS;duelMenu()">🤖 Robots fill empty spots: <b>${MAZE_BOTS?'On':'Off'}</b></button></div>`:''}<p class="duel-note">For two iPads: both need to be online (same Wi-Fi is best). ${DUEL_PICK==='maze'?'Each iPad shows the whole maze.':DUEL_PICK==='sky'?'Stand both upright, side by side.':'Turn both sideways and put them edge to edge.'}</p></main>`;
 }
-function duelPay(){const p=cur();if(p.unlockAll)return true;if((p.tokens||0)<GAME_COST){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level first!`);return false}p.tokens-=GAME_COST;save();return true}
+function duelPay(){const p=cur();if(p.unlockAll)return true;if(noPlay(p)){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level first!`);return false}chargeGame(p);save();return true}
 function duelLocal(){if(!duelPay())return;duelStart(DUEL_PICK,'local',{a:cur().name,b:'Player 2'})}
 
 /* ---------- two iPads: host ---------- */
 function duelHost(){
   if(!REMOTE_OK){miniToast('Two-iPad play needs the app opened from the web link (online).');return}
-  const p=cur();if(!p.unlockAll&&(p.tokens||0)<GAME_COST){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}.`);return}
+  const p=cur();if(!p.unlockAll&&noPlay(p)){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}.`);return}
   duClose();DU.role='host';DU.code=newCode();DU.game=DUEL_PICK;
   app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duClose();duelMenu()">‹</button><h1>${DUEL_GAMES[DU.game].icon} Start a table</h1></div></div>
    <section class="duel-wait" id="duwait"><div class="duel-big">📡</div><h2>Getting the table ready…</h2></section></main>`;
@@ -5114,7 +5155,7 @@ function duelData(m,conn){
   if(m.t==='lobby'&&DU.role==='guest'&&!GAME){const w=$('#skywait');if(w)w.innerHTML=`You're <b>pilot ${m.slot+1}</b>. Stand this iPad upright, <b>${m.slot+1}${['','st','nd','rd','th'][Math.min(4,m.slot+1)]||'th'} from the left</b>. Waiting for the first iPad to start the mission…`;return}
   if(m.t==='full'&&DU.role==='guest'){duelFail('That squadron is full (4 pilots) or already flying.');return}
   if(m.t==='go'&&(m.game==='sky'||m.game==='maze')&&DU.role==='guest'&&!GAME){duelStart(m.game,'guest',{list:m.names},{n:m.n,slot:m.slot,bots:false});return}
-  if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();p.tokens-=GAME_COST;save()}DU.otherF=m.fighter;duSend({t:'go',game:DU.game,a:cur().name,b:DU.other,fa:BRAWL_ME,fb:m.fighter});duelStart(DU.game,'host',{a:cur().name,b:DU.other,fa:BRAWL_ME,fb:m.fighter||'dino'})}
+  if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();chargeGame(p);save()}DU.otherF=m.fighter;duSend({t:'go',game:DU.game,a:cur().name,b:DU.other,fa:BRAWL_ME,fb:m.fighter});duelStart(DU.game,'host',{a:cur().name,b:DU.other,fa:BRAWL_ME,fb:m.fighter||'dino'})}
   else if(m.t==='go'&&DU.role==='guest'&&!D&&!GAME){duelStart(m.game,'guest',{a:m.a,b:m.b,fa:m.fa,fb:m.fb})}
   else if(m.t==='in'&&D&&DU.role==='host'){D.tb.x=m.x;D.tb.y=m.y}
   else if(m.t==='st'&&D&&DU.role==='guest'){D.net=m;D.netAt=performance.now();if(m.ev)duelEvent(D,m.ev);D.sa=m.s[0];D.sb=m.s[1];if(m.end&&!D.ended)duelEnd(D)}
@@ -5526,7 +5567,7 @@ function skyLobby(){const L=$('#skylobby');if(!L)return;const p=cur(),ready=DU.c
   L.innerHTML=`<div class="sky-lobby"><div class="sky-pilots">${[p.name,...DU.conns.map(c=>c.pname||'joining…')].map((n,i)=>`<span style="border-color:${SKY_COL[i]}"><b style="color:${SKY_COL[i]}">✈️ ${i+1}</b> ${esc(n)}</span>`).join('')}</div>
    <button class="btn block" ${ready.length?'':'disabled'} onclick="skyLaunch()">${ready.length?(DU.game==='maze'?`Start · ${ready.length+1} players${MAZE_BOTS&&ready.length<3?' + robots':''} ▶`:`Start mission · ${ready.length+1} pilots ▶`):'Waiting for at least one more iPad…'}</button></div>`}
 function skyLaunch(){const ready=DU.conns.filter(c=>c.pname&&c.open);if(!ready.length)return;const p=cur();
-  if(!p.unlockAll){if((p.tokens||0)<GAME_COST){miniToast(`Sky Squadron needs ${GAME_COST} 🪙`);return}p.tokens-=GAME_COST;save()}
+  if(!p.unlockAll){if(noPlay(p)){miniToast(`Sky Squadron needs ${GAME_COST} 🪙`);return}chargeGame(p);save()}
   DU.conns.filter(c=>!ready.includes(c)).forEach(c=>{try{c.close()}catch(e){}});DU.conns=ready;ready.forEach((c,i)=>c.slot=i+1);DU.conn=ready[0];
   const names=[p.name,...ready.map(c=>c.pname)],n=names.length;
   if(DU.game==='maze'){const full=names.concat(MAZE_BOTS?['Robo Red','Robo Blu','Robo Max'].slice(0,4-n):[]);ready.forEach(c=>{try{c.send({t:'go',game:'maze',slot:c.slot,n,names:full})}catch(e){}});return mazeStart('host',{list:names},{n,slot:0,bots:MAZE_BOTS})}
@@ -5877,7 +5918,7 @@ GAMES.push({id:'island',name:()=>'Island Dash',icon:()=>'🏝️',desc:()=>'Run 
 ARCADE_META.island=['RUN & JUMP','#38bdf8'];
 ARCADE_HELP.island=['◀ ▶ to run, ⤒ to jump (hold for higher). Jump on critters to bop them.','Your energy drains — grab fruit! Eggs hide a boomerang 🪃, a skateboard or a super star.'];
 const _playGameI=playGame;
-playGame=function(id){if(id!=='island')return _playGameI(id);const p=cur();if(!p.unlockAll&&(p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}if(!p.unlockAll)p.tokens-=GAME_COST;save();gIsland()};
+playGame=function(id){if(id!=='island')return _playGameI(id);const p=cur();if(!p.unlockAll&&noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}if(!p.unlockAll)chargeGame(p);save();gIsland()};
 
 /* ============ TOY BRAWL — kid-friendly 1v1 fighter (foam gloves, bonks, dizzy stars) ============ */
 const BRAWLERS={
