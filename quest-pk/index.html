@@ -521,6 +521,37 @@ body:has(.arcade-page){background:radial-gradient(ellipse at 50% 0%,#c5f0ee 0,#e
 
 .arcade-page .game-category{color:color-mix(in srgb,var(--game-accent) 20%,#245267)}.arcade-page .game-desc{color:#637b80}.arcade-page .stage{color:#53747d}.arcade-page .stage.on{color:#fff}.arcade-page .btn.game-play{background:linear-gradient(#279985,#13796b);border-color:#88d7b9;box-shadow:0 4px 0 #0b635a,inset 0 2px 0 #ffffff30}.arcade-page .btn.game-play:hover{background:linear-gradient(#33ab93,#188d7b)}.gshell .game-notice{color:#4f737a}.gshell .gctl button{background:linear-gradient(#369d8b,#247a70)}.gshell .pause-card .btn,.gshell .gover .btn:not(.ghost){background:linear-gradient(#279985,#13796b)}
 body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arcade-welcome{background-image:linear-gradient(90deg,#075a79b3,#075a7955),url('assets/arcade-island.png')}}
+
+/* ===== v3.0: what's next + duel table ===== */
+.stage.soon{opacity:.62;border-style:dashed!important}
+.soonband{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:min(86%,420px);z-index:3;display:flex;flex-direction:column;align-items:center;gap:2px;padding:16px 18px;border-radius:20px;border:2px dashed rgba(255,255,255,.75);background:rgba(20,20,45,.55);backdrop-filter:blur(3px);color:#fff;font:inherit;cursor:pointer}
+.soonband span{font-size:26px}.soonband b{font-size:17px}.soonband small{opacity:.8}
+.soon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin:6px 0 10px}
+.soon-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 12px 16px;border-radius:20px;border:1px dashed #ffffff33;background:linear-gradient(160deg,#2b2444cc,#1b1830cc);color:#efe9ff;font:inherit;cursor:pointer;transition:transform .15s}
+.soon-tile:active{transform:scale(.97)}.soon-tile b{font-size:15px}.soon-tile small{opacity:.7;font-size:12px}
+.soon-ico-s{font-size:38px;filter:grayscale(.35) drop-shadow(0 4px 6px #0006)}.soon-lock{position:absolute;top:10px;right:12px;font-size:15px;opacity:.85}
+.soon-sheet{position:fixed;inset:0;z-index:80;background:rgba(8,6,20,.6);display:flex;align-items:center;justify-content:center;padding:20px}
+.soon-card{max-width:400px;width:100%}.soon-card h2{margin:4px 0 8px}.soon-card p{line-height:1.45}
+.soon-ico{position:relative;display:inline-block;font-size:64px;line-height:1}.soon-ico span{position:absolute;right:-14px;bottom:-4px;font-size:24px}
+.soon-when{font-weight:700;color:#7b61ff}
+.duel-feature{display:flex;align-items:center;gap:22px;margin:18px 0 6px;padding:22px 26px;border-radius:24px;border:1px solid #8e739d55;background:linear-gradient(110deg,#1f4f8a,#3b2d6b);color:#f8f2ff;cursor:pointer}
+.duel-feature h2{margin:2px 0 4px}.duel-feature p{margin:0;opacity:.85}.duel-feature .btn{margin-left:auto;white-space:nowrap}
+.duel-feature-ico{font-size:46px;letter-spacing:-6px;filter:drop-shadow(0 6px 8px #0007)}
+@media(max-width:600px){.duel-feature{flex-wrap:wrap}.duel-feature .btn{margin-left:0;width:100%;text-align:center}}
+.duel-page .duel-hero{border:1px solid #8e739d55;border-radius:25px;background:linear-gradient(110deg,#1f4f8a,#3b2d6b);padding:28px 30px;margin:14px 0 18px}
+.duel-hero h2{font-size:30px;margin:6px 0 8px;line-height:1.1}.duel-hero h2 span{color:#ffdf99}.duel-hero p{opacity:.85;margin:0}
+.duel-picks{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.duel-pick,.duel-mode{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:18px;border-radius:20px;border:2px solid #ffffff1f;background:#ffffff0d;color:#f8f2ff;font:inherit;cursor:pointer}
+.duel-pick.on{border-color:#ffdf99;background:#ffdf9918;box-shadow:0 0 0 4px #ffdf9922}
+.duel-ico{font-size:40px}.duel-pick b,.duel-mode b{font-size:18px}.duel-pick small,.duel-mode small{opacity:.78;line-height:1.35}.duel-to{color:#ffdf99;opacity:1!important;font-weight:700}
+.duel-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.duel-mode span{font-size:30px}.duel-mode em{margin-top:auto;font-style:normal;font-weight:700;color:#ffdf99}
+@media(max-width:700px){.duel-modes{grid-template-columns:1fr}.duel-picks{grid-template-columns:1fr}}
+.duel-note{opacity:.75;font-size:14px;margin-top:14px;text-align:center}
+.duel-wait{text-align:center;padding:30px 20px;border-radius:24px;background:#ffffff0d;border:1px solid #ffffff1f;margin-top:16px;color:#f8f2ff}
+.duel-big{font-size:64px}.duel-code-in{font:700 40px Fredoka,sans-serif;letter-spacing:12px;text-align:center;text-transform:uppercase;width:min(280px,90%);padding:12px;border-radius:16px;border:2px solid #ffffff44;background:#0b0f26;color:#fff;margin-top:10px}
+.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice{display:none}
+.gshell[data-game^="duel-"] .garea{background:#0b0f26}
 </style>
 </head>
 <body>
@@ -2121,7 +2152,7 @@ function map(){if(Q&&!Q.dead)killQuiz();
   const st=stageById(STAGE),sid=st.id,a=ageOf(p,sid),lv=levelOf(p);
   const nodes=stageNodes();
   const nextI=nodes.findIndex(n=>unlockedN(p,sid,n)&&!doneN(p,sid,n));
-  const GAP=122,HEAD=92,TOP=70,BOT=80;
+  const GAP=122,HEAD=92,TOP=200,BOT=80;
   let y=BOT;const pos=[],heads=[];
   nodes.forEach((n,i)=>{
     if(n.t==='lvl'&&n.l===0){heads.push({c:n.c,y:y+10});y+=HEAD}
@@ -2138,11 +2169,11 @@ function map(){if(Q&&!Q.dead)killQuiz();
      <div style="flex:1;min-width:0"><h1 style="font-size:20px">${esc(p.name)}</h1><div class="xpbar sm"><i style="width:${lv.pct}%"></i></div><div class="small" style="opacity:.85">Lv ${lv.n} ${lv.title}</div></div>
      <span class="chip" onclick="dash()">📊 Summary</span><span class="chip tok">🪙 ${p.tokens||0}</span></div>
    <div class="stages">${STAGES.map(s=>`<button class="stage ${s.id===sid?'on':''}" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}<span class="small"> ${starsIn(p,s.id)}⭐</span></button>`).join('')}
-     <button class="stage arcade ${arcadeOpen(p)?'':'lock'}" onclick="STAGE='arcade';arcade()">🕹️ Arcade${arcadeOpen(p)?'':' 🔒'}</button></div></div>
+     <button class="stage arcade ${arcadeOpen(p)?'':'lock'}" onclick="STAGE='arcade';arcade()">🕹️ Arcade${arcadeOpen(p)?'':' 🔒'}</button>${SOON_WORLDS.map(id=>`<button class="stage soon" onclick="soonSheet('${id}')">${SOON[id].icon} ${SOON[id].name} 🔒</button>`).join('')}</div></div>
    <div class="row wrap" style="margin-bottom:10px">
      <span class="chip" style="background:${better(p,a)?'#22c55e':'rgba(255,255,255,.18)'}">🧠 ${stAge(p,st)} ${a??'?'}</span>
      <span class="chip">⭐ ${starsIn(p,sid)}/${STARS_PER_STAGE}</span><span class="chip">${SEASON.icon} ${SEASON.name}</span></div>
-   <div class="mapwrap"><div class="map" style="height:${H}px">${startBand}${bands}
+   <div class="mapwrap"><div class="map" style="height:${H}px">${startBand}${bands}<button class="soonband" onclick="soonSheet('ch4')"><span>🔒</span><b>Chapter 4 · coming soon</b><small>Harder levels and a new boss for ${esc(st.subj)}</small></button>
      <svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="22" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${d}" fill="none" stroke="${SKIN.road[0]}" stroke-width="16" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".95"/>
      <path d="${d}" fill="none" stroke="${SKIN.road[1]}" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" vector-effect="non-scaling-stroke" class="dash"/></svg>
      ${decos}
@@ -2969,8 +3000,8 @@ function tierName(p){return isLittle(p)?'Little Explorer (pre-school)':isGrown(p
 function ageRange(p){return isGrown(p)?[15,85]:isLittle(p)?[3,9]:[4,13]}
 function ageTicks(p){return isGrown(p)?[20,35,50,65,80]:isLittle(p)?[3,4,5,6,7,8]:[5,7,9,11,13]}
 function better(p,a){return a!=null&&(isGrown(p)?a<p.age:a>p.age)}
-function ageWord(p){return isGrown(p)?'Brain age':'Learning age'}
-function stAge(p,st){return isGrown(p)?st.subj+' brain age':st.age}
+function ageWord(p){return isGrown(p)?'Mind age':'Learning age'}
+function stAge(p,st){return isGrown(p)?st.subj+' mind age':st.age}
 
 
 /* ============ AVATAR v3: chibi bodies, shading, outfits, pets, backgrounds, magic ============ */
@@ -3522,7 +3553,7 @@ function showAgeResult(sid,fresh,log){
     ${H.length>1?`<div class="qlabel" style="margin-top:18px">Progress</div><div class="hist">${H.map(h=>`<div style="height:${Math.max(10,h.age/mx*70)}px"><span>${h.age}</span></div>`).join('')}</div>`:''}
     ${log?reviewHTML(log):''}
     <div class="qlabel" style="margin:20px 0 8px">All subjects · ${ageWord(p)} ${learningAge(p)??'?'}</div>${ageBars(p)}
-    <p class="muted small" style="margin-top:18px">${isGrown(p)?'Brain age compares your score with typical adult general knowledge — lower than your real age means a sharper-than-average mind':'Compares answers with what the UK curriculum expects at each year group (Reception to Year 6)'}${sid==='zh'?' (Chinese: a second-language learner path)':''}. A fun guide, not a formal assessment.</p>
+    <p class="muted small" style="margin-top:18px">${isGrown(p)?'Mind age compares your score with typical adult general knowledge — lower than your real age means a sharper-than-average mind':'Compares answers with what the UK curriculum expects at each year group (Reception to Year 6)'}${sid==='zh'?' (Chinese: a second-language learner path)':''}. A fun guide, not a formal assessment.</p>
     <button class="btn block" onclick="map()">Back to the map 🗺️</button></div>`;
 }
 function finishLevel(){
@@ -3717,6 +3748,7 @@ function home(){
    <div class="sect"><span>Meet the bosses</span><span class="quest-count">Family rivals</span></div>
    <p class="quest-section-note">Grown-ups, it's your turn. Join as a boss and let the family battles begin.</p>
    <div class="players boss-players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')"><span class="quest-add-icon" aria-hidden="true">⚔</span>Add boss<small>Bring on the challenge</small></button></div>
+   ${soonHome()}
    ${REMOTE_OK?`<section class="quest-remote"><span class="quest-remote-icon" aria-hidden="true">🌍</span><div class="quest-remote-copy"><strong>Same family. Anywhere in the world.</strong><p>Take on a far-away boss in a live PK battle.</p></div><button class="btn purple" onclick="joinScreen('')">Join a remote battle →</button></section>`:''}
    <div class="center homefoot">
      <button class="back" onclick="backupScreen()">💾 Save / restore</button>
@@ -3742,7 +3774,7 @@ function drawEditor(){
    ${p.kind==='kid'?`<label class="l">Real age (years)</label><input type="number" min="3" max="99" step="0.5" value="${p.age}" oninput="E.age=parseFloat(this.value)||E.age">
    <label class="l">Level <span class="muted small">(sets where questions start)</span></label>
    <div class="seg yrseg">${[[0,'🧸 Pre'],[1,'Y1'],[2,'Y2'],[3,'Y3'],[4,'Y4'],[5,'Y5'],[6,'Y6'],[8,'🧑 Adult']].map(([y,l])=>`<button class="${(E.year??clamp(Math.round(E.age-5),1,6))===y?'on':''}" onclick="E.year=${y};if(${y}===0&&E.age>6)E.age=4;if(${y}===8&&E.age<16)E.age=35;if(${y}>0&&${y}<8&&(E.age<4||E.age>14))E.age=${y}+5;drawEditor()">${l}</button>`).join('')}</div>
-   <div class="muted small" style="margin-top:6px">${E.year===0?'Pre-school: picture questions — counting, "a is for apple", animals, shapes. Questions are read aloud.':E.year>=8?'Adult: general knowledge, everyday maths, money, first aid and common sense. You get a Brain age (lower is better!).':'UK school year (Singapore P1 ≈ Year 2).'}</div>
+   <div class="muted small" style="margin-top:6px">${E.year===0?'Pre-school: picture questions — counting, "a is for apple", animals, shapes. Questions are read aloud.':E.year>=8?'Adult: general knowledge, everyday maths, money, first aid and common sense. You get a Mind age (lower is better!).':'UK school year (Singapore P1 ≈ Year 2).'}</div>
    <label class="l">Read questions aloud 🔊</label>
    <div class="seg"><button class="${readDefault(p)?'on':''}" onclick="E.readAloud=true;drawEditor()">🔊 Automatically</button><button class="${!readDefault(p)?'on':''}" onclick="E.readAloud=false;drawEditor()">Only when tapped</button></div>
    <label class="l">Working paper</label>
@@ -3831,8 +3863,9 @@ function arcade(){
   app().innerHTML=`<main class="arcade-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to learning map" onclick="STAGE='maths';map()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Arcade Island</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div><div class="stages">${STAGES.map(s=>`<button class="stage" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}</button>`).join('')}<button class="stage arcade on">Arcade</button></div></div>
   <section class="arcade-welcome"><div><div class="quest-eyebrow">LEARN. EARN. PLAY.</div><h2>Play a little.<br><span>Discover a lot.</span></h2><p>Every ${GAME_COST} stars you earn learning = 1 game.</p><div class="arcade-summary"><span>✦ ${GAMES.length} mini-games</span><span>🪙 ${GAME_COST} stars per game · you have ${p.tokens||0}</span><span>${open?`${available} unlocked`:'Keep learning to unlock'}</span></div></div><div class="arcade-hero-art" aria-hidden="true">${arcadeArt({id:'stack'})}</div></section>
   ${!open?`<section class="arcade-unlock"><b>🔒 Your island is almost within reach</b><p>Collect ${ARCADE_NEED} stars to open the island. After that, every ${GAME_COST} stars you earn = 1 game.</p><div class="xpbar"><i style="width:${Math.min(100,ts/ARCADE_NEED*100)}%"></i></div><span>${ts} / ${ARCADE_NEED} stars · Best streak: ${p.stats.bestStreak}</span></section>`:''}
+  <section class="duel-feature" onclick="duelMenu()" role="button" tabindex="0"><div class="duel-feature-ico" aria-hidden="true">🏓🥅</div><div><div class="quest-eyebrow">NEW · TWO PLAYERS</div><h2>Duel Table</h2><p>Ping Pong and Air Hockey for two — on one iPad, or two iPads side by side.</p></div><span class="btn">Play together →</span></section>
   <div class="arcade-section"><h2>Pick your next challenge</h2><span>Personal bests. Family rivalries. Just one more go.</span></div>
-  <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?`${GAME_COST} 🪙 per play`:'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-earn">Need more tokens? Every star earns 1 · Every test earns 2 · Every boss win earns 3.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
+  <div class="games">${GAMES.map(g=>{const ok=open&&gameOpen(p,g),hi=(p.hi||{})[g.id],meta=ARCADE_META[g.id]||['DISCOVER & PLAY','#b8a2f2'];return `<article class="gcard ${ok?'':'locked'}" style="--game-accent:${meta[1]}"><div class="game-art-wrap">${arcadeArt(g)}<span class="game-status">${ok?`${GAME_COST} 🪙 per play`:'🔒 Locked'}</span>${hi!=null?`<span class="game-best">Best ${hi}</span>`:''}</div><div class="game-info"><div class="game-category">${meta[0]}</div><h3 class="gname">${g.name()}</h3><p class="game-desc">${g.desc()}</p>${ok?`<button class="btn block game-play" onclick="playGame('${g.id}')">Play now <span aria-hidden="true">→</span></button>`:`<div class="needs">${open?needText(g.need):'Unlock Arcade Island to play'}</div>`}</div></article>`}).join('')}</div><div class="arcade-section"><h2>Coming soon</h2><span>More two-player games are on the way.</span></div><div class="soon-grid">${SOON_GAMES.map(soonTile).join('')}</div><div class="arcade-earn">Every new star earns 1 🪙 · tests earn 2 · boss wins earn 3 · each game costs ${GAME_COST} 🪙.<button class="back" onclick="STAGE='maths';map()">Back to your quest →</button></div></main>`;
 }
 function playGame(id){
   const p=cur();
@@ -4622,9 +4655,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='2.9.2';
+const APP_VERSION='3.0';
 const APP_DATE='13 Nov 2026';
 const CHANGES=[
+ ['3.0','New Duel Table: Ping Pong and Air Hockey for two, on one iPad or two iPads side by side. A peek at what\'s next: new worlds, Chapter 4 and family features (vote for your favourite). Brain age is now called Mind age.'],
  ['2.9.2','Arcade: every game now costs 3 🪙 — earned 1 per new star (replays of a mastered level count once a day), 3 per Boss win. Parent unlock needs a grown-up sum.'],
  ['2.9.1','Fixes: Boss answers score once, leaving a quiz can no longer reopen it, replayed levels only pay for new stars (plus one practice token a day), clearer time-zone and place-value explanations, unambiguous word-class questions.'],
  ['2.9','A brighter arcade island, tactile raised game pieces and trays, reflective bubbles and gems, and cleaner game controls.'],
@@ -4921,6 +4955,263 @@ function guestEnd(m){
     <p class="small muted">Waiting here means ${esc(g.kid.name)} can start a rematch.</p>
     <button class="btn ghost block" onclick="rmClose();GG=null;home()">Leave</button></div>`;
 }
+/* ============ WHAT'S NEXT — locked previews of upcoming phases ============ */
+const SOON={
+  bahasa:{icon:'🌺',name:'Bahasa Bay',kind:'world',what:'Everyday Malay — greetings, numbers, family words and short phrases, read aloud. Singapore\'s national language.'},
+  code:{icon:'💻',name:'Coding Cove',kind:'world',what:'Sequences, loops and bug-hunting puzzles. Think like a programmer — no typing needed.'},
+  music:{icon:'🎵',name:'Music Meadow',kind:'world',what:'Rhythm, notes and instruments, with tap-along beats and a "name that instrument" boss.'},
+  space:{icon:'🚀',name:'Space Station',kind:'world',what:'Planets, stars, gravity and astronauts — ending with a rocket-launch boss battle.'},
+  art:{icon:'🎨',name:'Art Studio',kind:'world',what:'Colours, shapes, patterns and symmetry, plus a gallery for your own creations.'},
+  ch4:{icon:'🗺️',name:'Chapter 4',kind:'feature',what:'A fourth chapter in every world: five harder levels and a brand-new boss per subject.'},
+  league:{icon:'🏅',name:'Family League',kind:'feature',what:'A weekly family leaderboard. Everyone\'s learning stars count — the champion keeps the trophy for the week.'},
+  cousins:{icon:'👨‍👩‍👧‍👦',name:'Cousins & friends PK',kind:'feature',what:'A private league for your wider family, so cousins can challenge each other from anywhere.'},
+  insights:{icon:'📈',name:'Parent insights',kind:'feature',what:'A weekly summary for grown-ups: what each child practised, what clicked, and what needs another go.'},
+  golf:{icon:'⛳',name:'Mini Golf Duel',kind:'game',what:'Two-iPad mini golf: putt across both screens and into the hole.'},
+  badminton:{icon:'🏸',name:'Badminton Duel',kind:'game',what:'Smash and drop shots across two iPads side by side.'},
+  tug:{icon:'🪢',name:'Tug of War',kind:'game',what:'Answer fast to pull the rope your way — a quick-fire maths duel.'}
+};
+const SOON_WORLDS=['bahasa','code','music','space','art'],SOON_ROADMAP=['ch4','bahasa','code','league','cousins','insights'],SOON_GAMES=['golf','badminton','tug'];
+function soonVotes(){S.soon=S.soon||{};return S.soon}
+function soonSheet(id){
+  const it=SOON[id];if(!it)return;const voted=!!soonVotes()[id];
+  setLayer(`<div class="soon-sheet" onclick="if(event.target===this)setLayer('')"><div class="card center pop soon-card">
+    <div class="soon-ico">${it.icon}<span>🔒</span></div><div class="quest-eyebrow">${it.kind==='world'?'NEW WORLD':it.kind==='game'?'NEW DUEL GAME':'COMING NEXT'}</div>
+    <h2>${it.name}</h2><p>${it.what}</p><p class="soon-when">Planned for a future update</p>
+    <button class="btn block" onclick="soonVote('${id}')">${voted?'💛 You asked for this':'⭐ I want this next!'}</button>
+    <button class="btn ghost block" style="margin-top:8px" onclick="setLayer('')">Close</button>
+    <p class="small muted" style="margin-top:10px">Your vote is saved on this iPad.</p></div></div>`);
+}
+function soonVote(id){const v=soonVotes();v[id]=!v[id];save();miniToast(v[id]?'Thanks! Noted on this iPad 💛':'Vote removed');soonSheet(id)}
+function soonTile(id){const it=SOON[id],v=soonVotes()[id];return `<button class="soon-tile" onclick="soonSheet('${id}')"><span class="soon-lock">🔒</span><span class="soon-ico-s">${it.icon}</span><b>${it.name}</b><small>${v?'💛 You asked for this':'Coming soon'}</small></button>`}
+function soonHome(){return `<div class="sect"><span>What's next</span><span class="quest-count">Coming soon</span></div>
+  <p class="quest-section-note">New worlds and family features on the way. Tap one to see what's inside — and vote for what you want first.</p>
+  <div class="soon-grid">${SOON_ROADMAP.map(soonTile).join('')}</div>`}
+
+/* ============ DUEL TABLE: 2-player Ping Pong & Air Hockey — one iPad, or two iPads side by side ============ */
+const DUEL_GAMES={
+  pong:{name:'Ping Pong',icon:'🏓',to:7,desc:'Bat the ball past your rival — it speeds up with every hit.'},
+  hockey:{name:'Air Hockey',icon:'🥅',to:7,desc:'Slide the puck into the other goal. Hit it hard and bank it off the walls!'}};
+const DU={peer:null,conn:null,code:null,role:null,game:null,other:null};
+const duelPeerId=c=>'questduel-'+c.toUpperCase();
+function duClose(){try{DU.conn&&DU.conn.close()}catch(e){}try{DU.peer&&DU.peer.destroy()}catch(e){}Object.assign(DU,{peer:null,conn:null,code:null,role:null,other:null})}
+function duSend(m){try{if(DU.conn&&DU.conn.open)DU.conn.send(m)}catch(e){}}
+function duelExit(){duClose();stopGame();setLayer('');arcade()}
+
+/* ---------- menu ---------- */
+let DUEL_PICK='hockey';
+function duelMenu(){
+  stopGame();setLayer('');duClose();const p=cur();
+  app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to Arcade" onclick="arcade()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Duel Table</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div></div>
+   <section class="duel-hero"><div><div class="quest-eyebrow">TWO PLAYERS · FACE TO FACE</div><h2>Grab a grown-up.<br><span>Settle it on the table.</span></h2>
+     <p>Play on one iPad, or put two iPads side by side — the ${DUEL_GAMES[DUEL_PICK].name.toLowerCase()} crosses from one screen to the other.</p></div></section>
+   <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()"><span class="duel-ico">${g.icon}</span><b>${g.name}</b><small>${g.desc}</small><small class="duel-to">First to ${g.to}</small></button>`).join('')}</div>
+   <div class="duel-modes">
+     <button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad</b><small>Sit on opposite sides and share the screen.</small><em>${GAME_COST} 🪙</em></button>
+     <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>Two iPads — start a table</b><small>You get a 4-letter code for the other iPad.</small><em>${GAME_COST} 🪙</em></button>
+     <button class="duel-mode" onclick="duelJoinScreen()"><span>🔗</span><b>Join a table</b><small>Type the code shown on the other iPad.</small><em>Free</em></button>
+   </div>
+   <p class="duel-note">For two iPads: both need to be online (same Wi-Fi is best). Turn both sideways and put them edge to edge.</p></main>`;
+}
+function duelPay(){const p=cur();if(p.unlockAll)return true;if((p.tokens||0)<GAME_COST){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level first!`);return false}p.tokens-=GAME_COST;save();return true}
+function duelLocal(){if(!duelPay())return;duelStart(DUEL_PICK,'local',{a:cur().name,b:'Player 2'})}
+
+/* ---------- two iPads: host ---------- */
+function duelHost(){
+  if(!REMOTE_OK){miniToast('Two-iPad play needs the app opened from the web link (online).');return}
+  const p=cur();if(!p.unlockAll&&(p.tokens||0)<GAME_COST){miniToast(`The Duel Table needs ${GAME_COST} 🪙 — you have ${p.tokens||0}.`);return}
+  duClose();DU.role='host';DU.code=newCode();DU.game=DUEL_PICK;
+  app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duClose();duelMenu()">‹</button><h1>${DUEL_GAMES[DU.game].icon} Start a table</h1></div></div>
+   <section class="duel-wait" id="duwait"><div class="duel-big">📡</div><h2>Getting the table ready…</h2></section></main>`;
+  let peer;try{peer=new Peer(duelPeerId(DU.code),PEER_OPTS)}catch(e){return duelFail('This iPad can\'t start a two-iPad game.')}
+  DU.peer=peer;
+  peer.on('open',()=>{const w=$('#duwait');if(!w)return;w.innerHTML=`<div class="duel-big">${DUEL_GAMES[DU.game].icon}</div><h2>Waiting for the other iPad…</h2>
+     <p>On the other iPad: <b>Arcade → Duel Table → Join a table</b>, then type:</p>
+     <div class="roomcode">${DU.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>
+     <p class="duel-note">Turn both iPads sideways. This iPad goes on the <b>left</b>.</p>`});
+  peer.on('error',err=>{if(err.type==='unavailable-id')return duelHost();if(DU.role==='host'&&!GAME)duelFail(err.type==='network'||err.type==='server-error'||err.type==='socket-error'?'Can\'t reach the game server. Check this iPad is online.':'Couldn\'t start the table ('+err.type+').')});
+  peer.on('connection',conn=>{
+    if(DU.conn&&DU.conn.open){try{conn.close()}catch(e){}return}
+    DU.conn=conn;
+    conn.on('open',()=>{duSend({t:'cfg',game:DU.game,name:p.name})});
+    conn.on('data',m=>duelData(m));
+    conn.on('close',()=>duelLost());
+  });
+}
+/* ---------- two iPads: guest ---------- */
+function duelJoinScreen(code=''){
+  stopGame();setLayer('');duClose();
+  app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duelMenu()">‹</button><h1>🔗 Join a table</h1></div></div>
+   <section class="duel-wait"><div class="duel-big">🔗</div><h2>Type the code from the other iPad</h2>
+   <input id="ducode" class="duel-code-in" maxlength="4" autocomplete="off" autocapitalize="characters" value="${esc(code)}" placeholder="ABCD">
+   <button class="btn block" style="margin-top:16px" onclick="duelJoin()">Join ▶</button>
+   <p class="duel-note">This iPad goes on the <b>right</b>, turned sideways.</p></section></main>`;
+  setTimeout(()=>{const i=$('#ducode');if(i)i.focus()},50);
+}
+function duelJoin(){
+  if(!REMOTE_OK){miniToast('Two-iPad play needs the app opened from the web link (online).');return}
+  const code=(($('#ducode')||{}).value||'').trim().toUpperCase();
+  if(code.length!==4){miniToast('Type the 4-letter code');return}
+  duClose();DU.role='guest';DU.code=code;const p=cur();
+  app().innerHTML=`<main class="arcade-page duel-page"><section class="duel-wait" style="margin-top:40px"><div class="duel-big">📡</div><h2>Joining table ${esc(code)}…</h2><button class="btn ghost" onclick="duClose();duelJoinScreen('${esc(code)}')">Cancel</button></section></main>`;
+  let peer;try{peer=new Peer(PEER_OPTS)}catch(e){return duelFail('This iPad can\'t join two-iPad games.')}
+  DU.peer=peer;const to=setTimeout(()=>{if(!(DU.conn&&DU.conn.open))duelFail('No answer from table '+code+'. Check the code, and that the other iPad is still on the waiting screen.')},20000);
+  peer.on('open',()=>{const conn=peer.connect(duelPeerId(code),{reliable:true});DU.conn=conn;
+    conn.on('open',()=>{clearTimeout(to);duSend({t:'hi',name:p?p.name:'Player 2'})});
+    conn.on('data',m=>duelData(m));conn.on('close',()=>duelLost())});
+  peer.on('error',err=>{clearTimeout(to);if(err.type==='peer-unavailable')duelFail('Table '+code+' wasn\'t found. Check the code on the other iPad.');else if(!GAME)duelFail('Connection problem ('+err.type+'). Check you\'re online.')});
+}
+function duelFail(msg){duClose();app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duelMenu()">‹</button><h1>Duel Table</h1></div></div><section class="duel-wait"><div class="duel-big">😕</div><h2>${esc(msg)}</h2><button class="btn" onclick="duelMenu()">Back</button></section></main>`}
+function duelLost(){if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
+function duelData(m){
+  if(!m||!m.t)return;const D=GAME&&GAME.duel;
+  if(m.t==='hi'&&DU.role==='host'&&!D){DU.other=m.name||'Player 2';if(!cur().unlockAll){const p=cur();p.tokens-=GAME_COST;save()}duSend({t:'go',game:DU.game,a:cur().name,b:DU.other});duelStart(DU.game,'host',{a:cur().name,b:DU.other})}
+  else if(m.t==='go'&&DU.role==='guest'&&!D){duelStart(m.game,'guest',{a:m.a,b:m.b})}
+  else if(m.t==='in'&&D&&DU.role==='host'){D.tb.x=m.x;D.tb.y=m.y}
+  else if(m.t==='st'&&D&&DU.role==='guest'){D.net=m;D.netAt=performance.now();if(m.ev)duelEvent(D,m.ev);D.sa=m.s[0];D.sb=m.s[1];if(m.end&&!D.ended)duelEnd(D)}
+  else if(m.t==='re'&&D){duelReset(D)}
+  else if(m.t==='rq'&&D&&DU.role==='host'){duelReset(D);duSend({t:'re'})}
+}
+
+/* ---------- engine ---------- */
+const HL=1.333,LEN=HL*2; /* world: table is LEN long, 1 wide; player A defends x=0, player B defends x=LEN */
+function duelStart(game,mode,names){
+  const g=shell('duel-'+game,DUEL_GAMES[game].icon+' '+DUEL_GAMES[game].name,'');
+  const D=g.duel={game,mode,names,sa:0,sb:0,to:DUEL_GAMES[game].to,ended:false,lost:false,trail:[],sparks:[],flash:null,serveAt:0,t0:performance.now(),
+    ta:{x:game==='pong'?.06:.35,y:.5},tb:{x:game==='pong'?LEN-.06:LEN-.35,y:.5},
+    a:{x:game==='pong'?.06:.35,y:.5,vx:0,vy:0},b:{x:game==='pong'?LEN-.06:LEN-.35,y:.5,vx:0,vy:0},
+    ball:{x:HL,y:.5,vx:0,vy:0},ev:null,acc:0,lastStep:performance.now(),lastSend:0,lastIn:0,ptr:new Map()};
+  const view=mode==='local'?[0,LEN]:mode==='host'?[0,HL]:[HL,LEN];
+  const fit=()=>{const area=$('#garea');if(!area)return;const r=area.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
+    const rot=g.H>g.W*1.05,along=rot?g.H:g.W,across=rot?g.W:g.H,len=view[1]-view[0],pad=10,s=Math.min((along-pad*2)/len,(across-pad*2)/1);
+    D.v={rot,s,x0:view[0],x1:view[1],oAlong:(along-len*s)/2,oAcross:(across-s)/2}};
+  fit();const onR=()=>{if(GAME===g)fit()};window.addEventListener('resize',onR);g.offResize=()=>window.removeEventListener('resize',onR);
+  D.w2s=(x,y)=>{const v=D.v;return v.rot?{x:v.oAcross+(1-y)*v.s,y:v.oAlong+(v.x1-x)*v.s}:{x:v.oAlong+(x-v.x0)*v.s,y:v.oAcross+y*v.s}};
+  D.s2w=(sx,sy)=>{const v=D.v;return v.rot?{x:v.x1-(sy-v.oAlong)/v.s,y:1-(sx-v.oAcross)/v.s}:{x:v.x0+(sx-v.oAlong)/v.s,y:(sy-v.oAcross)/v.s}};
+  /* touch: each finger drives the paddle on its own side */
+  const pt=e=>{const r=g.c.getBoundingClientRect();return D.s2w(e.clientX-r.left,e.clientY-r.top)};
+  const sideOf=w=>mode==='host'?'a':mode==='guest'?'b':(w.x<HL?'a':'b');
+  g.c.style.touchAction='none';
+  g.c.addEventListener('pointerdown',e=>{const w=pt(e);D.ptr.set(e.pointerId,sideOf(w));try{g.c.setPointerCapture(e.pointerId)}catch(_){}duelMove(D,D.ptr.get(e.pointerId),w)});
+  g.c.addEventListener('pointermove',e=>{const s=D.ptr.get(e.pointerId);if(s)duelMove(D,s,pt(e))});
+  const up=e=>D.ptr.delete(e.pointerId);g.c.addEventListener('pointerup',up);g.c.addEventListener('pointercancel',up);
+  duelServe(D,Math.random()<.5?1:-1,1400);
+  const loop=now=>{if(g.dead)return;if(mode!=='guest'){let dt=Math.min(.05,(now-D.lastStep)/1000);D.lastStep=now;D.acc+=dt;while(D.acc>=1/120){duelStep(D,1/120,now);D.acc-=1/120}
+      if(mode==='host'&&now-D.lastSend>33){D.lastSend=now;duSend({t:'st',b:[+D.ball.x.toFixed(4),+D.ball.y.toFixed(4),+D.ball.vx.toFixed(3),+D.ball.vy.toFixed(3)],a:[+D.a.x.toFixed(4),+D.a.y.toFixed(4)],c:[+D.b.x.toFixed(4),+D.b.y.toFixed(4)],s:[D.sa,D.sb],ev:D.ev,end:D.ended?1:0});D.ev=null}}
+    else{duelGuestTick(D,now)}
+    duelDraw(g,D,now);g.raf=requestAnimationFrame(loop)};
+  g.raf=requestAnimationFrame(loop);
+}
+function duelMove(D,side,w){
+  const r=D.game==='pong'?0:.075,t=side==='a'?D.ta:D.tb;
+  if(D.game==='pong'){t.y=clamp(w.y,.11,.89)}
+  else{t.x=side==='a'?clamp(w.x,r,HL-r):clamp(w.x,HL+r,LEN-r);t.y=clamp(w.y,r,1-r)}
+  if(D.mode==='guest'&&side==='b'){const now=performance.now();if(now-D.lastIn>30){D.lastIn=now;duSend({t:'in',x:+t.x.toFixed(4),y:+t.y.toFixed(4)})}}
+}
+function duelServe(D,dir,delay=900){const b=D.ball;b.vx=0;b.vy=0;b.y=.5;
+  if(D.game==='pong'){b.x=HL}else{b.x=dir>0?HL-.45:HL+.45}
+  D.serveAt=performance.now()+delay;D.serveDir=dir}
+function duelEvent(D,ev){if(ev==='hit'){beep(520+Math.random()*120,.05,'square',.04)}else if(ev==='wall'){beep(300,.04,'sine',.03)}else if(ev==='ga'||ev==='gb'){D.flash={side:ev==='ga'?'a':'b',t:performance.now()};beep(880,.12,'triangle');setTimeout(()=>beep(1180,.18,'triangle'),110)}}
+function duelStep(D,dt,now){
+  if(D.ended)return;const b=D.ball,pong=D.game==='pong';
+  /* paddles chase their targets with a speed limit (so flicks feel weighty) */
+  [['a',D.ta],['b',D.tb]].forEach(([k,t])=>{const m=D[k],max=pong?4:7,dx=t.x-m.x,dy=t.y-m.y,d=Math.hypot(dx,dy),st=Math.min(d,max*dt),nx=d?m.x+dx/d*st:m.x,ny=d?m.y+dy/d*st:m.y;m.vx=(nx-m.x)/dt;m.vy=(ny-m.y)/dt;m.x=nx;m.y=ny});
+  if(now<D.serveAt)return;
+  if(D.serveAt&&b.vx===0&&b.vy===0){if(pong){const sp=.95,a=(Math.random()*.8-.4);b.vx=Math.cos(a)*sp*D.serveDir;b.vy=Math.sin(a)*sp}D.serveAt=0}
+  b.x+=b.vx*dt;b.y+=b.vy*dt;
+  const R=pong?.022:.045;
+  if(b.y<R){b.y=R;b.vy=Math.abs(b.vy)*(pong?1:.9);D.ev=D.ev||'wall'}else if(b.y>1-R){b.y=1-R;b.vy=-Math.abs(b.vy)*(pong?1:.9);D.ev=D.ev||'wall'}
+  if(pong){
+    const PH=.11,PT=.022;
+    [['a',1],['b',-1]].forEach(([k,dir])=>{const p=D[k];if(Math.sign(b.vx)===-dir&&Math.abs(b.x-p.x)<PT+R&&Math.abs(b.y-p.y)<PH+R){
+      const off=clamp((b.y-p.y)/PH,-1,1),sp=Math.min(2.8,Math.hypot(b.vx,b.vy)*1.07+.02),ang=off*1.0;
+      b.vx=Math.cos(ang)*sp*dir;b.vy=Math.sin(ang)*sp+p.vy*.15;b.x=p.x+dir*(PT+R);D.ev='hit';duelSpark(D,b.x,b.y)}});
+    if(b.x<-.05)duelPoint(D,'b');else if(b.x>LEN+.05)duelPoint(D,'a');
+  }else{
+    const MR=.075,G0=.33,G1=.67;
+    /* friction */
+    const f=Math.exp(-.45*dt);b.vx*=f;b.vy*=f;
+    /* end walls with goal slots */
+    if(b.x<R){if(b.y>G0&&b.y<G1){if(b.x<-R)return duelPoint(D,'b')}else{b.x=R;b.vx=Math.abs(b.vx)*.9;D.ev=D.ev||'wall'}}
+    if(b.x>LEN-R){if(b.y>G0&&b.y<G1){if(b.x>LEN+R)return duelPoint(D,'a')}else{b.x=LEN-R;b.vx=-Math.abs(b.vx)*.9;D.ev=D.ev||'wall'}}
+    ['a','b'].forEach(k=>{const m=D[k],dx=b.x-m.x,dy=b.y-m.y,d=Math.hypot(dx,dy);if(d<MR+R&&d>0){const nx=dx/d,ny=dy/d;b.x=m.x+nx*(MR+R);b.y=m.y+ny*(MR+R);
+      const rvx=b.vx-m.vx,rvy=b.vy-m.vy,vn=rvx*nx+rvy*ny;if(vn<0){b.vx-=1.9*vn*nx;b.vy-=1.9*vn*ny;D.ev='hit';duelSpark(D,b.x,b.y)}
+      const sp=Math.hypot(b.vx,b.vy);if(sp>4.2){b.vx*=4.2/sp;b.vy*=4.2/sp}}});
+  }
+}
+function duelPoint(D,who){if(who==='a')D.sa++;else D.sb++;D.ev='g'+who;duelEvent(D,'g'+who);
+  if(D.sa>=D.to||D.sb>=D.to){D.ended=true;D.ball.vx=D.ball.vy=0;setTimeout(()=>duelEnd(D),700);return}
+  duelServe(D,who==='a'?-1:1)}
+function duelSpark(D,x,y){for(let i=0;i<10;i++){const a=Math.random()*6.28,s=.3+Math.random()*.6;D.sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,t:performance.now()})}}
+function duelGuestTick(D,now){
+  /* own paddle moves immediately; the rest follows the host's last state, extrapolated a little */
+  const m=D.b,t=D.tb,max=D.game==='pong'?4:7,dt=1/60,dx=t.x-m.x,dy=t.y-m.y,d=Math.hypot(dx,dy),st=Math.min(d,max*dt);if(d){m.x+=dx/d*st;m.y+=dy/d*st}
+  const n=D.net;if(!n)return;const age=Math.min(.12,(now-D.netAt)/1000);
+  D.ball.x=n.b[0]+n.b[2]*age;D.ball.y=n.b[1]+n.b[3]*age;D.a.x+=(n.a[0]-D.a.x)*.5;D.a.y+=(n.a[1]-D.a.y)*.5;
+}
+function duelReset(D){Object.assign(D,{sa:0,sb:0,ended:false});const ov=$('.gover');if(ov)ov.remove();duelServe(D,Math.random()<.5?1:-1,1400)}
+function duelEnd(D){
+  if(!GAME||GAME.duel!==D)return;D.ended=true;
+  const aWin=D.sa>D.sb,winner=aWin?D.names.a:D.names.b,mine=(D.mode==='host'&&aWin)||(D.mode==='guest'&&!aWin);
+  if(D.mode==='local'||mine){sWin();confetti(90)}else sBad();
+  const ov=document.createElement('div');ov.className='gover';
+  ov.innerHTML=`<div class="card center pop"><div style="font-size:60px">🏆</div><h2>${esc(winner)} wins ${Math.max(D.sa,D.sb)}–${Math.min(D.sa,D.sb)}!</h2>
+    <p class="muted">${D.mode==='local'?'Rematch is free — same table, new game.':'Rematch is free while you stay connected.'}</p>
+    <div class="row"><button class="btn" style="flex:1" onclick="duelRematch()">↻ Rematch</button><button class="btn ghost" style="flex:1" onclick="duelExit()">Leave</button></div></div>`;
+  const sh=$('.gshell');if(sh)sh.appendChild(ov);
+}
+function duelRematch(){const D=GAME&&GAME.duel;if(!D)return;if(D.mode==='guest'){duSend({t:'rq'});return}duelReset(D);if(D.mode==='host')duSend({t:'re'})}
+
+/* ---------- drawing ---------- */
+function duelDraw(g,D,now){
+  const x=g.x,W=g.W,H=g.H,v=D.v,s=v.s,P=D.w2s,pong=D.game==='pong',colA='#ff7a59',colB='#4dabf7';
+  x.clearRect(0,0,W,H);
+  const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#141a3a');bg.addColorStop(1,'#0b0f26');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  /* table surface */
+  const c0=P(v.x0,0),c1=P(v.x1,1),tx=Math.min(c0.x,c1.x),ty=Math.min(c0.y,c1.y),tw=Math.abs(c1.x-c0.x),th=Math.abs(c1.y-c0.y);
+  x.save();x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=24;x.fillStyle=pong?'#14598a':'#1d4fa8';rr(x,tx-8,ty-8,tw+16,th+16,22);x.fill();x.restore();
+  const tg=x.createLinearGradient(tx,ty,tx+tw,ty+th);tg.addColorStop(0,pong?'#1f7a5c':'#3b82f6');tg.addColorStop(1,pong?'#17604a':'#2563eb');x.fillStyle=tg;rr(x,tx,ty,tw,th,16);x.fill();
+  if(!pong){x.fillStyle='rgba(255,255,255,.07)';for(let i=0;i<tw;i+=18)for(let j=0;j<th;j+=18){x.beginPath();x.arc(tx+i+9,ty+j+9,1.4,0,7);x.fill()}}
+  x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=3;rr(x,tx+2,ty+2,tw-4,th-4,14);x.stroke();
+  /* centre line (on two iPads it sits on the inner edge, so the table joins up) */
+  const m0=P(HL,0),m1=P(HL,1);x.save();x.setLineDash(pong?[10,10]:[]);x.strokeStyle=pong?'rgba(255,255,255,.85)':'rgba(239,68,68,.75)';x.lineWidth=pong?4:5;x.beginPath();x.moveTo(m0.x,m0.y);x.lineTo(m1.x,m1.y);x.stroke();x.restore();
+  if(!pong){const cc=P(HL,.5);x.strokeStyle='rgba(239,68,68,.6)';x.lineWidth=4;x.beginPath();x.arc(cc.x,cc.y,.18*s,0,7);x.stroke();
+    /* goals */
+    [[0,colA],[LEN,colB]].forEach(([gx,col])=>{if(gx<v.x0-.01||gx>v.x1+.01)return;const g0=P(gx,.33),g1=P(gx,.67),fl=D.flash&&now-D.flash.t<700&&((gx===0&&D.flash.side==='b')||(gx===LEN&&D.flash.side==='a'));
+      x.save();x.shadowColor=col;x.shadowBlur=fl?40:16;x.strokeStyle=fl?'#fff':col;x.lineWidth=10;x.lineCap='round';x.beginPath();x.moveTo(g0.x,g0.y);x.lineTo(g1.x,g1.y);x.stroke();x.restore()})}
+  /* sparks */
+  D.sparks=D.sparks.filter(p=>now-p.t<450);D.sparks.forEach(p=>{const e=(now-p.t)/1000,q=P(p.x+p.vx*e,p.y+p.vy*e);x.globalAlpha=1-e/.45;x.fillStyle='#fde047';x.beginPath();x.arc(q.x,q.y,3,0,7);x.fill()});x.globalAlpha=1;
+  /* paddles */
+  const drawP=(m,col)=>{if(m.x<v.x0-.2||m.x>v.x1+.2)return;const q=P(m.x,m.y);
+    if(pong){const a=P(m.x,m.y-.11),b=P(m.x,m.y+.11);x.save();x.shadowColor=col;x.shadowBlur=18;x.strokeStyle=col;x.lineCap='round';x.lineWidth=.044*s;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();x.strokeStyle='rgba(255,255,255,.55)';x.lineWidth=.012*s;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();x.restore()}
+    else{const r=.075*s;x.save();x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=12;x.shadowOffsetY=5;const mg=x.createRadialGradient(q.x-r*.3,q.y-r*.3,r*.1,q.x,q.y,r);mg.addColorStop(0,shade(col,40));mg.addColorStop(1,col);x.fillStyle=mg;x.beginPath();x.arc(q.x,q.y,r,0,7);x.fill();x.restore();
+      x.fillStyle=shade(col,-25);x.beginPath();x.arc(q.x,q.y,r*.55,0,7);x.fill();x.fillStyle=shade(col,30);x.beginPath();x.arc(q.x-r*.12,q.y-r*.12,r*.35,0,7);x.fill()}};
+  drawP(D.a,colA);drawP(D.b,colB);
+  /* ball / puck with trail */
+  const b=D.ball;D.trail.push({x:b.x,y:b.y});if(D.trail.length>10)D.trail.shift();
+  D.trail.forEach((t,i)=>{if(t.x<v.x0-.1||t.x>v.x1+.1)return;const q=P(t.x,t.y);x.globalAlpha=i/D.trail.length*.35;x.fillStyle=pong?'#fff':'#fde68a';x.beginPath();x.arc(q.x,q.y,(pong?.022:.045)*s*(i/D.trail.length),0,7);x.fill()});x.globalAlpha=1;
+  if(b.x>v.x0-.1&&b.x<v.x1+.1){const q=P(b.x,b.y),r=(pong?.022:.045)*s;x.save();x.shadowColor=pong?'#fff':'#000';x.shadowBlur=pong?16:10;x.shadowOffsetY=pong?0:4;
+    if(pong){x.fillStyle='#fff';x.beginPath();x.arc(q.x,q.y,r,0,7);x.fill()}else{x.fillStyle='#111827';x.beginPath();x.arc(q.x,q.y,r,0,7);x.fill();x.restore();x.save();x.strokeStyle='#fde047';x.lineWidth=r*.25;x.beginPath();x.arc(q.x,q.y,r*.62,0,7);x.stroke()}x.restore()}
+  /* score */
+  x.textAlign='center';x.textBaseline='middle';x.font=`700 ${Math.max(28,Math.min(64,W*.07))}px Fredoka, sans-serif`;
+  const sc=(t,px,py,col)=>{x.fillStyle=col;x.globalAlpha=.9;x.fillText(t,px,py);x.globalAlpha=1};
+  if(D.mode==='local'){const pa=P(HL*.5,.5),pb=P(HL*1.5,.5);sc(D.sa,pa.x,pa.y,'rgba(255,255,255,.25)');sc(D.sb,pb.x,pb.y,'rgba(255,255,255,.25)')}
+  else{const mine=D.mode==='host'?D.sa:D.sb,theirs=D.mode==='host'?D.sb:D.sa,q=P((v.x0+v.x1)/2,.5);sc(`${mine} – ${theirs}`,q.x,q.y,'rgba(255,255,255,.22)')}
+  x.font='700 14px Fredoka, sans-serif';x.fillStyle='rgba(255,255,255,.75)';
+  const lab=(t,wx,col)=>{if(wx<v.x0||wx>v.x1)return;const q=P(D.mode==='local'?wx:(v.x0+v.x1)/2,.5);x.font='700 16px Fredoka, sans-serif';x.fillStyle=col;x.fillText(t,q.x,q.y+Math.max(28,Math.min(64,W*.07))*.75)};
+  lab(D.names.a,HL*.5,colA);lab(D.names.b,HL*1.5,colB);
+  /* serve countdown / messages */
+  if(D.serveAt&&now<D.serveAt&&!D.ended){const q=P((v.x0+v.x1)/2,.5),n=Math.ceil((D.serveAt-now)/450);x.font='700 54px Fredoka, sans-serif';x.fillStyle='#fde047';x.fillText(n>3?'Ready':String(Math.min(3,n)),q.x,q.y+(D.mode==='local'?0:56))}
+  if(D.lost){x.fillStyle='rgba(10,15,40,.75)';x.fillRect(0,0,W,H);x.font='700 26px Fredoka, sans-serif';x.fillStyle='#fff';x.fillText('📴 The other iPad disconnected',W/2,H/2-14);x.font='16px Fredoka, sans-serif';x.fillText('Tap ✕ to leave',W/2,H/2+20)}
+  if(D.mode!=='local'&&!D.lost&&!D.net&&D.mode==='guest'){x.font='700 18px Fredoka, sans-serif';x.fillStyle='#fff';x.fillText('Connecting to the table…',W/2,H/2)}
+}
+
+/* ---------- hook into Arcade ---------- */
+const _stopGameD=stopGame;
+stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&GAME.duel&&DU.role)duClose();_stopGameD()};
+ARCADE_HELP['duel-pong']=['Drag your paddle up and down. Each hit speeds the ball up.','Hit with the edge of the paddle to angle the ball.'];
+ARCADE_HELP['duel-hockey']=['Drag your mallet to hit the puck into the other goal.','Bank shots off the side walls are hard to stop!'];
+
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
 function checkJoinLink(){
   const m=(location.hash||'').match(/^#join-([A-Za-z0-9]{4})$/);
