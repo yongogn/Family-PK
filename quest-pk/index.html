@@ -572,6 +572,8 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .br-pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 0}.br-pick span{font-weight:700;color:#2a1f3d;min-width:150px}.br-pick button{border:2px solid #e7e0f0;background:#fff;border-radius:14px;padding:8px 12px;font:600 14px Fredoka,sans-serif;color:#2a1f3d;cursor:pointer}.br-pick button.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 30%,#fff);box-shadow:0 4px 0 var(--c)}
 
 .toy-game-preview{display:block;width:100%;height:auto;border-radius:14px;background:#83c2d5;overflow:hidden}.toy-roster{display:block;flex-shrink:0}.br-pick button{display:flex;align-items:center;flex-direction:column;gap:3px;padding:8px}.br-pick button b{font-size:12px}.br-pick{align-items:stretch}.br-pick>span{align-self:center}.duel-pick:has(.toy-game-preview){padding:10px 10px 18px}.duel-pick:has(.toy-game-preview)>b,.duel-pick:has(.toy-game-preview)>small{margin-left:8px}
+
+.sky-hangar{background:#fffdf4;border:1px solid #e6dfcd;border-radius:23px;padding:20px;margin:18px 0;color:#294f64}.sky-hangar>summary{font-weight:700;cursor:pointer}.sky-hangar .quest-eyebrow{color:#806039}.sky-hangar h3{font-size:23px;margin:6px 0}.sky-hangar-head p{font-size:13px;color:#657487}.sky-look-group{margin:16px 0}.sky-look-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}.sky-look{font:inherit;border:2px solid #e3e6e4;border-radius:17px;background:#f4f7f5;color:#30485f;display:flex;align-items:center;flex-direction:column;padding:10px 6px;gap:4px;cursor:pointer}.sky-look.on{border-color:#d9ab4d;background:#fff1ce;box-shadow:0 3px 0 #edcf87}.sky-look.locked{background:#edf0f2}.sky-look.locked svg{opacity:.5;filter:grayscale(.45)}.sky-look small{font-size:11px;line-height:1.4}.sky-look strong{font-size:14px}.sky-shield-icon{font-size:42px;line-height:65px;width:68px;text-align:center;border-radius:50%;background:radial-gradient(circle,#fbffff,#a9e6ef88,transparent);color:#4b9db6}.sky-shield-icon.sky-shield-starfield{color:#b07bcb}.sky-shield-icon.sky-shield-hex{color:#32bda6}.sky-passport{margin-top:18px;border-top:1px solid #e0dfd3;padding-top:14px}.sky-passport summary{cursor:pointer;font-weight:700}.sky-destinations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.sky-destinations article{background:#edf5ef;border-radius:15px;padding:10px;display:flex;flex-direction:column}.sky-destinations svg{width:100%;height:auto}.sky-destinations b{font-size:15px}.sky-destinations small,.sky-destinations p{font-size:12px}.sky-destinations p{line-height:1.5}@media(max-width:540px){.sky-hangar{padding:14px}.sky-destinations{grid-template-columns:repeat(2,minmax(0,1fr))}.sky-look small{font-size:10px}}
 </style>
 </head>
 <body>
@@ -4723,9 +4725,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.2';
+const APP_VERSION='4.3';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+ ['4.3','Sky Squadron world tour: six landmark destinations, surfacing robot submarines, two-hit Aegis pickups, and a hangar with plane liveries and shield looks earned through learning and flying.'],
   ['4.2','Sky Squadron is tougher: bigger, faster waves, tougher enemies that shoot more as you go, a stronger Sky Fortress every visit, fewer free power-ups, and getting hit at high power costs two levels. Super Power lasts 6 seconds and you can save up to 2.'],
  ['4.1.1','Sky Squadron now has an illustrated Duel Table cover featuring its toy planes, tropical islands and Sky Fortress.'],
  ['4.1','Illustrated Splash Maze, Island Dash and Toy Brawl: dedicated toy characters, animated fighter poses, painted scenery, textured platforms, richer splashes and polished controls.'],
@@ -5091,7 +5094,7 @@ function duelMenu(){
    <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':DUEL_PICK==='maze'?'Last one dry wins.':DUEL_PICK==='brawl'?'Foam gloves on!':'Settle it on the table.'}</span></h2>
      <p>${DUEL_PICK==='brawl'?'A friendly toy-box fighting game: bop, kick and use your special move. Turn the iPad sideways for two players.':DUEL_PICK==='maze'?'Up to four players on one maze: two on one iPad, or one per iPad. Robots join in when you need more players.':DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
    <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()">${id==='maze'||id==='brawl'||id==='sky'?toyGamePreview(id):`<span class="duel-ico">${g.icon}</span>`}<b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':g.party?'1–4 players · robots fill in':g.fight?'1v1 · best of 3':'First to '+g.to}</small></button>`).join('')}</div>
-   ${DUEL_PICK==='brawl'?brawlPicker('Your fighter',BRAWL_ME,'BRAWL_ME')+brawlPicker('Player 2 (one iPad)',BRAWL_P2,'BRAWL_P2'):''}<div class="duel-modes">
+   ${DUEL_PICK==='sky'?skyHangar():''}${DUEL_PICK==='brawl'?brawlPicker('Your fighter',BRAWL_ME,'BRAWL_ME')+brawlPicker('Player 2 (one iPad)',BRAWL_P2,'BRAWL_P2'):''}<div class="duel-modes">
      ${DUEL_PICK==='brawl'?`<button class="duel-mode" onclick="brawlRobot()"><span>🤖</span><b>Vs robot</b><small>Fight a computer-controlled toy.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='maze'?`<button class="duel-mode" onclick="mazeSolo()"><span>🤖</span><b>Solo vs robots</b><small>You against three robots.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>${DUEL_PICK==='sky'?'2–4 iPads — start a squadron':DUEL_PICK==='maze'?'2–4 iPads — start a game':'Two iPads — start a table'}</b><small>${DUEL_PICK==='sky'?'Others join with your 4-letter code.':'You get a 4-letter code for the other iPad.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelJoinScreen()"><span>🔗</span><b>Join a table</b><small>Type the code shown on the other iPad.</small><em>Free</em></button>
@@ -5313,6 +5316,29 @@ ARCADE_HELP['duel-hockey']=['Drag your mallet to hit the puck into the other goa
 
 /* ============ SKY SQUADRON — co-op air battle (solo, one iPad, or two iPads side by side) ============ */
 /* World units: each screen-half is 1 wide and SKY_H tall; y grows downward. Two iPads = 2 wide. Host runs the game; the other iPad mirrors it. */
+/* World tour and earned cosmetics. Stars unlock styles; they are never spent. */
+const SKY_ROUTES=[
+ {country:'Singapore',label:'Singapore',landmark:'Merlion & Marina Bay',fact:'The Merlion has a lion head and a fish body.',tint:'#2fbdaf'},
+ {country:'France',label:'Paris',landmark:'Eiffel Tower',fact:'The Eiffel Tower stands beside the River Seine in Paris.',tint:'#6a9c9c'},
+ {country:'Japan',label:'Japan',landmark:'Mount Fuji & pagoda',fact:'Mount Fuji is the highest mountain in Japan.',tint:'#a8a6cd'},
+ {country:'Egypt',label:'Egypt',landmark:'Pyramids of Giza',fact:'The pyramids at Giza were built in ancient Egypt.',tint:'#dfbb72'},
+ {country:'Australia',label:'Sydney',landmark:'Sydney Opera House',fact:'The Opera House sits beside Sydney Harbour.',tint:'#67c5c7'},
+ {country:'United Kingdom',label:'London',landmark:'Big Ben',fact:'Big Ben is the name of the bell inside the clock tower.',tint:'#87ab9c'}
+];
+const SKY_SKINS=[{id:'classic',name:'Classic',row:-1,need:'Ready to fly',open:p=>true},{id:'sunbird',name:'Sunbird',row:0,need:'Earn 30 learning stars',open:p=>totalStars(p)>=30},{id:'nebula',name:'Nebula',row:1,need:'Defeat a Sky Fortress',open:p=>(p.skyStats?.fortresses||0)>=1}];
+const SKY_SHIELDS=[{id:'bubble',name:'Bubble',need:'Ready to fly',open:p=>true},{id:'starfield',name:'Starfield',need:'Earn 60 learning stars',open:p=>totalStars(p)>=60},{id:'hex',name:'Sonar hex',need:'Defeat 3 submarines',open:p=>(p.skyStats?.subs||0)>=3}];
+function skyRoute(K){return SKY_ROUTES[(Math.max(1,K.wave)-1)%SKY_ROUTES.length]}
+function skyStyleOpen(p,item){return !!p&&(p.unlockAll||item.open(p))}
+function skyCleanLook(raw){return{skin:SKY_SKINS.some(s=>s.id===raw?.skin)?raw.skin:'classic',shieldStyle:SKY_SHIELDS.some(s=>s.id===raw?.shieldStyle)?raw.shieldStyle:'bubble'}}
+function skyLoadout(p){const raw=skyCleanLook(p?.skyLook);if(!skyStyleOpen(p,SKY_SKINS.find(s=>s.id===raw.skin)))raw.skin='classic';if(!skyStyleOpen(p,SKY_SHIELDS.find(s=>s.id===raw.shieldStyle)))raw.shieldStyle='bubble';return raw}
+function skyChoose(kind,id){const p=cur(),item=(kind==='skin'?SKY_SKINS:SKY_SHIELDS).find(s=>s.id===id);if(!item)return;if(!skyStyleOpen(p,item)){miniToast(item.need);return}p.skyLook=skyLoadout(p);p.skyLook[kind]=id;save();duelMenu()}
+function skyPlaneIcon(skin,colour=0,size=76){const item=SKY_SKINS.find(s=>s.id===skin)||SKY_SKINS[0],row=Math.max(0,item.row);return `<svg width="${size}" height="${size}" viewBox="${colour*256} ${row*256} 256 256" aria-hidden="true"><image href="assets/sky/${item.row<0?'pilots':'liveries'}.webp" width="1024" height="${item.row<0?256:512}"/></svg>`}
+function skyHangar(){const p=cur(),look=skyLoadout(p),stars=totalStars(p),stats=p.skyStats||{};return `<details class="sky-hangar"><summary>Hangar &amp; world-tour passport · ${SKY_SKINS.find(s=>s.id===look.skin).name}</summary><div class="sky-hangar-head"><div class="quest-eyebrow">YOUR SQUADRON HANGAR</div><h3>Learn. Explore. Make it yours.</h3><p>${stars} learning stars · ${stats.fortresses||0} fortresses · ${stats.subs||0} submarines defeated</p></div><div class="sky-look-group"><b>Plane livery</b><div class="sky-look-grid">${SKY_SKINS.map(s=>{const open=skyStyleOpen(p,s);return `<button class="sky-look ${look.skin===s.id?'on':''} ${open?'':'locked'}" aria-pressed="${look.skin===s.id}" onclick="skyChoose('skin','${s.id}')">${skyPlaneIcon(s.id)}<strong>${s.name}</strong><small>${open?'Unlocked':s.need}</small></button>`}).join('')}</div></div><div class="sky-look-group"><b>Shield style</b><div class="sky-look-grid">${SKY_SHIELDS.map(s=>{const open=skyStyleOpen(p,s);return `<button class="sky-look ${look.shieldStyle===s.id?'on':''} ${open?'':'locked'}" aria-pressed="${look.shieldStyle===s.id}" onclick="skyChoose('shieldStyle','${s.id}')"><span class="sky-shield-icon sky-shield-${s.id}" aria-hidden="true">${s.id==='hex'?'⬡':s.id==='starfield'?'✦':'◉'}</span><strong>${s.name}</strong><small>${open?'Unlocked':s.need}</small></button>`}).join('')}</div></div><p class="small muted">Learning and flying unlock looks. All liveries and shield styles have the same abilities. Submarines drop Aegis bubbles: 2 hits of protection for up to 7 seconds.</p><details class="sky-passport"><summary>World-tour passport · six destinations</summary><div class="sky-destinations">${SKY_ROUTES.map((r,i)=>`<article><svg viewBox="${i%3*384} ${Math.floor(i/3)*384} 384 384" aria-hidden="true"><image href="assets/sky/landmarks.webp" width="1152" height="768"/></svg><b>${r.country}</b><small>${r.landmark}</small><p>${r.fact}</p></article>`).join('')}</div><p class="small muted">Landmarks are playful miniature scenes, not maps to scale.</p></details></details>`}
+function skyRecordAward(K,owner,kind){if(!(K.mode==='local'||owner===K.slot)||!cur())return;const p=cur(),before=[...SKY_SKINS,...SKY_SHIELDS].filter(s=>skyStyleOpen(p,s)).map(s=>s.id);p.skyStats=p.skyStats||{};const key=kind==='boss'?'fortresses':'subs';p.skyStats[key]=(p.skyStats[key]||0)+1;save();const unlocked=[...SKY_SKINS,...SKY_SHIELDS].find(s=>!before.includes(s.id)&&skyStyleOpen(p,s));if(unlocked)miniToast('✦ '+unlocked.name+' unlocked in your hangar!')}
+function skySubVisible(e){return e.type!=='sub'||e.t%7.4>=1.2&&e.t%7.4<5.6}
+function skyDrawShield(x,A,r,p,t){const style=p.shieldStyle||'bubble',gold=p.ward>1,c=gold?'#ffe49a':style==='starfield'?'#e6b4ff':style==='hex'?'#8bffe1':'#b1f4ff';x.save();x.globalAlpha=.22;x.drawImage(A.glow[gold?0:2],-r*1.65,-r*1.65,r*3.3,r*3.3);x.globalAlpha=1;x.strokeStyle=c;x.lineWidth=gold?3:2;x.beginPath();if(style==='hex'){for(let i=0;i<6;i++){const a=i*Math.PI/3+t*.3;x.lineTo(Math.cos(a)*r*1.35,Math.sin(a)*r*1.35)}x.closePath()}else x.arc(0,0,r*1.35,0,7);x.stroke();if(gold){x.lineWidth=1;x.beginPath();x.arc(0,0,r*1.55,0,7);x.stroke()}if(style==='starfield')for(let i=0;i<4;i++){const a=t*1.5+i*Math.PI/2,sz=r*.32;x.drawImage(A.star,Math.cos(a)*r*1.35-sz/2,Math.sin(a)*r*1.35-sz/2,sz,sz)}x.restore()}
+function skyDrawSub(g,K,A,e){const x=g.x,q=K.w2s(e.x,e.y),s=K.v.s,r=e.r*s,up=skySubVisible(e);if(q.x<-r*3||q.x>g.W+r*3)return;x.save();x.translate(q.x,q.y);x.strokeStyle=up?'#c0f9ff99':'#91f1e6aa';x.lineWidth=1.5;for(let i=0;i<3;i++){const a=(e.t*.7+i*.33)%1;x.globalAlpha=(1-a)*.6;x.beginPath();x.ellipse(0,0,r*(.9+a*.8),r*(1.2+a*.9),0,0,7);x.stroke()}x.globalAlpha=e.flash?.6:up?1:.18;const im=SKY_ART.submarine;if(im.complete&&im.naturalWidth)x.drawImage(im,-r*1.1,-r*1.65,r*2.2,r*3.3);x.globalAlpha=1;if(!up){for(let i=0;i<4;i++){const a=(e.t*.8+i*.25)%1;x.strokeStyle='#d2ffff';x.beginPath();x.arc(Math.sin(i*3+e.t)*r*.65,-r*.7-a*r,r*(.06+a*.06),0,7);x.stroke()}}else{const w=r*1.5;x.fillStyle='#174d6c';rr(x,-w/2,-r*1.9,w,4,2);x.fill();x.fillStyle='#81ead5';rr(x,-w/2,-r*1.9,w*clamp(e.hp/e.max,0,1),4,2);x.fill()}x.restore()}
+
 const SKY_H=1.4,SKY_COL=['#ff7a45','#3fa7ff','#34d399','#f472b6'];
 function skyStart(mode,names,meta){
   const g=shell('sky','✈️ Sky Squadron','');
@@ -5321,6 +5347,8 @@ function skyStart(mode,names,meta){
   const K=g.sky={mode,names,list,slot,halves,two,t:0,score:0,wave:0,state:'intro',stateT:0,ended:false,lost:false,
     pl:net?Array.from({length:halves},(_,i)=>skyPlayer(i+.5)):mode==='local'?[skyPlayer(.33),skyPlayer(.67)]:[skyPlayer(.5)],
     pb:[],eb:[],en:[],it:[],fx:[],ev:[],spawnQ:[],nid:1,lastStep:performance.now(),acc:0,lastSend:0,lastIn:0,ptr:new Map(),net:null,netAt:0,banner:null,shake:0};
+  K.pl.forEach((p,i)=>{if(mode==='local'||i===slot)Object.assign(p,skyLoadout(cur()))});
+  if(mode==='guest')duSend({t:'look',look:skyLoadout(cur())});
   const view=[slot,slot+1];
   const fit=()=>{const area=$('#garea');if(!area)return;const r=area.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
     g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
@@ -5346,7 +5374,7 @@ function skyStart(mode,names,meta){
     skyDraw(g,K,now);g.raf=requestAnimationFrame(loop)};
   g.raf=requestAnimationFrame(loop);
 }
-function skyPlayer(x){return{x,y:SKY_H-.18,tx:x,ty:SKY_H-.18,alive:true,lives:3,inv:2,shield:0,power:1,cool:0,sup:0,supT:0}}
+function skyPlayer(x){return{x,y:SKY_H-.18,tx:x,ty:SKY_H-.18,alive:true,lives:3,inv:2,shield:0,power:1,cool:0,sup:0,supT:0,ward:0}}
 function skyBanner(K,t,c){K.banner={t,c,at:K.t};skyEmit(K,['b',t,c])}
 function skyEmit(K,e){K.ev.push(e);if(K.mode!=='guest')skyLocalEvent(K,e)}
 const R2=(a,b,r)=>(a.x-b.x)**2+(a.y-b.y)**2<r*r;
@@ -5354,22 +5382,23 @@ const R2=(a,b,r)=>(a.x-b.x)**2+(a.y-b.y)**2<r*r;
 /* ---------- waves ---------- */
 function skyWave(K){
   K.wave++;const w=K.wave,W=K.halves,boss=w%4===0,q=[];let t=0;
-  if(boss){skyBanner(K,'⚠️ Sky Fortress!','#fca5a5');q.push({t:2.2,f:()=>skyEnemy(K,'boss',W/2,-.25)})}
-  else{skyBanner(K,'Wave '+w,'#fde047');
+  if(boss){skyBanner(K,'Sky Fortress · '+skyRoute(K).label,'#fca5a5');q.push({t:2.2,f:()=>skyEnemy(K,'boss',W/2,-.25)})}
+  else{skyBanner(K,'Wave '+w+' · '+skyRoute(K).label,'#fde047');
     const groups=4+Math.min(11,w)+(W-1)*2,gap=Math.max(.8,1.6-w*.05);
-    for(let gI=0;gI<groups;gI++){const kind=pick(w<2?['line','vee']:w<3?['line','vee','swoop']:w<6?['line','vee','swoop','swoop','gun','gun']:['line','vee','swoop','swoop','gun','gun','gun']);t+=gap+Math.random()*.7;const T=t,cx=.2+Math.random()*(W-.4);
+    for(let gI=0;gI<groups;gI++){const kind=w>=2&&gI===Math.floor(groups/2)?'sub':pick(w<2?['line','vee']:w<3?['line','vee','swoop']:w<6?['line','vee','swoop','swoop','gun','gun']:['line','vee','swoop','swoop','gun','gun','gun']);t+=gap+Math.random()*.7;const T=t,cx=.2+Math.random()*(W-.4);
       if(kind==='line')q.push({t:T,f:()=>{for(let i=0;i<5;i++)skyEnemy(K,'drone',clamp(cx-.24+i*.12,.06,W-.06),-.06-i*.02)}});
       if(kind==='vee')q.push({t:T,f:()=>{[0,-1,1,-2,2].forEach((o,i)=>skyEnemy(K,'drone',clamp(cx+o*.09,.06,W-.06),-.06-Math.abs(o)*.07))}});
       if(kind==='swoop'){const fromL=Math.random()<.5;for(let i=0;i<5;i++)q.push({t:T+i*.22,f:()=>{const e=skyEnemy(K,'swoop',fromL?-.05:W+.05,.12+Math.random()*.05);e.dir=fromL?1:-1}})}
+      if(kind==='sub')q.push({t:T,f:()=>skyEnemy(K,'sub',Math.floor(cx)+.73,-.12)});
       if(kind==='gun')q.push({t:T,f:()=>skyEnemy(K,'gun',cx,-.08)})}}
   K.spawnQ=q;K.waveT=0;
 }
 function skyEnemy(K,type,x,y){
-  const w=K.wave,n=K.pl.length,D={drone:{r:.034,hp:1+Math.floor(w/4),vy:.2+w*.008,pts:100},swoop:{r:.03,hp:1+Math.floor(w/4),vy:0,pts:150},gun:{r:.062,hp:10+w*3,vy:.09,pts:600},boss:{r:.17,hp:(120+110*Math.floor((w-1)/4))*(1+.6*(n-1)),vy:.12,pts:6000}}[type];
+  const w=K.wave,n=K.pl.length,D={sub:{r:.055,hp:7+w*2,vy:.09,pts:500},drone:{r:.034,hp:1+Math.floor(w/4),vy:.2+w*.008,pts:100},swoop:{r:.03,hp:1+Math.floor(w/4),vy:0,pts:150},gun:{r:.062,hp:10+w*3,vy:.09,pts:600},boss:{r:.17,hp:(120+110*Math.floor((w-1)/4))*(1+.6*(n-1)),vy:.12,pts:6000}}[type];
   const e={id:K.nid++,type,x,y,x0:x,vx:0,vy:D.vy,r:D.r,hp:D.hp,max:D.hp,pts:D.pts,t:0,fire:1+Math.random()*1.5,flash:0};K.en.push(e);return e;
 }
 function skyShootAt(K,e,sp,spread=0,count=1){const tgt=K.pl.filter(p=>p.alive);if(!tgt.length)return;const p=tgt.reduce((a,b)=>Math.hypot(a.x-e.x,a.y-e.y)<Math.hypot(b.x-e.x,b.y-e.y)?a:b);
-  const base=Math.atan2(p.y-e.y,p.x-e.x);for(let i=0;i<count;i++){const a=base+(count>1?(i-(count-1)/2)*spread:0);K.eb.push({x:e.x,y:e.y+e.r*.6,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp})}}
+  const base=Math.atan2(p.y-e.y,p.x-e.x);for(let i=0;i<count;i++){const a=base+(count>1?(i-(count-1)/2)*spread:0);K.eb.push({x:e.x,y:e.y+e.r*.6,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,bubble:e.type==='sub'})}}
 function skyStep(K,dt){
   K.t+=dt;if(K.ended)return;const W=K.halves,bs=Math.min(.95,.42+K.wave*.03),cyc=Math.floor((K.wave-1)/4);
   if(K.state==='intro'){K.stateT-=dt;if(K.stateT<=0){K.state='play';skyWave(K)}}
@@ -5381,7 +5410,7 @@ function skyStep(K,dt){
   if(K.state==='gap'){K.stateT-=dt;if(K.stateT<=0){K.state='play';skyWave(K)}}
   /* players */
   K.pl.forEach((p,i)=>{if(!p.alive)return;const dx=p.tx-p.x,dy=p.ty-p.y,d=Math.hypot(dx,dy),mv=Math.min(d,2.4*dt);if(d){p.x+=dx/d*mv;p.y+=dy/d*mv}
-    p.inv=Math.max(0,p.inv-dt);p.shield=Math.max(0,p.shield-dt);p.cool-=dt;
+    p.inv=Math.max(0,p.inv-dt);p.shield=Math.max(0,p.shield-dt);if(!p.shield)p.ward=0;p.cool-=dt;
     if(p.supT>0){p.supT=Math.max(0,p.supT-dt);if(!p.supT)skyEmit(K,['se',i])}
     if(p.cool<=0&&K.state!=='intro'){const sp=1.7,B=(dx,vx,dy=.04,d=1,big=0)=>K.pb.push({x:p.x+dx,y:p.y-dy,vx,vy:-sp,o:i,d,big});
       if(p.supT>0){p.cool=.08;[-.06,-.03,0,.03,.06].forEach(o=>B(o,0,.05,2,1));B(-.03,-.55,.03,2,1);B(.03,.55,.03,2,1);B(-.03,-1,.03,2,1);B(.03,1,.03,2,1)}
@@ -5399,26 +5428,27 @@ function skyStep(K,dt){
     if(e.type==='drone'){e.y+=e.vy*dt;e.x=e.x0+Math.sin(e.t*2.2+e.id)*.06;e.fire-=dt;if(e.fire<=0&&e.y>.05&&e.y<SKY_H*.7){e.fire=Math.max(1.3,2.4-K.wave*.08)+Math.random()*2;if(Math.random()<.45+K.wave*.04)skyShootAt(K,e,bs,.22,K.wave>=7&&Math.random()<.4?2:1)}}
     else if(e.type==='swoop'){const u=e.t;e.x+=e.dir*.42*dt;e.y=.12+Math.sin(u*1.6)*.32+u*.07;e.fire-=dt;if(e.fire<=0){e.fire=Math.max(1.2,2.2-K.wave*.07)+Math.random()*1.6;skyShootAt(K,e,bs,.2,K.wave>=6?2:1)}}
     else if(e.type==='gun'){if(e.y<.3)e.y+=e.vy*dt;else if(e.t>9)e.y+=e.vy*1.4*dt;e.x=e.x0+Math.sin(e.t*.8)*.12;e.fire-=dt;if(e.fire<=0&&e.y>.05){e.fire=Math.max(.9,1.5-K.wave*.04);skyShootAt(K,e,bs*.9,.24,K.wave>=7?5:3)}}
+    else if(e.type==='sub'){if(e.y<.3)e.y+=e.vy*dt;else if(e.t>10.5)e.y+=e.vy*1.5*dt;e.x=e.x0+Math.sin(e.t*.65)*.04;e.fire-=dt;if(skySubVisible(e)&&e.fire<=0&&e.y>.08){e.fire=2.2;skyShootAt(K,e,bs*.8,.19,3)}}
     else if(e.type==='boss'){if(e.y<.26)e.y+=e.vy*dt;e.x=W/2+Math.sin(e.t*.45)*(W/2-.24);e.fire-=dt;
       if(e.fire<=0&&e.y>=.2){const ph=Math.floor(e.t/5)%3,rage=e.hp<e.max*.4;e.fire=ph===0?Math.max(.6,(rage?.9:1.3)-cyc*.18):ph===1?Math.max(.24,.35-cyc*.04):Math.max(1.4,2.2-cyc*.3);
         if(ph===0){const n=(rage?16:12)+cyc*4;for(let i=0;i<n;i++){const a=i/n*Math.PI*2+e.t;K.eb.push({x:e.x,y:e.y,vx:Math.cos(a)*bs*.8,vy:Math.sin(a)*bs*.8})}}
         else if(ph===1)skyShootAt(K,e,bs*1.1,.16,(rage?3:2)+cyc);
         else{for(let i=0;i<(rage?5:3);i++)skyEnemy(K,'drone',clamp(e.x-.2+i*.1,.06,W-.06),e.y+.05);if(cyc>=1)for(let i=-2;i<=2;i++)K.eb.push({x:e.x+i*.06,y:e.y+.1,vx:i*.08,vy:bs*.9})}}}});
   /* hits on enemies */
-  K.pb=K.pb.filter(b=>{for(const e of K.en){if(e.hp>0&&R2(b,e,e.r+(b.big?.02:.012))){e.hp-=b.d||1;e.flash=.08;if(e.hp<=0)skyKill(K,e,b.o);return false}}return true});
+  K.pb=K.pb.filter(b=>{for(const e of K.en){if(e.hp>0&&skySubVisible(e)&&R2(b,e,e.r+(b.big?.02:.012))){e.hp-=b.d||1;e.flash=.08;if(e.hp<=0)skyKill(K,e,b.o);return false}}return true});
   K.en=K.en.filter(e=>e.hp>0&&e.y<SKY_H+.15&&e.x>-.2&&e.x<W+.2);
   /* items */
   K.it.forEach(it=>{it.y+=.16*dt;it.t+=dt});
   K.it=K.it.filter(it=>{for(let i=0;i<K.pl.length;i++){const p=K.pl[i];if(p.alive&&R2(it,p,.06)){skyPick(K,p,it);return false}}return it.y<SKY_H+.05});
   /* hits on players */
   K.pl.forEach((p,i)=>{if(!p.alive||p.inv>0)return;let hit=false;
-    if(p.supT>0){K.eb=K.eb.filter(b=>!R2(b,p,.05));for(const e of K.en)if(e.type!=='boss'&&R2(e,p,e.r+.03)){e.hp-=4;e.flash=.1;if(e.hp<=0)skyKill(K,e,i)}return}
+    if(p.supT>0){K.eb=K.eb.filter(b=>!R2(b,p,.05));for(const e of K.en)if(e.type!=='boss'&&e.type!=='sub'&&R2(e,p,e.r+.03)){e.hp-=4;e.flash=.1;if(e.hp<=0)skyKill(K,e,i)}return}
     K.eb=K.eb.filter(b=>{if(!hit&&R2(b,p,.026)){hit=true;return false}return true});
-    for(const e of K.en)if(!hit&&e.type!=='boss'&&R2(e,p,e.r+.02)){hit=true;e.hp-=3;if(e.hp<=0)skyKill(K,e,i)}
+    for(const e of K.en)if(!hit&&e.type!=='boss'&&e.type!=='sub'&&R2(e,p,e.r+.02)){hit=true;e.hp-=3;if(e.hp<=0)skyKill(K,e,i)}
     if(hit)skyHurt(K,p,i)});
   if(!K.pl.some(p=>p.alive)){K.ended=true;setTimeout(()=>skyOver(K),900)}
 }
-function skyKill(K,e,owner){K.score+=e.pts;skyEmit(K,['x',+e.x.toFixed(3),+e.y.toFixed(3),e.type==='boss'?3:e.type==='gun'?2:1]);
+function skyKill(K,e,owner){if(e.rewarded)return;e.rewarded=true;K.score+=e.pts;if(e.type==='sub'){K.it.push({x:e.x,y:e.y,ty:'A',t:0});skyEmit(K,['award',owner,'sub'])}else if(e.type==='boss')K.pl.forEach((p,i)=>{if(!p.gone&&(K.mode!=='local'||i===0))skyEmit(K,['award',i,'boss'])});skyEmit(K,['x',+e.x.toFixed(3),+e.y.toFixed(3),e.type==='boss'?3:e.type==='gun'?2:1]);
   const roll=Math.random(),lifeBoss=e.type==='boss'&&K.wave%8===0,n=e.type==='boss'?(lifeBoss?3:2):e.type==='gun'?(Math.random()<.6?1:0):roll<.045?1:0;
   for(let i=0;i<n;i++){const ty=e.type==='boss'?['P','S','L'][i]:pick(['P','P','P','S','S','B','P','S','B','L']);K.it.push({x:e.x+(i-(n-1)/2)*.07,y:e.y,ty,t:0})}
   if(e.type==='boss'){K.eb=[];let got=0;K.pl.forEach(p=>{if(p.alive){p.sup=Math.min(2,p.sup+1);got++}});
@@ -5426,19 +5456,20 @@ function skyKill(K,e,owner){K.score+=e.pts;skyEmit(K,['x',+e.x.toFixed(3),+e.y.t
 function skySuper(K,i){const p=K.pl[i];if(!p||!p.alive||p.sup<=0||p.supT>0||K.ended)return;p.sup--;p.supT=6;p.power=Math.max(p.power,4);
   K.eb=[];K.en.forEach(e=>{e.hp-=e.type==='boss'?15:12;e.flash=.2;if(e.hp<=0)skyKill(K,e,i)});skyEmit(K,['su',i,+p.x.toFixed(3),+p.y.toFixed(3)])}
 function skySupBtn(g,K,i){if(!K.pl[i])return null;const r=34,y=g.H-r-30;if(K.mode==='local')return{x:i?g.W-r-18:r+18,y,r};return{x:g.W-r-18,y,r}}
-function skyHurt(K,p,i){if(p.shield>0){p.shield=0;p.inv=1;skyEmit(K,['s',p.x,p.y]);return}
+function skyHurt(K,p,i){if(p.shield>0){p.ward=Math.max(0,(p.ward||1)-1);if(!p.ward)p.shield=0;p.inv=1;skyEmit(K,['s',p.x,p.y]);return}
   p.lives--;p.power=Math.max(1,p.power-(p.power>=4?2:1));p.inv=2.2;skyEmit(K,['h',+p.x.toFixed(3),+p.y.toFixed(3),i]);
   if(p.lives<=0){p.alive=false;skyEmit(K,['x',+p.x.toFixed(3),+p.y.toFixed(3),2]);if(K.pl.length>1&&K.pl.some(q=>q.alive))skyBanner(K,'Pilot down! Clear the wave to bring them back','#fca5a5')}}
 function skyPick(K,p,it){skyEmit(K,['p',it.ty,+it.x.toFixed(3),+it.y.toFixed(3)]);K.score+=50;
-  if(it.ty==='P')p.power=Math.min(5,p.power+1);else if(it.ty==='S')p.shield=7;else if(it.ty==='L')p.lives=Math.min(4,p.lives+1);
+  if(it.ty==='P')p.power=Math.min(5,p.power+1);else if(it.ty==='S'){p.shield=7;p.ward=Math.max(1,p.ward||0)}else if(it.ty==='A'){p.shield=7;p.ward=2}else if(it.ty==='L')p.lives=Math.min(4,p.lives+1);
   else if(it.ty==='B'){K.eb=[];K.en.forEach(e=>{e.hp-=e.type==='boss'?6:6;e.flash=.15;if(e.hp<=0)skyKill(K,e,0)});skyEmit(K,['bomb'])}}
 
 /* ---------- network ---------- */
 function skySnap(K){const f=v=>+v.toFixed(3);return{t:'sk',gt:f(K.t),sc:K.score,w:K.wave,st:K.state,
-  p:K.pl.map(p=>[f(p.x),f(p.y),p.alive?1:0,p.lives,p.shield>0?1:0,p.inv>0?1:0,p.power,p.sup,+p.supT.toFixed(1)]),
-  e:K.en.map(e=>[e.type[0],f(e.x),f(e.y),f(e.type==='swoop'?e.dir*.42:0),f(e.type==='drone'||e.type==='gun'&&e.y<.3?e.vy:0),f(e.hp/e.max),e.flash>0?1:0,f(e.t)]),
-  b:K.eb.map(b=>[f(b.x),f(b.y),f(b.vx),f(b.vy)]),q:K.pb.map(b=>[f(b.x),f(b.y),f(b.vx),b.big?1:0]),i:K.it.map(it=>[f(it.x),f(it.y),it.ty]),ev:K.ev,end:K.ended?1:0}}
+  p:K.pl.map(p=>[f(p.x),f(p.y),p.alive?1:0,p.lives,p.shield>0?1:0,p.inv>0?1:0,p.power,p.sup,+p.supT.toFixed(1),p.ward||0,p.skin||'classic',p.shieldStyle||'bubble']),
+  e:K.en.map(e=>[e.type==='sub'?'u':e.type[0],f(e.x),f(e.y),f(e.type==='swoop'?e.dir*.42:0),f(e.type==='drone'||e.type==='gun'&&e.y<.3||e.type==='sub'&&(e.y<.3||e.t>10.5)?e.vy*(e.type==='sub'&&e.t>10.5?1.5:1):0),f(e.hp/e.max),e.flash>0?1:0,f(e.t)]),
+  b:K.eb.map(b=>[f(b.x),f(b.y),f(b.vx),f(b.vy),b.bubble?1:0]),q:K.pb.map(b=>[f(b.x),f(b.y),f(b.vx),b.big?1:0]),i:K.it.map(it=>[f(it.x),f(it.y),it.ty]),ev:K.ev,end:K.ended?1:0}}
 function skyData(m,conn){const K=GAME&&GAME.sky;if(!K)return false;
+  if(m.t==='look'&&K.mode==='host'){const p=K.pl[conn?.slot];if(p&&conn.slot>0)Object.assign(p,skyCleanLook(m.look));return true}
   if(m.t==='sup'&&K.mode==='host'){skySuper(K,conn&&conn.slot||1);return true}
   if(m.t==='in'&&K.mode==='host'){const P=K.pl[conn&&conn.slot||1];if(P){P.tx=clamp(m.x,.04,K.halves-.04);P.ty=clamp(m.y,.1,SKY_H-.06)}return true}
   if(m.t==='sk'&&K.mode==='guest'){K.net=m;K.netAt=performance.now();K.t=m.gt;K.score=m.sc;K.wave=m.w;K.state=m.st;
@@ -5447,17 +5478,18 @@ function skyData(m,conn){const K=GAME&&GAME.sky;if(!K)return false;
   return false}
 function skyGuestTick(K,now){const n=K.net;if(!n)return;const a=Math.min(.12,(now-K.netAt)/1000);
   n.p.forEach((o,i)=>{const P=K.pl[i];if(!P)return;
-    if(i===K.slot){const dx=P.tx-P.x,dy=P.ty-P.y,d=Math.hypot(dx,dy),mv=Math.min(d,2.4/60);if(d){P.x+=dx/d*mv;P.y+=dy/d*mv}Object.assign(P,{alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6],sup:o[7]||0,supT:o[8]||0})}
-    else Object.assign(P,{x:o[0],y:o[1],alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6],sup:o[7]||0,supT:o[8]||0})});
-  const T={d:'drone',s:'swoop',g:'gun',b:'boss'};
-  K.en=n.e.map(e=>({type:T[e[0]],x:e[1]+e[3]*a,y:e[2]+e[4]*a,hp:e[5],max:1,flash:e[6],t:e[7]+a,r:{d:.034,s:.03,g:.062,b:.17}[e[0]]}));
-  K.eb=n.b.map(b=>({x:b[0]+b[2]*a,y:b[1]+b[3]*a}));K.pb=n.q.map(b=>({x:b[0]+b[2]*a,y:b[1]-1.7*a,big:b[3]}));K.it=n.i.map(it=>({x:it[0],y:it[1]+.16*a,ty:it[2],t:K.t}));
+    if(i===K.slot){const dx=P.tx-P.x,dy=P.ty-P.y,d=Math.hypot(dx,dy),mv=Math.min(d,2.4/60);if(d){P.x+=dx/d*mv;P.y+=dy/d*mv}Object.assign(P,{alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6],sup:o[7]||0,supT:o[8]||0,ward:o[9]||0,...skyCleanLook({skin:o[10],shieldStyle:o[11]})})}
+    else Object.assign(P,{x:o[0],y:o[1],alive:!!o[2],lives:o[3],shield:o[4],inv:o[5],power:o[6],sup:o[7]||0,supT:o[8]||0,ward:o[9]||0,...skyCleanLook({skin:o[10],shieldStyle:o[11]})})});
+  const T={d:'drone',s:'swoop',g:'gun',b:'boss',u:'sub'};
+  K.en=n.e.map(e=>({type:T[e[0]],x:e[1]+e[3]*a,y:e[2]+e[4]*a,hp:e[5],max:1,flash:e[6],t:e[7]+a,r:{d:.034,s:.03,g:.062,b:.17,u:.055}[e[0]]}));
+  K.eb=n.b.map(b=>({x:b[0]+b[2]*a,y:b[1]+b[3]*a,bubble:!!b[4]}));K.pb=n.q.map(b=>({x:b[0]+b[2]*a,y:b[1]-1.7*a,big:b[3]}));K.it=n.i.map(it=>({x:it[0],y:it[1]+.16*a,ty:it[2],t:K.t}));
 }
 function skyLocalEvent(K,e){const c=e[0];
-  if(c==='x'){const big=e[3];for(let i=0;i<10+big*12;i++){const a=Math.random()*6.28,s=(.1+Math.random()*.35)*big;K.fx.push({x:e[1],y:e[2],vx:Math.cos(a)*s,vy:Math.sin(a)*s,t:0,l:.5+Math.random()*.4,c:pick(['#fde047','#fb923c','#f87171','#fff'])})}
+  if(c==='award'){skyRecordAward(K,e[1],e[2])}
+  else if(c==='x'){const big=e[3];for(let i=0;i<10+big*12;i++){const a=Math.random()*6.28,s=(.1+Math.random()*.35)*big;K.fx.push({x:e[1],y:e[2],vx:Math.cos(a)*s,vy:Math.sin(a)*s,t:0,l:.5+Math.random()*.4,c:pick(['#fde047','#fb923c','#f87171','#fff'])})}
     K.fx.push({ring:1,x:e[1],y:e[2],t:0,l:.45,r:.05*big});beep(big>1?90:140,big>1?.25:.1,'sawtooth',big>1?.1:.05);if(big>2){K.shake=.5;confetti(60)}}
   else if(c==='h'){K.shake=.3;beep(200,.2,'square',.08);K.fx.push({ring:1,x:e[1],y:e[2],t:0,l:.4,r:.08})}
-  else if(c==='p'){beep(880,.08,'triangle');setTimeout(()=>beep(1320,.12,'triangle'),70);K.fx.push({txt:{P:'POWER UP!',S:'SHIELD!',L:'+1 LIFE',B:'BOOM!'}[e[1]],x:e[2],y:e[3],t:0,l:1})}
+  else if(c==='p'){beep(880,.08,'triangle');setTimeout(()=>beep(1320,.12,'triangle'),70);K.fx.push({txt:{P:'POWER UP!',S:'SHIELD!',L:'+1 LIFE',B:'BOOM!',A:'AEGIS · 2 HITS!'}[e[1]],x:e[2],y:e[3],t:0,l:1})}
   else if(c==='bomb'){K.shake=.4;K.fx.push({flash:1,t:0,l:.35})}
   else if(c==='b'){K.banner={t:e[1],c:e[2],at:K.t}}
   else if(c==='r'){beep(660,.1,'triangle');setTimeout(()=>beep(990,.15,'triangle'),90)}
@@ -5481,7 +5513,7 @@ function skyRestart(){const K=GAME&&GAME.sky;if(!K)return;const ov=$('.gover');i
 
 /* ---------- drawing ---------- */
 /* Sky artwork is renderer-only: no simulation state, random numbers or network data. */
-const SKY_ART=(()=>{const art={};for(const [key,file] of Object.entries({pilots:'pilots',robots:'robots',ocean:'ocean',scenery:'scenery'})){const im=new Image();im.decoding='async';im.src='assets/sky/'+file+'.webp';art[key]=im}return art})();
+const SKY_ART=(()=>{const art={};for(const [key,file] of Object.entries({pilots:'pilots',robots:'robots',ocean:'ocean',scenery:'scenery',landmarks:'landmarks',liveries:'liveries',submarine:'submarine'})){const im=new Image();im.decoding='async';im.src='assets/sky/'+file+'.webp';art[key]=im}return art})();
 function skyStamp(size,paint){const c=document.createElement('canvas');c.width=c.height=size;paint(c.getContext('2d'),size);return c}
 function skyVisualCache(g){
   if(g.skyArt){skySceneryCache(g.skyArt);return g.skyArt;}
@@ -5507,8 +5539,12 @@ function skyOcean(g,K,A){
   x.fillStyle='#127faa';x.fillRect(-20,-20,g.W+40,g.H+40);
   const tile=1.2,scroll=t*.045,left=v.x0-(v.ox+20)/s,right=v.x0+(g.W-v.ox+20)/s,top=(-v.oy-20)/s,bottom=(g.H-v.oy+20)/s;
   if(A.water)for(let i=Math.floor(left/tile);i*tile<right;i++)for(let j=Math.floor((top-scroll)/tile);j*tile+scroll<bottom;j++){const q=P(i*tile,j*tile+scroll);x.drawImage(A.water,q.x,q.y,tile*s+.5,tile*s+.5)}
-  const hash=n=>{const a=Math.sin(n*127.1)*43758.5453;return a-Math.floor(a)};
-  for(let k=0;k<8;k++){const wx=hash(k*7+1)*K.halves,wy=((hash(k*7+3)*3+t*.07)%3)-.4,sz=.13+hash(k*7+2)*.16;if(wx<left-sz||wx>right+sz)continue;const q=P(wx,wy);x.drawImage(A.islands[k%3],q.x-sz*s/2,q.y-sz*s/2,sz*s,sz*s)}
+  // Broad coasts and large landmark dioramas replace the small repeated islands.
+  const route=skyRoute(K),ri=SKY_ROUTES.indexOf(route),im=SKY_ART.landmarks;
+  x.fillStyle=route.tint+'20';x.fillRect(-20,-20,g.W+40,g.H+40);
+  for(const wx of [-.16,K.halves+.16])for(let j=0;j<2;j++){const wy=((j*1.5+t*.045)%3)-.4,q=P(wx,wy),sz=.5*s;x.globalAlpha=.82;x.drawImage(A.islands[(j+ri)%3],q.x-sz/2,q.y-sz/2,sz,sz)}x.globalAlpha=1;
+  if(im.complete&&im.naturalWidth)for(let k=0;k<K.halves;k++){const wx=k+.23,wy=((.8+k*.62+t*.045)%2.3)-.35,sz=.7*s;if(wx<left-.6||wx>right+.6)continue;const q=P(wx,wy);x.globalAlpha=.9;x.drawImage(im,ri%3*384,Math.floor(ri/3)*384,384,384,q.x-sz/2,q.y-sz/2,sz,sz)}x.globalAlpha=1;
+
 }
 function skyClouds(g,K,A){const x=g.x,s=K.v.s;for(let i=0;i<7;i++){const wx=((i*.713+K.t*.012)%(K.halves+.8))-.4,wy=((i*.531+K.t*.028)%2.4)-.5,q=K.w2s(wx,wy),sz=(.23+(i%3)*.07)*s;if(q.x<-sz||q.x>g.W+sz)continue;x.globalAlpha=.28;x.drawImage(A.cloud,q.x-sz/2,q.y-sz/2,sz,sz)}x.globalAlpha=1}
 function skyDraw(g,K,now){
@@ -5516,15 +5552,15 @@ function skyDraw(g,K,now){
   x.save();if(K.shake>0){K.shake-=1/60;x.translate((Math.random()-.5)*10*K.shake,(Math.random()-.5)*10*K.shake)}
   skyOcean(g,K,A);
   /* Collectibles keep their original radius and bob timing. */
-  K.it.forEach(it=>{const q=P(it.x,it.y),bob=Math.sin((it.t||0)*6)*3,r=.026*s,c={P:'#ffcf58',S:'#69dfff',L:'#ff8ab1',B:'#c399ff'}[it.ty];
-    x.drawImage(A.glow[2],q.x-r*1.9,q.y+bob-r*1.9,r*3.8,r*3.8);
+  K.it.forEach(it=>{const q=P(it.x,it.y),bob=Math.sin((it.t||0)*6)*3,r=.026*s,c={P:'#ffcf58',S:'#69dfff',L:'#ff8ab1',B:'#c399ff',A:'#f7d980'}[it.ty];
+    x.drawImage(A.glow[it.ty==='A'?0:2],q.x-r*1.9,q.y+bob-r*1.9,r*3.8,r*3.8);
     const gr=x.createRadialGradient(q.x-r*.3,q.y+bob-r*.4,1,q.x,q.y+bob,r);gr.addColorStop(0,'#fff7e4');gr.addColorStop(.3,c);gr.addColorStop(1,'#37759a');x.fillStyle=gr;x.beginPath();x.arc(q.x,q.y+bob,r,0,7);x.fill();x.strokeStyle='#e8fcff';x.lineWidth=1.5;x.stroke();
     x.fillStyle='rgba(255,255,255,.8)';x.beginPath();x.ellipse(q.x-r*.3,q.y+bob-r*.45,r*.35,r*.15,-.5,0,7);x.fill();
-    x.fillStyle='#183c67';x.font=`700 ${Math.round(.028*s)}px Fredoka, sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText({P:'P',S:'S',L:'♥',B:'B'}[it.ty],q.x,q.y+bob+1);
+    x.fillStyle='#183c67';x.font=`700 ${Math.round(.028*s)}px Fredoka, sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText({P:'P',S:'S',L:'♥',B:'B',A:'A'}[it.ty],q.x,q.y+bob+1);
     for(let a=0;a<3;a++){const ang=t*2+a*2.094,sz=r*.32;x.drawImage(A.star,q.x+Math.cos(ang)*r*1.4-sz/2,q.y+bob+Math.sin(ang)*r*1.4-sz/2,sz,sz)}
   });
   /* Atlas footprints match the old craft bounds; e.r is never changed. */
-  K.en.forEach(e=>{const q=P(e.x,e.y),r=e.r*s,idx={drone:0,swoop:1,gun:2,boss:3}[e.type],width={drone:2.34,swoop:2.2,gun:2.6,boss:3.4}[e.type]*r;
+  K.en.forEach(e=>{if(e.type==='sub'){skyDrawSub(g,K,A,e);return}const q=P(e.x,e.y),r=e.r*s,idx={drone:0,swoop:1,gun:2,boss:3}[e.type],width={drone:2.34,swoop:2.2,gun:2.6,boss:3.4}[e.type]*r;
     if(q.x+width<0||q.x-width>W)return;x.drawImage(A.shadow,q.x-width*.4+r*.3,q.y-width*.12+r*.6,width*.8,width*.5);
     x.save();if(e.flash)x.globalAlpha=.6;
     if(SKY_ART.robots.complete&&SKY_ART.robots.naturalWidth)x.drawImage(SKY_ART.robots,idx*256,0,256,256,q.x-width/2,q.y-width/2,width,width);
@@ -5532,13 +5568,13 @@ function skyDraw(g,K,now){
     if(e.type==='boss'){for(const o of [-.9,-.3,.3,.9]){const light=r*(.12+.025*Math.sin(t*5+o*4));x.drawImage(A.glow[1],q.x+o*r-light,q.y-light,light*2,light*2)}}x.restore();
   });
   K.pb.forEach(b=>{if(b.x<v.x0-.05||b.x>v.x0+1.05)return;const q=P(b.x,b.y);if(b.big){x.drawImage(A.glow[2],q.x-.03*s,q.y-.04*s,.06*s,.08*s);x.fillStyle='#e0fbff';rr(x,q.x-.007*s,q.y-.024*s,.014*s,.048*s,.007*s);x.fill();return}x.drawImage(A.glow[0],q.x-.018*s,q.y-.027*s,.036*s,.054*s);x.fillStyle='#fffee0';rr(x,q.x-.004*s,q.y-.018*s,.008*s,.036*s,.004*s);x.fill()});
-  K.eb.forEach(b=>{if(b.x<v.x0-.05||b.x>v.x0+1.05)return;const q=P(b.x,b.y);x.drawImage(A.glow[1],q.x-.025*s,q.y-.025*s,.05*s,.05*s);x.fillStyle='#fff0f8';x.beginPath();x.arc(q.x,q.y,.006*s,0,7);x.fill()});
+  K.eb.forEach(b=>{if(b.x<v.x0-.05||b.x>v.x0+1.05)return;const q=P(b.x,b.y);if(b.bubble){x.drawImage(A.glow[2],q.x-.023*s,q.y-.023*s,.046*s,.046*s);x.strokeStyle='#bafff4';x.lineWidth=1.5;x.beginPath();x.arc(q.x,q.y,.013*s,0,7);x.stroke();x.fillStyle='#fff';x.beginPath();x.arc(q.x-.004*s,q.y-.004*s,.003*s,0,7);x.fill();return}x.drawImage(A.glow[1],q.x-.025*s,q.y-.025*s,.05*s,.05*s);x.fillStyle='#fff0f8';x.beginPath();x.arc(q.x,q.y,.006*s,0,7);x.fill()});
   K.pl.forEach((p,i)=>{if(!p.alive)return;if(p.inv&&Math.floor(now/90)%2)return;const q=P(p.x,p.y),r=.045*s,w=2.3*r;x.save();x.translate(q.x,q.y);
     x.drawImage(A.shadow,-r*.8,r*.45,r*2.3,r*1.1);
-    if(SKY_ART.pilots.complete&&SKY_ART.pilots.naturalWidth)x.drawImage(SKY_ART.pilots,(i%4)*256,0,256,256,-w/2,-w/2,w,w);
+    const skin=SKY_SKINS.find(s=>s.id===p.skin)||SKY_SKINS[0],atlas=skin.row<0?SKY_ART.pilots:SKY_ART.liveries;if(atlas.complete&&atlas.naturalWidth)x.drawImage(atlas,(i%4)*256,Math.max(0,skin.row)*256,256,256,-w/2,-w/2,w,w);
     x.save();x.translate(0,-r*.92);x.fillStyle='rgba(225,251,255,.35)';x.beginPath();x.ellipse(0,0,r*.48,r*.14,0,0,7);x.fill();x.rotate(t*65+i);x.fillStyle='rgba(255,255,255,.8)';rr(x,-r*.45,-r*.045,r*.9,r*.09,r*.045);x.fill();x.restore();
     if(p.supT>0){const pu=1+.12*Math.sin(t*14);x.drawImage(A.glow[0],-r*2*pu,-r*2*pu,r*4*pu,r*4*pu);x.strokeStyle='rgba(255,236,140,.95)';x.lineWidth=3;x.beginPath();x.arc(0,0,r*1.5*pu,0,7);x.stroke()}
-    if(p.shield){x.drawImage(A.glow[2],-r*1.65,-r*1.65,r*3.3,r*3.3);x.strokeStyle='rgba(177,244,255,.9)';x.lineWidth=2;x.beginPath();x.arc(0,0,r*1.35,0,7);x.stroke()}x.restore();
+    if(p.shield)skyDrawShield(x,A,r,p,t);x.restore();
   });
   /* Age every original visual event, but cap costly stamps, not simulation particles. */
   K.fx=K.fx.filter(f=>(f.t+=1/60)<f.l);let painted=0;
@@ -5547,6 +5583,7 @@ function skyDraw(g,K,now){
     else if(f.txt){const q=P(f.x,f.y-e*.08);x.globalAlpha=1-e;x.fillStyle='#fff';x.font='700 18px Fredoka, sans-serif';x.textAlign='center';x.fillText(f.txt,q.x,q.y);x.globalAlpha=1}
     else if(painted++<160){const q=P(f.x+f.vx*f.t,f.y+f.vy*f.t),sz=(.018+(i%3)*.008)*(1-e*.5)*s;x.globalAlpha=1-e;x.save();x.translate(q.x,q.y);x.rotate(e*2+i);x.drawImage(i%3===0?A.star:A.puff,-sz/2,-sz/2,sz,sz);x.restore();x.globalAlpha=1}});
   skyClouds(g,K,A);x.restore();
+  {const route=skyRoute(K);x.save();x.font='700 11px Fredoka,sans-serif';const text=route.country+' · '+route.landmark,bw=Math.min(W-24,x.measureText(text).width+24),bx=(W-bw)/2,by=K.en.some(e=>e.type==='boss')?91:58;toyPanel(x,bx,by,bw,23,'#205971',10);x.fillStyle='#fff6d5';x.textAlign='left';x.textBaseline='middle';x.fillText(text,bx+11,by+12,bw-18);x.restore()}
   /* HUD */
   {const gs=document.getElementById('gscore');if(gs&&gs.textContent!==String(K.score))gs.textContent=K.score}
   const boss=K.en.find(e=>e.type==='boss');
@@ -5566,7 +5603,7 @@ function skyDraw(g,K,now){
   if(K.lost){x.fillStyle='rgba(10,15,40,.75)';x.fillRect(0,0,W,H);x.font='700 24px Fredoka, sans-serif';x.fillStyle='#fff';x.textAlign='center';x.fillText('📴 The other iPad disconnected',W/2,H/2-12);x.font='16px Fredoka, sans-serif';x.fillText('Tap ✕ to leave',W/2,H/2+20)}
   if(K.mode==='guest'&&!K.net){x.font='700 18px Fredoka, sans-serif';x.fillStyle='#fff';x.textAlign='center';x.fillText('Connecting to the squadron…',W/2,H/2)}
 }
-ARCADE_HELP.sky=['Drag anywhere to fly. Your plane fires by itself.','Grab P for more guns, S for a shield, ♥ for a life, B to clear the sky.'];
+ARCADE_HELP.sky=['Drag anywhere to fly. Your plane fires by itself.','P powers up; S shields; A is a 2-hit Aegis; ♥ adds a life; B clears the sky. Hit submarines when they surface.'];
 
 function skyLobby(){const L=$('#skylobby');if(!L)return;const p=cur(),ready=DU.conns.filter(c=>c.pname);
   L.innerHTML=`<div class="sky-lobby"><div class="sky-pilots">${[p.name,...DU.conns.map(c=>c.pname||'joining…')].map((n,i)=>`<span style="border-color:${SKY_COL[i]}"><b style="color:${SKY_COL[i]}">✈️ ${i+1}</b> ${esc(n)}</span>`).join('')}</div>
