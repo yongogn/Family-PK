@@ -552,6 +552,10 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-big{font-size:64px}.duel-code-in{font:700 40px Fredoka,sans-serif;letter-spacing:12px;text-align:center;text-transform:uppercase;width:min(280px,90%);padding:12px;border-radius:16px;border:2px solid #ffffff44;background:#0b0f26;color:#fff;margin-top:10px}
 .gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice{display:none}
 .gshell[data-game^="duel-"] .garea{background:#0b0f26}
+
+/* Cuddly companions: presentation only; quiz, reward and match rules are unchanged. */
+.cute-avatar{overflow:visible;filter:drop-shadow(0 5px 4px #36214c18)}.av2>.cute-avatar{width:108%;height:108%;margin-top:-3%}.avmini .cute-avatar{width:100%;height:100%}.avopt>.cute-avatar{width:84px;height:84px}.toy-stage>.cute-avatar{width:190px;height:190px}.owl-companion{display:inline-block;object-fit:contain;vertical-align:middle;flex-shrink:0;filter:drop-shadow(0 5px 4px #422c6120)}.quest-scene>.owl-companion{position:relative;width:225px;height:225px;z-index:2;animation:owl-breathe 3.4s ease-in-out infinite}.q-companion{display:flex;align-items:center;justify-content:center;gap:9px;margin:-10px 0 8px;color:#777092;font-size:12px;font-weight:500}.q-companion .owl-companion{width:56px;height:56px}.feedback-with-owl{display:flex;justify-content:center;align-items:center;gap:12px;margin:7px auto 2px}.feedback-with-owl .verdict-line{text-align:left;font-size:18px;line-height:1.4}.feedback-with-owl .owl-companion{width:78px;height:78px}.feedback-with-owl [data-owl-expression=happy]{animation:owl-hello .42s ease-out 1}.opt:has(.answer-owl){position:relative}.answer-owl{position:absolute;right:-7px;top:-20px;pointer-events:none;z-index:2}.answer-owl .owl-companion{width:38px;height:38px;filter:drop-shadow(0 3px 2px #37224c33)}.boss-celebration{display:flex;align-items:center;justify-content:center;gap:12px}.boss-celebration .trophy{font-size:95px}.boss-celebration [data-owl-expression=cheering]{animation:owl-cheer .65s ease-out 1}.avgrid:has(.cute-avatar){grid-template-columns:repeat(auto-fill,minmax(85px,1fr))}@keyframes owl-breathe{50%{transform:translateY(-5px) rotate(-2deg)}}@keyframes owl-hello{from{transform:scale(.88) rotate(-7deg)}to{transform:scale(1) rotate(0)}}@keyframes owl-cheer{0%{transform:translateY(0) scale(.9)}45%{transform:translateY(-10px) rotate(-5deg)}100%{transform:translateY(0) scale(1)}}@media(max-width:480px){.quest-scene>.owl-companion{width:130px;height:145px}.toy-stage>.cute-avatar{width:165px;height:165px}.avopt>.cute-avatar{width:67px;height:74px}.avgrid:has(.cute-avatar){grid-template-columns:repeat(4,minmax(0,1fr))}.q-companion{font-size:11px;margin-top:-5px}.q-companion .owl-companion{width:46px;height:46px}.feedback-with-owl{gap:9px}.feedback-with-owl .owl-companion{width:64px;height:64px}.feedback-with-owl .verdict-line{font-size:16px}.boss-celebration>.owl-companion{width:112px;height:112px}.boss-celebration .trophy{font-size:78px}}@media(prefers-reduced-motion:reduce){.owl-companion,.boss-celebration .owl-companion{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -3017,8 +3021,15 @@ Object.assign(AV_ITEMS,{
 });
 AV_ITEMS.neck.push(['wings','Angel wings',9]);
 let AVN=0;
-const COMPANION_CELLS={fox:0,cat:1,bear:2,bunny:3,panda:4,owl:5,penguin:6,dragon:7};
-function companionSVG(sp,size){const n=COMPANION_CELLS[sp]??0;return `<svg class="companion-avatar toy-avatar" viewBox="0 0 384 512" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><svg viewBox="${n%4*384} ${Math.floor(n/4)*512} 384 512" width="384" height="512"><image href="assets/companions.png" width="1536" height="1024"/></svg></svg>`}
+// Small, original vinyl-toy artwork. Existing species and unlock requirements are retained.
+const COMPANION_CELLS={fox:0,cat:1,bear:2,bunny:3,panda:4,monkey:5,owl:6,penguin:7,tiger:8,dino:9,axolotl:10,robot:11,unicorn:12,dragon:13};
+const OWL_ART={happy:'owl-happy',cheering:'owl-cheering',thinking:'owl-thinking',sad:'owl-encouraging'};
+function companionSVG(sp,size){const key=Object.prototype.hasOwnProperty.call(COMPANION_CELLS,sp)?sp:'fox',file=key==='owl'?'owl-happy':key;return `<svg class="companion-avatar toy-avatar cute-avatar" viewBox="0 0 352 352" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${key}"><image href="assets/avatars/${file}.webp" width="352" height="352"/></svg>`}
+function owlCompanion(expression='happy',size=72){const mood=Object.prototype.hasOwnProperty.call(OWL_ART,expression)?expression:'happy',label=mood==='sad'?'gently encouraging':mood;return `<img class="owl-companion" data-owl-expression="${mood}" src="assets/avatars/${OWL_ART[mood]}.webp" width="${size}" height="${size}" alt="${label} owl companion" decoding="async">`}
+function thinkingCompanion(){return Q.locked?'':`<div class="q-companion">${owlCompanion('thinking',60)}<span>Let’s work it out together.</span></div>`}
+function showAnswerOwl(el,ok){if(!el)return;el.querySelector('.answer-owl')?.remove();el.insertAdjacentHTML('beforeend',`<span class="answer-owl" aria-hidden="true">${owlCompanion(ok?'happy':'sad',38)}</span>`)}
+// Preload only the four small expressions so feedback is immediate on the first question.
+const OWL_IMAGES=Object.values(OWL_ART).map(file=>{const img=new Image();img.src=`assets/avatars/${file}.webp`;return img});
 const OL='#2a2340';
 function avatarSVG(a,size=72){
   a=a||{};if(a.render!=='classic'&&COMPANION_CELLS[a.sp||'fox']!==undefined)return companionSVG(a.sp||'fox',size);const id='a'+(++AVN);
@@ -3088,7 +3099,7 @@ function avatarSVG(a,size=72){
   if(drag)ears=`<path d="M34 34 Q26 14 18 8 Q34 12 46 30Z" fill="#facc15" ${st}/><path d="M86 34 Q94 14 102 8 Q86 12 74 30Z" fill="#facc15" ${st}/>`;
   /* head */
   const headShape=robot?`<rect x="16" y="26" width="88" height="78" rx="22" fill="url(#${id}h)" ${st}/><rect x="25" y="40" width="70" height="46" rx="14" fill="#1e293b"/>`
-    :`<ellipse cx="60" cy="64" rx="44" ry="40" fill="url(#${id}h)" ${st}/>`;
+    :`<ellipse cx="60" cy="64" rx="46" ry="41" fill="url(#${id}h)" ${st}/>`;
   if(sp==='fox')face+=`<path d="M20 70 Q60 110 100 70 Q88 94 60 98 Q32 94 20 70Z" fill="#fff"/>`;
   if(sp==='monkey')face+=`<ellipse cx="60" cy="74" rx="30" ry="24" fill="#fcd9b6"/>`;
   if(sp==='owl')face+=`<circle cx="45" cy="60" r="17" fill="${lt}"/><circle cx="75" cy="60" r="17" fill="${lt}"/>`;
@@ -3105,8 +3116,8 @@ function avatarSVG(a,size=72){
     if(t==='happy')return `<path d="M${x-8} ${y+2} Q${x} ${y-9} ${x+8} ${y+2}" stroke="${ec}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
     if(t==='sleepy')return `<path d="M${x-8} ${y} Q${x} ${y+7} ${x+8} ${y}" stroke="${ec}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
     if(t==='star')return `<path d="M${x} ${y-10} L${x+3} ${y-3} L${x+10} ${y-2} L${x+5} ${y+3} L${x+6} ${y+10} L${x} ${y+6} L${x-6} ${y+10} L${x-5} ${y+3} L${x-10} ${y-2} L${x-3} ${y-3}Z" fill="#facc15" stroke="#b45309" stroke-width="1.2"/>`;
-    if(t==='sparkle')return `<ellipse cx="${x}" cy="${y}" rx="9" ry="11" fill="${panda?'#111':'#1e1b4b'}"/><circle cx="${x+3}" cy="${y-4}" r="4" fill="#fff"/><circle cx="${x-3}" cy="${y+4}" r="1.8" fill="#fff"/>`;
-    return `<ellipse cx="${x}" cy="${y+1}" rx="10.5" ry="12" fill="#fff8ef"/><ellipse cx="${x+.5}" cy="${y}" rx="7.8" ry="9.5" fill="url(#${id}eye)"/><ellipse cx="${x-2}" cy="${y-4}" rx="3" ry="3.8" fill="#fff"/><circle cx="${x+3}" cy="${y+4}" r="1.6" fill="#fff" opacity=".8"/>`};
+    if(t==='sparkle')return `<ellipse cx="${x}" cy="${y}" rx="10.5" ry="12.5" fill="${panda?'#111':'#1e1b4b'}"/><circle cx="${x+3}" cy="${y-4}" r="4" fill="#fff"/><circle cx="${x-3}" cy="${y+4}" r="1.8" fill="#fff"/>`;
+    return `<ellipse cx="${x}" cy="${y+1}" rx="11.5" ry="13" fill="#fff8ef"/><ellipse cx="${x+.5}" cy="${y}" rx="8.8" ry="10.7" fill="url(#${id}eye)"/><ellipse cx="${x-2}" cy="${y-4}" rx="3" ry="3.8" fill="#fff"/><circle cx="${x+3}" cy="${y+4}" r="1.6" fill="#fff" opacity=".8"/>`};
   const et=a.eye||'round';
   face+=`<g class="av-eyes">${eye(45,et==='wink'?'round':et)}${eye(75,et==='wink'?'happy':et)}</g>`;
   if(sp==='owl'||peng)face+=`<path d="M53 70 L67 70 L60 81Z" fill="#f59e0b" stroke="${OL}" stroke-width="1.5"/>`;
@@ -3118,7 +3129,7 @@ function avatarSVG(a,size=72){
   else if(m==='tongue')face+=`<path d="M50 ${my} Q60 ${my+8} 70 ${my}" stroke="${mc}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M58 ${my+3} Q64 ${my+14} 68 ${my+2}Z" fill="#fb7185"/>`;
   else if(m==='fangs')face+=`<path d="M48 ${my} Q60 ${my+8} 72 ${my}" stroke="${mc}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M52 ${my+2} L55 ${my+9} L57 ${my+3}Z M68 ${my+2} L65 ${my+9} L63 ${my+3}Z" fill="#fff"/>`;
   else face+=`<path d="M50 ${my} Q60 ${my+10} 70 ${my}" stroke="${mc}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
-  if(!robot&&!peng)face+=`<ellipse cx="31" cy="77" rx="7" ry="5" fill="#fb7185" opacity=".5"/><ellipse cx="89" cy="77" rx="7" ry="5" fill="#fb7185" opacity=".5"/>`;
+  if(!robot&&!peng)face+=`<ellipse cx="31" cy="77" rx="8" ry="5.5" fill="#ff7f9d" opacity=".6"/><ellipse cx="89" cy="77" rx="8" ry="5.5" fill="#ff7f9d" opacity=".6"/>`;
   /* face & neck accessories */
   const f=a.face;
   if(f==='glasses')over+=`<circle cx="45" cy="60" r="13" fill="rgba(255,255,255,.15)" stroke="${OL}" stroke-width="3"/><circle cx="75" cy="60" r="13" fill="rgba(255,255,255,.15)" stroke="${OL}" stroke-width="3"/><line x1="58" y1="60" x2="62" y2="60" stroke="${OL}" stroke-width="3"/>`;
@@ -3464,7 +3475,7 @@ function renderQ(){
     ${SPEECH.ok?`<button class="padtoggle" onclick="readQ(Q.cur,true,Q.sid)">🔊 Read</button>`:''}
     <button class="padtoggle ${Q.pad?'on':''}" onclick="togglePad()">✏️ ${Q.pad?'Hide paper':'Paper'}</button></div>
    <div class="qcard ${Q.pad?'haspad':''}" id="qc">
-    <div class="qhead"><div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n}</div>
+    <div class="qhead">${thinkingCompanion()}<div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n}</div>
     ${c.passage?`<div class="passage">${esc(c.passage)}</div>`:''}
     <div class="qtext ${c.big?(c.long?'long':''):'txt'}">${esc(c.q)}</div>
     ${c.vis?`<div class="qvis ${c.vis.length>12?'many':''}">${c.vis}</div>`:''}
@@ -3500,10 +3511,10 @@ function answer(k,el){
   const sess=Q;if(ok)setTimeout(()=>{if(Q===sess&&!sess.dead&&Q.token===tok&&Q.locked&&document.getElementById('qc'))nextQ()},c.big?2200:2800);
 }
 function showFeedback(){
-  const c=Q.cur,ok=Q.lastOk;
+  const c=Q.cur,ok=Q.lastOk;document.querySelector('.q-companion')?.remove();
   document.querySelectorAll('.opt').forEach(b=>{const v=c.opts[+b.dataset.k];if(v===c.ans)b.classList.add('right');else if(v===Q.picked)b.classList.add('wrong')});
-  $('#fb').innerHTML=`<div class="verdict-line" style="color:${ok?'var(--good)':'var(--bad)'}">${ok?pick(['Brilliant! ✨','Correct! 🎉','Super! 💪','Nailed it! 🌟']):`Not quite — the answer is <b>${esc(c.ans)}</b>`}</div>
-    ${c.e?`<div class="explain"><b>Why?</b> ${esc(c.e)}</div>`:''}
+  $('#fb').innerHTML=`<div class="feedback-with-owl">${owlCompanion(ok?'happy':'sad',78)}<div class="verdict-line" style="color:${ok?'var(--good)':'var(--bad)'}">${ok?pick(['Brilliant! ✨','Correct! 🎉','Super! 💪','Nailed it! 🌟']):`Not quite — the answer is <b>${esc(c.ans)}</b>`}</div>
+    </div>${c.e?`<div class="explain"><b>Why?</b> ${esc(c.e)}</div>`:''}
     <button class="btn ${ok?'ghost':''} block" style="margin-top:12px" onclick="if(Q&&!Q.dead){Q.token++;nextQ()}">${Q.i>=Q.n?'See results':'Next'} ▶</button>`;
   const fb=$('#fb');if(fb&&!ok)setTimeout(()=>fb.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
 }
@@ -3668,7 +3679,7 @@ function drawSide(side){
 }
 function bossAns(side,k,el){
   if(!B||B.over)return;const s=B.sides[side];if(!s||s.lock||s.done)return;s.done=true;
-  const ok=s.q.opts[k]===s.q.ans;
+  const ok=s.q.opts[k]===s.q.ans;showAnswerOwl(el,ok);
   if(ok){el.classList.add('right');sGood();if(side==='kid'){B.p++;B.ks++;B.kLvl=Math.min(B.kLvl+0.2,B.kCap)}else{B.p--;B.as++}moveKnot();
     if(Math.abs(B.p)>=LIMIT)return endBoss(B.p>0?'kid':'adult');
     setTimeout(()=>B&&!B.over&&newBossQ(side),250);
@@ -3698,7 +3709,7 @@ function endBoss(result){
     const head=r.w===1?`First win against ${esc(ad.name)}! 🎉`:`You beat ${esc(ad.name)} again — that's your ${ordinal(r.w)} win!`;
     const streak=r.streak>=2?`<div class="streakline">🔥 ${r.streak} wins in a row against ${esc(ad.name)}!</div>`:'';
     app().innerHTML=`<div class="card center pop" style="margin-top:30px">
-      <div class="trophy">🏆</div><h2 style="font-size:28px">${esc(kid.name)} WINS!</h2>
+      <div class="boss-celebration">${owlCompanion('cheering',132)}<div class="trophy">🏆</div></div><h2 style="font-size:28px">${esc(kid.name)} WINS!</h2>
       <p style="font-size:18px">${head}</p>${streak}
       <div class="bosshero">${avatar(kid,90,true)}<span>⚔️</span><div style="opacity:.6">${avatar(ad,64)}</div></div>
       <p class="muted">Score ${B.ks} – ${B.as} · ${recLine}<br>🏆 ${bn[1]} trophy · +3 🪙${newChapter&&ch<NCH-1?` · <b>Chapter ${ch+2} unlocked!</b>`:''}${firstTrophy?' · 👑 Crown unlocked for your avatar!':''}</p>
@@ -3708,7 +3719,7 @@ function endBoss(result){
     save();
     const lossHead=result==='adult'?(r.streak<=-2?`${esc(ad.name)} has won ${-r.streak} in a row — time for revenge!`:`${esc(ad.name)} defends the ${esc(bn[1])}!`):"It's a draw!";
     app().innerHTML=`<div class="card center pop" style="margin-top:30px">
-      <div style="font-size:90px">${result==='adult'?(B.robo?'🤖':'🐲'):'🤝'}</div>
+      ${owlCompanion(result==='adult'?'sad':'happy',104)}<div style="font-size:90px">${result==='adult'?(B.robo?'🤖':'🐲'):'🤝'}</div>
       <h2>${lossHead}</h2>
       <p class="muted">Score ${B.ks} – ${B.as} · ${recLine}<br>${result==='adult'?'Train on the levels to grow stronger, then come back!':'So close! One more round?'}</p>
       <div class="row"><button class="btn" style="flex:1" onclick="${rematch}">${rlabel}</button><button class="btn ghost" style="flex:1" onclick="map()">Map</button></div></div>`;
@@ -3740,7 +3751,7 @@ function home(){
    <header class="quest-nav"><div class="quest-brand"><span class="quest-emblem" aria-hidden="true">✦</span><span>Kin<b>quest</b></span></div><span class="quest-edition">A little learning. A big adventure.</span></header>
    <section class="hero" aria-label="Welcome to Kinquest">
      <div class="quest-hero-copy"><div class="quest-eyebrow">The family learning adventure</div><h1>Small quests.<br><span>Legendary moments.</span></h1><p>Build your brain. Challenge your family.<br>Your next adventure starts here.</p><div class="quest-subjects"><span>＋ Maths</span><span>Aa English</span><span>文 Chinese</span><span>✦ Boss battles</span></div></div>
-     <div class="quest-scene" aria-hidden="true">${avatarSVG(Object.assign({},MASCOT,{hat:mascotHat}),190)}<span class="quest-star a">✦</span><span class="quest-star b">✧</span><span class="quest-star c">✦</span><span class="quest-mascot-label">Your quest companion</span></div>
+     <div class="quest-scene" aria-hidden="true">${owlCompanion('happy',190)}<span class="quest-star a">✦</span><span class="quest-star b">✧</span><span class="quest-star c">✦</span><span class="quest-mascot-label">Your quest companion</span></div>
    </section>
    <div class="sect"><span>Choose your adventurer</span><span class="quest-count">${kids.length} player${kids.length===1?'':'s'}</span></div>
    <p class="quest-section-note">${kids.length?'Pick a player to continue the journey.':'Every great quest starts with you. Create your first player to begin.'}</p>
@@ -4162,7 +4173,7 @@ function renderBuild(){
   if(!SB||SB.key!==c.key)SB={key:c.key,filled:[],used:[],peeking:false};
   app().innerHTML=`<div class="qtop"><button class="back" onclick="map()">✕</button>
     <div class="prog"><i style="width:${Q.i/Q.n*100}%"></i></div><span class="streak">${Q.streak>=2?'🔥'+Q.streak:''}</span></div>
-   <div class="qcard" id="qc"><div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n} · 🔤 Spelling</div>
+   <div class="qcard" id="qc">${thinkingCompanion()}<div class="qlabel">${node[0]} ${node[1]} · ${Q.i+1}/${Q.n} · 🔤 Spelling</div>
     <div class="qtext txt">${c.peek?'Look carefully, then spell it from memory!':'Listen, then spell the word!'}</div>
     <div class="row wrap" style="justify-content:center;gap:10px;margin:6px 0 14px">
       ${c.say?`<button class="listen" onclick="speakParts([Q.cur.say])">🔊 Hear it</button>`:''}
@@ -4655,9 +4666,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.1';
-const APP_DATE='13 Nov 2026';
+const APP_VERSION='3.2';
+const APP_DATE='15 Nov 2026';
 const CHANGES=[
+ ['3.2','Cuter vinyl-toy avatars for all 14 species, four expressive owl companions for learning feedback and Boss celebrations, and small offline-ready WebP artwork.'],
  ['3.1','Quest PK is now Kinquest — same game, same progress, new name.'],
  ['3.0','New Duel Table: Ping Pong and Air Hockey for two, on one iPad or two iPads side by side. A peek at what\'s next: new worlds, Chapter 4 and family features (vote for your favourite). Brain age is now called Mind age.'],
  ['2.9.2','Arcade: every game now costs 3 🪙 — earned 1 per new star (replays of a mastered level count once a day), 3 per Boss win. Parent unlock needs a grown-up sum.'],
@@ -4937,6 +4949,7 @@ function guestDrawQ(){
 }
 function guestAns(k,el){
   const g=GG;if(!g||g.over||g.lock||!g.started)return;
+  showAnswerOwl(el,g.q.opts[k]===g.q.ans);
   if(g.q.opts[k]===g.q.ans){g.lock=true;g.qn=(g.qn||0)+1;el.classList.add('right');sGood();rmSend({t:'pull',qid:g.qn});g.as++;setTimeout(guestNewQ,250)}
   else{el.classList.add('wrong');sBad();g.lock=true;const fr=g.strength==='gentle'?2500:1300;
     setTimeout(()=>{if(!GG||GG.over)return;guestDrawQ();setTimeout(()=>{if(GG&&!GG.over)guestNewQ()},fr)},350)}
@@ -4949,7 +4962,7 @@ function guestEnd(m){
   if(GJ.adultId&&m.reason!=='left'){const a=getP(GJ.adultId);if(a){if(won)a.boss.w++;else if(draw)a.boss.d++;else a.boss.l++}}save();
   if(won)sWin();
   app().innerHTML=`<div class="card center" style="margin-top:30px">
-    <div style="font-size:90px">${m.reason==='left'?'📴':won?'🐲':draw?'🤝':'🏆'}</div>
+    ${owlCompanion(won?'cheering':draw?'happy':'sad',104)}<div style="font-size:90px">${m.reason==='left'?'📴':won?'🐲':draw?'🤝':'🏆'}</div>
     <h2>${m.reason==='left'?'The connection ended':won?(gr.w>1?`You beat ${esc(g.kid.name)} again!`:`You defended the ${esc(g.stage)}!`):draw?"It's a draw!":`${esc(g.kid.name)} beat you!`}</h2>
     <p class="muted">Score: ${esc(g.kid.name)} ${m.ks??g.ks} – ${m.as??g.as} ${esc(GJ.name)}</p>
     <p>All-time vs ${esc(g.kid.name)}: <b>you ${gr.w} – ${gr.l} ${esc(g.kid.name)}</b>${gr.d?` (${gr.d} draws)`:''}</p>
