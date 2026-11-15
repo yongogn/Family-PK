@@ -550,7 +550,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-note{opacity:.75;font-size:14px;margin-top:14px;text-align:center}
 .duel-wait{text-align:center;padding:30px 20px;border-radius:24px;background:#ffffff0d;border:1px solid #ffffff1f;margin-top:16px;color:#f8f2ff}
 .duel-big{font-size:64px}.duel-code-in{font:700 40px Fredoka,sans-serif;letter-spacing:12px;text-align:center;text-transform:uppercase;width:min(280px,90%);padding:12px;border-radius:16px;border:2px solid #ffffff44;background:#0b0f26;color:#fff;margin-top:10px}
-.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice{display:none}
+.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice,.gshell[data-game="island"] #game-notice,.gshell[data-game="island"] #game-pause-button,.gshell[data-game="island"] #game-metrics{display:none}
 .gshell[data-game^="duel-"] .garea{background:#0b0f26}
 
 /* Cuddly companions: presentation only; quiz, reward and match rules are unchanged. */
@@ -4680,9 +4680,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='3.6';
+const APP_VERSION='3.7';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+ ['3.7','New Island Dash: run and jump across tropical islands, eat fruit to keep your energy up, bop critters and find power-up eggs.'],
  ['3.6','New Splash Maze: water-balloon maze battles for up to 4 players — solo vs robots, two on one iPad, or one per iPad.'],
  ['3.5.1','Restored the previous Custom builder avatar proportions, eyes and cheeks.'],
  ['3.5','Sky Squadron gets painted toy planes and robot aircraft, tropical ocean scenery, cloud layers, sparkling power-ups and star-and-smoke effects. Flight rules and multiplayer stay the same.'],
@@ -5707,6 +5708,150 @@ function mazeDraw(g,M,now){const x=g.x,W=g.W,H=g.H,v=M.v,cs=v.cs;
 }
 function mazeSolo(){if(!duelPay())return;mazeStart('solo',{a:cur().name})}
 ARCADE_HELP.maze=['Drag to walk, tap 💦 to drop a water balloon.','Hide from the splash! Last one dry wins the round.'];
+
+/* ============ ISLAND DASH — side-scrolling run & jump across tropical islands ============ */
+/* Original game in the spirit of classic island platformers: keep your energy up with fruit, hop over critters, reach the flag. */
+function islandLevel(n){
+  const R=(()=>{let s=n*9301+49297;return()=>(s=(s*9301+49297)%233280)/233280})();
+  const len=150+n*25,H=12,map=Array.from({length:H},()=>Array(len).fill('.')),things=[];
+  let x=0,gh=3;const ground=(a,b,h)=>{for(let i=a;i<b&&i<len;i++)for(let r=H-h;r<H;r++)map[r][i]='G'};
+  ground(0,14,3);x=14;let lastGap=0;
+  while(x<len-18){
+    const seg=4+Math.floor(R()*9),hNew=Math.max(2,Math.min(5,gh+(R()<.35?(R()<.5?1:-1):0)));gh=hNew;ground(x,x+seg,gh);
+    for(let i=x+1;i<x+seg-1;i++){const top=H-gh-1,rr=R();
+      if(rr<.22)things.push({k:'fruit',x:i+.5,y:top-.3-(R()<.4?1.6:0),f:pick(['🍎','🍌','🍇','🍉','🍍','🥭'])});
+      else if(rr<.27&&n>=1&&i>x+2)things.push({k:'rock',x:i+.5,y:top+.55});
+      else if(rr<.36)things.push({k:pick(n<2?['snail','crab']:['snail','crab','frog','bee']),x:i+.5,y:top+.5});
+      else if(rr<.385)things.push({k:'egg',x:i+.5,y:top+.55})}
+    x+=seg;
+    if(R()<.55&&x-lastGap>6&&x<len-22){const gap=2+Math.floor(R()*(n<2?2:3));for(let i=0;i<gap;i++)things.push({k:'fruit',x:x+i+.5,y:H-gh-3.2-Math.sin((i+.5)/gap*Math.PI)*1.2,f:pick(['🍎','🍌','🍇'])});
+      if(R()<.4){const py=H-gh-4;for(let i=x-1;i<x+gap+1;i++)if(map[py])map[py][i]='P'}x+=gap;lastGap=x}
+    if(R()<.25&&x<len-22){const py=H-gh-4-(R()<.5?1:0),pl=3+Math.floor(R()*3),px=x-pl-1;for(let i=px;i<px+pl;i++)if(i>0&&map[py])map[py][i]='P';things.push({k:'fruit',x:px+pl/2,y:py-.6,f:'⭐'})}}
+  ground(x,len,gh);const cp=Math.floor(len/2);things.push({k:'flag',x:len-6.5,y:H-gh-1});things.push({k:'check',x:cp+.5,y:0});
+  return{map,len,H,things:things.map((t,i)=>Object.assign(t,{id:i,alive:true,vx:t.k==='crab'?-1.4:t.k==='snail'?-.7:0,ox:t.x,oy:t.y,t:R()*6})),cp}}
+function gIsland(){
+  const g=shell('island','🏝️ Island Dash',''),p=cur(),col=(p.av&&p.av.col)||'#3b82f6';
+  const K=g.isl={lv:1,lives:3,score:0,energy:100,keys:{l:0,r:0,j:0,b:0},ptr:new Map(),fx:[],boom:null,banner:null,t:0,last:performance.now()};
+  const fit=()=>{const a=$('#garea');if(!a)return;const r=a.getBoundingClientRect(),dpr=window.devicePixelRatio||1;g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
+    K.T=Math.floor(g.H/12.5);const b=Math.max(56,Math.min(84,g.H*.13));K.btn={l:{x:b*.9,y:g.H-b*.9,r:b*.62},r:{x:b*2.4,y:g.H-b*.9,r:b*.62},j:{x:g.W-b*.95,y:g.H-b*.95,r:b*.75},b:{x:g.W-b*2.6,y:g.H-b*.8,r:b*.55}}};
+  fit();const onR=()=>{if(GAME===g)fit()};window.addEventListener('resize',onR);
+  const key=e=>{const d=e.type==='keydown'?1:0,k=e.key;if(k==='ArrowLeft')K.keys.l=d;else if(k==='ArrowRight')K.keys.r=d;else if(k===' '||k==='ArrowUp')K.keys.j=d;else if(k==='x'||k==='z')K.keys.b=d;else return;e.preventDefault()};
+  window.addEventListener('keydown',key);window.addEventListener('keyup',key);g.offResize=()=>{window.removeEventListener('resize',onR);window.removeEventListener('keydown',key);window.removeEventListener('keyup',key)};
+  g.c.style.touchAction='none';const pos=e=>{const r=g.c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  const which=q=>{for(const [k,b] of Object.entries(K.btn))if(Math.hypot(q.x-b.x,q.y-b.y)<b.r+18)return k;
+    /* forgiving: anywhere on the left half steers, anywhere on the right half jumps */
+    return q.x<g.W/2?(q.x<K.btn.l.x+K.btn.l.r*1.2?'l':'r'):'j'};
+  const refresh=()=>{const s={l:0,r:0,j:0,b:0};K.ptr.forEach(k=>s[k]=1);['l','r','j','b'].forEach(k=>K.keys[k]=s[k]||K.kb?.[k]||0)};
+  g.c.addEventListener('pointerdown',e=>{K.ptr.set(e.pointerId,which(pos(e)));try{g.c.setPointerCapture(e.pointerId)}catch(_){}refresh()});
+  g.c.addEventListener('pointermove',e=>{if(!K.ptr.has(e.pointerId))return;const k=which(pos(e));if((K.ptr.get(e.pointerId)==='l'||K.ptr.get(e.pointerId)==='r')&&(k==='l'||k==='r')){K.ptr.set(e.pointerId,k);refresh()}});
+  const up=e=>{K.ptr.delete(e.pointerId);refresh()};g.c.addEventListener('pointerup',up);g.c.addEventListener('pointercancel',up);
+  const startLevel=()=>{const L=islandLevel(K.lv);Object.assign(K,{L,cam:0,energy:100,spawnX:2,boom:null});K.pl={x:2,y:L.H-4,vx:0,vy:0,w:.6,h:.95,on:false,face:1,jumpT:0,coyote:0,board:false,star:0,boomer:false,hurt:0};K.banner={t:`Island ${K.lv}`,at:K.t}};
+  const respawn=()=>{const P=K.pl;Object.assign(P,{x:K.spawnX,y:K.L.H-6,vx:0,vy:0,board:false,hurt:1.5});K.energy=100;K.cam=Math.max(0,K.spawnX-4)};
+  const loseLife=why=>{if(K.dying)return;K.dying=1;beep(220,.3,'square',.06);setTimeout(()=>beep(160,.4,'square',.06),180);K.lives--;K.banner={t:why,at:K.t};
+    setTimeout(()=>{K.dying=0;if(!g.dead&&K.lives<=0){setScore(K.score);gameOver(`Island ${K.lv} · ${K.score.toLocaleString('en-SG')} points`)}else if(!g.dead)respawn()},1100)};
+  startLevel();
+  const solid=(cx,cy,fromAbove,py)=>{const L=K.L;if(cx<0||cx>=L.len)return cx<0;if(cy<0)return false;if(cy>=L.H)return false;const c=L.map[cy][cx];if(c==='G')return true;if(c==='P')return fromAbove&&py+K.pl.h<=cy+.05;return false};
+  const step=dt=>{K.t+=dt;const P=K.pl,L=K.L;if(K.dying)return;
+    K.energy-=dt*(2.1+K.lv*.2);if(K.energy<=0){K.energy=0;return loseLife('Out of energy! Grab more fruit')}
+    const acc=P.on?34:20,max=P.board?8.2:5.6,dir=(K.keys.r?1:0)-(K.keys.l?1:0);
+    if(dir){P.vx+=dir*acc*dt;P.face=dir}else{const f=(P.on?26:6)*dt;P.vx=Math.abs(P.vx)<f?0:P.vx-Math.sign(P.vx)*f}
+    P.vx=clamp(P.vx,-max,max);
+    P.coyote=P.on?.1:Math.max(0,P.coyote-dt);
+    if(K.keys.j&&!K.jHeld&&(P.on||P.coyote>0)){P.vy=-13.6;P.on=false;P.coyote=0;P.jumpT=.24;beep(520,.06,'triangle',.04)}
+    K.jHeld=K.keys.j;if(!K.keys.j)P.jumpT=0;
+    P.vy+=(P.jumpT>0&&P.vy<0?16:40)*dt;P.jumpT=Math.max(0,P.jumpT-dt);P.vy=Math.min(P.vy,20);
+    if(K.keys.b&&!K.bHeld&&P.boomer&&!K.boom){K.boom={x:P.x+P.face*.4,y:P.y+.35,vx:P.face*11,t:0,dir:P.face};beep(700,.05,'sine',.04)}K.bHeld=K.keys.b;
+    /* horizontal move + collide */
+    let nx=P.x+P.vx*dt;const yT=Math.floor(P.y+.05),yB=Math.floor(P.y+P.h-.05),edge=P.vx>0?Math.floor(nx+P.w):Math.floor(nx);
+    if(P.vx!==0&&(solid(edge,yT,false,0)||solid(edge,yB,false,0))){nx=P.vx>0?edge-P.w-.001:edge+1.001;P.vx=0}P.x=Math.max(K.cam,nx);
+    /* vertical */
+    let ny=P.y+P.vy*dt;P.on=false;const xl=Math.floor(P.x+.05),xr=Math.floor(P.x+P.w-.05);
+    if(P.vy>=0){const foot=Math.floor(ny+P.h);if(solid(xl,foot,true,P.y)||solid(xr,foot,true,P.y)){ny=foot-P.h;P.vy=0;P.on=true}}
+    else{const head=Math.floor(ny);if(solid(xl,head,false,0)||solid(xr,head,false,0)){ny=head+1;P.vy=0}}
+    P.y=ny;if(P.y>L.H+1)return loseLife('Splash! Mind the gaps');
+    P.hurt=Math.max(0,P.hurt-dt);P.star=Math.max(0,P.star-dt);
+    K.cam=Math.max(K.cam,Math.min(L.len-K.view,P.x-K.view*.38));
+    if(P.x>L.cp&&K.spawnX<L.cp){K.spawnX=L.cp;K.banner={t:'Checkpoint! 🚩',at:K.t};beep(880,.1,'triangle')}
+    /* boomerang */
+    if(K.boom){const b=K.boom;b.t+=dt;b.x+=b.vx*dt;b.vx-=b.dir*16*dt;if(b.t>.35&&Math.abs(b.x-(P.x+.3))<.6||b.t>2)K.boom=null}
+    /* things */
+    L.things.forEach(o=>{if(!o.alive||Math.abs(o.x-P.x)>K.view+4)return;o.t+=dt;
+      if(o.k==='crab'||o.k==='snail'){const nx2=o.x+o.vx*dt,ahead=Math.floor(nx2+Math.sign(o.vx)*.4),fy=Math.floor(o.y+.5);if(!solid(ahead,fy,true,o.y-1)||solid(ahead,Math.floor(o.y),false,0))o.vx*=-1;else o.x=nx2}
+      else if(o.k==='bee'){o.x=o.ox+Math.sin(o.t*1.3)*1.6;o.y=o.oy-1.8+Math.sin(o.t*3)*.6}
+      else if(o.k==='frog'){const ph=o.t%2.2;o.y=o.oy-(ph<.6?Math.sin(ph/.6*Math.PI)*1.6:0)}
+      const px=P.x+P.w/2,py=P.y+P.h/2,dx=Math.abs(o.x-px),dy=Math.abs(o.y-py);
+      if(o.k==='fruit'&&dx<.6&&dy<.7){o.alive=false;K.energy=Math.min(100,K.energy+(o.f==='⭐'?25:9));K.score+=o.f==='⭐'?200:50;K.fx.push({t:0,x:o.x,y:o.y,txt:o.f==='⭐'?'+200':'+50'});beep(990,.05,'triangle',.05)}
+      else if(o.k==='egg'&&dx<.6&&dy<.7){o.alive=false;const r=Math.random(),gift=!P.boomer?'boom':r<.4?'board':r<.65?'star':'fruit';
+        if(gift==='boom'){P.boomer=true;K.banner={t:'Boomerang! Tap 🪃',at:K.t}}else if(gift==='board'){P.board=true;K.banner={t:'Skateboard! 🛹',at:K.t}}else if(gift==='star'){P.star=7;K.banner={t:'Super star! ✨',at:K.t}}else{K.energy=100;K.banner={t:'Full energy! 🍉',at:K.t}}
+        beep(660,.08,'triangle');setTimeout(()=>beep(990,.12,'triangle'),80)}
+      else if(o.k==='rock'&&dx<.55&&dy<.6&&P.hurt<=0){P.hurt=.7;K.energy=Math.max(1,K.energy-14);P.vx*=.3;K.fx.push({t:0,x:o.x,y:o.y-.6,txt:'Ouch! −energy'});beep(200,.08,'square',.05)}
+      else if(o.k==='flag'&&px>o.x-.3){o.alive=false;const bonus=500+Math.round(K.energy)*5;K.score+=bonus;sWin();confetti(70);K.banner={t:`Island ${K.lv} cleared! +${bonus}`,at:K.t};K.dying=1;setTimeout(()=>{if(g.dead)return;K.dying=0;K.lv++;startLevel()},1800)}
+      else if(['snail','crab','frog','bee'].includes(o.k)){
+        if(K.boom&&Math.abs(K.boom.x-o.x)<.55&&Math.abs(K.boom.y-o.y)<.6){o.alive=false;K.score+=100;K.fx.push({t:0,x:o.x,y:o.y,txt:'+100',pop:1});beep(400,.08,'sine')}
+        else if(dx<.62&&dy<.75){if(P.star>0||(P.vy>2&&py<o.y-.15)){o.alive=false;K.score+=150;P.vy=-9;K.fx.push({t:0,x:o.x,y:o.y,txt:'+150',pop:1});beep(450,.08,'sine')}
+          else if(P.hurt<=0){if(P.board){P.board=false;P.hurt=1.4;K.banner={t:'Lost the skateboard!',at:K.t};beep(250,.15,'square',.05)}else loseLife('Bonk! Watch out for critters')}}}});
+    setScore(K.score)};
+  const draw=now=>{if(g.dead)return;const dt=Math.min(.05,(now-K.last)/1000);K.last=now;K.view=g.W/K.T;step(dt);
+    const x=g.x,W=g.W,H=g.H,T=K.T,L=K.L,oy=H-L.H*T,cam=K.cam,SX=v=>(v-cam)*T,SY=v=>oy+v*T;
+    const sg=x.createLinearGradient(0,0,0,H);sg.addColorStop(0,'#7dd3fc');sg.addColorStop(.6,'#e0f7ff');sg.addColorStop(1,'#fff7e0');x.fillStyle=sg;x.fillRect(0,0,W,H);
+    x.fillStyle='#fde68a';x.beginPath();x.arc(W*.8,H*.18,T*1.4,0,7);x.fill();x.fillStyle='rgba(253,230,138,.3)';x.beginPath();x.arc(W*.8,H*.18,T*2.2,0,7);x.fill();
+    x.fillStyle='#38bdf8';x.fillRect(0,SY(L.H-2.6),W,H);x.fillStyle='rgba(255,255,255,.35)';for(let i=0;i<16;i++){const wx=((i*137-cam*T*.2)%(W+80)+W+80)%(W+80)-40;x.fillRect(wx,SY(L.H-2.5)+(i%3)*8,30,2)}
+    [[.25,'#86efac',4.6],[.5,'#4ade80',3.8]].forEach(([par,c,hh],li)=>{x.fillStyle=c;x.beginPath();x.moveTo(0,H);for(let sx=0;sx<=W+20;sx+=20){const wx=sx/T+cam*par;x.lineTo(sx,SY(L.H-2.4)-(Math.sin(wx*.35+li)*.8+hh*.5)*T*(li?1:.8))}x.lineTo(W,H);x.fill();
+      if(li){for(let k=Math.floor(cam*par/7)-1;k<cam*par/7+W/T/7+2;k++){const px2=(k*7+3-cam*par)*T,base=SY(L.H-2.4)-(Math.sin((k*7+3)*.35+li)*.8+hh*.5)*T;x.strokeStyle='#92400e';x.lineWidth=T*.18;x.beginPath();x.moveTo(px2,base);x.quadraticCurveTo(px2+T*.3,base-T*1.2,px2+T*.15,base-T*2.2);x.stroke();
+        x.fillStyle='#15803d';for(let a=0;a<5;a++){const an=-2.6+a*.55;x.beginPath();x.ellipse(px2+T*.15+Math.cos(an)*T*.6,base-T*2.2+Math.sin(an)*T*.35,T*.75,T*.18,an,0,7);x.fill()}}}});
+    /* tiles */
+    const c0=Math.max(0,Math.floor(cam)),c1=Math.min(L.len,Math.ceil(cam+W/T)+1);
+    for(let r=0;r<L.H;r++)for(let c=c0;c<c1;c++){const k=L.map[r][c];if(k==='.')continue;const px=SX(c),py=SY(r);
+      if(k==='G'){const top=r===0||L.map[r-1][c]!=='G';x.fillStyle='#c08552';x.fillRect(px,py,T+1,T+1);x.fillStyle='rgba(120,70,30,.35)';x.beginPath();x.arc(px+T*((c*37+r*11)%10)/10,py+T*((c*13+r*7)%10)/10,T*.08,0,7);x.fill();
+        if(top){x.fillStyle='#f5d58a';x.fillRect(px,py,T+1,T*.32);x.fillStyle='#4ade80';x.fillRect(px,py-T*.08,T+1,T*.2);x.fillStyle='#22c55e';for(let b=0;b<3;b++){x.beginPath();x.moveTo(px+b*T/3,py+T*.08);x.lineTo(px+b*T/3+T/6,py-T*.22);x.lineTo(px+b*T/3+T/3,py+T*.08);x.fill()}}}
+      else{x.fillStyle='#a16207';rr(x,px,py+T*.1,T+1,T*.45,T*.15);x.fill();x.fillStyle='#ca8a04';rr(x,px+2,py+T*.14,T-3,T*.16,T*.08);x.fill();x.strokeStyle='#713f12';x.lineWidth=2;x.beginPath();x.arc(px+T*.5,py+T*.33,T*.1,0,7);x.stroke()}}
+    /* things */
+    L.things.forEach(o=>{if(!o.alive)return;const sx=SX(o.x),sy=SY(o.y);if(sx<-T*2||sx>W+T*2)return;
+      if(o.k==='fruit'){x.font=`${Math.round(T*.8)}px system-ui`;x.textAlign='center';x.textBaseline='middle';x.fillText(o.f,sx,sy+Math.sin(now/250+o.id)*T*.08)}
+      else if(o.k==='rock'){x.fillStyle='#78716c';x.beginPath();x.ellipse(sx,sy+T*.2,T*.42,T*.3,0,Math.PI,0);x.fill();x.fillStyle='#a8a29e';x.beginPath();x.ellipse(sx-T*.1,sy+T*.05,T*.15,T*.08,0,0,7);x.fill()}
+      else if(o.k==='egg'){x.fillStyle='#fff';x.beginPath();x.ellipse(sx,sy,T*.32,T*.42,0,0,7);x.fill();x.fillStyle='#f472b6';[[-.1,-.15],[.12,.05],[-.05,.2]].forEach(([a,b])=>{x.beginPath();x.arc(sx+a*T,sy+b*T,T*.07,0,7);x.fill()});x.strokeStyle='#e2e8f0';x.lineWidth=2;x.beginPath();x.ellipse(sx,sy,T*.32,T*.42,0,0,7);x.stroke()}
+      else if(o.k==='flag'){x.fillStyle='#64748b';x.fillRect(sx-T*.06,sy-T*3.2,T*.12,T*3.4);x.fillStyle='#ef4444';x.beginPath();x.moveTo(sx+T*.06,sy-T*3.1);x.lineTo(sx+T*1.3,sy-T*2.7+Math.sin(now/200)*T*.1);x.lineTo(sx+T*.06,sy-T*2.3);x.fill();x.font=`${Math.round(T*.5)}px system-ui`;x.textAlign='center';x.fillText('🏁',sx,sy-T*3.5)}
+      else if(o.k==='check'){x.font=`${Math.round(T*.7)}px system-ui`;x.textAlign='center';x.textBaseline='middle';const gy=L.map.findIndex(r=>r[Math.floor(o.x)]==='G');x.fillText(K.spawnX>=L.cp?'🚩':'🏳️',sx,SY(gy)-T*.55)}
+      else if(o.k==='snail'){const f=o.vx>0?1:-1;x.fillStyle='#fde68a';x.beginPath();x.ellipse(sx+f*T*.15,sy+T*.32,T*.42,T*.16,0,0,7);x.fill();x.fillStyle='#c084fc';x.beginPath();x.arc(sx-f*T*.05,sy+T*.05,T*.3,0,7);x.fill();x.strokeStyle='#7e22ce';x.lineWidth=2;x.beginPath();x.arc(sx-f*T*.05,sy+T*.05,T*.15,0,5);x.stroke();
+        x.strokeStyle='#ca8a04';x.beginPath();x.moveTo(sx+f*T*.4,sy+T*.2);x.lineTo(sx+f*T*.5,sy-T*.08);x.stroke();x.fillStyle='#111';x.beginPath();x.arc(sx+f*T*.5,sy-T*.1,T*.05,0,7);x.fill()}
+      else if(o.k==='crab'){x.fillStyle='#f97316';x.beginPath();x.ellipse(sx,sy+T*.15,T*.38,T*.25,0,0,7);x.fill();[-1,1].forEach(s=>{x.beginPath();x.arc(sx+s*T*.45,sy-T*.02+Math.sin(now/150)*T*.04,T*.13,0,7);x.fill();x.strokeStyle='#c2410c';x.lineWidth=2;for(let l=0;l<3;l++){x.beginPath();x.moveTo(sx+s*T*.2,sy+T*.3);x.lineTo(sx+s*T*(.38+l*.06),sy+T*.48);x.stroke()}});
+        x.fillStyle='#fff';x.beginPath();x.arc(sx-T*.1,sy-T*.05,T*.07,0,7);x.arc(sx+T*.1,sy-T*.05,T*.07,0,7);x.fill();x.fillStyle='#111';x.beginPath();x.arc(sx-T*.1,sy-T*.05,T*.035,0,7);x.arc(sx+T*.1,sy-T*.05,T*.035,0,7);x.fill()}
+      else if(o.k==='frog'){x.fillStyle='#22c55e';x.beginPath();x.ellipse(sx,sy+T*.15,T*.38,T*.28,0,0,7);x.fill();x.beginPath();x.arc(sx-T*.18,sy-T*.08,T*.12,0,7);x.arc(sx+T*.18,sy-T*.08,T*.12,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(sx-T*.18,sy-T*.1,T*.07,0,7);x.arc(sx+T*.18,sy-T*.1,T*.07,0,7);x.fill();x.fillStyle='#111';x.beginPath();x.arc(sx-T*.18,sy-T*.1,T*.035,0,7);x.arc(sx+T*.18,sy-T*.1,T*.035,0,7);x.fill()}
+      else if(o.k==='bee'){x.fillStyle='#facc15';x.beginPath();x.ellipse(sx,sy,T*.3,T*.22,0,0,7);x.fill();x.fillStyle='#1f2937';[-.08,.08].forEach(a=>x.fillRect(sx+a*T-T*.03,sy-T*.2,T*.06,T*.4));x.fillStyle='rgba(255,255,255,.75)';x.beginPath();x.ellipse(sx-T*.05,sy-T*.25,T*.16,T*.1,-.4+Math.sin(now/40)*.3,0,7);x.ellipse(sx+T*.1,sy-T*.25,T*.16,T*.1,.4-Math.sin(now/40)*.3,0,7);x.fill()}});
+    /* boomerang */
+    if(K.boom){const b=K.boom;x.save();x.translate(SX(b.x),SY(b.y));x.rotate(now/40);x.strokeStyle='#b45309';x.lineWidth=T*.14;x.lineCap='round';x.beginPath();x.moveTo(-T*.25,T*.1);x.lineTo(0,-T*.15);x.lineTo(T*.25,T*.1);x.stroke();x.restore()}
+    /* player */
+    const P=K.pl,px=SX(P.x+P.w/2),py=SY(P.y+P.h);if(!(P.hurt>0&&Math.floor(now/90)%2)&&!K.dying||K.dying&&Math.floor(now/120)%2){x.save();x.translate(px,py);x.scale(P.face,1);
+      const run=P.on&&Math.abs(P.vx)>.5?Math.sin(now/70):0,u=T;
+      if(P.star>0){x.fillStyle=`hsla(${now/3%360},90%,70%,.5)`;x.beginPath();x.arc(0,-u*.55,u*.75,0,7);x.fill()}
+      if(P.board){x.fillStyle='#ef4444';rr(x,-u*.45,-u*.12,u*.9,u*.12,u*.06);x.fill();x.fillStyle='#111';x.beginPath();x.arc(-u*.3,0,u*.07,0,7);x.arc(u*.3,0,u*.07,0,7);x.fill()}
+      const lift=P.board?u*.12:0;x.strokeStyle='#7c4a1e';x.lineWidth=u*.13;x.lineCap='round';
+      x.beginPath();x.moveTo(-u*.08,-u*.38-lift);x.lineTo(-u*.08+run*u*.18,-lift-u*.03);x.moveTo(u*.08,-u*.38-lift);x.lineTo(u*.08-run*u*.18,-lift-u*.03);x.stroke();
+      x.fillStyle=col;rr(x,-u*.22,-u*.72-lift,u*.44,u*.4,u*.12);x.fill();x.fillStyle='#fff';x.fillRect(-u*.22,-u*.5-lift,u*.44,u*.06);
+      x.strokeStyle='#f1c27d';x.lineWidth=u*.11;x.beginPath();x.moveTo(u*.15,-u*.62-lift);x.lineTo(u*.32,-u*.5-lift-run*u*.1);x.stroke();
+      x.fillStyle='#f1c27d';x.beginPath();x.arc(0,-u*.9-lift,u*.22,0,7);x.fill();x.fillStyle=shade(col,-25);x.beginPath();x.arc(0,-u*.95-lift,u*.23,Math.PI,0);x.fill();x.fillRect(0,-u*.98-lift,u*.32,u*.07);
+      x.fillStyle='#1e1b4b';x.beginPath();x.arc(u*.1,-u*.9-lift,u*.04,0,7);x.fill();x.strokeStyle='#be123c';x.lineWidth=2;x.beginPath();x.arc(u*.06,-u*.83-lift,u*.06,.2,1.6);x.stroke();
+      if(P.boomer){x.strokeStyle='#b45309';x.lineWidth=u*.08;x.beginPath();x.moveTo(-u*.3,-u*.7-lift);x.lineTo(-u*.2,-u*.55-lift);x.stroke()}
+      x.restore()}
+    /* floating text */
+    K.fx=K.fx.filter(f=>(f.t+=dt)<.9);K.fx.forEach(f=>{x.globalAlpha=1-f.t/.9;x.fillStyle=f.pop?'#fde047':'#fff';x.strokeStyle='rgba(15,23,42,.6)';x.lineWidth=3;x.font=`700 ${Math.round(T*.42)}px Fredoka, sans-serif`;x.textAlign='center';const ty=SY(f.y)-f.t*T;x.strokeText(f.txt,SX(f.x),ty);x.fillText(f.txt,SX(f.x),ty);x.globalAlpha=1});
+    /* HUD */
+    x.textBaseline='middle';x.textAlign='left';x.font='700 15px Fredoka, sans-serif';x.fillStyle='#1e1b4b';x.fillText(`🏝️ Island ${K.lv}   ${'❤️'.repeat(Math.max(0,K.lives))}`,12,22);
+    const bw=Math.min(240,W*.32),bx=W/2-bw/2;rr(x,bx,12,bw,18,9);x.fillStyle='rgba(15,23,42,.18)';x.fill();rr(x,bx,12,bw*K.energy/100,18,9);x.fillStyle=K.energy<25?'#ef4444':K.energy<50?'#f59e0b':'#22c55e';x.fill();
+    x.fillStyle='#fff';x.font='700 11px Fredoka, sans-serif';x.textAlign='center';x.fillText('ENERGY — eat fruit!',W/2,21);
+    x.textAlign='right';x.font='700 15px Fredoka, sans-serif';x.fillStyle='#1e1b4b';x.fillText(K.score.toLocaleString('en-SG'),W-12,22);
+    /* buttons */
+    const btn=(b,label,on,dim)=>{x.globalAlpha=dim?.35:1;x.fillStyle=on?'rgba(30,27,75,.55)':'rgba(30,27,75,.28)';x.beginPath();x.arc(b.x,b.y,b.r,0,7);x.fill();x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=3;x.stroke();x.fillStyle='#fff';x.font=`700 ${Math.round(b.r*.7)}px system-ui`;x.textAlign='center';x.textBaseline='middle';x.fillText(label,b.x,b.y+2);x.globalAlpha=1};
+    btn(K.btn.l,'◀',K.keys.l);btn(K.btn.r,'▶',K.keys.r);btn(K.btn.j,'⤒',K.keys.j);btn(K.btn.b,'🪃',K.keys.b,!P.boomer);
+    if(K.banner&&K.t-K.banner.at<2){const e=K.t-K.banner.at,sc=e<.2?.5+e*2.5:1;x.save();x.translate(W/2,H*.35);x.scale(sc,sc);x.globalAlpha=e>1.6?(2-e)/.4:1;x.font=`700 ${Math.min(40,W*.06)}px Fredoka, sans-serif`;x.textAlign='center';x.lineWidth=7;x.strokeStyle='rgba(15,23,42,.75)';x.strokeText(K.banner.t,0,0);x.fillStyle='#fde047';x.fillText(K.banner.t,0,0);x.restore()}
+    g.raf=requestAnimationFrame(draw)};
+  g.raf=requestAnimationFrame(draw);
+}
+GAMES.push({id:'island',name:()=>'Island Dash',icon:()=>'🏝️',desc:()=>'Run and jump across tropical islands. Eat fruit to keep your energy up, hop on critters, find eggs for power-ups!',need:{}});
+ARCADE_META.island=['RUN & JUMP','#38bdf8'];
+ARCADE_HELP.island=['◀ ▶ to run, ⤒ to jump (hold for higher). Jump on critters to bop them.','Your energy drains — grab fruit! Eggs hide a boomerang 🪃, a skateboard or a super star.'];
+const _playGameI=playGame;
+playGame=function(id){if(id!=='island')return _playGameI(id);const p=cur();if(!p.unlockAll&&(p.tokens||0)<GAME_COST){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}if(!p.unlockAll)p.tokens-=GAME_COST;save();gIsland()};
 
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
 function checkJoinLink(){
