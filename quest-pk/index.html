@@ -177,7 +177,11 @@ h2{margin:0 0 10px}
 .pad canvas{display:block;width:100%;height:clamp(220px,34vh,320px);touch-action:none;cursor:crosshair}
 @media (min-width:700px){.pad canvas{height:max(360px,44vh)}}
 .pad.big canvas{height:68vh}
+.slots.nokey{animation:xnshake .3s}
+@media(max-width:480px){.pad .padbar{gap:4px}.pad .padbar button{padding:5px 7px;font-size:13px}}
 .pad .padbar{position:absolute;top:8px;right:8px;display:flex;gap:6px}
+.pad .padbar button.padtool.on{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pad canvas.erasing{cursor:cell}
 .pad .padbar button{background:rgba(255,255,255,.95);border:2px solid #e2e3f5;border-radius:12px;padding:6px 10px;font-size:15px;font-weight:600;color:var(--ink)}
 .pad .padhint{position:absolute;left:12px;top:10px;font-size:13px;color:#a3a6c9;pointer-events:none}
 .padtoggle{background:rgba(255,255,255,.16);color:#fff;border-radius:14px;padding:8px 12px;font-weight:600;font-size:15px;white-space:nowrap}
@@ -2133,7 +2137,8 @@ function genBank(sid,level,seen){
 }
 /* remember recently seen questions per child, across sessions */
 function recentSet(sid){const p=cur();if(!p||p.kind!=='kid')return null;p.recent=p.recent||{};return new Set(p.recent[sid]||[])}
-function noteSeen(sid,key){const p=cur();if(!p||p.kind!=='kid')return;p.recent=p.recent||{};const a=p.recent[sid]=(p.recent[sid]||[]).filter(k=>k!==key);a.push(key);if(a.length>220)a.splice(0,a.length-220)}
+let NOTE_OFF=false;
+function noteSeen(sid,key){if(NOTE_OFF)return;const p=cur();if(!p||p.kind!=='kid')return;p.recent=p.recent||{};const a=p.recent[sid]=(p.recent[sid]||[]).filter(k=>k!==key);a.push(key);if(a.length>220)a.splice(0,a.length-220)}
 function genQ(sid,level,seen){
   const rec=recentSet(sid),both={has:k=>(seen&&seen.has(k))||(rec&&rec.has(k))};
   let q,t=0;
@@ -2901,7 +2906,111 @@ hist:`8|In which year did Singapore become an independent nation?|1965|1963|1959
 9|Who wrote "The Wealth of Nations" (1776)?|Adam Smith|Karl Marx|John Locke|David Hume||Often called the father of modern economics.`,
 maths:``};
 /* ---- Common Sense City (all ages): year|q|answer|wrong|wrong|wrong||explanation ---- */
-const BANK_LIFE=`1|What do you do if a fire alarm rings at home?|get out and stay out|hide under the bed|look for your toys|open every door||Get out fast, stay out, and call 995.
+const BANK_LIFE=`1|Which number do you call in Singapore if there is a fire or someone is badly hurt?|995|123|111|888||995 is for fire and ambulance in Singapore.
+1|Which number do you call in Singapore for the police?|999|995|911|100||999 is for the police in Singapore.
+1|When should you wash your hands?|before eating and after the toilet|only on Sundays|only when they look dirty|never||Washing hands stops germs spreading.
+1|How long should you brush your teeth?|about two minutes|two seconds|one hour|just a quick lick||Brush for about two minutes, twice a day.
+1|What should you wear when riding a bicycle or scooter?|a helmet|a party hat|sunglasses only|nothing on your head||A helmet protects your head if you fall.
+1|You get lost at the shopping mall. What should you do?|find a shop counter or security guard and ask for help|leave the mall|hide and wait|go home by yourself||Ask staff or a security guard for help.
+1|Which is the safest place to cross the road?|at a zebra crossing or traffic lights|between parked cars|on a bend|wherever is quickest||Crossings are where drivers expect people.
+1|What should you do with rubbish after a picnic?|put it in a bin|leave it on the grass|throw it in the pond|bury it in the sand||Litter hurts animals and makes places dirty.
+1|Why do we need to sleep?|so our bodies and brains can rest and grow|so we can miss school|because it is boring|we don't need sleep||Children need lots of sleep to grow and learn.
+1|Which drink is best when you are thirsty?|water|bubble tea|cola|coffee||Water is the best drink for your body.
+1|A friend is sad because nobody will play with them. What could you do?|ask them to join your game|laugh at them|walk away|tell them to go home||Including others is kind.
+1|What should you say when someone gives you a present?|thank you|I don't want it|is that all?|nothing||Saying thank you shows good manners.
+1|Which coin is worth the most?|$1|50 cents|20 cents|10 cents||$1 is 100 cents — the most here.
+1|Someone you don't know offers you sweets and asks you to come with them. What do you do?|say no, move away and tell a trusted grown-up|go with them|take the sweets and go|keep it a secret||Never go anywhere with a stranger.
+1|Why should you sneeze into your elbow or a tissue?|to stop germs spreading to others|to make a loud noise|to keep your nose warm|so you can see better||Covering sneezes protects other people.
+1|What do you do if you see a snake on a park path?|stay still, back away slowly and tell a grown-up|poke it with a stick|try to pick it up|run towards it||Leave wild animals alone and keep your distance.
+2|Your shoelace is undone. Why should you tie it?|so you don't trip|to look smart for photos|it makes you run slower|shoes need tying only at night||Loose laces can make you trip and fall.
+2|It's raining heavily with thunder and lightning. Where is safest?|indoors|under a tall tree|in the swimming pool|on an open field||Lightning can strike tall things and open spaces.
+2|Which of these should you never share online?|your home address|your favourite colour|your favourite animal|a drawing of a cat||Keep personal details like your address private.
+2|You find a wallet on the floor at school. What should you do?|give it to a teacher|keep it|spend the money|throw it away||Hand it in so it can be returned to its owner.
+2|Which food helps build strong bones?|milk and cheese|sweets|crisps|fizzy drinks||Calcium in dairy builds strong bones and teeth.
+2|You have $10 and buy a book for $7. How much is left?|$3|$17|$4|$2||10 − 7 = 3 dollars.
+2|Why should you put on sunscreen at the beach?|to protect your skin from sunburn|to make you swim faster|to keep mosquitoes away|to smell nice||The sun's rays can burn your skin.
+2|A classmate is being picked on. What is the best thing to do?|tell a teacher and be kind to them|join in|ignore it forever|film it||Telling a grown-up helps stop bullying.
+2|What does a green man at a pedestrian crossing mean?|it is your turn to cross, but still look|cross only if you run|cars must go|the crossing is broken||Green man means go — but still check for cars.
+2|You feel very angry. What is a good way to calm down?|take slow deep breaths and count to ten|throw your things|shout at someone|hit a wall||Breathing slowly helps your body calm down.
+2|Which of these saves water?|turning off the tap while brushing teeth|leaving the tap running|a very long shower|watering the road||Every drop saved helps.
+2|Which bin should a clean plastic bottle go into?|the recycling bin|the food waste bin|the garden|the drain||Clean plastic can be recycled.
+2|How many minutes are there in one hour?|60|100|30|24||One hour has 60 minutes.
+2|What should you do before eating fruit from the shop?|wash it|freeze it|paint it|shake it||Washing removes dirt and germs.
+2|You spill water on the kitchen floor. What should you do?|wipe it up so nobody slips|leave it to dry|walk around it|hide it with a towel and go||Wet floors are slippery.
+2|Which of these is a kind way to disagree with a friend?|explain your idea calmly and listen to theirs|shout louder|call them names|stop being their friend||Listening helps friends sort things out.
+3|What is the safest way to carry scissors?|closed, with the points facing down|open and pointing up|running with them|in your back pocket||Carry scissors closed and pointing down.
+3|A message from a game friend asks for your password. What do you do?|never share it and tell a grown-up|share it if they are nice|post it publicly|change it to their name||Passwords are private — even from friends.
+3|You want to buy a $25 toy and save $5 a week. How many weeks will it take?|5|4|20|30||25 ÷ 5 = 5 weeks.
+3|Which is a sign of dehydration?|feeling dizzy, tired and very thirsty|having lots of energy|feeling cold|sneezing||Drink water regularly, especially when it is hot.
+3|What should you do first if a small cut is bleeding?|press on it with a clean cloth|run around|put mud on it|ignore it||Pressure helps stop bleeding; then clean and cover it.
+3|Why is it important to read the label before eating packaged food?|to check ingredients and allergies|to learn the shop's address|labels are just decoration|to check the colour||Labels tell you what's inside the food.
+3|Which is a "need" rather than a "want"?|food|a new video game|a toy car|sweets||Needs are things we must have to live.
+3|You see smoke coming from under a door. What should you do?|don't open it, get out another way and call 995|open it quickly|hide in a cupboard|go back for your toys||Smoke means fire may be behind the door.
+3|Which is the healthiest lunch?|rice, vegetables and chicken|chips and cola|cake and ice cream|only sweets||A balanced meal has grains, vegetables and protein.
+3|Your friend tells you a secret that someone is hurting them. What should you do?|tell a trusted grown-up|keep the secret forever|tell everyone at school|forget about it||Some secrets must be shared to keep people safe.
+3|How can you save electricity at home?|switch off lights when you leave a room|keep the fridge door open|leave the TV on all night|charge things that are full||Switching off saves energy and money.
+3|A bus fare is $1 and you pay with a $5 note. How much change?|$4|$5|$6|$3||5 − 1 = 4 dollars.
+3|Why do we queue?|so everyone gets a fair turn|so nobody gets served|to make shops busy|for exercise||Queuing is fair to everyone.
+3|What should you check before swimming at a beach?|that there is a lifeguard and the flags say it's safe|the colour of the sand|how many shells there are|nothing||Swim where lifeguards can see you.
+3|How many days are there in a week?|7|5|10|12||Monday to Sunday is 7 days.
+3|Which of these is a good habit before bed?|putting screens away and reading a book|playing games until midnight|drinking cola|eating a big meal||Screens before bed make it harder to sleep.
+4|An online quiz promises a free phone if you enter your parent's details. What is it most likely to be?|a scam|a real prize|a school test|a game update||If it sounds too good to be true, it probably is.
+4|What is the best way to make a strong password?|mix words, numbers and symbols|use your name|use 1234|use your birthday||Long, mixed passwords are hardest to guess.
+4|Which is better value: 2 pens for $3 or 1 pen for $2?|2 pens for $3|1 pen for $2|they are the same|you can't tell||2 for $3 is $1.50 each — cheaper than $2.
+4|Someone has fainted but is breathing. What should you do?|call for help and stay with them|pour cold water on them|leave them|shake them hard||Call 995 or get an adult, and keep them safe.
+4|Why should you not swim straight after a very big meal?|you may feel sick or get cramp|you will sink|the water gets dirty|it's against the law||Wait a little while after a big meal.
+4|What does "reduce, reuse, recycle" help with?|less rubbish and waste|making more plastic|faster cars|bigger bins||It protects the environment.
+4|You get $20 for your birthday. What is a sensible plan?|save some and spend some|spend it all on sweets|lose it|give it to a stranger||Saving part of your money helps you reach bigger goals.
+4|Which is the best way to deal with a disagreement in a group project?|listen to everyone and find a fair solution|do it all yourself and ignore others|quit the group|argue until someone cries||Teamwork means listening and compromising.
+4|What should you do if you receive a mean message online?|don't reply, take a screenshot and tell a grown-up|send a meaner message back|share it with everyone|delete your whole account||Keep evidence and get help.
+4|Why do we need to drink more water when exercising?|we lose water when we sweat|water makes muscles bigger|it is a rule|water is a snack||Sweating uses up the water in your body.
+4|Before you cross a road with a cycling path, what should you check?|both the road and the cycling path|only the road|only the pavement|nothing if you are fast||Bikes and scooters can come fast too.
+4|Which of these is a good way to look after your eyes?|take breaks from screens and look into the distance|stare at a screen for hours|read in the dark|rub them hard||Breaks from screens help rest your eyes.
+4|A shop sells a $40 bag at half price. How much is it?|$20|$40|$10|$80||Half of 40 is 20.
+4|What does an expiry date on milk tell you?|the last day it is safe to drink|the day the cow was milked|the price|the shop's opening time||After the expiry date it may make you ill.
+4|You are home alone and someone you don't know knocks on the door. What should you do?|don't open the door and call a parent|open it and let them in|tell them you're alone|go outside to talk||Never open the door to strangers when alone.
+5|What is a budget?|a plan for how to spend and save money|a type of bank|a free gift|a shopping bag||A budget helps you plan your money.
+5|What is "peer pressure"?|feeling pushed by friends to do something|a type of exercise|a school test|pressure in your ears||You can always say no to things that feel wrong.
+5|Why is it risky to use the same password everywhere?|if one account is hacked, all of them can be|passwords wear out|it makes the internet slow|it is against school rules||Use different passwords for different accounts.
+5|Which shows good digital citizenship?|being respectful and thinking before you post|posting rude comments|sharing other people's photos without asking|spreading rumours||Treat people online as you would in person.
+5|A drink costs $2.50 and you pay with $10. How much change?|$7.50|$8.50|$7|$12.50||10 − 2.50 = 7.50.
+5|What is the first thing to do if you smell gas at home?|tell an adult, open windows and don't switch anything on|light a candle|switch on the lights|ignore it||Sparks can ignite gas — get out and get help.
+5|Why do advertisements exist?|to persuade people to buy things|to tell the news|to teach maths|to warn about weather||Adverts try to make you want things — think before you buy.
+5|What should you do if you see someone choking and they can't breathe?|shout for an adult and call 995 immediately|give them water|wait and see|make them lie down and sleep||Choking is an emergency — get help fast.
+5|Which is a healthy way to handle stress before an exam?|plan your revision, sleep well and take breaks|stay up all night|skip meals|worry silently||Rest and planning help your brain work best.
+5|What does it mean to "compare prices"?|check what different shops charge before buying|buy the most expensive|buy without looking|ask for a discount every time||Comparing helps you get better value.
+5|Why should you check if a news story online is true?|some stories online are fake or misleading|all news is true|it's more fun to share fast|you can't check||Look for trusted sources before sharing.
+5|You borrowed a friend's book and damaged it. What is the right thing to do?|tell them, say sorry and offer to replace it|hide it|blame someone else|pretend it was already damaged||Honesty builds trust.
+5|What is interest on savings?|extra money the bank pays you for keeping money there|a fee for opening an account|money you owe a shop|a type of coin||Banks pay interest to savers.
+5|A recipe for 2 people needs 100 g of rice. How much for 6 people?|300 g|200 g|600 g|150 g||6 people is 3 times as many, so 3 × 100 g.
+5|How long should children your age ideally sleep each night?|about 9 to 11 hours|3 hours|5 hours|15 hours||Growing bodies and brains need lots of sleep.
+6|What is the main purpose of an emergency kit at home?|to have essentials like water, torch and first aid ready|to store toys|to keep snacks for parties|for decoration||Being prepared helps in emergencies.
+6|A phone plan costs $15 a month. How much is that for a year?|$180|$150|$15|$120||15 × 12 = 180.
+6|Which is the most reliable source for health information?|an official health authority website|a random social media post|a pop-up advert|a chain message||Use trusted, official sources.
+6|What is a "digital footprint"?|the trail of information you leave online|a footprint on a screen|a type of shoe|a computer virus||What you post can stay online for a long time.
+6|Why is it important to have a balanced diet?|it gives your body all the nutrients it needs|it makes food cheaper|it means only eating vegetables|it stops you growing||Different foods give different nutrients.
+6|What should you do if you see someone being bullied online?|support them and report it to an adult or the platform|share the posts|join in quietly|do nothing||Bystanders can help stop bullying.
+6|A $60 jacket has 25% off. What is the sale price?|$45|$35|$50|$15||25% of 60 is 15, so 60 − 15 = 45.
+6|Which of these is a "fixed cost" for a family?|rent or mortgage|a cinema trip|a birthday cake|a holiday souvenir||Fixed costs stay the same each month.
+6|Why should you never mix cleaning products like bleach and other cleaners?|they can make poisonous gases|they stop working|it wastes bottles|they turn blue||Mixing chemicals can be dangerous.
+6|What does it mean to be "assertive"?|stating your views clearly and respectfully|being bossy and rude|never speaking up|always agreeing||Assertive people respect themselves and others.
+6|You want to buy a $90 game and earn $15 a week doing chores. How many weeks?|6|5|7|9||90 ÷ 15 = 6 weeks.
+6|Which is the best way to protect yourself from mosquito bites and dengue?|use repellent and remove stagnant water|leave buckets of water outside|keep windows open at dusk|wear dark clothes only||Mosquitoes breed in stagnant water.
+6|What should you do before signing up for a new app?|check its age rating and ask a parent|use a fake age|share your password|accept everything without reading||Age ratings exist to keep you safe.
+6|Why do people get a part-time job or do chores for money?|to earn and learn the value of money|because money grows on trees|to avoid school|it's required by law||Earning money teaches responsibility.
+7|What is the difference between a debit card and a credit card?|debit uses your own money, credit borrows money|they are exactly the same|debit is free money|credit cards never need paying back||Borrowed money on credit must be paid back, often with interest.
+7|A loan of $100 has 10% interest per year. How much interest after one year?|$10|$110|$1|$100||10% of 100 is 10.
+7|Which is a sign that a website may not be secure?|no padlock and a strange web address|a padlock in the address bar|a well-known address|it loads quickly||Check for https and a padlock before entering details.
+7|What is "phishing"?|tricking people into giving personal details|a sport with rods|a computer game|fixing a computer||Phishing messages pretend to be from trusted companies.
+7|Why might you keep an emergency fund?|to cover unexpected costs like repairs|to buy luxury items|to lend to strangers|banks require it||Unexpected costs happen — savings help.
+7|Which is a healthy way to support a friend who seems very low?|listen, be kind and encourage them to talk to a trusted adult|tell them to cheer up and move on|ignore them|post about it online||Listening and getting help matters.
+7|You split a $48 bill equally between 4 friends. How much each?|$12|$16|$8|$14||48 ÷ 4 = 12.
+7|What is a "subscription trap"?|a free trial that turns into a paid plan if you forget to cancel|a club you can't join|a type of magazine|a broken app||Set reminders to cancel trials you don't want.
+7|Which action best helps reduce your carbon footprint?|walking, cycling or using public transport|driving short distances|leaving lights on|buying more than you need||Less fuel and energy use means less pollution.
+7|What should you do if you accidentally send money to the wrong person online?|tell a parent and contact the bank quickly|send more money|ignore it|delete the app||Banks can sometimes help if you act quickly.
+7|An item costs $80 plus 9% GST. What is the total?|$87.20|$89|$80.90|$88||9% of 80 is 7.20.
+7|What does "consent" mean when sharing photos of others?|asking permission before you share them|sharing without asking|only sharing funny ones|deleting them later||Always ask before sharing someone's photo.
+1|What do you do if a fire alarm rings at home?|get out and stay out|hide under the bed|look for your toys|open every door||Get out fast, stay out, and call 995.
 1|Which is a healthy snack?|an apple|a bag of crisps|a chocolate bar|a fizzy drink||Fruit gives you energy and vitamins.
 1|Why should you not talk to strangers online?|you can't be sure who they really are|they are always friendly|it costs money|computers break||People online may not be who they say. Tell a grown-up.
 2|What should you do before crossing at a crossing with no lights?|stop, look right, look left, listen|run across|walk with your eyes on your phone|cross between parked cars||Stop, look and listen — check both ways.
@@ -3019,6 +3128,14 @@ function genGrown(sid,y){
   const tier=rows.filter(f=>+f[0]===y);return fromEntry(pick(tier.length&&Math.random()<.7?tier:rows));
 }
 function genLife(y){
+  const r0=Math.random(),D=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],t12=m=>{m=((m%1440)+1440)%1440;let h=Math.floor(m/60)%12||12;return h+':'+String(m%60).padStart(2,'0')+(m<720?' am':' pm')};
+  if(y>=1&&y<=3&&r0<.12){const d=ri(0,6),n=ri(1,y>=2?10:4),a=D[(d+n)%7];return{q:`Today is ${D[d]}. What day will it be in ${n} day${n>1?'s':''}?`,ans:a,opts:optsOf(a,D.filter(x=>x!==a)),key:'ldw'+d+n,e:`Count on ${n} from ${D[d]}: ${a}.`}}
+  if(y>=2&&y<=5&&r0<.24){const st=ri(14,40)*30,add=pick(y<=3?[15,30,45,60]:[20,35,45,50,75,90,105]),a=t12(st+add);return{q:`It is ${t12(st)}. What time will it be in ${add} minutes?`,ans:a,opts:optsOf(a,[t12(st+add+15),t12(st+add-15),t12(st+add+60),t12(st-add)]),key:'ltm'+st+add,e:`${t12(st)} + ${add} min = ${a}.`}}
+  if(y>=3&&y<=7&&r0<.34){const a=ri(16,38)*15,len=pick([25,40,45,55,70,85,95,110]),b=a+len;const L=len>=60?`${Math.floor(len/60)} h ${len%60} min`:`${len} min`;const W=x=>x>=60?`${Math.floor(x/60)} h ${x%60} min`:`${x} min`;
+    return{q:`A movie starts at ${t12(a)} and ends at ${t12(b)}. How long is it?`,ans:L,opts:optsOf(L,[W(len+10),W(len-5),W(len+60),W(Math.max(5,len-15))]),key:'ldur'+a+len,e:`From ${t12(a)} to ${t12(b)} is ${L}.`}}
+  if(y>=4&&y<=7&&r0<.44){const [u,big,f]=pick([['ml','litre',1000],['g','kg',1000],['cm','m',100]]),n=pick([1.5,2,2.5,0.5,3,0.25,4]),a=(n*f).toLocaleString('en-SG');return{q:`How many ${u} are in ${n} ${big}${n===1?'':'s'}?`,ans:a+' '+u,opts:optsOf(a+' '+u,[(n*f/10)+' '+u,(n*f*10).toLocaleString('en-SG')+' '+u,(n*f+f/2).toLocaleString('en-SG')+' '+u,n*100+' '+u]),key:'lun'+u+n,e:`1 ${big} = ${f} ${u}, so ${n} × ${f} = ${a} ${u}.`}}
+  if(y>=4&&y<=7&&r0<.52){const a=ri(2,6),pa=a*ri(2,5)*0.5,b=a*ri(2,4),pb=b*ri(1,6)*0.5;const ua=pa/a,ub=pb/b;if(ua===ub)return genLife(y);const win=ua<ub?`${a} for ${money(pa)}`:`${b} for ${money(pb)}`;
+    return{q:`Which is better value: ${a} cookies for ${money(pa)} or ${b} cookies for ${money(pb)}?`,ans:win,opts:shuffle([`${a} for ${money(pa)}`,`${b} for ${money(pb)}`,'They cost the same each',"You can't tell"]),key:'lbv'+a+pa+b+pb,e:`${money(pa)} ÷ ${a} = ${money(ua)} each; ${money(pb)} ÷ ${b} = ${money(ub)} each.`}}
   const r=Math.random();
   if(y<=3&&r<.25){const c=ri(1,9),paid=c<5?5:10;return{q:`You buy a snack for $${c} and pay with a $${paid} note. How much change?`,ans:'$'+(paid-c),opts:optsOf('$'+(paid-c),['$'+(paid-c+1),'$'+Math.max(1,paid-c-1),'$'+c,'$'+(paid+c)]),key:'lch'+c+paid,e:`$${paid} − $${c} = $${paid-c}.`}}
   if(y>=4&&y<=7&&r<.25){const p=ri(2,12)*5,d=pick([10,20,25,50]),a=p*(1-d/100);return{q:`A $${p} game is ${d}% off. What is the sale price?`,ans:money(a),opts:optsOf(money(a),[money(p-d),money(p*d/100),money(a+2),money(a-1)]),key:'lsd'+p+d,e:`${d}% of $${p} = ${money(p*d/100)}; ${money(p)} − that = ${money(a)}.`}}
@@ -3040,6 +3157,21 @@ genQ=function(sid,level,seen){
   if(q.pic)q.layout='pic';else if(q.optSay&&!q.pic)q.layout='one grp';else{const L=Math.max(...q.opts.map(o=>String(o).length));q.layout=q.big?(L>9?'two':''):(L>16?'one':L>7?'two':'')}
   return q;
 };
+/* No repeats: try many candidates and keep the freshest one — never a question already
+   asked in this round, otherwise the one this child saw longest ago. When a year's pool
+   is used up, borrow from the neighbouring years before repeating anything. */
+const qText=q=>[q.q||'',q.say&&q.say.t||'',q.pic||'',q.passage?String(q.passage).slice(0,40):'',q.ans].join('|');
+const _genQF=genQ;
+genQ=function(sid,level,seen){
+  const p=cur(),rec=p&&p.kind==='kid'&&p.recent&&p.recent[sid]||[],pos=new Map(rec.map((k,i)=>[k,i]));
+  const score=q=>{const k=qText(q);if(seen&&(seen.has(k)||seen.has(q.key)))return 1e6;return pos.has(k)?1000+pos.get(k):pos.has(q.key)?1000+pos.get(q.key):0};
+  let best=null,bs=Infinity;NOTE_OFF=true;
+  try{const tryLv=(lv,n)=>{for(let i=0;i<n&&bs>0;i++){const q=_genQF(sid,lv,null);if(!q)continue;const sc=score(q);if(sc<bs){best=q;bs=sc}}};
+    tryLv(level,30);
+    const y=Math.round(level);if(bs>0&&y>=1&&y<=7){for(const ly of [y-1,y+1])if(ly>=1&&ly<=7&&bs>0)tryLv(ly,14)}
+  }finally{NOTE_OFF=false}
+  const k=qText(best);if(seen){seen.add(k);seen.add(best.key)}noteSeen(sid,k);return best};
+
 const _spellWordT=spellWord;
 spellWord=function(y){if(Math.round(y)>=8)return pick(ADULT_SPELL);return _spellWordT(Math.max(1,y))};
 const _canSpeakT=canSpeak;
@@ -3489,7 +3621,9 @@ function bandBg(tint,c){const g=SKIN.ground&&SKIN.ground[c%SKIN.ground.length];r
 
 /* ============ working paper pad ============ */
 let PADBIG=false;
-function padHTML(id,hint=true,expand=true){return `<div class="pad ${PADBIG&&expand?'big':''}" id="${id}-wrap"><canvas id="${id}"></canvas>${hint?'<span class="padhint">✏️ Working paper — write here</span>':''}<div class="padbar">${expand?`<button class="padexp" onclick="PADBIG=!PADBIG;renderQ()">${PADBIG?'⤡ Smaller':'⤢ Bigger'}</button>`:''}<button onclick="padClear('${id}')">🧽 Clear</button></div></div>`}
+function padHTML(id,hint=true,expand=true){return `<div class="pad ${PADBIG&&expand?'big':''}" id="${id}-wrap"><canvas id="${id}"></canvas>${hint?'<span class="padhint">✏️ Working paper — write here</span>':''}<div class="padbar">${expand?`<button class="padexp" onclick="PADBIG=!PADBIG;renderQ()">${PADBIG?'⤡ Smaller':'⤢ Bigger'}</button>`:''}<button class="padtool ${(PADTOOL[id]||'pen')==='pen'?'on':''}" data-t="pen" onclick="padTool('${id}','pen')">✏️ Pen</button><button class="padtool ${PADTOOL[id]==='erase'?'on':''}" data-t="erase" onclick="padTool('${id}','erase')">🧽 Eraser</button><button onclick="padClear('${id}')">🗑️ Clear</button></div></div>`}
+const PADTOOL={};
+function padTool(id,t){PADTOOL[id]=t;const w=document.getElementById(id+'-wrap');if(w)w.querySelectorAll('.padtool').forEach(b=>b.classList.toggle('on',b.dataset.t===t));const c=document.getElementById(id);if(c)c.classList.toggle('erasing',t==='erase')}
 function padInit(id,onFirst){
   const c=document.getElementById(id);if(!c)return;
   const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
@@ -3498,13 +3632,14 @@ function padInit(id,onFirst){
   let drawing=false,lx=0,ly=0,rect=r,used=false;
   const pos=e=>({x:e.clientX-rect.left,y:e.clientY-rect.top});
   c.onpointerdown=e=>{e.preventDefault();rect=c.getBoundingClientRect();drawing=true;try{c.setPointerCapture(e.pointerId)}catch(_){}
-    const p=pos(e);lx=p.x;ly=p.y;x.beginPath();x.arc(lx,ly,1.6,0,7);x.fill();
+    const p=pos(e);lx=p.x;ly=p.y;const er=PADTOOL[id]==='erase'||(e.buttons&32);x.globalCompositeOperation=er?'destination-out':'source-over';c._er=er;
+    x.beginPath();x.arc(lx,ly,er?11:1.6,0,7);x.fill();
     const h=c.parentNode.querySelector('.padhint');if(h)h.remove();
     if(!used){used=true;onFirst&&onFirst()}};
   c.onpointermove=e=>{if(!drawing)return;e.preventDefault();const p=pos(e);
-    x.lineWidth=e.pointerType==='pen'&&e.pressure>0?1.5+e.pressure*3.5:3;
+    x.lineWidth=c._er?22:e.pointerType==='pen'&&e.pressure>0?1.5+e.pressure*3.5:3;
     x.beginPath();x.moveTo(lx,ly);x.lineTo(p.x,p.y);x.stroke();lx=p.x;ly=p.y};
-  c.onpointerup=c.onpointercancel=()=>{drawing=false};
+  c.onpointerup=c.onpointercancel=()=>{drawing=false;x.globalCompositeOperation='source-over'};if(PADTOOL[id]==='erase')c.classList.add('erasing');
 }
 function padClear(id){const c=document.getElementById(id);if(c)c.getContext('2d').clearRect(0,0,c.width,c.height)}
 
@@ -3984,6 +4119,19 @@ function paintArcadeEffects(g){const x=g.x,t=arcadeTime(g),dt=Math.min(2,(t-(g.e
 function pauseArcade(force){const g=GAME;if(!g||g.dead||g.over)return;const pause=force===undefined?!g.paused:force;if(pause===!!g.paused)return;g.paused=pause;const btn=$('#game-pause-button');if(pause){g.pauseAt=performance.now();if(btn){btn.textContent='▶︎';btn.setAttribute('aria-label','Resume game')}const panel=document.createElement('div');panel.className='arcade-paused';panel.innerHTML=`<div class="pause-card"><div class="quest-eyebrow">TAKE YOUR TIME</div><h2>Game paused</h2><p>${esc((ARCADE_HELP[g.id]||[''])[0])}</p><p>${esc((ARCADE_HELP[g.id]||['',''])[1])}</p><button class="btn block" onclick="pauseArcade(false)">Resume game</button><button class="back" onclick="stopGame();setLayer('');arcade()">Back to arcade</button></div>`;$('.gshell').appendChild(panel)}else{g.pauseTotal=(g.pauseTotal||0)+performance.now()-g.pauseAt;$('.arcade-paused')?.remove();if(btn){btn.textContent='||';btn.setAttribute('aria-label','Pause game')}}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseArcade(true)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&GAME&&!GAME.over){e.preventDefault();pauseArcade()}});
+/* hardware keyboard in quizzes: type spellings, 1–4 / A–D to answer, Enter for Next */
+document.addEventListener('keydown',e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey||GAME)return;const tg=e.target;if(tg&&(tg.tagName==='INPUT'||tg.tagName==='TEXTAREA'||tg.isContentEditable))return;
+  if(!Q||Q.dead||!document.getElementById('qc')||!Q.cur)return;const k=e.key;
+  if(Q.locked){if(k==='Enter'||k===' '){const b=document.querySelector('#fb .btn');if(b){e.preventDefault();b.click()}}return}
+  if(Q.cur.kind==='build'){
+    if(k==='Backspace'){e.preventDefault();const f=SB.filled.map((v,i)=>v!=null?i:-1).filter(i=>i>=0).pop();if(f!=null&&f>=0)spellUnfill(f);return}
+    if(k==='Enter'){e.preventDefault();if(SB.filled.filter(x=>x!=null).length===Q.cur.ans.length)spellCheck();return}
+    if(k.length===1&&/\S/.test(k)){e.preventDefault();const i=Q.cur.tiles.findIndex((t,j)=>!SB.used.includes(j)&&t.toLowerCase()===k.toLowerCase());
+      if(i>=0)spellTap(i);else{beep(200,.08,'square',.04);const sl=document.querySelector('.slots');if(sl){sl.classList.remove('nokey');void sl.offsetWidth;sl.classList.add('nokey')}}}
+    return}
+  const n='1234'.indexOf(k)>=0?'1234'.indexOf(k):'abcd'.indexOf(k.toLowerCase());
+  if(n>=0&&k.length===1){const b=document.querySelectorAll('#qc .opts .opt')[n];if(b){e.preventDefault();b.click()}}});
 
 function stopGame(){if(GAME){GAME.dead=true;for(const task of GAME.tasks||[])clearTimeout(task.id);GAME.tasks?.clear();cancelAnimationFrame(GAME.raf);clearInterval(GAME.iv);clearTimeout(GAME.to);window.removeEventListener('keydown',GAME.key||(()=>{}))}GAME=null}
 function shell(id,title,controls){
@@ -4264,6 +4412,7 @@ function renderBuild(){
     <div class="peekword" id="peekword">${SB.peeking?esc(c.ans):''}</div>
     <div class="slots">${c.ans.split('').map((_,i)=>`<button class="slot ${SB.filled[i]!=null?'full':''}" onclick="spellUnfill(${i})">${SB.filled[i]!=null?esc(c.tiles[SB.filled[i]]):''}</button>`).join('')}</div>
     <div class="tiles">${c.tiles.map((t,i)=>`<button class="tile" ${SB.used.includes(i)?'disabled':''} onclick="spellTap(${i})">${esc(t)}</button>`).join('')}</div>
+    <div class="small muted center" style="margin-top:8px">⌨️ Got a keyboard? Just type the word, then press Enter.</div>
     <div class="row" style="justify-content:center;gap:10px;margin-top:14px"><button class="btn ghost" onclick="SB.filled=[];SB.used=[];renderBuild()">↺ Clear</button>
       <button class="btn" ${SB.filled.filter(x=>x!=null).length===c.ans.length?'':'disabled'} onclick="spellCheck()">✓ Check</button></div>
     <div class="fb" id="fb"></div></div>`;
@@ -4749,9 +4898,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.4';
+const APP_VERSION='4.5';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+  ['4.5','Fewer repeated questions: a question never comes back in the same round, and each child works through every question before seeing old ones again. Common Sense City has over 100 new questions plus new days, time and money puzzles. Working paper now has a proper eraser. Spelling works with an iPad keyboard — just type and press Enter (1–4 answers multiple choice too).'],
   ['4.4','New special level in Number Kingdom: the 🧩 Number Crossword. Fill in the missing numbers so every row and column adds up — a fresh puzzle every time, sized to your maths level. Solve one to win the Cross-Number Champ badge.'],
  ['4.3','Sky Squadron world tour: six landmark destinations, surfacing robot submarines, two-hit Aegis pickups, and a hangar with plane liveries and shield looks earned through learning and flying.'],
   ['4.2','Sky Squadron is tougher: bigger, faster waves, tougher enemies that shoot more as you go, a stronger Sky Fortress every visit, fewer free power-ups, and getting hit at high power costs two levels. Super Power lasts 6 seconds and you can save up to 2.'],
