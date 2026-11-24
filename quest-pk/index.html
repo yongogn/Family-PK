@@ -574,6 +574,26 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .toy-game-preview{display:block;width:100%;height:auto;border-radius:14px;background:#83c2d5;overflow:hidden}.toy-roster{display:block;flex-shrink:0}.br-pick button{display:flex;align-items:center;flex-direction:column;gap:3px;padding:8px}.br-pick button b{font-size:12px}.br-pick{align-items:stretch}.br-pick>span{align-self:center}.duel-pick:has(.toy-game-preview){padding:10px 10px 18px}.duel-pick:has(.toy-game-preview)>b,.duel-pick:has(.toy-game-preview)>small{margin-left:8px}
 
 .sky-hangar{background:#fffdf4;border:1px solid #e6dfcd;border-radius:23px;padding:20px;margin:18px 0;color:#294f64}.sky-hangar>summary{font-weight:700;cursor:pointer}.sky-hangar .quest-eyebrow{color:#806039}.sky-hangar h3{font-size:23px;margin:6px 0}.sky-hangar-head p{font-size:13px;color:#657487}.sky-look-group{margin:16px 0}.sky-look-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}.sky-look{font:inherit;border:2px solid #e3e6e4;border-radius:17px;background:#f4f7f5;color:#30485f;display:flex;align-items:center;flex-direction:column;padding:10px 6px;gap:4px;cursor:pointer}.sky-look.on{border-color:#d9ab4d;background:#fff1ce;box-shadow:0 3px 0 #edcf87}.sky-look.locked{background:#edf0f2}.sky-look.locked svg{opacity:.5;filter:grayscale(.45)}.sky-look small{font-size:11px;line-height:1.4}.sky-look strong{font-size:14px}.sky-shield-icon{font-size:42px;line-height:65px;width:68px;text-align:center;border-radius:50%;background:radial-gradient(circle,#fbffff,#a9e6ef88,transparent);color:#4b9db6}.sky-shield-icon.sky-shield-starfield{color:#b07bcb}.sky-shield-icon.sky-shield-hex{color:#32bda6}.sky-passport{margin-top:18px;border-top:1px solid #e0dfd3;padding-top:14px}.sky-passport summary{cursor:pointer;font-weight:700}.sky-destinations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.sky-destinations article{background:#edf5ef;border-radius:15px;padding:10px;display:flex;flex-direction:column}.sky-destinations svg{width:100%;height:auto}.sky-destinations b{font-size:15px}.sky-destinations small,.sky-destinations p{font-size:12px}.sky-destinations p{line-height:1.5}@media(max-width:540px){.sky-hangar{padding:14px}.sky-destinations{grid-template-columns:repeat(2,minmax(0,1fr))}.sky-look small{font-size:10px}}
+
+/* number crossword special level */
+.xn-card{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:12px 14px;border-radius:20px;border:0;text-align:left;color:#3b2a00;background:linear-gradient(135deg,#fde68a,#fbbf24 60%,#f59e0b);box-shadow:0 5px 0 #b45309,0 10px 24px #0002;font:inherit;cursor:pointer}
+.xn-card .xi{font-size:36px}.xn-card b{display:block;font-size:17px}.xn-card small{opacity:.85}.xn-card .go{margin-left:auto;font-weight:800;font-size:15px;background:#fff8;padding:6px 12px;border-radius:12px;white-space:nowrap}
+.xn-panel{padding:14px 10px}
+.node.xn .dot{background:radial-gradient(circle at 35% 30%,#fff7c2,#fbbf24 60%,#d97706);box-shadow:0 0 0 5px #fde68a,0 0 24px #fbbf24}
+.node.xn .lbl{background:#fde68a}
+.xn-card.lock{filter:grayscale(.75);opacity:.8}
+.xn-wrap{display:flex;justify-content:center;padding:4px 0 10px;overflow:auto}
+.xn-grid{display:grid;gap:3px;touch-action:manipulation}
+.xn-c{display:grid;place-items:center;border-radius:7px;font-weight:800;background:#fff;color:#1f2a44;border:2px solid #1f2a44;user-select:none}
+.xn-c.op{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}
+.xn-c.in{background:#fff7d6;border-color:#f59e0b;color:#1d4ed8;cursor:pointer}
+.xn-c.in.sel{background:#fde68a;outline:3px solid #2563eb;outline-offset:1px}
+.xn-c.in.ok{background:#bbf7d0;border-color:#16a34a;color:#166534}
+.xn-c.in.bad{background:#fecaca;border-color:#dc2626;color:#991b1b;animation:xnshake .35s}
+@keyframes xnshake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.xn-pad{position:sticky;bottom:0;background:linear-gradient(#fff0,#fffffff2 18%);padding:12px 4px max(10px,env(safe-area-inset-bottom))}
+.xn-pad .numpad button.wide{flex:2 0 18%;font-size:18px}
+.xn-pad .numpad button.chk{background:#22c55e;color:#fff;box-shadow:0 4px 0 #15803d}
 </style>
 </head>
 <body>
@@ -2209,11 +2229,14 @@ function map(){if(Q&&!Q.dead)killQuiz();
    <div class="row wrap" style="margin-bottom:10px">
      <span class="chip" style="background:${better(p,a)?'#22c55e':'rgba(255,255,255,.18)'}">🧠 ${stAge(p,st)} ${a??'?'}</span>
      <span class="chip">⭐ ${starsIn(p,sid)}/${STARS_PER_STAGE}</span><span class="chip">${SEASON.icon} ${SEASON.name}</span></div>
+   ${sid==='maths'?xnCard(p):''}
    <div class="mapwrap"><div class="map" style="height:${H}px">${startBand}${bands}<button class="soonband" onclick="soonSheet('ch4')"><span>🔒</span><b>Chapter 4 · coming soon</b><small>Harder levels and a new boss for ${esc(st.subj)}</small></button>
      <svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="22" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${d}" fill="none" stroke="${SKIN.road[0]}" stroke-width="16" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".95"/>
      <path d="${d}" fill="none" stroke="${SKIN.road[1]}" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" vector-effect="non-scaling-stroke" class="dash"/></svg>
      ${decos}
      ${heads.map(h=>`<div class="chhead" style="top:${Y(h.y)-24}px"><span>Chapter ${h.c+1}</span>${st.chapters[h.c].name}${bossWon(p,sid,h.c)?' 🏆':''}</div>`).join('')}
+     ${sid==='maths'?(()=>{const bi=nodes.findIndex(n=>n.t==='boss');if(bi<0)return'';const o=xnOpen(p),w=(p.badges||[]).includes('crossnum');
+       return `<div class="node xn ${o?'':'locked'}" style="left:${pos[bi].x>50?24:76}%;top:${Y(pos[bi].y)+20}px" onclick="${o?'xnStart()':`miniToast('🔒 Collect ${XN_NEED} maths stars to open the Number Crossword')`}"><div class="dot">🧩${o?'':'<span class="lk">🔒</span>'}${w?'<span class="won">🏅</span>':''}</div><div class="lbl">SPECIAL · Number Crossword</div></div>`})():''}
      ${nodes.map((n,i)=>{const ok=unlockedN(p,sid,n),done=doneN(p,sid,n),nm=nodeName(st,n),stv=n.t==='lvl'?sub(p,sid).stars[n.c*NLV+n.l]:0;
        return `<div class="node ${n.t==='boss'?'boss':''} ${n.t==='test'?'test':''} ${ok?'':'locked'} ${done?'done':''} ${i===nextI?'next':''}" id="node${i}" style="left:${pos[i].x}%;top:${Y(pos[i].y)}px" onclick="tapNode(${i})">
          <div class="dot">${nm[0]}${ok?'':'<span class="lk">🔒</span>'}${n.t==='boss'&&done?'<span class="won">🏆</span>':''}</div>
@@ -2282,7 +2305,8 @@ const BADGES=[
  {id:'boss',e:'🐉',n:'Boss Slayer',d:'Beat a grown-up in Boss PK'},
  {id:'grand',e:'👑',n:'Grand Champion',d:'Beat the Boss in all 5 stages'},
  {id:'grow',e:'🌱',n:'Growing Brain',d:'A subject age up 0.5 since first test'},
- {id:'century',e:'💯',n:'Century',d:'Answer 100 questions'}
+ {id:'century',e:'💯',n:'Century',d:'Answer 100 questions'},
+ {id:'crossnum',e:'🧩',n:'Cross-Number Champ',d:'Solve the Number Crossword special level'}
 ];
 let toastQ=[],toastOn=false;
 function award(p,id){if(p.kind!=='kid'||p.badges.includes(id))return;p.badges.push(id);save();toastQ.push(BADGES.find(b=>b.id===id));runToast()}
@@ -4725,9 +4749,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.3';
+const APP_VERSION='4.4';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+  ['4.4','New special level in Number Kingdom: the 🧩 Number Crossword. Fill in the missing numbers so every row and column adds up — a fresh puzzle every time, sized to your maths level. Solve one to win the Cross-Number Champ badge.'],
  ['4.3','Sky Squadron world tour: six landmark destinations, surfacing robot submarines, two-hit Aegis pickups, and a hangar with plane liveries and shield looks earned through learning and flying.'],
   ['4.2','Sky Squadron is tougher: bigger, faster waves, tougher enemies that shoot more as you go, a stronger Sky Fortress every visit, fewer free power-ups, and getting hit at high power costs two levels. Super Power lasts 6 seconds and you can save up to 2.'],
  ['4.1.1','Sky Squadron now has an illustrated Duel Table cover featuring its toy planes, tropical islands and Sky Fortress.'],
@@ -6053,6 +6078,97 @@ function brawlRematch(fromHost){const F=GAME&&GAME.brawl;if(!F)return;if(F.mode=
 function brawlRobot(){if(!duelPay())return;brawlStart('robot',{a:cur().name})}
 function brawlPicker(label,cur2,setter){return `<div class="br-pick"><span>${label}</span>${Object.entries(BRAWLERS).map(([k,b])=>`<button class="${cur2===k?'on':''}" style="--c:${b.col}" onclick="${setter}='${k}';duelMenu()">${toyFighterIcon(k,64)}<b>${b.name}</b></button>`).join('')}</div>`}
 ARCADE_HELP.brawl=['◀ ▶ move, ⤒ jump. 👊 quick bop, 🦶 big kick, ✨ special (recharges).','Hold away from your rival to block. Win 2 rounds to be champion!'];
+
+
+/* ============ Number Crossword (special maths level) ============ */
+const XN_NEED=5; /* maths stars needed to open it */
+let XN=null;
+function xnOpen(p){return p.unlockAll||starsIn(p,'maths')>=XN_NEED}
+function xnCard(p){const open=xnOpen(p),won=(p.badges||[]).includes('crossnum'),n=(p.xnDone||0);
+  return `<button class="xn-card ${open?'':'lock'}" onclick="${open?'xnStart()':`miniToast('🔒 Collect ${XN_NEED} maths stars to open the Number Crossword')`}"><span class="xi">🧩</span>
+   <span><b>Special level · Number Crossword</b><small>${open?(won?`🏅 Badge won · solved ${n} time${n===1?'':'s'} · new puzzle every time`:'Fill in every box to win the 🧩 Cross-Number Champ badge'):`Collect ${XN_NEED} maths stars to open · ${starsIn(p,'maths')}/${XN_NEED}`}</small></span>
+   <span class="go">${open?'Play ▶':'🔒'}</span></button>`}
+/* difficulty from maths ability (falls back to school year) */
+function xnCfg(p){const a=Math.round(sub(p,'maths').ability??p.year??3);
+  if(a<=0)return{max:10,ops:['+'],eqs:6,blank:.4,label:'Numbers to 10'};
+  if(a===1)return{max:20,ops:['+','-'],eqs:8,blank:.45,label:'Adding and taking away to 20'};
+  if(a<=3)return{max:100,ops:['+','-'],eqs:11,blank:.5,label:'Adding and taking away to 100'};
+  if(a<=5)return{max:100,ops:['+','-','×','÷'],tab:10,eqs:11,blank:.5,label:'+ − × ÷ to 100'};
+  return{max:1000,ops:['+','-','×','÷'],tab:12,eqs:12,blank:.55,label:'+ − × ÷ to 1000'}}
+/* make a b c for "a op b = c" where the number at slot j (0=a,2=b,4=c) equals v */
+function xnVals(op,j,v,cf){const M=cf.max,T=cf.tab||10,r=(a,b)=>a>b?null:ri(a,b);let a,b,c;
+  if(op==='+'){if(j===4){if(v<2)return null;a=r(1,v-1);b=v-a;c=v}else{const o=r(1,M-v);if(o==null||v<1)return null;if(j===0){a=v;b=o}else{b=v;a=o}c=a+b}}
+  else if(op==='-'){if(j===0){if(v<2)return null;a=v;b=r(1,v-1);c=a-b}else if(j===2){if(v<1)return null;b=v;a=r(v+1,M);if(a==null)return null;c=a-b}else{b=r(1,M-v);if(b==null||v<1)return null;c=v;a=c+b}}
+  else if(op==='×'){if(j===4){const f=[];for(let d=2;d<=T;d++)if(v%d===0&&v/d>=2&&v/d<=T)f.push(d);if(!f.length)return null;a=pick(f);b=v/a;c=v}else{if(v<2||v>T)return null;const o=r(2,T);if(j===0){a=v;b=o}else{a=o;b=v}c=a*b}}
+  else{/* a ÷ b = c */if(j===0){const f=[];for(let d=2;d<=T;d++)if(v%d===0&&v/d>=2&&v/d<=T)f.push(d);if(!f.length)return null;b=pick(f);a=v;c=v/b}else{if(v<2||v>T)return null;const o=r(2,T);if(j===2){b=v;c=o}else{c=v;b=o}a=b*c}}
+  if([a,b,c].some(x=>x==null||x<0||x>M))return null;return[a,b,c]}
+function xnBuild(cf){
+  for(let attempt=0;attempt<400;attempt++){
+    const cells={},eqs=[],K=(r,c)=>r+','+c,R=13,C=11;
+    const put=(r0,c0,dr,dc,toks)=>{const e={cells:[]};toks.forEach((t,k)=>{const key=K(r0+dr*k,c0+dc*k);if(!cells[key])cells[key]=typeof t==='number'?{n:t}:{o:t};e.cells.push(key)});e.op=toks[1];eqs.push(e)};
+    const free=(r,c)=>r>=0&&c>=0&&r<R&&c<C&&!cells[K(r,c)];
+    /* first equation across the middle */
+    const op0=pick(cf.ops),v0=xnVals(op0,4,ri(Math.min(5,cf.max),cf.max),cf);if(!v0)continue;
+    put(Math.floor(R/2),Math.floor((C-5)/2),0,1,[v0[0],op0,v0[1],'=',v0[2]]);
+    let tries=0;
+    while(eqs.length<cf.eqs&&tries++<600){
+      const E=pick(eqs),k=pick([0,2,4]),[pr,pc]=E.cells[k].split(',').map(Number),horiz=E.cells[0].split(',')[0]===E.cells[1].split(',')[0];
+      const dr=horiz?1:0,dc=horiz?0:1,j=pick([0,2,4]),r0=pr-dr*j,c0=pc-dc*j;
+      let ok=!cells[K(r0-dr,c0-dc)]&&!cells[K(r0+dr*5,c0+dc*5)];
+      for(let q=0;q<5&&ok;q++){const r=r0+dr*q,c=c0+dc*q;if(q===j)continue;
+        if(!free(r,c)){ok=false;break}
+        /* keep side neighbours empty so equations don't touch */
+        if(cells[K(r+dc,c+dr)]||cells[K(r-dc,c-dr)])ok=false}
+      if(!ok)continue;
+      const op=pick(cf.ops),v=xnVals(op,j,cells[E.cells[k]].n,cf);if(!v)continue;
+      put(r0,c0,dr,dc,[v[0],op,v[1],'=',v[2]])}
+    if(eqs.length<cf.eqs-1)continue;
+    /* trim to the used area */
+    const keys=Object.keys(cells).map(k=>k.split(',').map(Number)),r1=Math.min(...keys.map(x=>x[0])),c1=Math.min(...keys.map(x=>x[1]));
+    const rows=Math.max(...keys.map(x=>x[0]))-r1+1,cols=Math.max(...keys.map(x=>x[1]))-c1+1;
+    /* choose blanks so it can still be solved one equation at a time */
+    const nums=Object.keys(cells).filter(k=>cells[k].n!=null),blank=new Set();
+    const solvable=()=>{const known=new Set(nums.filter(k=>!blank.has(k)));let prog=true;
+      while(prog){prog=false;for(const e of eqs){const u=[0,2,4].filter(q=>!known.has(e.cells[q]));if(u.length===1){known.add(e.cells[u[0]]);prog=true}}}return known.size===nums.length};
+    shuffle(nums.slice()).forEach(k=>{if(blank.size>=Math.round(nums.length*cf.blank))return;blank.add(k);if(!solvable())blank.delete(k)});
+    if(eqs.some(e=>![0,2,4].some(q=>blank.has(e.cells[q]))))continue;
+    return{cells,eqs,blank,r1,c1,rows,cols}}
+  return null}
+function xnStart(){const p=cur();if(!p)return;const cf=xnCfg(p),B=xnBuild(cf);if(!B){miniToast('Try again!');return}
+  XN={p,cf,B,ans:{},sel:null,hints:2,wrong:0,t0:Date.now(),done:false};XN.sel=[...B.blank][0];xnDraw()}
+function xnDraw(){const X=XN;if(!X)return;const B=X.B,p=X.p,vw=Math.min(window.innerWidth,820)-64,sz=Math.max(30,Math.min(58,Math.floor((vw-(B.cols-1)*3)/B.cols))),fs=Math.round(sz*(X.cf.max>=1000?.36:.44));
+  let g='';for(let r=0;r<B.rows;r++)for(let c=0;c<B.cols;c++){const k=(r+B.r1)+','+(c+B.c1),cell=B.cells[k],pos=`grid-row:${r+1};grid-column:${c+1}`;if(!cell)continue;
+    if(cell.o!=null)g+=`<div class="xn-c op" style="${pos}">${cell.o==='-'?'−':cell.o}</div>`;
+    else if(B.blank.has(k)){const v=X.ans[k]??'',st=X.mark&&X.mark[k]||'';g+=`<div class="xn-c in ${X.sel===k?'sel':''} ${st}" style="${pos}" onclick="xnSel('${k}')">${v}</div>`}
+    else g+=`<div class="xn-c" style="${pos}">${cell.n}</div>`}
+  const left=[...B.blank].filter(k=>X.ans[k]==null||X.ans[k]==='').length;
+  app().innerHTML=`<div class="top"><button class="back" onclick="xnQuit()">‹</button><div style="flex:1"><h1 style="font-size:20px">🧩 Number Crossword</h1><div class="small" style="opacity:.85">${X.cf.label} · ${left} box${left===1?'':'es'} to fill</div></div>
+    <span class="chip" onclick="xnHint()">💡 Hint ×${X.hints}</span><span class="chip" onclick="xnStart()">🔄 New</span></div>
+   <div class="card xn-panel"><p class="small muted center" style="margin:0 0 10px">Every row and column is a sum. Tap a yellow box, then type the missing number.</p>
+   <div class="xn-wrap"><div class="xn-grid" style="grid-template-columns:repeat(${B.cols},${sz}px);grid-auto-rows:${sz}px;font-size:${fs}px">${g}</div></div></div>
+   <div class="xn-pad"><div class="numpad">${[1,2,3,4,5,6,7,8,9,0].map(d=>`<button onpointerdown="event.preventDefault();xnKey(${d})">${d}</button>`).join('')}<button class="wide" onpointerdown="event.preventDefault();xnKey('del')">⌫</button><button class="wide chk" onclick="xnCheck()">✓ Check</button></div></div>`}
+function xnSel(k){if(!XN||XN.done)return;XN.sel=k;if(XN.mark)delete XN.mark[k];xnDraw()}
+function xnKey(d){const X=XN;if(!X||X.done||!X.sel)return;const k=X.sel,cur=String(X.ans[k]??'');if(X.mark)delete X.mark[k];
+  if(d==='del')X.ans[k]=cur.slice(0,-1);else if(cur.length<4)X.ans[k]=(cur==='0'?'':cur)+d;beep(600+(+d||0)*20,.04,'sine',.04);xnDraw()}
+function xnNext(){const X=XN,list=[...X.B.blank],i=list.indexOf(X.sel);for(let q=1;q<=list.length;q++){const k=list[(i+q)%list.length];if(X.ans[k]==null||X.ans[k]===''||X.mark&&X.mark[k]==='bad'){X.sel=k;return}}}
+function xnHint(){const X=XN;if(!X||X.done)return;if(X.hints<=0){miniToast('No hints left — you can do it!');return}
+  const k=X.sel&&X.B.blank.has(X.sel)&&+X.ans[X.sel]!==X.B.cells[X.sel].n?X.sel:[...X.B.blank].find(k=>+X.ans[k]!==X.B.cells[k].n||X.ans[k]==='');if(!k)return;
+  X.hints--;X.ans[k]=String(X.B.cells[k].n);X.mark=X.mark||{};X.mark[k]='ok';X.usedHint=true;xnNext();xnDraw()}
+function xnCheck(){const X=XN;if(!X||X.done)return;X.mark={};let bad=0,empty=0;
+  X.B.blank.forEach(k=>{const v=X.ans[k];if(v==null||v===''){empty++;return}if(+v===X.B.cells[k].n)X.mark[k]='ok';else{X.mark[k]='bad';bad++}});
+  if(bad){X.wrong+=bad;beep(220,.2,'sawtooth',.05);miniToast(`${bad} box${bad>1?'es are':' is'} not right yet — try again`);xnNext();xnDraw();return}
+  if(empty){beep(660,.08);miniToast(`Looking good! ${empty} box${empty>1?'es':''} still empty`);xnNext();xnDraw();return}
+  xnWin()}
+function xnWin(){const X=XN;X.done=true;const p=X.p,first=!(p.badges||[]).includes('crossnum'),secs=Math.round((Date.now()-X.t0)/1000);
+  p.xnDone=(p.xnDone||0)+1;let tok=0;if(p.xnPaid!==today()){p.xnPaid=today();tok=first?5:2;p.tokens=(p.tokens||0)+tok}
+  if(typeof learnRound==='function')learnRound(p);award(p,'crossnum');save();xnDraw();confetti(120);[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.15,'triangle',.08),i*110));
+  setTimeout(()=>{const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
+    el.innerHTML=`<div class="card center pop" style="max-width:420px"><div style="font-size:60px">🧩${first?'🏅':'🎉'}</div><h2>${first?'Cross-Number Champ!':'Puzzle solved!'}</h2>
+     <p>${first?'You solved the Number Crossword and won a special badge!':'Brilliant — another crossword cracked.'}</p>
+     <p class="muted">⏱️ ${Math.floor(secs/60)}m ${secs%60}s · ${X.wrong?X.wrong+' wrong tr'+(X.wrong>1?'ies':'y'):'no mistakes!'}${X.usedHint?' · used a hint':''}${tok?` · +${tok} 🪙`:''}</p>
+     <div class="row"><button class="btn" style="flex:1" onclick="document.getElementById('kqsheet').remove();xnStart()">New puzzle</button><button class="btn ghost" style="flex:1" onclick="document.getElementById('kqsheet').remove();xnQuit()">Back to map</button></div></div>`;
+    document.body.appendChild(el)},900)}
+function xnQuit(){XN=null;STAGE='maths';map()}
 
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
 function checkJoinLink(){
