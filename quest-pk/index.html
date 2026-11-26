@@ -554,7 +554,7 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .duel-note{opacity:.75;font-size:14px;margin-top:14px;text-align:center}
 .duel-wait{text-align:center;padding:30px 20px;border-radius:24px;background:#ffffff0d;border:1px solid #ffffff1f;margin-top:16px;color:#f8f2ff}
 .duel-big{font-size:64px}.duel-code-in{font:700 40px Fredoka,sans-serif;letter-spacing:12px;text-align:center;text-transform:uppercase;width:min(280px,90%);padding:12px;border-radius:16px;border:2px solid #ffffff44;background:#0b0f26;color:#fff;margin-top:10px}
-.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice,.gshell[data-game="island"] #game-notice,.gshell[data-game="island"] #game-pause-button,.gshell[data-game="island"] #game-metrics,.gshell[data-game="brawl"] #game-notice,.gshell[data-game="brawl"] #game-pause-button,.gshell[data-game="brawl"] #game-metrics{display:none}
+.gshell[data-game^="duel-"] #game-pause-button,.gshell[data-game^="duel-"] #game-metrics,.gshell[data-game^="duel-"] #game-notice,.gshell[data-game="sky"] #game-pause-button,.gshell[data-game="sky"] #game-metrics,.gshell[data-game="sky"] #game-notice,.gshell[data-game="maze"] #game-pause-button,.gshell[data-game="maze"] #game-metrics,.gshell[data-game="maze"] #game-notice,.gshell[data-game="island"] #game-notice,.gshell[data-game="island"] #game-pause-button,.gshell[data-game="island"] #game-metrics,.gshell[data-game="brawl"] #game-notice,.gshell[data-game="brawl"] #game-pause-button,.gshell[data-game="brawl"] #game-metrics,.gshell[data-game="bad"] #game-notice,.gshell[data-game="bad"] #game-pause-button,.gshell[data-game="bad"] #game-metrics,.gshell[data-game="climb"] #game-notice,.gshell[data-game="climb"] #game-pause-button,.gshell[data-game="climb"] #game-metrics{display:none}
 .gshell[data-game^="duel-"] .garea{background:#0b0f26}
 
 /* Cuddly companions: presentation only; quiz, reward and match rules are unchanged. */
@@ -4079,6 +4079,7 @@ function arcadeArt(game){
   else if(key==='penguin')art=`<path d="M0 190Q100 165 200 190T400 180V240H0Z" fill="#80c5db"/><g transform="translate(119 146)">${block(0,0,'#c3f0fc')}${block(52,0,'#a3dff6')}${block(104,0,'#c3f0fc')}</g><g transform="translate(133 17)">${arcadeSpriteSVG('penguin',140)}</g>${ball(79,96,9,'#d3f5ff')}${ball(312,75,7,'#d3f5ff')}`;
   else if(key==='bubble'||key==='gems')art=[[130,78,29,'#c5a2f6'],[196,61,32,'#f6adc5'],[258,89,27,'#80ddcf'],[152,143,31,'#ffda86'],[220,133,35,'#88bafa'],[285,154,23,'#c5a2f6']].map(([x,y,r,c])=>key==='bubble'?ball(x,y,r,c):`<g transform="translate(${x} ${y})"><path d="M0 -${r}L${r} -8L${r*.6} ${r*.7}L0 ${r}L-${r*.6} ${r*.7}L-${r} -8Z" fill="${c}"/><path d="M0 -${r}L-${r} -8H${r}Z" fill="#fff" opacity=".35"/><path d="M-${r} -8H0V${r}Z" fill="#fff" opacity=".15"/><path d="M0 -${r}L${r} -8L0 ${r}Z" fill="#fff" opacity=".15"/></g>`).join('');
   else if(key==='sudoku')art=`<g transform="translate(120 28) rotate(8 80 80)"><rect x="-9" y="-7" width="179" height="179" rx="18" fill="#dbe5fa"/>${Array.from({length:9},(_,i)=>block(i%3*54,Math.floor(i/3)*54,i===4?'#ffdb8f':'#f3f5ff',[1,3,'',2,'?',1,'',2,3][i])).join('')}</g>`;
+  else if(key==='climb')art=`<rect width="400" height="230" fill="#166534"/><circle cx="335" cy="40" r="22" fill="#fef9c3" opacity=".9"/>${[[20,200,380,188],[40,150,360,162],[20,112,330,100],[60,64,250,72]].map(([a,b,c,d])=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="#5b4209" stroke-width="16" stroke-linecap="round"/><line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="#d4b34a" stroke-width="11" stroke-linecap="round"/>`).join('')}<g stroke="#92400e" stroke-width="4"><line x1="300" y1="190" x2="300" y2="160"/><line x1="318" y1="190" x2="318" y2="160"/><line x1="90" y1="148" x2="90" y2="110"/><line x1="108" y1="148" x2="108" y2="110"/></g><g fill="#7c4a24">${[[200,177],[150,140],[260,92]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="11"/>`).join('')}</g><g transform="translate(95 40)"><ellipse rx="30" ry="18" cy="12" fill="#dc2626"/><circle cx="-10" cy="-8" r="6" fill="#fff"/><circle cx="10" cy="-8" r="6" fill="#fff"/><circle cx="-10" cy="-7" r="3"/><circle cx="10" cy="-7" r="3"/><ellipse cx="-38" cy="-4" rx="11" ry="8" fill="#ef4444"/><ellipse cx="38" cy="-4" rx="11" ry="8" fill="#ef4444"/></g><circle cx="232" cy="50" r="12" fill="#fde047"/><path d="M220 48l-8 3 8 3z" fill="#f97316"/><g transform="translate(300 118)">${arcadeSpriteSVG('bunny',70)}</g>`;
   else if(key==='island')art=`<path d="M40 196Q160 128 300 196Z" fill="#fcd9a0"/><path d="M60 196Q160 150 280 196Z" fill="#f6c27a"/><path d="M262 186Q258 120 246 70" stroke="#8b5a34" stroke-width="11" fill="none" stroke-linecap="round"/><g transform="translate(246 70)" fill="#3fb36b">${[-150,-110,-60,-20,25].map(r=>`<path d="M0 0Q30 -14 62 6Q30 2 0 4Z" transform="rotate(${r})"/>`).join('')}</g><circle cx="240" cy="80" r="7" fill="#7c4a24"/><circle cx="252" cy="83" r="7" fill="#6b3f1e"/><g transform="translate(118 46) rotate(-8 60 60)">${arcadeSpriteSVG('bunny',118)}</g><rect x="128" y="160" width="88" height="10" rx="5" fill="#ef4444" transform="rotate(-8 172 165)"/><circle cx="142" cy="174" r="7" fill="#334155"/><circle cx="200" cy="166" r="7" fill="#334155"/><g transform="translate(316 120)"><ellipse rx="17" ry="21" fill="#fff8e7" stroke="#e8c98a" stroke-width="2"/><circle cx="-5" cy="-6" r="4" fill="#f59e0b"/><circle cx="7" cy="5" r="3" fill="#60a5fa"/></g><g transform="translate(70 96)"><circle r="13" fill="#ef4444"/><path d="M0 -12q4 -10 10 -10" stroke="#3fb36b" stroke-width="4" fill="none"/></g><g transform="translate(338 60)"><path d="M-14 0Q0 -22 14 0Q0 8 -14 0Z" fill="#facc15"/></g>`;
   else if(key==='hoops')art=`<path d="M0 175L400 130V240H0Z" fill="#bb795f"/><path d="M0 202L400 158M260 145V240" stroke="#ffe7d7" stroke-width="2" opacity=".5"/><rect x="230" y="23" width="96" height="71" rx="8" fill="#e2edfd"/><rect x="250" y="47" width="52" height="37" rx="2" fill="none" stroke="#ed977a" stroke-width="4"/><path d="M249 91l9 43h40l9-43m-48 0 6 43m30-43-5 43m-39-22h53m-48 12h44" fill="none" stroke="#f6e6e1" stroke-width="2"/><ellipse cx="278" cy="91" rx="34" ry="7" fill="none" stroke="#ffac62" stroke-width="6"/>${ball(146,144,39,'#ef9f61')}<path d="M108 141h76m-39-35q-19 35 1 76m-2-77q30 40 1 77" fill="none" stroke="#8c563e" stroke-width="2"/>`;
   else art=`<path d="M0 160L400 145V240H0Z" fill="#4f8d7e"/><path d="M20 210L380 185M200 150V240" stroke="#ccebdd" stroke-width="2" opacity=".55"/><path d="M115 144V54H285V144" fill="none" stroke="#e5eef0" stroke-width="7" stroke-linejoin="round"/><path d="M121 60H279V141H121Z" fill="#ffffff08" stroke="#e5eef0"/>${Array.from({length:9},(_,i)=>`<path d="M${122+i*19} 60V141" stroke="#e5eef0" opacity=".3"/>`).join('')}${Array.from({length:5},(_,i)=>`<path d="M121 ${63+i*18}H279" stroke="#e5eef0" opacity=".3"/>`).join('')}${ball(key==='keepy'?200:236,172,33,'#f5f2e7')}<path d="M${key==='keepy'?200:236} 150l13 10-5 16h-16l-5-16Z" fill="#3d4656"/><path d="M${key==='keepy'?178:214} 185l10-5m29-1 9 8" stroke="#3d4656" stroke-width="8"/>`;
@@ -4898,9 +4899,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.5';
+const APP_VERSION='4.6';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+  ['4.6','Two new games! 🏸 Badminton on the Duel Table — play a robot, share one iPad, or use two iPads; jump and swing near the net to SMASH. 🥥 Coconut Climb in the Arcade — climb the bamboo tower, jump the coconuts King Crabby rolls down, grab a 🔨 to bonk them, and rescue Peep the chick.'],
   ['4.5','Fewer repeated questions: a question never comes back in the same round, and each child works through every question before seeing old ones again. Common Sense City has over 100 new questions plus new days, time and money puzzles. Working paper now has a proper eraser. Spelling works with an iPad keyboard — just type and press Enter (1–4 answers multiple choice too).'],
   ['4.4','New special level in Number Kingdom: the 🧩 Number Crossword. Fill in the missing numbers so every row and column adds up — a fresh puzzle every time, sized to your maths level. Solve one to win the Cross-Number Champ badge.'],
  ['4.3','Sky Squadron world tour: six landmark destinations, surfacing robot submarines, two-hit Aegis pickups, and a hangar with plane liveries and shield looks earned through learning and flying.'],
@@ -5253,6 +5255,7 @@ const DUEL_GAMES={
   pong:{name:'Ping Pong',icon:'🏓',to:7,desc:'Bat the ball past your rival — it speeds up with every hit.'},
   hockey:{name:'Air Hockey',icon:'🥅',to:7,desc:'Slide the puck into the other goal. Hit it hard and bank it off the walls!'},
   brawl:{name:'Toy Brawl',icon:'🥊',fight:1,desc:'Pick a toy fighter and bop your rival with foam gloves. Best of 3 rounds!'},
+  badminton:{name:'Badminton',icon:'🏸',to:11,desc:'Rally the shuttle over the net. Jump and swing near the net to SMASH!'},
   maze:{name:'Splash Maze',icon:'💦',max:4,party:1,desc:'Drop water balloons, pop crates and soak your rivals. Last one dry wins!'},
   sky:{name:'Sky Squadron',icon:'✈️',coop:1,max:4,desc:'Fly together against waves of robot drones and the giant Sky Fortress.'}};
 const DU={peer:null,conn:null,conns:[],code:null,role:null,game:null,other:null};
@@ -5266,11 +5269,11 @@ let DUEL_PICK='hockey';
 function duelMenu(){
   stopGame();setLayer('');duClose();const p=cur();
   app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" aria-label="Back to Arcade" onclick="arcade()">‹</button><span class="arcade-mark" aria-hidden="true">✦</span><h1>Duel Table</h1><span class="chip tok">🪙 ${p.tokens||0}</span></div></div>
-   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':DUEL_PICK==='maze'?'Last one dry wins.':DUEL_PICK==='brawl'?'Foam gloves on!':'Settle it on the table.'}</span></h2>
-     <p>${DUEL_PICK==='brawl'?'A friendly toy-box fighting game: bop, kick and use your special move. Turn the iPad sideways for two players.':DUEL_PICK==='maze'?'Up to four players on one maze: two on one iPad, or one per iPad. Robots join in when you need more players.':DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
+   <section class="duel-hero"><div><div class="quest-eyebrow">PLAY TOGETHER</div><h2>Grab a grown-up.<br><span>${DUEL_PICK==='sky'?'Take to the skies together.':DUEL_PICK==='maze'?'Last one dry wins.':DUEL_PICK==='brawl'?'Foam gloves on!':DUEL_PICK==='badminton'?'Smash it over the net!':'Settle it on the table.'}</span></h2>
+     <p>${DUEL_PICK==='badminton'?'Play against a robot, share one iPad held sideways, or use two iPads — each one shows the whole court.':DUEL_PICK==='brawl'?'A friendly toy-box fighting game: bop, kick and use your special move. Turn the iPad sideways for two players.':DUEL_PICK==='maze'?'Up to four players on one maze: two on one iPad, or one per iPad. Robots join in when you need more players.':DUEL_PICK==='sky'?'Fly as a team on one iPad, or stand two iPads upright side by side for one giant sky.':'Play on one iPad, or put two iPads side by side — the '+DUEL_GAMES[DUEL_PICK].name.toLowerCase()+' crosses from one screen to the other.'}</p></div></section>
    <div class="duel-picks">${Object.entries(DUEL_GAMES).map(([id,g])=>`<button class="duel-pick ${id===DUEL_PICK?'on':''}" onclick="DUEL_PICK='${id}';duelMenu()">${id==='maze'||id==='brawl'||id==='sky'?toyGamePreview(id):`<span class="duel-ico">${g.icon}</span>`}<b>${g.name}</b><small>${g.desc}</small><small class="duel-to">${g.coop?'Team up · 1–4 pilots':g.party?'1–4 players · robots fill in':g.fight?'1v1 · best of 3':'First to '+g.to}</small></button>`).join('')}</div>
-   ${DUEL_PICK==='sky'?skyHangar():''}${DUEL_PICK==='brawl'?brawlPicker('Your fighter',BRAWL_ME,'BRAWL_ME')+brawlPicker('Player 2 (one iPad)',BRAWL_P2,'BRAWL_P2'):''}<div class="duel-modes">
-     ${DUEL_PICK==='brawl'?`<button class="duel-mode" onclick="brawlRobot()"><span>🤖</span><b>Vs robot</b><small>Fight a computer-controlled toy.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='maze'?`<button class="duel-mode" onclick="mazeSolo()"><span>🤖</span><b>Solo vs robots</b><small>You against three robots.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
+   ${DUEL_PICK==='sky'?skyHangar():''}${DUEL_PICK==='brawl'||DUEL_PICK==='badminton'?brawlPicker(DUEL_PICK==='badminton'?'Your player':'Your fighter',BRAWL_ME,'BRAWL_ME')+brawlPicker('Player 2 (one iPad)',BRAWL_P2,'BRAWL_P2'):''}<div class="duel-modes">
+     ${DUEL_PICK==='badminton'?`<button class="duel-mode" onclick="bdRobot()"><span>🤖</span><b>Vs robot</b><small>Rally against a computer player.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='brawl'?`<button class="duel-mode" onclick="brawlRobot()"><span>🤖</span><b>Vs robot</b><small>Fight a computer-controlled toy.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='maze'?`<button class="duel-mode" onclick="mazeSolo()"><span>🤖</span><b>Solo vs robots</b><small>You against three robots.</small><em>${GAME_COST} 🪙</em></button>`:''}${DUEL_PICK==='sky'?`<button class="duel-mode" onclick="skySolo()"><span>🧑‍✈️</span><b>Solo pilot</b><small>Fly on your own.</small><em>${GAME_COST} 🪙</em></button>`:''}<button class="duel-mode" onclick="duelLocal()"><span>📱</span><b>One iPad${DUEL_PICK==='sky'?', two pilots':''}</b><small>${DUEL_PICK==='sky'?'Each pilot drags on their own half of the screen.':'Sit on opposite sides and share the screen.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelHost()"><span>📱📱</span><b>${DUEL_PICK==='sky'?'2–4 iPads — start a squadron':DUEL_PICK==='maze'?'2–4 iPads — start a game':'Two iPads — start a table'}</b><small>${DUEL_PICK==='sky'?'Others join with your 4-letter code.':'You get a 4-letter code for the other iPad.'}</small><em>${GAME_COST} 🪙</em></button>
      <button class="duel-mode" onclick="duelJoinScreen()"><span>🔗</span><b>Join a table</b><small>Type the code shown on the other iPad.</small><em>Free</em></button>
    </div>
@@ -5330,9 +5333,9 @@ function duelJoin(){
   peer.on('error',err=>{clearTimeout(to);if(err.type==='peer-unavailable')duelFail('Table '+code+' wasn\'t found. Check the code on the other iPad.');else if(!GAME)duelFail('Connection problem ('+err.type+'). Check you\'re online.')});
 }
 function duelFail(msg){duClose();app().innerHTML=`<main class="arcade-page duel-page"><div class="stickyhead"><div class="top"><button class="back" onclick="duelMenu()">‹</button><h1>Duel Table</h1></div></div><section class="duel-wait"><div class="duel-big">😕</div><h2>${esc(msg)}</h2><button class="btn" onclick="duelMenu()">Back</button></section></main>`}
-function duelLost(){if(GAME&&GAME.brawl){GAME.brawl.lost=true;return}if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.maze){GAME.maze.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
+function duelLost(){if(GAME&&GAME.brawl){GAME.brawl.lost=true;return}if(GAME&&GAME.bad){GAME.bad.lost=true;return}if(GAME&&GAME.sky){GAME.sky.lost=true;return}if(GAME&&GAME.maze){GAME.maze.lost=true;return}if(GAME&&GAME.duel&&!GAME.duel.ended){GAME.duel.lost=true}else if(DU.role&&!GAME)duelFail('The other iPad disconnected.')}
 function duelData(m,conn){
-  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;if(GAME&&GAME.maze&&mazeData(m,conn))return;if(GAME&&GAME.brawl&&brawlData(m))return;const D=GAME&&GAME.duel;
+  if(!m||!m.t)return;if(GAME&&GAME.sky&&skyData(m,conn))return;if(GAME&&GAME.maze&&mazeData(m,conn))return;if(GAME&&GAME.brawl&&brawlData(m))return;if(GAME&&GAME.bad&&bdData(m))return;const D=GAME&&GAME.duel;
   if((DUEL_GAMES[DU.game]||{}).max>2&&DU.role==='host'&&m.t==='hi'&&conn&&!GAME){conn.pname=(m.name||'Player').slice(0,12);try{conn.send({t:'lobby',slot:conn.slot,game:DU.game})}catch(e){}skyLobby();return}
   if(m.t==='lobby'&&DU.role==='guest'&&!GAME&&m.game==='maze'){const w=$('#skywait');if(w)w.innerHTML=`You're <b>player ${m.slot+1}</b> 💦 Waiting for the first iPad to start…`;return}
   if(m.t==='lobby'&&DU.role==='guest'&&!GAME){const w=$('#skywait');if(w)w.innerHTML=`You're <b>pilot ${m.slot+1}</b>. Stand this iPad upright, <b>${m.slot+1}${['','st','nd','rd','th'][Math.min(4,m.slot+1)]||'th'} from the left</b>. Waiting for the first iPad to start the mission…`;return}
@@ -5352,6 +5355,7 @@ function duelStart(game,mode,names,meta){
   if(game==='sky')return skyStart(mode,names,meta);
   if(game==='maze')return mazeStart(mode,names,meta);
   if(game==='brawl')return brawlStart(mode,names);
+  if(game==='badminton')return bdStart(mode,names);
   const g=shell('duel-'+game,DUEL_GAMES[game].icon+' '+DUEL_GAMES[game].name,'');
   const D=g.duel={game,mode,names,sa:0,sb:0,to:DUEL_GAMES[game].to,ended:false,lost:false,trail:[],sparks:[],flash:null,serveAt:0,t0:performance.now(),
     ta:{x:game==='pong'?.06:.35,y:.5},tb:{x:game==='pong'?LEN-.06:LEN-.35,y:.5},
@@ -5485,7 +5489,7 @@ function duelDraw(g,D,now){
 
 /* ---------- hook into Arcade ---------- */
 const _stopGameD=stopGame;
-stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&(GAME.duel||GAME.sky||GAME.maze||GAME.brawl)&&DU.role)duClose();_stopGameD()};
+stopGame=function(){if(GAME&&GAME.offResize)GAME.offResize();if(GAME&&(GAME.duel||GAME.sky||GAME.maze||GAME.brawl||GAME.bad)&&DU.role)duClose();_stopGameD()};
 ARCADE_HELP['duel-pong']=['Drag your paddle up and down. Each hit speeds the ball up.','Hit with the edge of the paddle to angle the ball.'];
 ARCADE_HELP['duel-hockey']=['Drag your mallet to hit the puck into the other goal.','Bank shots off the side walls are hard to stop!'];
 
@@ -6229,6 +6233,278 @@ function brawlRobot(){if(!duelPay())return;brawlStart('robot',{a:cur().name})}
 function brawlPicker(label,cur2,setter){return `<div class="br-pick"><span>${label}</span>${Object.entries(BRAWLERS).map(([k,b])=>`<button class="${cur2===k?'on':''}" style="--c:${b.col}" onclick="${setter}='${k}';duelMenu()">${toyFighterIcon(k,64)}<b>${b.name}</b></button>`).join('')}</div>`}
 ARCADE_HELP.brawl=['◀ ▶ move, ⤒ jump. 👊 quick bop, 🦶 big kick, ✨ special (recharges).','Hold away from your rival to block. Win 2 rounds to be champion!'];
 
+
+/* ============ BADMINTON — 1v1 on the Duel Table (vs robot · one iPad · two iPads) ============ */
+const BD={CW:12,NET:6,NH:1.55,G:9,TO:11,CAP:15};
+function bdPlayer(id,side){return{id,side,x:side?BD.CW-2.2:2.2,y:0,vy:0,vx:0,face:side?-1:1,st:'idle',stT:0,hit:false}}
+function bdStart(mode,names){
+  const g=shell('bad','🏸 Badminton','');
+  const fa=names.fa||BRAWL_ME,fb=names.fb||(mode==='robot'?pick(Object.keys(BRAWLERS).filter(k=>k!==fa)):BRAWL_P2);
+  const R=g.bad={mode,names:[names.a||'Player 1',mode==='robot'?BRAWLERS[fb].name:(names.b||'Player 2')],ids:[fa,fb],p:[bdPlayer(fa,0),bdPlayer(fb,1)],
+    sh:{x:0,y:0,vx:0,vy:0,held:0,by:-1,live:false,trail:[]},sc:[0,0],server:0,state:'serve',stateT:.6,inp:[{l:0,r:0,j:0,s:0},{l:0,r:0,j:0,s:0}],prev:[{},{}],
+    ev:[],fx:[],tap:[{},{}],ai:{t:0,tx:BD.CW-2.2},last:performance.now(),acc:0,lastSend:0,ptr:new Map(),banner:{t:'First to '+BD.TO+' — serve!',at:performance.now()},rally:0};
+  bdResetRally(R,0);
+  const me=mode==='guest'?1:0;
+  const fit=()=>{const a=$('#garea');if(!a)return;const r=a.getBoundingClientRect(),dpr=window.devicePixelRatio||1;g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
+    const W=g.W,H=g.H,b=Math.max(30,Math.min(48,Math.min(W,H)*.065));R.u=Math.min(W/(BD.CW+.8),H/6.4);R.floor=H*.74;R.ox=(W-BD.CW*R.u)/2;R.bg=null;
+    const set=(L,pl)=>({pl,btn:{l:{x:L?b*1.25:W-b*3.55,y:H-b*1.3,r:b},r:{x:L?b*3.55:W-b*1.25,y:H-b*1.3,r:b},j:{x:L?b*1.25:W-b*1.25,y:H-b*3.55,r:b*.85},s:{x:L?b*3.55:W-b*3.55,y:H-b*3.55,r:b*.95}}});
+    if(mode==='local')R.pads=[set(true,0),set(false,1)];
+    else R.pads=[{pl:me,btn:{l:{x:b*1.3,y:H-b*1.4,r:b},r:{x:b*3.7,y:H-b*1.4,r:b},j:{x:W-b*3.9,y:H-b*1.4,r:b},s:{x:W-b*1.4,y:H-b*1.6,r:b*1.15}}}]};
+  fit();const onR=()=>{if(GAME===g)fit()};window.addEventListener('resize',onR);
+  const keys=e=>{const d=e.type==='keydown'?1:0;let pl=me,m={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'j',' ':'s',ArrowDown:'s'}[e.key];
+    if(mode==='local'){const a={a:'l',d:'r',w:'j',s:'s',f:'s'}[e.key.toLowerCase()];if(a){pl=0;m=a}else if(m)pl=1}else if(!m){m={a:'l',d:'r',w:'j',s:'s',z:'s'}[e.key.toLowerCase()]}
+    if(!m)return;e.preventDefault();if(e.repeat)return;bdSet(R,pl,m,d)};
+  window.addEventListener('keydown',keys);window.addEventListener('keyup',keys);g.offResize=()=>{window.removeEventListener('resize',onR);window.removeEventListener('keydown',keys);window.removeEventListener('keyup',keys)};
+  g.c.style.touchAction='none';const pos=e=>{const r=g.c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  const hitBtn=q=>{for(const pd of R.pads)for(const [k,b] of Object.entries(pd.btn))if(Math.hypot(q.x-b.x,q.y-b.y)<b.r+12)return{pl:pd.pl,k};return null};
+  g.c.addEventListener('pointerdown',e=>{const h=hitBtn(pos(e));if(!h)return;try{g.c.setPointerCapture(e.pointerId)}catch(_){}R.ptr.set(e.pointerId,h);bdSet(R,h.pl,h.k,1)});
+  g.c.addEventListener('pointermove',e=>{const old=R.ptr.get(e.pointerId);if(!old||!'lr'.includes(old.k))return;const h=hitBtn(pos(e));if(h&&h.pl===old.pl&&'lr'.includes(h.k)&&h.k!==old.k){bdSet(R,old.pl,old.k,0);bdSet(R,h.pl,h.k,1);R.ptr.set(e.pointerId,h)}});
+  const up=e=>{const h=R.ptr.get(e.pointerId);if(h)bdSet(R,h.pl,h.k,0);R.ptr.delete(e.pointerId)};g.c.addEventListener('pointerup',up);g.c.addEventListener('pointercancel',up);
+  const loop=now=>{if(g.dead)return;const dt=Math.min(.05,(now-R.last)/1000);R.last=now;
+    if(mode!=='guest'){R.acc+=dt;while(R.acc>=1/60){bdStep(R,1/60);R.acc-=1/60}if(mode==='host'&&now-R.lastSend>40){R.lastSend=now;duSend(bdSnap(R));R.ev=[]}else if(mode!=='host')R.ev=[]}
+    else bdGuestTick(R);
+    bdDraw(g,R,now);g.raf=requestAnimationFrame(loop)};
+  g.raf=requestAnimationFrame(loop);
+}
+function bdSet(R,pl,k,v){const tap=v&&(k==='s'||k==='j')?k:null;if(R.mode==='guest'&&pl===1){R.inp[1][k]=v;duSend({t:'in',k:R.inp[1],tap});return}if(R.inp[pl]){R.inp[pl][k]=v;if(tap)R.tap[pl][tap]=1}}
+function bdEmit(R,e){R.ev.push(e);if(R.mode!=='guest')bdLocalEvent(R,e)}
+function bdResetRally(R,srv){R.server=srv;R.p.forEach((q,i)=>Object.assign(q,{x:i?BD.CW-2.2:2.2,y:0,vy:0,vx:0,st:'idle',stT:0,hit:false}));R.p[srv].x=srv?BD.CW-1.6:1.6;
+  Object.assign(R.sh,{held:1,by:srv,live:false,vx:0,vy:0,trail:[]});R.rally=0;R.state='serve';R.stateT=R.mode==='robot'&&srv===1?1.1:.4}
+/* launch the shuttle from (x,y) so it lands at tx: high arc for clears, low and quick for smashes */
+function bdLaunch(R,i,kind){const S=R.sh,P=R.p[i],dir=i?-1:1,far=i?0:BD.CW;let tx,T;
+  if(kind==='smash'){tx=BD.NET+dir*(2.2+Math.random()*2.4);T=.42}
+  else if(kind==='drop'){tx=BD.NET+dir*(.9+Math.random()*1.1);T=1.0}
+  else if(kind==='serve'){tx=BD.NET+dir*(3.2+Math.random()*1.8);T=1.55}
+  else{tx=far-dir*(.8+Math.random()*1.4);T=1.45+Math.random()*.25}
+  let ok=false;for(let k=0;k<10;k++){const vx=(tx-S.x)/T,vy=(0-S.y+.5*BD.G*T*T)/T,tn=(BD.NET-S.x)/vx,yn=S.y+vy*tn-.5*BD.G*tn*tn;if(tn<0||yn>BD.NH+.35){S.vx=vx;S.vy=vy;ok=true;break}T+=.15;if(kind==='smash')tx+=dir*.3}
+  if(!ok)return bdLaunch(R,i,kind==='smash'?'drop':'clear');
+  S.held=0;S.live=true;S.by=i;R.rally++;bdEmit(R,['hit',i,kind])}
+function bdStep(R,dt){
+  if(R.state==='point'){R.stateT-=dt;if(R.stateT<=0){if(R.over){R.state='done';bdEmit(R,['end',R.sc[0]>R.sc[1]?0:1]);return}bdResetRally(R,R.nextServer)}return}
+  if(R.state==='done')return;
+  if(R.mode==='robot')bdAI(R,dt);
+  const S=R.sh;
+  R.p.forEach((P,i)=>{const I=R.inp[i],Pv=R.prev[i],T=R.tap[i],B=BRAWLERS[P.id]||BRAWLERS.bunny,lo=i?BD.NET+.45:.4,hi=i?BD.CW-.4:BD.NET-.45;
+    const serving=R.state==='serve'&&R.server===i;
+    const dir=(I.r?1:0)-(I.l?1:0);P.vx=serving?0:dir*(B.spd*1.15);
+    if(((I.j&&!Pv.j)||T.j)&&P.y===0&&!serving)P.vy=B.jump*.78;T.j=0;
+    P.vy-=22*dt;P.y+=P.vy*dt;if(P.y<=0){P.y=0;P.vy=0}P.x=clamp(P.x+P.vx*dt,lo,hi);
+    if(P.st==='sw'){P.stT+=dt;if(P.stT>.34){P.st='idle';P.stT=0}}
+    else if((I.s&&!Pv.s)||T.s){P.st='sw';P.stT=0;P.hit=false;bdEmit(R,['sw',i])}T.s=0;
+    /* serve */
+    if(serving&&P.st==='sw'&&!P.hit&&P.stT>.06){P.hit=true;R.state='play';bdLaunch(R,i,'serve')}
+    /* return a shot: generous reach so younger players can rally */
+    if(R.state==='play'&&P.st==='sw'&&!P.hit&&S.live&&S.by!==i){const rx=P.x+P.face*.45,ry=P.y+1.75,d=Math.hypot(S.x-rx,(S.y-ry)*.8);
+      if(d<1.35){P.hit=true;const air=P.y>.35,high=S.y>2.1,nearNet=Math.abs(P.x-BD.NET)<4.2,toward=(P.face>0&&I.r)||(P.face<0&&I.l),back=(P.face>0&&I.l)||(P.face<0&&I.r);
+        bdLaunch(R,i,air&&high&&nearNet?'smash':toward?'drop':back?'clear':Math.random()<.25?'drop':'clear')}}
+    Object.assign(Pv,I)});
+  /* shuttle */
+  if(S.held){const P=R.p[S.by];S.x=P.x+P.face*.85;S.y=P.y+.95}
+  else if(S.live){const ox=S.x;S.vy-=BD.G*dt;S.x+=S.vx*dt;S.y+=S.vy*dt;S.trail.push([S.x,S.y]);if(S.trail.length>10)S.trail.shift();
+    if((ox-BD.NET)*(S.x-BD.NET)<=0&&S.y<BD.NH){S.x=BD.NET-Math.sign(S.vx)*.06;S.vx=-S.vx*.12;S.vy=Math.min(S.vy,0);S.net=1;bdEmit(R,['net'])}
+    if(S.y<=0){S.y=0;S.live=false;const inCourt=S.x>=-.05&&S.x<=BD.CW+.05,net=S.net;let win;
+      if(net||!inCourt)win=1-S.by;else win=S.x<BD.NET?1:0;S.net=0;bdPoint(R,win,net?'Net!':!inCourt?'Out!':'')}}
+}
+function bdPoint(R,w,why){R.sc[w]++;R.nextServer=w;R.state='point';R.stateT=1.5;const [a,b]=R.sc;
+  R.over=(Math.max(a,b)>=BD.TO&&Math.abs(a-b)>=2)||Math.max(a,b)>=BD.CAP;bdEmit(R,['pt',w,why,R.rally])}
+function bdAI(R,dt){const ai=R.ai,P=R.p[1],S=R.sh,I=R.inp[1];ai.t-=dt;
+  if(R.state==='serve'&&R.server===1){I.l=I.r=0;if(R.stateT>0){R.stateT-=dt;I.s=0}else I.s=1;return}
+  I.s=0;I.j=0;
+  /* where will the shuttle come down on my side? */
+  let tx=BD.CW-2.6;if(S.live&&S.by===0&&S.vx>0){let x=S.x,y=S.y,vx=S.vx,vy=S.vy;for(let k=0;k<200&&y>1.5;k++){vy-=BD.G/60;x+=vx/60;y+=vy/60}tx=x+.45;if(ai.miss==null)ai.miss=Math.random()<clamp(.22+(R.sc[1]-R.sc[0])*.05-Math.min(R.rally,12)*.005,.07,.6)}
+  else ai.miss=null;
+  tx=clamp(tx,BD.NET+.5,BD.CW-.4);if(ai.t<=0){ai.tx=tx+(Math.random()-.5)*.3;ai.t=.12}
+  const dx=ai.tx-P.x;I.l=dx<-.15?1:0;I.r=dx>.15?1:0;
+  if(S.live&&S.by===0&&!ai.miss){const d=Math.hypot(S.x-(P.x-.45),S.y-(P.y+1.75));if(S.y>2.6&&Math.abs(S.x-BD.NET)<4&&d<2.4&&P.y===0&&Math.random()<.04)I.j=1;if(d<1.15&&P.st!=='sw')I.s=1}}
+function bdSnap(R){const f=v=>+v.toFixed(2),S=R.sh;return{t:'bd',p:R.p.map(q=>[f(q.x),f(q.y),q.st,f(q.stT)]),s:[f(S.x),f(S.y),S.held?1:0,S.by],sc:R.sc,st:R.state,sv:R.server,ev:R.ev}}
+function bdData(m){const R=GAME&&GAME.bad;if(!R)return false;
+  if(m.t==='in'&&R.mode==='host'){Object.assign(R.inp[1],m.k);if(m.tap)R.tap[1][m.tap]=1;return true}
+  if(m.t==='bd'&&R.mode==='guest'){R.sc=m.sc;R.state=m.st;R.server=m.sv;m.p.forEach((q,i)=>Object.assign(R.p[i],{tx:q[0],ty:q[1],st:q[2],stT:q[3]}));
+    const S=R.sh;S.tx=m.s[0];S.ty=m.s[1];S.held=m.s[2];S.by=m.s[3];(m.ev||[]).forEach(e=>bdLocalEvent(R,e));return true}
+  if(m.t==='re'){bdRematch(true);return true}
+  if(m.t==='rq'&&R.mode==='host'){bdRematch();return true}
+  return false}
+function bdGuestTick(R){R.p.forEach(p=>{if(p.tx==null)return;p.x+=(p.tx-p.x)*.45;p.y+=(p.ty-p.y)*.45});const S=R.sh;if(S.tx!=null){const ox=S.x,oy=S.y;S.x+=(S.tx-S.x)*.5;S.y+=(S.ty-S.y)*.5;if(!S.held){S.trail.push([S.x,S.y]);if(S.trail.length>10)S.trail.shift()}else S.trail=[];S.vx=(S.x-ox)*60;S.vy=(S.y-oy)*60}}
+function bdLocalEvent(R,e){const c=e[0];
+  if(c==='hit'){beep(e[2]==='smash'?240:620,.06,e[2]==='smash'?'square':'triangle',.06);if(e[2]==='smash'){R.shake=.2;R.fx.push({t:0,x:R.p[e[1]].x,y:R.p[e[1]].y+2.3,txt:'SMASH!'})}}
+  else if(c==='sw'){beep(900,.025,'sine',.02)}
+  else if(c==='net'){beep(160,.12,'sawtooth',.05)}
+  else if(c==='pt'){const w=e[1];R.banner={t:`${e[2]?e[2]+' ':''}Point ${R.names[w]}!${e[3]>=8?` (${e[3]}-shot rally!)`:''}`,at:performance.now()};beep(w===((R.mode==='guest')?1:0)||R.mode==='local'?660:300,.18,'triangle',.06);R.sh.trail=[]}
+  else if(c==='end'){const w=e[1],mine=R.mode==='local'||(R.mode!=='guest'&&w===0)||(R.mode==='guest'&&w===1);if(mine){sWin();confetti(90)}else sBad();setTimeout(()=>bdOver(R,w),700)}}
+function bdOver(R,w){if(!GAME||GAME.bad!==R||$('.gover'))return;const ov=document.createElement('div');ov.className='gover';
+  ov.innerHTML=`<div class="card center pop"><div style="font-size:56px">🏸🏆</div><h2>${esc(R.names[w])} wins ${R.sc[w]}–${R.sc[1-w]}!</h2><p class="muted">Badminton champion of the Duel Table.</p>
+    <div class="row"><button class="btn" style="flex:1" onclick="bdRematch()">↻ Rematch</button><button class="btn ghost" style="flex:1" onclick="duelExit()">Leave</button></div></div>`;const sh=$('.gshell');if(sh)sh.appendChild(ov)}
+function bdRematch(fromHost){const R=GAME&&GAME.bad;if(!R)return;if(R.mode==='guest'&&!fromHost){duSend({t:'rq'});return}
+  const ov=$('.gover');if(ov)ov.remove();R.sc=[0,0];R.over=false;bdResetRally(R,0);R.banner={t:'First to '+BD.TO+' — serve!',at:performance.now()};if(R.mode==='host')duSend({t:'re'})}
+function bdCourt(g,R){if(R.bg&&R.bg.w===g.W&&R.bg.h===g.H)return R.bg.c;const c=document.createElement('canvas'),dpr=window.devicePixelRatio||1;c.width=g.W*dpr;c.height=g.H*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);const W=g.W,H=g.H,u=R.u,F=R.floor,ox=R.ox;
+  let gr=x.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#bfe4ff');gr.addColorStop(.55,'#e8f5ff');gr.addColorStop(1,'#cfe7d8');x.fillStyle=gr;x.fillRect(0,0,W,H);
+  /* sports hall: wall panels, windows and bunting */
+  x.fillStyle='#ffffff55';for(let i=0;i<7;i++){rr(x,W*(i/7)+8,H*.08,W/7-16,H*.2,10);x.fill()}
+  for(let i=0;i<18;i++){x.fillStyle=['#f87171','#facc15','#60a5fa','#34d399'][i%4];const bx=i*W/18;x.beginPath();x.moveTo(bx,H*.035);x.lineTo(bx+W/36,H*.075);x.lineTo(bx+W/18,H*.035);x.fill()}
+  x.strokeStyle='#ffffff99';x.lineWidth=2;x.beginPath();x.moveTo(0,H*.035);x.lineTo(W,H*.035);x.stroke();
+  /* floor in perspective */
+  gr=x.createLinearGradient(0,F-u*.6,0,H);gr.addColorStop(0,'#3aa776');gr.addColorStop(1,'#1f7a55');x.fillStyle=gr;x.beginPath();x.moveTo(ox-u*.6,F-u*.55);x.lineTo(ox+BD.CW*u+u*.6,F-u*.55);x.lineTo(W,H);x.lineTo(0,H);x.closePath();x.fill();
+  x.strokeStyle='#f8fafc';x.lineWidth=3;x.beginPath();x.moveTo(ox,F-u*.4);x.lineTo(ox+BD.CW*u,F-u*.4);x.moveTo(ox-u*.3,F+u*.25);x.lineTo(ox+BD.CW*u+u*.3,F+u*.25);x.moveTo(ox,F-u*.4);x.lineTo(ox-u*.3,F+u*.25);x.moveTo(ox+BD.CW*u,F-u*.4);x.lineTo(ox+BD.CW*u+u*.3,F+u*.25);
+  [2,BD.CW-2].forEach(k=>{x.moveTo(ox+k*u,F-u*.4);x.lineTo(ox+k*u+(k<6?-u*.05:u*.05),F+u*.25)});x.stroke();
+  /* net */
+  const nx=ox+BD.NET*u,top=F-BD.NH*u;x.fillStyle='#e5e7eb';x.fillRect(nx-3,top-4,6,BD.NH*u+4);x.fillStyle='#64748b';rr(x,nx-5,top-10,10,10,3);x.fill();
+  x.strokeStyle='#ffffffcc';x.lineWidth=1;for(let y=top;y<F-u*.15;y+=7){x.beginPath();x.moveTo(nx-u*.18,y);x.lineTo(nx+u*.18,y+3);x.stroke()}
+  x.fillStyle='#fff';x.fillRect(nx-u*.2,top,u*.4,5);
+  R.bg={w:W,h:H,c};return c}
+function bdDraw(g,R,now){const x=g.x,W=g.W,H=g.H,u=R.u,F=R.floor,ox=R.ox,A=toyStamps(),sx=v=>ox+v*u,sy=v=>F-v*u;x.save();if(R.shake>0){R.shake-=1/60;x.translate((Math.random()-.5)*10*R.shake,(Math.random()-.5)*6*R.shake)}
+  x.drawImage(bdCourt(g,R),0,0,W,H);
+  /* players with rackets */
+  R.p.forEach((P,i)=>{const row={bunny:0,robo:1,dino:2,cat:3}[P.id]||0,swing=P.st==='sw',run=Math.abs(P.vx||0)>.5&&P.y<.05,X=sx(P.x),Y=sy(P.y);
+    x.drawImage(A.shadow,X-u*.6,F-u*.05,u*1.2,u*.28);x.save();x.translate(X,Y);x.scale(P.face,1);
+    /* racket arc: ready behind head, sweeps over the top when swinging */
+    const a=swing?-2.3+Math.min(1,P.stT/.2)*3.1:-2.15+Math.sin(now/300+i)*.08;x.save();x.translate(u*.25,-u*1.35);x.rotate(a);
+    x.strokeStyle='#475569';x.lineWidth=Math.max(2,u*.06);x.beginPath();x.moveTo(0,0);x.lineTo(u*.7,0);x.stroke();x.fillStyle='#ffffff99';x.strokeStyle=['#ef4444','#2563eb','#16a34a','#d97706'][row];x.lineWidth=Math.max(2,u*.055);x.beginPath();x.ellipse(u*.98,0,u*.3,u*.22,0,0,7);x.fill();x.stroke();
+    x.strokeStyle='#94a3b8';x.lineWidth=1;for(let k=-2;k<=2;k++){x.beginPath();x.moveTo(u*.98+k*u*.1,-u*.2);x.lineTo(u*.98+k*u*.1,u*.2);x.stroke()}x.restore();
+    toyCell(x,'fighters',row*4+(swing?1:0),-u*1.15,-u*2.3-(run?Math.abs(Math.sin(now/80))*u*.04:0),u*2.3,u*2.3);x.restore()});
+  /* shuttlecock */
+  const S=R.sh;S.trail.forEach((t,k)=>{x.globalAlpha=k/S.trail.length*.35;x.fillStyle='#fff';x.beginPath();x.arc(sx(t[0]),sy(t[1]),u*.06,0,7);x.fill()});x.globalAlpha=1;
+  x.drawImage(A.shadow,sx(S.x)-u*.18,F-u*.03,u*.36,u*.1);
+  const ang=S.held?(R.p[S.by]?.face>0?0:Math.PI):Math.atan2(-(S.vy||0),S.vx||1);x.save();x.translate(sx(S.x),sy(S.y));x.rotate(ang);x.scale(1.35,1.35);
+  x.fillStyle='#fff';x.strokeStyle='#cbd5e1';x.lineWidth=1.5;x.beginPath();x.moveTo(u*.06,-u*.07);x.lineTo(-u*.28,-u*.16);x.lineTo(-u*.28,u*.16);x.lineTo(u*.06,u*.07);x.closePath();x.fill();x.stroke();
+  x.strokeStyle='#e2e8f0';x.beginPath();x.moveTo(u*.04,0);x.lineTo(-u*.28,0);x.stroke();x.fillStyle='#f59e0b';x.beginPath();x.arc(u*.1,0,u*.085,0,7);x.fill();x.restore();
+  R.fx=R.fx.filter(q=>(q.t+=1/60)<.8);R.fx.forEach(q=>{x.globalAlpha=1-q.t/.8;x.font=`700 ${Math.round(u*.5)}px Fredoka,sans-serif`;x.textAlign='center';x.lineWidth=4;x.strokeStyle='#1e3a5f';x.strokeText(q.txt,sx(q.x),sy(q.y)-q.t*u*.6);x.fillStyle='#fff1ba';x.fillText(q.txt,sx(q.x),sy(q.y)-q.t*u*.6);x.globalAlpha=1});
+  x.restore();
+  /* scoreboard */
+  const bw=Math.min(W*.34,300);[0,1].forEach(i=>{const L=i===0,bx=L?12:W-12-bw,c=BRAWLERS[R.ids[i]];toyPanel(x,bx,8,bw,50,'#fff2d3',15);toyPanel(x,L?bx+bw-62:bx+6,12,56,42,c.dark,12);
+    x.fillStyle='#fff';x.font='700 26px Fredoka,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(R.sc[i],L?bx+bw-34:bx+34,34);
+    x.fillStyle='#284f65';x.font='700 14px Fredoka,sans-serif';x.textAlign=L?'left':'right';x.fillText((R.server===i&&R.state!=='done'?'🏸 ':'')+R.names[i],L?bx+12:bx+bw-12,34)});
+  x.fillStyle='#284f65';x.font='700 11px Fredoka,sans-serif';x.textAlign='center';x.fillText('FIRST TO '+BD.TO,W/2,22);
+  if(R.state==='serve'){const sv=R.server,mine=R.mode==='local'||(R.mode==='guest'?sv===1:sv===0&&R.mode!=='robot')||(R.mode==='robot'&&sv===0);if(mine){x.font='700 15px Fredoka,sans-serif';x.fillStyle='#1e3a5f';x.fillText(R.mode==='local'?`${R.names[sv]}: tap SWING to serve`:'Tap SWING to serve',W/2,F+u*.9)}}
+  const lab={l:'◀',r:'▶',j:'JUMP',s:'SWING'};(R.pads||[]).forEach(pd=>{const I=R.inp[pd.pl];Object.entries(pd.btn).forEach(([k,b])=>toyButton(x,b,lab[k],I[k],{s:'#cf6b82',j:'#d4a04b'}[k]||'#458a9d'))});
+  if(R.mode==='local'){x.font='700 12px Fredoka,sans-serif';x.fillStyle='#284f65';x.textAlign='left';x.fillText(R.names[0],12,H-8);x.textAlign='right';x.fillText(R.names[1],W-12,H-8)}
+  if(R.banner&&now-R.banner.at<1700){const e=(now-R.banner.at)/1000;toyBanner(x,W,H*.3,R.banner.t,e>1.3?(1.7-e)/.4:1,e<.2?.5+e*2.5:1)}
+  if(R.lost){x.fillStyle='#102443dd';x.fillRect(0,0,W,H);x.fillStyle='#fff';x.textAlign='center';x.font='700 22px Fredoka,sans-serif';x.fillText('The other iPad disconnected',W/2,H/2-12);x.font='16px Fredoka,sans-serif';x.fillText('Tap ✕ to leave',W/2,H/2+20)}}
+function bdRobot(){if(!duelPay())return;bdStart('robot',{a:cur().name})}
+ARCADE_HELP.bad=['◀ ▶ move, JUMP, and SWING when the shuttle reaches you.','Hold ▶ toward the net while swinging for a drop shot, ◀ for a deep clear. Jump and swing near the net to SMASH!'];
+
+/* ============ COCONUT CLIMB — climb the bamboo tower, dodge rolling coconuts, rescue Peep ============ */
+const CC={W:14,H:17.2};
+const CC_G=[ /* bamboo platforms: [x0,x1,base,slope,downhill dir] — coconuts roll downhill */
+  [0,14,.5,.25,-1],[0,12.6,3.2,.55,1],[1.4,14,5.9,.55,-1],[0,12.6,8.6,.55,1],[1.4,14,11.3,.55,-1],[0,8.2,14,.35,1]];
+const CC_L=[[0,11.6],[0,5.4],[1,2.4],[1,8.2],[2,10.6],[2,5.2],[3,3],[3,9],[4,6.6]]; /* [lower platform, x] */
+function ccY(i,x){const [x0,x1,b,s,d]=CC_G[i],t=clamp((x-x0)/(x1-x0),0,1);return b+s*(d>0?1-t:t)}
+function gClimb(){
+  const g=shell('climb','🥥 Coconut Climb',''),hero=BRAWL_ME||'bunny';
+  const K=g.cc={lv:1,lives:3,score:0,keys:{l:0,r:0,u:0,d:0,j:0},kb:{},ptr:new Map(),fx:[],nuts:[],t:0,last:performance.now(),banner:null,hero};
+  const fit=()=>{const a=$('#garea');if(!a)return;const r=a.getBoundingClientRect(),dpr=window.devicePixelRatio||1;g.c.width=r.width*dpr;g.c.height=r.height*dpr;g.c.style.width=r.width+'px';g.c.style.height=r.height+'px';g.x.setTransform(dpr,0,0,dpr,0,0);g.W=r.width;g.H=r.height;
+    const W=g.W,H=g.H,land=W>H*1.15,b=Math.max(30,Math.min(46,Math.min(W,H)*.07));
+    if(land){const side=b*5;K.u=Math.min((W-side*2)/CC.W,(H-16)/CC.H);K.ox=(W-CC.W*K.u)/2;K.oy=H-8}
+    else{const ctl=b*5.2;K.u=Math.min((W-12)/CC.W,(H-ctl-10)/CC.H);K.ox=(W-CC.W*K.u)/2;K.oy=H-ctl}
+    K.btn={u:{x:b*2.4,y:H-b*3.5,r:b*.85},d:{x:b*2.4,y:H-b*1.15,r:b*.85},l:{x:b*1.15,y:H-b*2.32,r:b*.85},r:{x:b*3.65,y:H-b*2.32,r:b*.85},j:{x:W-b*1.6,y:H-b*1.9,r:b*1.15}};K.bg=null};
+  fit();const onR=()=>{if(GAME===g)fit()};window.addEventListener('resize',onR);
+  const refresh=()=>{const s={l:0,r:0,u:0,d:0,j:0};K.ptr.forEach(k=>s[k]=1);for(const k in s)K.keys[k]=s[k]||K.kb[k]||0};
+  const key=e=>{const m={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d',' ':'j',z:'j',x:'j'}[e.key];if(!m)return;e.preventDefault();K.kb[m]=e.type==='keydown'?1:0;refresh()};
+  window.addEventListener('keydown',key);window.addEventListener('keyup',key);g.offResize=()=>{window.removeEventListener('resize',onR);window.removeEventListener('keydown',key);window.removeEventListener('keyup',key)};
+  g.c.style.touchAction='none';const pos=e=>{const r=g.c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  const which=q=>{let best=null,bd=1e9;for(const [k,b] of Object.entries(K.btn)){const d=Math.hypot(q.x-b.x,q.y-b.y);if(d<b.r*1.5&&d<bd){bd=d;best=k}}if(best)return best;return q.x>g.W*.6?'j':null};
+  g.c.addEventListener('pointerdown',e=>{const k=which(pos(e));if(!k)return;K.ptr.set(e.pointerId,k);try{g.c.setPointerCapture(e.pointerId)}catch(_){}refresh()});
+  g.c.addEventListener('pointermove',e=>{const o=K.ptr.get(e.pointerId);if(!o||o==='j')return;const k=which(pos(e));if(k&&k!=='j'&&k!==o){K.ptr.set(e.pointerId,k);refresh()}});
+  const up=e=>{K.ptr.delete(e.pointerId);refresh()};g.c.addEventListener('pointerup',up);g.c.addEventListener('pointercancel',up);
+  const startLevel=()=>{Object.assign(K,{nuts:[],throwT:1.6,bonus:2500+K.lv*500,bonusT:0,hammers:[{gi:1,x:4.2},{gi:3,x:10.5}],hammer:0,dying:0,won:0,crab:0});
+    K.pl={gi:0,x:1.2,y:ccY(0,1.2),vy:0,vx:0,st:'walk',face:1,L:null,walkT:0};K.banner={t:`Tower ${K.lv} — rescue Peep!`,at:K.t}};
+  const loseLife=why=>{if(K.dying||K.god)return;K.dying=1.3;beep(220,.3,'square',.06);setTimeout(()=>beep(150,.45,'square',.06),200);K.lives--;K.banner={t:why,at:K.t}};
+  const addScore=(n,x,y,txt)=>{K.score+=n;setScore(K.score);K.fx.push({t:0,x,y,txt:txt||('+'+n)})};
+  startLevel();
+  const ladderAt=(gi,x,top)=>CC_L.find(([lo,lx])=>(top?lo===gi-1:lo===gi)&&Math.abs(x-lx)<.4);
+  const step=dt=>{K.t+=dt;
+    if(K.dying){K.dying-=dt;if(K.dying<=0){K.dying=0;if(K.lives<=0){setScore(K.score);gameOver(`Tower ${K.lv} · ${K.score.toLocaleString('en-SG')} points`)}else startLevel()}return}
+    if(K.won){K.won-=dt;if(K.won<=0){K.won=0;K.lv++;startLevel()}return}const P=K.pl,keys=K.keys,spd=3.1,lv=K.lv;
+    K.bonusT+=dt;if(K.bonusT>=1.5){K.bonusT=0;K.bonus=Math.max(0,K.bonus-100);if(!K.bonus)return loseLife("Time's up!")}
+    K.hammer=Math.max(0,K.hammer-dt);K.crab=Math.max(0,K.crab-dt);
+    const dir=(keys.r?1:0)-(keys.l?1:0);
+    if(P.st==='walk'){const [x0,x1]=CC_G[P.gi];if(dir){P.face=dir;P.walkT+=dt}P.x=clamp(P.x+dir*spd*dt,x0+.3,x1-.3);P.y=ccY(P.gi,P.x);
+      if(keys.u&&!K.hammer){const L=ladderAt(P.gi,P.x,false);if(L){P.st='climb';P.L=L;P.x=L[1]}}
+      if(P.st==='walk'&&keys.d&&!K.hammer){const L=ladderAt(P.gi,P.x,true);if(L){P.st='climb';P.L=L;P.x=L[1];P.y-=.05}}
+      if(P.st==='walk'&&keys.j&&!K.jHeld){P.st='jump';P.vy=7.1;P.vx=dir*spd;beep(520,.05,'triangle',.04)}}
+    else if(P.st==='climb'){const [lo,lx]=P.L,yb=ccY(lo,lx),yt=ccY(lo+1,lx),cd=(keys.u?1:0)-(keys.d?1:0);P.y+=cd*2.4*dt;if(cd)P.walkT+=dt;
+      if(P.y>=yt){P.st='walk';P.gi=lo+1;P.y=yt}else if(P.y<=yb){P.st='walk';P.gi=lo;P.y=yb}}
+    else if(P.st==='jump'){const [x0,x1]=CC_G[P.gi];P.vy-=19*dt;P.x=clamp(P.x+P.vx*dt,x0+.3,x1-.3);P.y+=P.vy*dt;const gy=ccY(P.gi,P.x);if(P.vy<0&&P.y<=gy){P.y=gy;P.st='walk'}}
+    K.jHeld=keys.j;
+    /* mallet pick-ups */
+    K.hammers=K.hammers.filter(h=>{if(P.gi===h.gi&&Math.abs(P.x-h.x)<.5&&P.st!=='climb'&&P.y-ccY(h.gi,h.x)<1.6){K.hammer=8;beep(880,.12,'triangle',.06);K.banner={t:'🔨 Coconut bonker! Smash them!',at:K.t};return false}return true});
+    /* the grumpy crab throws coconuts */
+    K.throwT-=dt;if(K.throwT<=0){K.throwT=Math.max(1,3.1-(lv-1)*.3)+Math.random()*1.3;K.crab=.5;const fast=lv>=3&&Math.random()<.25;K.nuts.push({gi:5,x:2.2,y:ccY(5,2.2),st:'roll',v:(1.85+lv*.22)*(fast?1.35:1),fast,vy:0,rot:0,scored:false});beep(300,.08,'square',.04)}
+    const roll=c=>{const G=CC_G[c.gi];c.dir=G[4];c.x+=c.dir*c.v*dt;c.rot+=c.dir*c.v*dt*2.6;c.y=ccY(c.gi,c.x);
+      /* maybe drop down a ladder */
+      const L=CC_L.find(([lo,lx])=>lo===c.gi-1&&Math.abs(c.x-lx)<c.v*dt*.6+.02);if(L&&c.lastL!==L){c.lastL=L;const chase=P.gi<c.gi?.18:0;if(Math.random()<.06+lv*.05+chase){c.st='ladder';c.x=L[1];c.L=L;return}}
+      if((c.dir>0&&c.x>=G[1]-.05)||(c.dir<0&&c.x<=G[0]+.05)){if(c.gi===0)c.gone=true;else{c.st='fall';c.vy=0;c.x+=c.dir*.25}}};
+    K.nuts.forEach(c=>{
+      if(c.st==='roll')roll(c);
+      else if(c.st==='fall'){c.vy-=16*dt;c.y+=c.vy*dt;c.x+=c.dir*.6*dt;const t=c.gi-1,gy=ccY(t,c.x);if(c.y<=gy){c.gi=t;c.y=gy;c.st='roll';c.lastL=null;beep(140,.04,'sine',.03)}}
+      else if(c.st==='ladder'){c.y-=2.3*dt*(c.fast?1.3:1);const yb=ccY(c.L[0],c.L[1]);if(c.y<=yb){c.gi=c.L[0];c.y=yb;c.st='roll'}}
+      /* bump into the player? */
+      const dx=Math.abs(c.x-P.x),py=P.y,cy=c.y+.3;
+      if(!c.gone&&dx<.42&&py<c.y+.28&&cy<py+(P.st==='climb'?.8:1)){if(K.hammer){c.gone=true;addScore(300,c.x,c.y+.6,'BONK! +300');beep(200,.1,'square',.07)}else return loseLife('Bonked by a coconut!')}
+      if(!c.scored&&P.st==='jump'&&dx<.45&&c.y<P.y&&P.y-c.y<2){c.scored=true;addScore(100,P.x,P.y+1.4)}});
+    K.nuts=K.nuts.filter(c=>!c.gone);
+    /* rescued Peep */
+    if(P.gi===5&&P.x>=6.7&&P.st!=='climb'){K.won=2.2;const b=K.bonus;addScore(b,7.4,15.5,'RESCUED! +'+b);sWin();confetti(70);K.banner={t:`Peep is safe! +${b}`,at:K.t}}};
+  K.step=step;
+  const loop=now=>{if(g.dead)return;const dt=Math.min(.05,(now-K.last)/1000);K.last=now;if(!g.paused&&!g.over)step(dt);ccDraw(g,K,now);g.raf=requestAnimationFrame(loop)};
+  g.raf=requestAnimationFrame(loop);
+}
+function ccBack(g,K){if(K.bg&&K.bg.w===g.W&&K.bg.h===g.H)return K.bg.c;const c=document.createElement('canvas'),dpr=window.devicePixelRatio||1;c.width=g.W*dpr;c.height=g.H*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);const W=g.W,H=g.H,u=K.u,X=v=>K.ox+v*u,Y=v=>K.oy-v*u;
+  let gr=x.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#14532d');gr.addColorStop(.5,'#166534');gr.addColorStop(1,'#0f3d24');x.fillStyle=gr;x.fillRect(0,0,W,H);
+  x.fillStyle='#fef9c3';x.globalAlpha=.85;x.beginPath();x.arc(W*.82,H*.1,Math.min(W,H)*.06,0,7);x.fill();x.globalAlpha=1;
+  /* hanging vines and big leaves */
+  for(let i=0;i<9;i++){const vx=(i+.5)*W/9+Math.sin(i*3)*12;x.strokeStyle='#22c55e55';x.lineWidth=3;x.beginPath();x.moveTo(vx,0);x.quadraticCurveTo(vx+14,H*.2,vx-6,H*(.25+((i*37)%30)/100));x.stroke();
+    x.fillStyle='#4ade8040';x.beginPath();x.ellipse(vx-6,H*(.25+((i*37)%30)/100),8,14,.4,0,7);x.fill()}
+  for(let i=0;i<6;i++){x.fillStyle=i%2?'#15803d':'#16a34a';x.beginPath();x.ellipse((i/5)*W,H+10,W*.14,H*.12,0,0,7);x.fill()}
+  /* ladders */
+  CC_L.forEach(([lo,lx])=>{const yb=Y(ccY(lo,lx)),yt=Y(ccY(lo+1,lx)),hw=u*.32;x.strokeStyle='#92400e';x.lineWidth=Math.max(2,u*.09);x.beginPath();x.moveTo(X(lx)-hw,yb);x.lineTo(X(lx)-hw,yt);x.moveTo(X(lx)+hw,yb);x.lineTo(X(lx)+hw,yt);x.stroke();
+    x.strokeStyle='#d6a35c';x.lineWidth=Math.max(2,u*.08);for(let y=yb-u*.35;y>yt+u*.1;y-=u*.42){x.beginPath();x.moveTo(X(lx)-hw,y);x.lineTo(X(lx)+hw,y);x.stroke()}});
+  /* bamboo platforms */
+  CC_G.forEach(([x0,x1],i)=>{const th=u*.34;x.lineCap='round';x.strokeStyle='#5b4209';x.lineWidth=th+4;x.beginPath();x.moveTo(X(x0),Y(ccY(i,x0))+th/2);x.lineTo(X(x1),Y(ccY(i,x1))+th/2);x.stroke();
+    x.strokeStyle='#d4b34a';x.lineWidth=th;x.beginPath();x.moveTo(X(x0),Y(ccY(i,x0))+th/2);x.lineTo(X(x1),Y(ccY(i,x1))+th/2);x.stroke();
+    x.strokeStyle='#f6e08a';x.lineWidth=th*.25;x.beginPath();x.moveTo(X(x0),Y(ccY(i,x0))+th*.35);x.lineTo(X(x1),Y(ccY(i,x1))+th*.35);x.stroke();
+    x.strokeStyle='#8a6a14';x.lineWidth=2;for(let k=x0+.9;k<x1-.2;k+=1.3){const yy=Y(ccY(i,k));x.beginPath();x.moveTo(X(k),yy);x.lineTo(X(k),yy+th);x.stroke()}});
+  /* Peep's perch */
+  x.fillStyle='#a16207';rr(x,X(6.9),Y(ccY(5,7.6))-u*.1,u*1.2,u*.2,4);x.fill();
+  K.bg={w:W,h:H,c};return c}
+function ccCrab(x,cx,cy,u,throwing,now){x.save();x.translate(cx,cy);const bob=Math.sin(now/220)*u*.06;
+  /* legs */x.strokeStyle='#b91c1c';x.lineWidth=u*.14;x.lineCap='round';for(const s of [-1,1])for(let k=0;k<3;k++){x.beginPath();x.moveTo(s*u*.5,-u*.35);x.lineTo(s*u*(.95+k*.12),-u*(.05-k*.02));x.stroke()}
+  /* claws */for(const s of [-1,1]){const up=throwing?-u*.9:-u*.45+Math.sin(now/300+s)*u*.08;x.strokeStyle='#dc2626';x.lineWidth=u*.16;x.beginPath();x.moveTo(s*u*.6,-u*.6+bob);x.lineTo(s*u*1.05,up-u*.5);x.stroke();
+    x.fillStyle='#ef4444';x.beginPath();x.ellipse(s*u*1.1,up-u*.7,u*.32,u*.22,s*.6,0,7);x.fill();x.fillStyle='#7f1d1d';x.beginPath();x.moveTo(s*u*1.1,up-u*.7);x.lineTo(s*u*1.42,up-u*.9);x.lineTo(s*u*1.36,up-u*.6);x.fill()}
+  /* body */const gr=x.createRadialGradient(-u*.2,-u*.9+bob,u*.1,0,-u*.7+bob,u*.9);gr.addColorStop(0,'#fca5a5');gr.addColorStop(1,'#dc2626');x.fillStyle=gr;x.beginPath();x.ellipse(0,-u*.65+bob,u*.85,u*.55,0,0,7);x.fill();
+  /* eyes on stalks with grumpy brows */for(const s of [-1,1]){x.strokeStyle='#b91c1c';x.lineWidth=u*.08;x.beginPath();x.moveTo(s*u*.25,-u*1.05+bob);x.lineTo(s*u*.3,-u*1.4+bob);x.stroke();x.fillStyle='#fff';x.beginPath();x.arc(s*u*.3,-u*1.48+bob,u*.17,0,7);x.fill();x.fillStyle='#111';x.beginPath();x.arc(s*u*.27,-u*1.46+bob,u*.08,0,7);x.fill();
+    x.strokeStyle='#450a0a';x.lineWidth=u*.07;x.beginPath();x.moveTo(s*u*.12,-u*1.72+bob);x.lineTo(s*u*.46,-u*1.6+bob);x.stroke()}
+  x.strokeStyle='#450a0a';x.lineWidth=u*.06;x.beginPath();x.arc(0,-u*.42+bob,u*.2,Math.PI*1.15,Math.PI*1.85);x.stroke();x.restore()}
+function ccNut(x,cx,cy,r,rot,fast){x.save();x.translate(cx,cy);x.rotate(rot);const gr=x.createRadialGradient(-r*.3,-r*.3,r*.1,0,0,r);gr.addColorStop(0,fast?'#a16207':'#a0632e');gr.addColorStop(1,fast?'#713f12':'#5b3416');x.fillStyle=gr;x.beginPath();x.arc(0,0,r,0,7);x.fill();
+  x.strokeStyle='#3b210c';x.lineWidth=1.5;for(let k=0;k<5;k++){const a=k*1.25;x.beginPath();x.moveTo(Math.cos(a)*r*.3,Math.sin(a)*r*.3);x.lineTo(Math.cos(a)*r*.9,Math.sin(a)*r*.9);x.stroke()}
+  x.fillStyle='#2a160a';[[0,-.35],[-.3,.2],[.3,.2]].forEach(([a,b])=>{x.beginPath();x.arc(a*r,b*r,r*.13,0,7);x.fill()});if(fast){x.strokeStyle='#fde04788';x.lineWidth=3;x.beginPath();x.arc(0,0,r+3,0,7);x.stroke()}x.restore()}
+function ccDraw(g,K,now){const x=g.x,W=g.W,H=g.H,u=K.u,X=v=>K.ox+v*u,Y=v=>K.oy-v*u,A=toyStamps(),P=K.pl;
+  x.drawImage(ccBack(g,K),0,0,W,H);
+  /* Peep the chick, calling for help */
+  const px=X(7.6),py=Y(ccY(5,7.6))-u*.1,hop=K.won?Math.abs(Math.sin(now/120))*u*.3:Math.abs(Math.sin(now/400))*u*.08;x.fillStyle='#fde047';x.beginPath();x.arc(px,py-u*.45-hop,u*.4,0,7);x.fill();x.fillStyle='#facc15';x.beginPath();x.ellipse(px+u*.25,py-u*.4-hop,u*.18,u*.12,-.5,0,7);x.fill();
+  x.fillStyle='#111';x.beginPath();x.arc(px-u*.12,py-u*.55-hop,u*.06,0,7);x.fill();x.fillStyle='#f97316';x.beginPath();x.moveTo(px-u*.38,py-u*.48-hop);x.lineTo(px-u*.58,py-u*.42-hop);x.lineTo(px-u*.38,py-u*.38-hop);x.fill();
+  if(!K.won&&Math.floor(now/900)%2===0){toyPanel(x,px-u*.9,py-u*1.65,u*1.5,u*.55,'#ffffff',8);x.fillStyle='#b91c1c';x.font=`700 ${Math.round(u*.32)}px Fredoka,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('Help!',px-u*.15,py-u*1.38)}
+  /* the crab */
+  ccCrab(x,X(1.3),Y(ccY(5,1.3)),u,K.crab>0,now);
+  /* mallets */
+  K.hammers.forEach(h=>{const hx=X(h.x),hy=Y(ccY(h.gi,h.x))-u*.7+Math.sin(now/250)*u*.08;x.font=`${Math.round(u*.8)}px sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('🔨',hx,hy)});
+  /* coconuts */
+  K.nuts.forEach(c=>ccNut(x,X(c.x),Y(c.y+.3),u*.32,c.rot,c.fast));
+  /* player */
+  if(!(K.dying&&Math.floor(now/90)%2)){const row={bunny:0,robo:1,dino:2,cat:3}[K.hero]||0,climb=P.st==='climb',bob=(P.st==='walk'&&(K.keys.l||K.keys.r))?Math.abs(Math.sin(P.walkT*12))*u*.08:0,sz=u*1.55;
+    x.drawImage(A.shadow,X(P.x)-u*.4,Y(ccY(P.st==='climb'?P.L[0]:P.gi,P.x))-u*.05,u*.8,u*.2);x.save();x.translate(X(P.x),Y(P.y));if(climb)x.rotate(Math.sin(P.walkT*10)*.12);x.scale(climb?1:P.face,1);
+    toyCell(x,'fighters',row*4+(K.hammer?1:0),-sz/2,-sz-bob,sz,sz);x.restore();
+    if(K.hammer){const a=Math.sin(now/70)*1.2;x.save();x.translate(X(P.x)+P.face*u*.2,Y(P.y)-u*1.1);x.rotate(P.face*a);x.font=`${Math.round(u*.75)}px sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('🔨',0,-u*.55);x.restore()}}
+  K.fx=K.fx.filter(q=>(q.t+=1/60)<1);K.fx.forEach(q=>{x.globalAlpha=1-q.t;x.font=`700 ${Math.round(u*.42)}px Fredoka,sans-serif`;x.textAlign='center';x.lineWidth=4;x.strokeStyle='#14532d';x.strokeText(q.txt,X(q.x),Y(q.y)-q.t*u);x.fillStyle='#fef08a';x.fillText(q.txt,X(q.x),Y(q.y)-q.t*u);x.globalAlpha=1});
+  /* HUD */
+  toyPanel(x,10,8,Math.min(W-20,330),40,'#fff2d3',13);x.fillStyle='#284f65';x.font='700 15px Fredoka,sans-serif';x.textAlign='left';x.textBaseline='middle';
+  x.fillText(`Tower ${K.lv}   ${'❤️'.repeat(Math.max(0,K.lives))}   ⏱ ${K.bonus}${K.hammer?'   🔨'+Math.ceil(K.hammer):''}`,22,28);
+  const lab={l:'◀',r:'▶',u:'▲',d:'▼',j:'JUMP'};Object.entries(K.btn).forEach(([k,b])=>toyButton(x,b,lab[k],K.keys[k],k==='j'?'#cf6b82':'#458a9d'));
+  if(K.banner&&K.t-K.banner.at<1.8){const e=K.t-K.banner.at;toyBanner(x,W,H*.42,K.banner.t,e>1.4?(1.8-e)/.4:1,e<.2?.5+e*2.5:1)}}
+GAMES.push({id:'climb',name:()=>'Coconut Climb',icon:()=>'🥥',desc:()=>'Climb the bamboo tower and rescue Peep the chick! Jump over the coconuts King Crabby rolls down — grab a 🔨 to bonk them.',need:{}});
+ARCADE_META.climb=['CLIMB & JUMP','#16a34a'];
+ARCADE_HELP.climb=['◀ ▶ walk, ▲ ▼ climb ladders, JUMP over coconuts (+100 each).','Grab a 🔨 to bonk coconuts for 8 seconds. Reach Peep at the top before the timer runs out!'];
+const _playGameC=playGame;
+playGame=function(id){if(id!=='climb')return _playGameC(id);const p=cur();if(!p.unlockAll&&noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}if(!p.unlockAll)chargeGame(p);save();gClimb()};
 
 /* ============ Number Crossword (special maths level) ============ */
 const XN_NEED=5; /* maths stars needed to open it */
