@@ -585,6 +585,13 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .xn-panel{padding:14px 10px}
 .node.xn .dot{background:radial-gradient(circle at 35% 30%,#fff7c2,#fbbf24 60%,#d97706);box-shadow:0 0 0 5px #fde68a,0 0 24px #fbbf24}
 .node.xn .lbl{background:#fde68a}
+.xn-badges{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
+.ws-grid{position:relative;display:grid;user-select:none;-webkit-user-select:none;touch-action:none;background:#fff;border-radius:14px;box-shadow:0 0 0 3px #1f2a44 inset}
+.ws-c{position:relative;z-index:1;display:grid;place-items:center;font-weight:800;color:#1f2a44;pointer-events:none}
+.ws-lines{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ws-words{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}
+.ws-words span{padding:5px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:800;font-size:14px;letter-spacing:.5px}
+.ws-words span.got{text-decoration:line-through;color:#1f2a44;opacity:.75}
 .xn-card.lock{filter:grayscale(.75);opacity:.8}
 .xn-wrap{display:flex;justify-content:center;padding:4px 0 10px;overflow:auto}
 .xn-grid{display:grid;gap:3px;touch-action:manipulation}
@@ -2234,14 +2241,13 @@ function map(){if(Q&&!Q.dead)killQuiz();
    <div class="row wrap" style="margin-bottom:10px">
      <span class="chip" style="background:${better(p,a)?'#22c55e':'rgba(255,255,255,.18)'}">🧠 ${stAge(p,st)} ${a??'?'}</span>
      <span class="chip">⭐ ${starsIn(p,sid)}/${STARS_PER_STAGE}</span><span class="chip">${SEASON.icon} ${SEASON.name}</span></div>
-   ${sid==='maths'?xnCard(p):''}
+   ${spCard(p,sid)}
    <div class="mapwrap"><div class="map" style="height:${H}px">${startBand}${bands}<button class="soonband" onclick="soonSheet('ch4')"><span>🔒</span><b>Chapter 4 · coming soon</b><small>Harder levels and a new boss for ${esc(st.subj)}</small></button>
      <svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="22" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${d}" fill="none" stroke="${SKIN.road[0]}" stroke-width="16" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".95"/>
      <path d="${d}" fill="none" stroke="${SKIN.road[1]}" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" vector-effect="non-scaling-stroke" class="dash"/></svg>
      ${decos}
      ${heads.map(h=>`<div class="chhead" style="top:${Y(h.y)-24}px"><span>Chapter ${h.c+1}</span>${st.chapters[h.c].name}${bossWon(p,sid,h.c)?' 🏆':''}</div>`).join('')}
-     ${sid==='maths'?(()=>{const bi=nodes.findIndex(n=>n.t==='boss');if(bi<0)return'';const o=xnOpen(p),w=(p.badges||[]).includes('crossnum');
-       return `<div class="node xn ${o?'':'locked'}" style="left:${pos[bi].x>50?24:76}%;top:${Y(pos[bi].y)+20}px" onclick="${o?'xnStart()':`miniToast('🔒 Collect ${XN_NEED} maths stars to open the Number Crossword')`}"><div class="dot">🧩${o?'':'<span class="lk">🔒</span>'}${w?'<span class="won">🏅</span>':''}</div><div class="lbl">SPECIAL · Number Crossword</div></div>`})():''}
+     ${spNode(p,sid,nodes,pos,Y)}
      ${nodes.map((n,i)=>{const ok=unlockedN(p,sid,n),done=doneN(p,sid,n),nm=nodeName(st,n),stv=n.t==='lvl'?sub(p,sid).stars[n.c*NLV+n.l]:0;
        return `<div class="node ${n.t==='boss'?'boss':''} ${n.t==='test'?'test':''} ${ok?'':'locked'} ${done?'done':''} ${i===nextI?'next':''}" id="node${i}" style="left:${pos[i].x}%;top:${Y(pos[i].y)}px" onclick="tapNode(${i})">
          <div class="dot">${nm[0]}${ok?'':'<span class="lk">🔒</span>'}${n.t==='boss'&&done?'<span class="won">🏆</span>':''}</div>
@@ -4899,9 +4905,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.6';
+const APP_VERSION='4.7';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+  ['4.7','New special level in Word Woods: 🔎 Word Search — 12 themes, a fresh grid every time, sized to your reading level. Both special levels now have a badge ladder to collect (7 for the Number Crossword, 8 for Word Search): play more, play faster, play without hints and keep a 3-day streak.'],
   ['4.6','Two new games! 🏸 Badminton on the Duel Table — play a robot, share one iPad, or use two iPads; jump and swing near the net to SMASH. 🥥 Coconut Climb in the Arcade — climb the bamboo tower, jump the coconuts King Crabby rolls down, grab a 🔨 to bonk them, and rescue Peep the chick.'],
   ['4.5','Fewer repeated questions: a question never comes back in the same round, and each child works through every question before seeing old ones again. Common Sense City has over 100 new questions plus new days, time and money puzzles. Working paper now has a proper eraser. Spelling works with an iPad keyboard — just type and press Enter (1–4 answers multiple choice too).'],
   ['4.4','New special level in Number Kingdom: the 🧩 Number Crossword. Fill in the missing numbers so every row and column adds up — a fresh puzzle every time, sized to your maths level. Solve one to win the Cross-Number Champ badge.'],
@@ -6506,10 +6513,135 @@ ARCADE_HELP.climb=['◀ ▶ walk, ▲ ▼ climb ladders, JUMP over coconuts (+10
 const _playGameC=playGame;
 playGame=function(id){if(id!=='climb')return _playGameC(id);const p=cur();if(!p.unlockAll&&noPlay(p)){miniToast(`Each game needs ${GAME_COST} 🪙 — you have ${p.tokens||0}. Earn stars in a level to get more!`);return}if(!p.unlockAll)chargeGame(p);save();gClimb()};
 
+/* ============ SPECIAL LEVELS — shared badge ladder (Number Crossword, Word Search) ============ */
+const SPECIALS={
+  xn:{stage:'maths',icon:'🧩',name:'Number Crossword',need:5,start:()=>xnStart(),noun:'puzzle',
+    badges:[['crossnum','🧩','Cross-Number Champ','Solve your first Number Crossword',s=>s.done>=1],
+      ['xn5','🥉','Puzzle Pro','Solve 5 Number Crosswords',s=>s.done>=5],
+      ['xn15','🥈','Puzzle Master','Solve 15 Number Crosswords',s=>s.done>=15],
+      ['xn30','🏆','Puzzle Legend','Solve 30 Number Crosswords',s=>s.done>=30],
+      ['xnperfect','🎯','Perfect Grid','Solve a crossword with no mistakes and no hints',(s,r)=>r&&!r.mistakes&&!r.hints],
+      ['xnfast','⚡','Speedy Sums','Solve a crossword in under 3 minutes without hints',(s,r)=>r&&r.secs<180&&!r.hints],
+      ['xnstreak','🔥','Puzzle Streak','Solve a crossword 3 days in a row',s=>spStreak(s)>=3]]},
+  ws:{stage:'lang',icon:'🔎',name:'Word Search',need:5,start:()=>wsStart(),noun:'search',
+    badges:[['ws1','🔎','Word Detective','Finish your first Word Search',s=>s.done>=1],
+      ['ws5','🥉','Word Hunter','Finish 5 Word Searches',s=>s.done>=5],
+      ['ws15','🥈','Word Explorer','Finish 15 Word Searches',s=>s.done>=15],
+      ['ws30','🏆','Word Legend','Finish 30 Word Searches',s=>s.done>=30],
+      ['wseagle','🦅','Eagle Eye','Finish a Word Search without hints',(s,r)=>r&&!r.hints],
+      ['wsfast','⚡','Quick Finder','Finish a Word Search in under 2 minutes',(s,r)=>r&&r.secs<120],
+      ['wsthemes','🌈','Theme Collector','Finish Word Searches in 5 different themes',s=>(s.themes||[]).length>=5],
+      ['wsstreak','🔥','Search Streak','Finish a Word Search 3 days in a row',s=>spStreak(s)>=3]]}};
+const SPECIAL_BY_STAGE={maths:'xn',lang:'ws'};
+Object.values(SPECIALS).forEach(S=>S.badges.forEach(([id,e,n,d])=>{if(!BADGES.find(b=>b.id===id))BADGES.push({id,e,n,d})}));
+function spStats(p,k){p.sp=p.sp||{};if(!p.sp[k]){p.sp[k]={done:k==='xn'?(p.xnDone||0):0,days:[],themes:[]}}return p.sp[k]}
+function spStreak(s){const d=new Set(s.days||[]);let n=0,t=new Date();for(;;){const k=t.toISOString().slice(0,10);if(!d.has(k))break;n++;t.setDate(t.getDate()-1)}return n}
+function spOpen(p,k){const S=SPECIALS[k];return p.unlockAll||starsIn(p,S.stage)>=S.need}
+function spHas(p,id){return (p.badges||[]).includes(id)}
+function spNext(p,k){const S=SPECIALS[k],s=spStats(p,k);for(const [id,e,n,d] of S.badges)if(!spHas(p,id))return{e,n,d};return null}
+function spRow(p,k,size){return SPECIALS[k].badges.map(([id,e,n])=>`<span title="${esc(n)}" style="font-size:${size||18}px;${spHas(p,id)?'':'filter:grayscale(1);opacity:.35'}">${e}</span>`).join('')}
+function spCard(p,sid){const k=SPECIAL_BY_STAGE[sid];if(!k)return'';const S=SPECIALS[k],open=spOpen(p,k),s=spStats(p,k),got=S.badges.filter(b=>spHas(p,b[0])).length,nx=spNext(p,k);
+  return `<button class="xn-card ${open?'':'lock'}" onclick="${open?`SPECIALS.${k}.start()`:`miniToast('🔒 Collect ${S.need} stars here to open the ${S.name}')`}"><span class="xi">${S.icon}</span>
+   <span><b>Special level · ${S.name}</b><small>${open?(s.done?`Done ${s.done}× · 🏅 ${got}/${S.badges.length} badges${nx?` · Next: ${nx.e} ${esc(nx.n)}`:' · All badges won!'}`:`New ${S.noun} every time · ${S.badges.length} badges to collect`):`Collect ${S.need} stars to open · ${starsIn(p,S.stage)}/${S.need}`}</small>
+   <span class="xn-badges">${spRow(p,k,16)}</span></span><span class="go">${open?'Play ▶':'🔒'}</span></button>`}
+function spNode(p,sid,nodes,pos,Y){const k=SPECIAL_BY_STAGE[sid];if(!k)return'';const S=SPECIALS[k],bi=nodes.findIndex(n=>n.t==='boss');if(bi<0)return'';const o=spOpen(p,k),got=S.badges.filter(b=>spHas(p,b[0])).length;
+  return `<div class="node xn ${o?'':'locked'}" style="left:${pos[bi].x>50?24:76}%;top:${Y(pos[bi].y)+20}px" onclick="${o?`SPECIALS.${k}.start()`:`miniToast('🔒 Collect ${S.need} stars here to open the ${S.name}')`}"><div class="dot">${S.icon}${o?'':'<span class="lk">🔒</span>'}${got?`<span class="won">🏅${got>1?got:''}</span>`:''}</div><div class="lbl">SPECIAL · ${S.name}</div></div>`}
+/* record a finished run, award every badge it earns, pay coins once a day, then show the result sheet */
+function spWin(k,p,run,again,quit){const S=SPECIALS[k],s=spStats(p,k),firstEver=!s.done;s.done++;if(k==='xn')p.xnDone=s.done;
+  const d=today();if(!s.days.includes(d))s.days=[...s.days,d].slice(-30);if(run.theme&&!s.themes.includes(run.theme))s.themes.push(run.theme);
+  const fresh=S.badges.filter(([id,,,,test])=>!spHas(p,id)&&test(s,run));fresh.forEach(([id])=>award(p,id));
+  let tok=0;if(s.paid!==d){s.paid=d;tok=firstEver?5:2;p.tokens=(p.tokens||0)+tok}
+  if(typeof learnRound==='function')learnRound(p);save();confetti(fresh.length?160:100);[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.15,'triangle',.08),i*110));
+  const nx=spNext(p,k),secs=run.secs;
+  setTimeout(()=>{document.getElementById('kqsheet')?.remove();const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
+    el.innerHTML=`<div class="card center pop" style="max-width:440px"><div style="font-size:56px">${S.icon}${fresh.length?'🏅':'🎉'}</div><h2>${fresh.length?(fresh.length>1?`${fresh.length} new badges!`:esc(fresh[0][2])+'!'):'Well done!'}</h2>
+     ${fresh.length?`<div style="display:grid;gap:8px;margin:10px 0">${fresh.map(([,e,n,dd])=>`<div class="row" style="gap:10px;align-items:center;text-align:left;background:#fff7d6;border-radius:14px;padding:8px 12px"><span style="font-size:30px">${e}</span><span><b>${esc(n)}</b><br><small class="muted">${esc(dd)}</small></span></div>`).join('')}</div>`:`<p>Another ${S.name} finished!</p>`}
+     <p class="muted small">⏱️ ${Math.floor(secs/60)}m ${secs%60}s${run.mistakes!=null?` · ${run.mistakes?run.mistakes+' wrong tr'+(run.mistakes>1?'ies':'y'):'no mistakes'}`:''}${run.hints?` · ${run.hints} hint${run.hints>1?'s':''}`:' · no hints'}${tok?` · +${tok} 🪙`:''}</p>
+     <div style="margin:6px 0 4px">${spRow(p,k,24)}</div>
+     <p class="small">${nx?`Next badge: <b>${nx.e} ${esc(nx.n)}</b> — ${esc(nx.d)}`:'🌟 You have every badge here!'}</p>
+     <div class="row"><button class="btn" style="flex:1" id="sp-again">Play again</button><button class="btn ghost" style="flex:1" id="sp-quit">Back to map</button></div></div>`;
+    document.body.appendChild(el);el.querySelector('#sp-again').onclick=()=>{el.remove();again()};el.querySelector('#sp-quit').onclick=()=>{el.remove();quit()}},900)}
+
+/* ============ WORD SEARCH (special language level) ============ */
+const WS_THEMES={
+  'Animals':'cat,dog,cow,pig,hen,fox,owl,bat,bee,ant,duck,frog,lion,bear,goat,seal,wolf,deer,mouse,horse,sheep,tiger,zebra,camel,panda,koala,whale,shark,eagle,parrot,rabbit,monkey,turtle,donkey,giraffe,penguin,dolphin,elephant,kangaroo,crocodile',
+  'Food':'egg,jam,pie,bun,rice,soup,cake,milk,pear,plum,bread,apple,mango,lemon,pizza,pasta,honey,grape,melon,noodle,banana,cheese,cookie,carrot,orange,butter,durian,biscuit,pancake,sandwich,broccoli,pineapple,dumpling',
+  'Ocean':'sea,sand,wave,fish,crab,ship,boat,reef,tide,shell,whale,coral,squid,beach,octopus,seaweed,dolphin,starfish,jellyfish,lighthouse,submarine,anchor,island,turtle,lobster',
+  'Space':'sun,moon,star,mars,rocket,comet,orbit,earth,planet,saturn,galaxy,meteor,jupiter,venus,alien,astronaut,telescope,gravity,crater,launch,eclipse,satellite',
+  'Weather':'sun,fog,hot,cold,wind,rain,snow,hail,storm,cloud,sunny,windy,rainy,frost,thunder,rainbow,lightning,drizzle,monsoon,breeze,weather,umbrella,forecast',
+  'School':'pen,book,desk,bag,ruler,chair,class,maths,paper,pencil,teacher,library,science,lesson,eraser,crayon,homework,playground,notebook,spelling,classroom,scissors',
+  'Sports':'run,swim,golf,ball,kick,goal,race,skate,bike,tennis,hockey,rugby,cricket,soccer,netball,badminton,football,swimming,cycling,medal,trophy,team,score',
+  'Body':'arm,leg,eye,ear,toe,lip,hand,foot,nose,knee,head,hair,neck,chin,mouth,thumb,elbow,teeth,tongue,finger,shoulder,stomach,eyebrow,ankle,wrist,heart,brain',
+  'Transport':'bus,car,van,cab,taxi,ship,boat,bike,train,plane,truck,lorry,ferry,tram,scooter,rocket,tractor,subway,bicycle,airplane,helicopter,ambulance,motorbike',
+  'Nature':'sky,leaf,tree,rock,hill,lake,pond,seed,bush,river,grass,stone,flower,forest,valley,desert,jungle,island,volcano,mountain,waterfall,blossom,meadow',
+  'Colours':'red,tan,blue,pink,gold,grey,green,black,white,brown,purple,orange,yellow,silver,violet,indigo,turquoise,maroon,crimson,scarlet',
+  'Music':'drum,song,band,harp,note,flute,piano,banjo,choir,cello,guitar,violin,rhythm,melody,trumpet,singer,concert,orchestra,microphone,xylophone'};
+const WS_DIRS={E:[0,1],S:[1,0],SE:[1,1],NE:[-1,1],W:[0,-1],N:[-1,0],NW:[-1,-1],SW:[1,-1]};
+let WS=null;
+function wsCfg(p){const a=Math.round(sub(p,'lang').ability??p.year??3);
+  if(a<=0)return{n:6,words:4,maxL:4,dirs:['E'],label:'Little searcher · across only'};
+  if(a===1)return{n:7,words:5,maxL:5,dirs:['E','S'],label:'Across and down'};
+  if(a<=3)return{n:9,words:7,maxL:7,dirs:['E','S','SE'],label:'Across, down and diagonal'};
+  if(a<=5)return{n:10,words:8,maxL:9,dirs:['E','S','SE','NE','W'],label:'Words can go backwards too!'};
+  return{n:12,words:10,maxL:11,dirs:Object.keys(WS_DIRS),label:'Any direction — even backwards'}}
+function wsBuild(cf,theme){const words0=WS_THEMES[theme].split(',').map(w=>w.toUpperCase()).filter(w=>w.length>=3&&w.length<=Math.min(cf.maxL,cf.n));
+  for(let att=0;att<60;att++){const G=Array.from({length:cf.n},()=>Array(cf.n).fill('')),placed=[];
+    /* longer words first so they fit, but mix sizes for variety */
+    const pool=shuffle(words0.slice()).slice(0,cf.words*3).sort((a,b)=>b.length-a.length);
+    for(const w of pool){if(placed.length>=cf.words)break;let ok=false;
+      for(let t=0;t<120&&!ok;t++){const d=pick(cf.dirs),[dr,dc]=WS_DIRS[d],r0=ri(0,cf.n-1),c0=ri(0,cf.n-1),r1=r0+dr*(w.length-1),c1=c0+dc*(w.length-1);
+        if(r1<0||r1>=cf.n||c1<0||c1>=cf.n)continue;let fit=true;
+        for(let i=0;i<w.length;i++){const ch=G[r0+dr*i][c0+dc*i];if(ch&&ch!==w[i]){fit=false;break}}
+        if(!fit)continue;for(let i=0;i<w.length;i++)G[r0+dr*i][c0+dc*i]=w[i];placed.push({w,r0,c0,r1,c1});ok=true}}
+    if(placed.length<cf.words)continue;
+    const AZ='ABCDEFGHIJKLMNOPRSTUWY';for(let r=0;r<cf.n;r++)for(let c=0;c<cf.n;c++)if(!G[r][c])G[r][c]=AZ[ri(0,AZ.length-1)];
+    return{G,placed:placed.sort((a,b)=>a.w.localeCompare(b.w))}}
+  return null}
+function wsStart(){const p=cur();if(!p)return;const cf=wsCfg(p),s=spStats(p,'ws'),fresh=Object.keys(WS_THEMES).filter(t=>!(s.themes||[]).includes(t));
+  const theme=pick(fresh.length&&Math.random()<.7?fresh:Object.keys(WS_THEMES)),B=wsBuild(cf,theme);if(!B){miniToast('Try again!');return}
+  WS={p,cf,theme,B,found:[],sel:null,tapStart:null,hints:2,usedHints:0,t0:Date.now(),done:false,flash:null};wsDraw()}
+const WS_COL=['#fca5a5','#fcd34d','#86efac','#93c5fd','#c4b5fd','#f9a8d4','#5eead4','#fdba74','#a5b4fc','#bef264','#67e8f9','#f0abfc'];
+function wsDraw(){const X=WS;if(!X)return;const n=X.cf.n,vw=Math.min(window.innerWidth,760)-56,sz=Math.max(26,Math.min(60,Math.floor(vw/n))),left=X.B.placed.filter(w=>!X.found.includes(w.w)).length;
+  app().innerHTML=`<div class="top"><button class="back" onclick="wsQuit()">‹</button><div style="flex:1"><h1 style="font-size:20px">🔎 Word Search · ${esc(X.theme)}</h1><div class="small" style="opacity:.85">${X.cf.label} · ${left} word${left===1?'':'s'} to find</div></div>
+    <span class="chip" onclick="wsHint()">💡 Hint ×${X.hints}</span><span class="chip" onclick="wsStart()">🔄 New</span></div>
+   <div class="card xn-panel"><p class="small muted center" style="margin:0 0 10px">Drag across a word to circle it — or tap its first letter, then its last.</p>
+    <div class="xn-wrap"><div id="wsg" class="ws-grid" style="width:${sz*n}px;height:${sz*n}px;grid-template-columns:repeat(${n},${sz}px);grid-auto-rows:${sz}px;font-size:${Math.round(sz*.52)}px">
+     <svg class="ws-lines" width="${sz*n}" height="${sz*n}" id="wsl"></svg>
+     ${X.B.G.map((row,r)=>row.map((ch,c)=>`<div class="ws-c" data-r="${r}" data-c="${c}">${ch}</div>`).join('')).join('')}</div></div>
+    <div class="ws-words">${X.B.placed.map((w,i)=>`<span class="${X.found.includes(w.w)?'got':''}" style="${X.found.includes(w.w)?`background:${WS_COL[X.found.indexOf(w.w)%WS_COL.length]}`:''}">${w.w}</span>`).join('')}</div></div>`;
+  X.sz=sz;wsLines();wsBind()}
+function wsCellLine(a,b){if(!a||!b)return null;const dr=Math.sign(b.r-a.r),dc=Math.sign(b.c-a.c),len=Math.max(Math.abs(b.r-a.r),Math.abs(b.c-a.c));
+  if(!(a.r===b.r||a.c===b.c||Math.abs(b.r-a.r)===Math.abs(b.c-a.c)))return null;const cells=[];for(let i=0;i<=len;i++)cells.push({r:a.r+dr*i,c:a.c+dc*i});return cells}
+function wsLines(){const X=WS,svg=document.getElementById('wsl');if(!svg)return;const s=X.sz,L=(a,b,col,op)=>`<line x1="${a.c*s+s/2}" y1="${a.r*s+s/2}" x2="${b.c*s+s/2}" y2="${b.r*s+s/2}" stroke="${col}" stroke-width="${s*.78}" stroke-linecap="round" opacity="${op}"/>`;
+  let h=X.B.placed.filter(w=>X.found.includes(w.w)).map(w=>L({r:w.r0,c:w.c0},{r:w.r1,c:w.c1},WS_COL[X.found.indexOf(w.w)%WS_COL.length],.75)).join('');
+  if(X.sel&&X.sel.cells)h+=L(X.sel.cells[0],X.sel.cells[X.sel.cells.length-1],'#60a5fa',.45);
+  if(X.tapStart)h+=`<circle cx="${X.tapStart.c*s+s/2}" cy="${X.tapStart.r*s+s/2}" r="${s*.4}" fill="#60a5fa" opacity=".45"/>`;
+  if(X.flash)h+=`<circle cx="${X.flash.c*s+s/2}" cy="${X.flash.r*s+s/2}" r="${s*.46}" fill="none" stroke="#f59e0b" stroke-width="4"><animate attributeName="opacity" values="1;.2;1" dur=".6s" repeatCount="5"/></circle>`;
+  svg.innerHTML=h}
+function wsBind(){const X=WS,g=document.getElementById('wsg');if(!g)return;g.style.touchAction='none';
+  const at=e=>{const r=g.getBoundingClientRect(),c=Math.floor((e.clientX-r.left)/X.sz),rr=Math.floor((e.clientY-r.top)/X.sz);if(c<0||rr<0||c>=X.cf.n||rr>=X.cf.n)return null;return{r:rr,c}};
+  /* snap a drag to the nearest of the 8 straight directions */
+  const snap=(a,b)=>{const dr=b.r-a.r,dc=b.c-a.c;if(!dr&&!dc)return[a];const ang=Math.round(Math.atan2(dr,dc)/(Math.PI/4)),len=Math.max(Math.abs(dr),Math.abs(dc));const ur=Math.round(Math.sin(ang*Math.PI/4)),uc=Math.round(Math.cos(ang*Math.PI/4));
+    const out=[];for(let i=0;i<=len;i++){const r=a.r+ur*i,c=a.c+uc*i;if(r<0||c<0||r>=X.cf.n||c>=X.cf.n)break;out.push({r,c})}return out};
+  g.onpointerdown=e=>{if(X.done)return;const a=at(e);if(!a)return;e.preventDefault();try{g.setPointerCapture(e.pointerId)}catch(_){}X.sel={a,cells:[a],moved:false};wsLines()};
+  g.onpointermove=e=>{if(!X.sel)return;const b=at(e);if(!b)return;const cells=snap(X.sel.a,b);if(cells.length>1)X.sel.moved=true;X.sel.cells=cells;wsLines()};
+  g.onpointerup=g.onpointercancel=e=>{if(!X.sel)return;const sel=X.sel;X.sel=null;
+    if(!sel.moved||sel.cells.length<2){/* tap-tap mode */const a=sel.a;if(X.tapStart&&(X.tapStart.r!==a.r||X.tapStart.c!==a.c)){const cells=wsCellLine(X.tapStart,a);X.tapStart=null;if(cells)wsTry(cells);else{beep(220,.08,'square',.04);wsLines()}}else{X.tapStart=X.tapStart?null:a;beep(700,.03,'sine',.03);wsLines()}return}
+    X.tapStart=null;wsTry(sel.cells)}}
+function wsTry(cells){const X=WS,str=cells.map(q=>X.B.G[q.r][q.c]).join(''),rev=str.split('').reverse().join('');
+  const w=X.B.placed.find(p=>!X.found.includes(p.w)&&(p.w===str||p.w===rev)&&((cells[0].r===p.r0&&cells[0].c===p.c0)||(cells[0].r===p.r1&&cells[0].c===p.c1)));
+  if(!w){if(cells.length>2){X.miss=(X.miss||0)+1;beep(200,.1,'sawtooth',.04)}wsLines();return}
+  X.found.push(w.w);X.flash=null;beep(660+X.found.length*40,.12,'triangle',.07);speakParts([{t:w.w.toLowerCase(),l:'en'}]);
+  if(X.found.length===X.B.placed.length){X.done=true;wsDraw();spWin('ws',X.p,{secs:Math.round((Date.now()-X.t0)/1000),hints:X.usedHints,theme:X.theme},wsStart,wsQuit);return}
+  wsDraw()}
+function wsHint(){const X=WS;if(!X||X.done)return;if(X.hints<=0){miniToast('No hints left — keep looking!');return}const w=X.B.placed.find(p=>!X.found.includes(p.w));if(!w)return;
+  X.hints--;X.usedHints++;X.flash={r:w.r0,c:w.c0};wsDraw();setTimeout(()=>{if(WS===X){X.flash=null;wsLines()}},3200)}
+function wsQuit(){WS=null;STAGE='lang';map()}
+
 /* ============ Number Crossword (special maths level) ============ */
 const XN_NEED=5; /* maths stars needed to open it */
 let XN=null;
-function xnOpen(p){return p.unlockAll||starsIn(p,'maths')>=XN_NEED}
+function xnOpen(p){return spOpen(p,'xn')}
 function xnCard(p){const open=xnOpen(p),won=(p.badges||[]).includes('crossnum'),n=(p.xnDone||0);
   return `<button class="xn-card ${open?'':'lock'}" onclick="${open?'xnStart()':`miniToast('🔒 Collect ${XN_NEED} maths stars to open the Number Crossword')`}"><span class="xi">🧩</span>
    <span><b>Special level · Number Crossword</b><small>${open?(won?`🏅 Badge won · solved ${n} time${n===1?'':'s'} · new puzzle every time`:'Fill in every box to win the 🧩 Cross-Number Champ badge'):`Collect ${XN_NEED} maths stars to open · ${starsIn(p,'maths')}/${XN_NEED}`}</small></span>
@@ -6585,15 +6717,7 @@ function xnCheck(){const X=XN;if(!X||X.done)return;X.mark={};let bad=0,empty=0;
   if(bad){X.wrong+=bad;beep(220,.2,'sawtooth',.05);miniToast(`${bad} box${bad>1?'es are':' is'} not right yet — try again`);xnNext();xnDraw();return}
   if(empty){beep(660,.08);miniToast(`Looking good! ${empty} box${empty>1?'es':''} still empty`);xnNext();xnDraw();return}
   xnWin()}
-function xnWin(){const X=XN;X.done=true;const p=X.p,first=!(p.badges||[]).includes('crossnum'),secs=Math.round((Date.now()-X.t0)/1000);
-  p.xnDone=(p.xnDone||0)+1;let tok=0;if(p.xnPaid!==today()){p.xnPaid=today();tok=first?5:2;p.tokens=(p.tokens||0)+tok}
-  if(typeof learnRound==='function')learnRound(p);award(p,'crossnum');save();xnDraw();confetti(120);[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.15,'triangle',.08),i*110));
-  setTimeout(()=>{const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
-    el.innerHTML=`<div class="card center pop" style="max-width:420px"><div style="font-size:60px">🧩${first?'🏅':'🎉'}</div><h2>${first?'Cross-Number Champ!':'Puzzle solved!'}</h2>
-     <p>${first?'You solved the Number Crossword and won a special badge!':'Brilliant — another crossword cracked.'}</p>
-     <p class="muted">⏱️ ${Math.floor(secs/60)}m ${secs%60}s · ${X.wrong?X.wrong+' wrong tr'+(X.wrong>1?'ies':'y'):'no mistakes!'}${X.usedHint?' · used a hint':''}${tok?` · +${tok} 🪙`:''}</p>
-     <div class="row"><button class="btn" style="flex:1" onclick="document.getElementById('kqsheet').remove();xnStart()">New puzzle</button><button class="btn ghost" style="flex:1" onclick="document.getElementById('kqsheet').remove();xnQuit()">Back to map</button></div></div>`;
-    document.body.appendChild(el)},900)}
+function xnWin(){const X=XN;X.done=true;xnDraw();spWin('xn',X.p,{secs:Math.round((Date.now()-X.t0)/1000),mistakes:X.wrong,hints:2-X.hints},xnStart,xnQuit)}
 function xnQuit(){XN=null;STAGE='maths';map()}
 
 /* links like …/quest-pk/#join-K7QM open straight into the join screen */
