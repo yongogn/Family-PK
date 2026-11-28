@@ -1,0 +1,14 @@
+{
+  "name": "kinquest-ios",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Capacitor wrapper that bundles quest-pk/ into the Kinquest iPad app",
+  "dependencies": {
+    "@capacitor/core": "^8.6.3",
+    "@capacitor/ios": "^8.6.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.3",
+    "@capacitor/assets": "^4.0.0"
+  }
+}

@@ -4025,7 +4025,7 @@ function home(){
      <button class="back" onclick="backupScreen()">💾 Save / restore</button>
      <button class="back" onclick="seasonPicker()">${SEASON.icon} Theme</button>
      ${S.profiles.length&&backupNudge()?'<div class="small" style="color:#ffd27a;margin-top:8px">Tip: save a copy of progress before updating the app</div>':''}
-     <div class="small" style="margin-top:14px;opacity:.85">Kinquest v${APP_VERSION} · ${APP_DATE} · <a href="#" onclick="event.preventDefault();whatsNew()">What's new</a> · <a href="#" onclick="event.preventDefault();checkUpdate(true)">Check for updates</a></div>
+     <div class="small" style="margin-top:14px;opacity:.85">Kinquest v${APP_VERSION} · ${APP_DATE} · <a href="#" onclick="event.preventDefault();whatsNew()">What's new</a> · ${window.Capacitor?'':`<a href="#" onclick="event.preventDefault();checkUpdate(true)">Check for updates</a>`}</div>
      <div id="verstat" class="small" style="opacity:.85;margin-top:6px"></div></div></main>`;
 }
 function openProfile(id){S.cur=id;save();if(STAGE==='arcade')STAGE='maths';map()}
@@ -4944,9 +4944,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.9';
+const APP_VERSION='4.9.1';
 const APP_DATE='28 Nov 2026';
 const CHANGES=[
+  ['4.9.1','Behind the scenes: the iPad App Store build is set up.'],
   ['4.9','Ready for the App Store kids rules: one grown-up check (keypad sum) in front of purchases, sharing, online play and settings; online play needs a grown-up OK the first time; a friendly note before the microphone is used; new 👪 Grown-ups’ corner with the Wish Inbox, online-play switch and privacy policy.'],
   ['4.8.3','New Kinquest app icon: our fox companion, a treasure chest and a glowing learning star against a warm sunrise.'],
   ['4.8.2','Number Crossword now has working paper (with pen and eraser) for doing sums.'],

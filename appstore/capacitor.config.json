@@ -1,7 +1,6 @@
 {
-  "appId": "com.kinquest.app",
+  "appId": "com.yongogn.kinquest",
   "appName": "Kinquest",
   "webDir": "../quest-pk",
-  "ios": { "contentInset": "never", "allowsLinkPreview": false, "scrollEnabled": true, "limitsNavigationsToAppBoundDomains": true },
-  "server": { "iosScheme": "capacitor" }
+  "ios": { "contentInset": "never", "allowsLinkPreview": false, "scrollEnabled": true }
 }

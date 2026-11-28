@@ -1,3 +1,5 @@
+> These are added automatically by codemagic.yaml — kept here for reference.
+
 # iOS permission strings (add to ios/App/App/Info.plist after `npx cap add ios`)
 
 ```xml
