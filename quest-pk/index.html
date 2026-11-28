@@ -605,6 +605,39 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .xn-pad{position:sticky;bottom:0;background:linear-gradient(#fff0,#fffffff2 18%);padding:12px 4px max(10px,env(safe-area-inset-bottom))}
 .xn-pad .numpad button.wide{flex:2 0 18%;font-size:18px}
 .xn-pad .numpad button.chk{background:#22c55e;color:#fff;box-shadow:0 4px 0 #15803d}
+
+/* treasure, passport, Lumi */
+.trchip{background:linear-gradient(135deg,#fde68a,#f59e0b)!important;color:#3b2a00!important;font-weight:800}
+.trchip.glow{animation:trglow 1.4s infinite}@keyframes trglow{50%{box-shadow:0 0 0 4px #fde68a99,0 0 18px #fbbf24}}
+.trtoast{cursor:pointer}
+.tr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 12px}.tr-stats>div{background:#fff;border-radius:18px;padding:12px;text-align:center;box-shadow:0 4px 0 #0001}.tr-stats b{display:block;font-size:24px;color:#1f2a44}.tr-stats small{color:#64748b}
+.pearlrow{display:flex;gap:8px;justify-content:center;margin-top:10px}.pearl{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:3px dashed #c4b5fd;color:#fff;font-weight:800;font-size:16px}
+.pearl.on{border:0;background:radial-gradient(circle at 35% 30%,#fff,#c4b5fd 35%,#7c3aed 85%);box-shadow:0 0 12px #a78bfa;animation:pearlglow 2s infinite}@keyframes pearlglow{50%{box-shadow:0 0 22px #c4b5fd}}
+.tr-chests{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tr-chest{border:0;border-radius:20px;padding:12px;background:#fff;box-shadow:0 5px 0 var(--d),0 10px 20px #0002;display:flex;flex-direction:column;align-items:center;gap:4px;font:inherit;cursor:pointer;animation:chestbob 2.4s infinite}
+.tr-chest b{color:#1f2a44}.tr-chest small{color:#64748b;text-align:center}@keyframes chestbob{50%{transform:translateY(-4px)}}
+.chbox{cursor:pointer;display:inline-block}.chbox.shake{animation:xnshake .35s}.tr-rewards{display:grid;gap:8px;margin-top:8px}.tr-rewards>div{background:#fff7d6;border-radius:14px;padding:10px;font-weight:800;font-size:18px}
+.pp-tabs{display:flex;gap:6px;overflow:auto;padding:4px 0 10px}.pp-tabs button{flex:1;min-width:58px;border:0;border-radius:14px;padding:8px 4px;background:#ffffff33;color:#fff;font:inherit;font-size:22px;display:flex;flex-direction:column;align-items:center;cursor:pointer}.pp-tabs button small{font-size:11px}.pp-tabs button.on{background:#fff;color:#1f2a44}
+.pp-book{background:#7c2d12;border-radius:22px;padding:10px;box-shadow:0 10px 30px #0004}.pp-page{background:repeating-linear-gradient(0deg,#fdf6e3,#fdf6e3 26px,#f3e8cf 27px);border-radius:16px;padding:16px;color:#3b2a1a}
+.pp-head{display:flex;gap:12px;align-items:center;border-bottom:2px dashed #d6c3a0;padding-bottom:10px;margin-bottom:12px}.pp-head h2{margin:0}.pp-icon{font-size:40px}.pp-seal{margin-left:auto;font-size:44px;animation:pearlglow 2s infinite}
+.pp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;margin-bottom:12px}
+.pp-stamp{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}.pp-stamp small{font-size:11px;color:#8b7355}
+.pp-stamp .ring{width:110px;height:110px;border-radius:50%;border:3px dashed #cbb892;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#b6a37f;opacity:.7}
+.pp-stamp .ring b{font-size:12px;line-height:1.1;padding:0 8px}.pp-stamp .se{font-size:30px;filter:grayscale(1);opacity:.5}
+.pp-stamp.on .ring{opacity:1;border:5px double hsl(var(--h) 70% 40%);color:hsl(var(--h) 70% 35%);transform:rotate(var(--r));background:hsl(var(--h) 80% 50% / .08);animation:stampin .4s ease-out}.pp-stamp.on .se{filter:none;opacity:1}
+@keyframes stampin{0%{transform:scale(1.6) rotate(var(--r));opacity:0}70%{transform:scale(.95) rotate(var(--r))}100%{transform:scale(1) rotate(var(--r))}}
+.lumi-scene{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 40%,#312e81,#0b1026 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:auto;padding:20px;animation:fadein .8s}
+.lumi-pearls{position:absolute;top:38%;left:50%;width:0;height:0}.lumi-pearls span{position:absolute;font-size:34px;transform:rotate(var(--a)) translateY(-120px) rotate(calc(-1*var(--a)));animation:pearlspin 2.6s ease-in forwards}
+@keyframes pearlspin{to{transform:rotate(calc(var(--a) + 360deg)) translateY(0) rotate(calc(-1*var(--a) - 360deg)) scale(.2);opacity:0}}
+.lumi-rise{opacity:0;animation:lumiup 1.6s 1.4s ease-out forwards}@keyframes lumiup{from{opacity:0;transform:translateY(80px) scale(.6)}to{opacity:1;transform:none}}
+.lumi .lumi-tw{fill:#fef08a;animation:tw 1.4s infinite}@keyframes tw{50%{opacity:.2}}@keyframes fadein{from{opacity:0}}
+.lumi-say{min-height:40px;width:100%;display:flex;justify-content:center}
+.lumi-wishes{display:grid;gap:10px;margin-top:12px}.lumi-wishes button{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:10px;text-align:left;align-items:center;border:0;border-radius:16px;padding:12px;background:#f5f3ff;font:inherit;cursor:pointer;box-shadow:0 4px 0 #c4b5fd}
+.lumi-wishes button span{grid-row:span 2;font-size:32px}.lumi-wishes button small{color:#64748b}
+.wish-types{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.wish-types button{border:2px solid #c7d2fe;background:#fff;border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}.wish-types button.on{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.wishbanner{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:12px 16px;border:0;border-radius:18px;background:linear-gradient(135deg,#ede9fe,#c4b5fd);color:#2e1065;font:inherit;text-align:left;cursor:pointer;box-shadow:0 5px 0 #7c3aed55}
+.wishbanner>span:first-child{font-size:32px}.wishbanner b{display:block}.wishbanner small{opacity:.8}.wishbanner .go{margin-left:auto;font-weight:800;white-space:nowrap}.wishbanner.new{animation:trglow 1.4s infinite}
+.wishcard.yes{border-left:6px solid #22c55e}.wishcard.no{border-left:6px solid #ef4444}.wishcard.talk{border-left:6px solid #f59e0b}.wishcard.new{border-left:6px solid #7c3aed}.wish-st{font-weight:800;font-size:13px}
 </style>
 </head>
 <body>
@@ -2215,7 +2248,7 @@ function arcadeOpen(p){return p.unlockAll||totalStars(p)>=ARCADE_NEED}
 function killQuiz(){if(Q){Q.dead=true;Q.token++}try{speechSynthesis.cancel()}catch(e){}}
 function map(){if(Q&&!Q.dead)killQuiz();
   if(RM.role)rmClose();
-  const p=cur();if(!p)return home();
+  const p=cur();if(!p)return home();setTimeout(()=>{try{trReplyNudge(p)}catch(e){}},600);
   if(STAGE==='arcade')return arcade();
   const st=stageById(STAGE),sid=st.id,a=ageOf(p,sid),lv=levelOf(p);
   const nodes=stageNodes();
@@ -2235,7 +2268,7 @@ function map(){if(Q&&!Q.dead)killQuiz();
    <div class="top">
      <button class="back" onclick="home()">‹</button>${avatar(p,52,true)}
      <div style="flex:1;min-width:0"><h1 style="font-size:20px">${esc(p.name)}</h1><div class="xpbar sm"><i style="width:${lv.pct}%"></i></div><div class="small" style="opacity:.85">Lv ${lv.n} ${lv.title}</div></div>
-     <span class="chip" onclick="dash()">📊 Summary</span><span class="chip tok">🪙 ${p.tokens||0}</span></div>
+     ${trChip(p)}<span class="chip" onclick="dash()">📊 Summary</span><span class="chip tok">🪙 ${p.tokens||0}</span></div>
    <div class="stages">${STAGES.map(s=>`<button class="stage ${s.id===sid?'on':''}" onclick="STAGE='${s.id}';map()">${s.icon} ${s.name}<span class="small"> ${starsIn(p,s.id)}⭐</span></button>`).join('')}
      <button class="stage arcade ${arcadeOpen(p)?'':'lock'}" onclick="STAGE='arcade';arcade()">🕹️ Arcade${arcadeOpen(p)?'':' 🔒'}</button>${SOON_WORLDS.map(id=>`<button class="stage soon" onclick="soonSheet('${id}')">${SOON[id].icon} ${SOON[id].name} 🔒</button>`).join('')}</div></div>
    <div class="row wrap" style="margin-bottom:10px">
@@ -3800,7 +3833,7 @@ function finishLevel(){
   if(stars===3)award(p,'perfect');
   const avg=Q.times.reduce((a,b)=>a+b,0)/Q.times.length;if(stars>=1&&avg<4)award(p,'speedy');
   if(s.stars.slice(Q.ch*NLV,Q.ch*NLV+NLV).every(x=>x>0))award(p,'path');
-  checkStatBadges(p);
+  checkStatBadges(p);trLevel(p,Q.sid,Q.ch,Q.lv,stars);
   if(stars>=2){sWin();if(stars===3)confetti(70)}
   const delta=Math.round((after-before)*10)/10;
   app().innerHTML=`<div class="top"><button class="back" onclick="map()">‹</button><h1>${node[0]} ${node[1]}</h1></div>
@@ -3926,7 +3959,7 @@ function endBoss(result){
   if(result==='kid'){
     const firstTrophy=kid.trophies.length===0,newChapter=!bossWon(kid,sid,ch);
     kid.trophies.push({sid,ch,stage:st.name,boss:bn[1],d:today(),vs:ad.name,robo:!!B.robo,remote:!!B.remote,strength:bossOpts.strength});
-    kid.tokens=(kid.tokens||0)+3;track(kid,'b');
+    kid.tokens=(kid.tokens||0)+3;track(kid,'b');trBoss(kid,sid,ch);
     save();if(!B.robo)award(kid,'boss');checkStatBadges(kid);sWin();confetti(150);
     const head=r.w===1?`First win against ${esc(ad.name)}! 🎉`:`You beat ${esc(ad.name)} again — that's your ${ordinal(r.w)} win!`;
     const streak=r.streak>=2?`<div class="streakline">🔥 ${r.streak} wins in a row against ${esc(ad.name)}!</div>`:'';
@@ -3980,6 +4013,7 @@ function home(){
    <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')"><span class="quest-add-icon" aria-hidden="true">＋</span>Add player<small>A new adventure awaits</small></button></div>
    <div class="sect"><span>Meet the bosses</span><span class="quest-count">Family rivals</span></div>
    <p class="quest-section-note">Grown-ups, it's your turn. Join as a boss and let the family battles begin.</p>
+   ${(()=>{const W=S.wishes||[],n=W.filter(w=>w.status==='new').length;return W.length||S.profiles.some(p=>p.tr&&p.tr.pearls)?`<button class="wishbanner ${n?'new':''}" onclick="wishGate(wishInbox)"><span>💌</span><span><b>Wish Inbox</b><small>${n?`${n} new wish${n>1?'es':''} from Lumi the Wish Dragon`:'Wishes your children send with their 7 Wish Pearls'}</small></span><span class="go">${n?n+' new':'Open'} ›</span></button>`:''})()}
    <div class="players boss-players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')"><span class="quest-add-icon" aria-hidden="true">⚔</span>Add boss<small>Bring on the challenge</small></button></div>
    ${soonHome()}
    ${REMOTE_OK?`<section class="quest-remote"><span class="quest-remote-icon" aria-hidden="true">🌍</span><div class="quest-remote-copy"><strong>Same family. Anywhere in the world.</strong><p>Take on a far-away boss in a live PK battle.</p></div><button class="btn purple" onclick="joinScreen('')">Join a remote battle →</button></section>`:''}
@@ -4598,6 +4632,7 @@ function dash(){
        <div class="emrow">${p.badges.slice(-5).map(b=>(BADGES.find(x=>x.id===b)||{}).e||'').join(' ')||'<span class="small muted">No badges yet</span>'}</div></button>
      <button class="dcard tile" onclick="dashTrends()"><div class="th">📈 Trends <span>›</span></div><div class="big2">${d14.reduce((a,d)=>a+d.q,0)}<small> questions · 14 days</small></div>${spark(d14.map(d=>d.q))}</button>
      <button class="dcard tile" onclick="dashRivals()"><div class="th">⚔️ Rivals <span>›</span></div>${riv?`<div class="big2">${riv.w}<small>W</small> ${riv.l}<small>L</small></div><div class="small muted">vs ${esc(riv.name)}${riv.streak>=2?` · 🔥${riv.streak}`:''}</div>`:'<div class="small muted">No Boss battles yet</div>'}</button>
+     <button class="dcard tile" onclick="passport()"><div class="th">🛂 Passport <span>›</span></div><div class="big2">${STAGES.reduce((a,s)=>a+((tr(p).stamps[s.id]||[]).length),0)}<small>/${STAMPS.length*STAGES.length} stamps</small></div><div class="small muted">🎒 ${tr(p).chests.length} chests · 🎟️ ${tr(p).tickets} · 🔮 ${tr(p).pearls}/7</div></button>
      <button class="dcard tile" onclick="dashArcade()"><div class="th">🎮 Arcade <span>›</span></div><div class="big2">${p.tokens||0}<small> 🪙</small></div><div class="small muted">${hiN} game${hiN===1?'':'s'} with a best score</div></button>
      <button class="dcard tile" onclick="E=JSON.parse(JSON.stringify(cur()));E._new=false;if(!E.av)E.av=defaultAv(E);AVTAB='outfit';avatarEditor()"><div class="th">🎨 Style <span>›</span></div><div class="big2">${items}<small>/${total} items</small></div><div class="xpbar sm"><i style="width:${Math.round(items/total*100)}%"></i></div><div class="small muted">${lv.next} XP to level ${lv.n+1}</div></button>
    </div>`;
@@ -4905,9 +4940,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.7';
+const APP_VERSION='4.8';
 const APP_DATE='15 Nov 2026';
 const CHANGES=[
+  ['4.8','Treasure! 🧰 Find Wooden, Silver and Gold Chests for learning — they hold coins and 🎟️ arcade tickets (bonus games when you run out). 🛂 A World Passport with 8 stamps per world and a Gold Seal for each full page. 🔮 Collect 7 Wish Pearls to summon Lumi the Wish Dragon and make a wish — including a wish to your grown-ups, who answer in the new 💌 Wish Inbox.'],
   ['4.7','New special level in Word Woods: 🔎 Word Search — 12 themes, a fresh grid every time, sized to your reading level. Both special levels now have a badge ladder to collect (7 for the Number Crossword, 8 for Word Search): play more, play faster, play without hints and keep a 3-day streak.'],
   ['4.6','Two new games! 🏸 Badminton on the Duel Table — play a robot, share one iPad, or use two iPads; jump and swing near the net to SMASH. 🥥 Coconut Climb in the Arcade — climb the bamboo tower, jump the coconuts King Crabby rolls down, grab a 🔨 to bonk them, and rescue Peep the chick.'],
   ['4.5','Fewer repeated questions: a question never comes back in the same round, and each child works through every question before seeing old ones again. Common Sense City has over 100 new questions plus new days, time and money puzzles. Working paper now has a proper eraser. Spelling works with an iPad keyboard — just type and press Enter (1–4 answers multiple choice too).'],
@@ -6549,7 +6585,7 @@ function spNode(p,sid,nodes,pos,Y){const k=SPECIAL_BY_STAGE[sid];if(!k)return'';
 /* record a finished run, award every badge it earns, pay coins once a day, then show the result sheet */
 function spWin(k,p,run,again,quit){const S=SPECIALS[k],s=spStats(p,k),firstEver=!s.done;s.done++;if(k==='xn')p.xnDone=s.done;
   const d=today();if(!s.days.includes(d))s.days=[...s.days,d].slice(-30);if(run.theme&&!s.themes.includes(run.theme))s.themes.push(run.theme);
-  const fresh=S.badges.filter(([id,,,,test])=>!spHas(p,id)&&test(s,run));fresh.forEach(([id])=>award(p,id));
+  const fresh=S.badges.filter(([id,,,,test])=>!spHas(p,id)&&test(s,run));fresh.forEach(([id])=>award(p,id));if(fresh.length)trSpecialBadge(p,fresh.map(f=>f[0]));
   let tok=0;if(s.paid!==d){s.paid=d;tok=firstEver?5:2;p.tokens=(p.tokens||0)+tok}
   if(typeof learnRound==='function')learnRound(p);save();confetti(fresh.length?160:100);[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.15,'triangle',.08),i*110));
   const nx=spNext(p,k),secs=run.secs;
@@ -6637,6 +6673,154 @@ function wsTry(cells){const X=WS,str=cells.map(q=>X.B.G[q.r][q.c]).join(''),rev=
 function wsHint(){const X=WS;if(!X||X.done)return;if(X.hints<=0){miniToast('No hints left — keep looking!');return}const w=X.B.placed.find(p=>!X.found.includes(p.w));if(!w)return;
   X.hints--;X.usedHints++;X.flash={r:w.r0,c:w.c0};wsDraw();setTimeout(()=>{if(WS===X){X.flash=null;wsLines()}},3200)}
 function wsQuit(){WS=null;STAGE='lang';map()}
+
+/* ============ TREASURE: chests 🧰 · arcade tickets 🎟️ · World Passport 🛂 · Wish Pearls 🔮 & Lumi the Wish Dragon ============ */
+const CHESTS={wood:{e:'🟫',n:'Wooden Chest',col:'#b7793f',dark:'#7c4a1e'},silver:{e:'⬜',n:'Silver Chest',col:'#cbd5e1',dark:'#64748b'},gold:{e:'🟨',n:'Gold Chest',col:'#fcd34d',dark:'#b45309'}};
+const PEARLS_NEED=7,DAILY_ROUNDS=3;
+function tr(p){p.tr=p.tr||{};const t=p.tr;t.chests=t.chests||[];t.got=t.got||{};t.tickets=t.tickets||0;t.pearls=t.pearls||0;t.stamps=t.stamps||{};t.wd=t.wd||{};t.days=t.days||{};t.daily=t.daily||0;t.wishes=t.wishes||0;return t}
+/* give a chest once per key (keys make each source one-off: a chapter, a boss, a day…) */
+function giveChest(p,type,key,why){if(!p||p.kind!=='kid')return false;const t=tr(p);if(key&&t.got[key])return false;if(key)t.got[key]=today();
+  let pearl=type==='gold';if(type==='wood'&&/^day:/.test(key||'')){t.daily++;pearl=t.daily%2===0}
+  t.chests.push({type,why,pearl,at:Date.now()});save();trToast(CHESTS[type].e,'You found a treasure chest!',`${CHESTS[type].n} · ${why}`,'treasure()');return true}
+let trQ=[],trOn=false;
+function trToast(e,small,big,go){trQ.push({e,small,big,go});trRun()}
+function trRun(){if(trOn||!trQ.length)return;trOn=true;const b=trQ.shift(),el=document.createElement('div');el.className='toast trtoast';if(b.go)el.onclick=()=>{el.remove();trOn=false;eval(b.go);trRun()};
+  el.innerHTML=`<div class="e">${b.e}</div><div><div class="small muted">${esc(b.small)}</div><b>${esc(b.big)}</b>${b.go?'<div class="small" style="color:#2563eb">Tap to open ›</div>':''}</div>`;document.body.appendChild(el);beep(523,.1,'triangle',.06);setTimeout(()=>beep(784,.14,'triangle',.06),110);
+  setTimeout(()=>{if(el.isConnected){el.remove();trOn=false;trRun()}},3000)}
+/* ---------- hooks ---------- */
+const _learnRoundT=learnRound;
+learnRound=function(p){try{if(p&&p.kind==='kid'){const t=tr(p),d=today();t.days[d]=(t.days[d]||0)+1;for(const k in t.days)if(k<dayKey(20))delete t.days[k];
+  if(t.days[d]===DAILY_ROUNDS)giveChest(p,'wood','day:'+d,`${DAILY_ROUNDS} learning rounds today`);
+  const st=dayStreak(p);if(st===3)giveChest(p,'silver','st3:'+d,'3-day learning streak 🔥');if(st===7||st===14||st===21)giveChest(p,'gold','st'+st+':'+d,`${st}-day learning streak 🔥`)}}catch(e){console.warn(e)}
+  return _learnRoundT(p)};
+function trLevel(p,sid,ch,lv,stars){try{const t=tr(p);t.wd[sid]=t.wd[sid]||[];if(!t.wd[sid].includes(today()))t.wd[sid]=[...t.wd[sid],today()].slice(-10);
+  if(lv===2&&stars>=2)giveChest(p,'wood',`mid:${sid}:${ch}`,'halfway through a chapter');
+  const s=sub(p,sid),row=s.stars.slice(ch*NLV,ch*NLV+NLV);if(row.every(x=>x>=3))giveChest(p,'silver',`3s:${sid}:${ch}`,'3 stars on a whole chapter ⭐');
+  stampCheck(p,sid)}catch(e){console.warn(e)}}
+function trBoss(p,sid,ch){try{giveChest(p,'gold',`boss:${sid}:${ch}`,`beat the ${stageById(sid).chapters[ch].boss[1]}`)||giveChest(p,'wood','bossday:'+today(),'boss win');stampCheck(p,sid)}catch(e){console.warn(e)}}
+function trSpecialBadge(p,ids){try{ids.forEach(id=>giveChest(p,'silver','sb:'+id,'special-level badge 🏅'));stampCheck(p,SPECIALS[ids[0].startsWith('ws')?'ws':'xn'].stage)}catch(e){console.warn(e)}}
+/* arcade tickets: only used when a normal game is blocked (out of the 5-game batch, or short of coins) */
+const _noPlayT=noPlay,_chargeT=chargeGame;
+noPlay=function(p){if(!p.unlockAll&&tr(p).tickets>0&&(playsLeft(p)<=0||(p.tokens||0)<GAME_COST)){p._ticket=true;return false}return _noPlayT(p)};
+chargeGame=function(p){if(p._ticket){delete p._ticket;const t=tr(p);t.tickets--;save();miniToast(`🎟️ Bonus game! ${t.tickets} ticket${t.tickets===1?'':'s'} left`);return}return _chargeT(p)};
+
+/* ---------- World Passport ---------- */
+const STAMPS=[['first','👣','First steps','Finish any level here'],['c1','1️⃣','Chapter 1','Clear every level in Chapter 1'],['c2','2️⃣','Chapter 2','Clear every level in Chapter 2'],['c3','3️⃣','Chapter 3','Clear every level in Chapter 3'],
+  ['boss','🏆','Boss beaten','Win a Boss PK in this world'],['perfect','🌟','Star chapter','Get 3 stars on every level of a chapter'],['half','⭐','Star hoarder','Collect half the stars here'],['days','📅','Regular visitor','Play here on 5 different days']];
+function stampEarned(p,sid,id){const s=sub(p,sid),st=s.stars||[],chDone=c=>st.slice(c*NLV,c*NLV+NLV).every(x=>x>0);
+  switch(id){case'first':return st.some(x=>x>0);case'c1':return chDone(0);case'c2':return chDone(1);case'c3':return chDone(2);case'boss':return p.trophies.some(t=>t.sid===sid);
+    case'perfect':return [0,1,2].some(c=>st.slice(c*NLV,c*NLV+NLV).every(x=>x>=3));case'half':return starsIn(p,sid)>=Math.ceil(STARS_PER_STAGE/2);case'days':return (tr(p).wd[sid]||[]).length>=5}return false}
+function stampCheck(p,sid){if(!p||p.kind!=='kid'||!stageById(sid))return;const t=tr(p),have=t.stamps[sid]=t.stamps[sid]||[];const st=stageById(sid);
+  STAMPS.forEach(([id,e,n])=>{if(!have.includes(id)&&stampEarned(p,sid,id)){have.push(id);trToast('🛂',`New stamp · ${st.name}`,`${e} ${n}`,`passport('${sid}')`)}});
+  if(have.length===STAMPS.length&&giveChest(p,'gold','seal:'+sid,`${st.name} passport page complete! 🥇`))trToast('🥇','Gold Seal!',`${st.name} page complete`,`passport('${sid}')`);save()}
+function passport(sid){const p=cur();STAGES.forEach(s=>stampCheck(p,s.id));sid=sid||STAGE;if(!stageById(sid))sid=STAGES[0].id;const t=tr(p),st=stageById(sid),have=t.stamps[sid]||[],hue=STAGES.findIndex(s=>s.id===sid)*57;
+  const total=STAGES.reduce((a,s)=>a+((t.stamps[s.id]||[]).length),0);
+  app().innerHTML=dashTop(p,'🛂 World Passport','treasure()')+`
+   <div class="pp-tabs">${STAGES.map(s=>`<button class="${s.id===sid?'on':''}" onclick="passport('${s.id}')">${s.icon}<small>${(t.stamps[s.id]||[]).length}/${STAMPS.length}</small></button>`).join('')}</div>
+   <div class="pp-book"><div class="pp-page">
+     <div class="pp-head"><span class="pp-icon">${st.icon}</span><div><div class="small muted">PASSPORT · ${esc(p.name.toUpperCase())}</div><h2>${st.name}</h2></div>${have.length===STAMPS.length?'<span class="pp-seal">🥇</span>':''}</div>
+     <div class="pp-grid">${STAMPS.map(([id,e,n,d],i)=>{const on=have.includes(id);return `<div class="pp-stamp ${on?'on':''}" style="--h:${hue};--r:${(i*37%17)-8}deg"><div class="ring"><span class="se">${e}</span><b>${n}</b></div><small>${on?'Stamped!':d}</small></div>`}).join('')}</div>
+     <p class="small center muted">${have.length===STAMPS.length?'Page complete — Gold Seal earned! 🥇':`Fill all ${STAMPS.length} stamps for a 🥇 Gold Seal and a Gold Chest.`} · ${total}/${STAMPS.length*STAGES.length} stamps across all worlds</p></div></div>`}
+
+/* ---------- Treasure room: chests, tickets, pearls ---------- */
+function treasure(){const p=cur();if(!p)return home();const t=tr(p);STAGES.forEach(s=>stampCheck(p,s.id));
+  const pearlRow=Array.from({length:PEARLS_NEED},(_,i)=>`<span class="pearl ${i<t.pearls?'on':''}">${i<t.pearls?['①','②','③','④','⑤','⑥','⑦'][i]:''}</span>`).join('');
+  app().innerHTML=dashTop(p,'🎒 Treasure')+`
+   <div class="tr-stats"><div><b>🎟️ ${t.tickets}</b><small>Arcade tickets</small></div><div><b>🧰 ${t.chests.length}</b><small>Chests to open</small></div><div onclick="passport()" style="cursor:pointer"><b>🛂 ${STAGES.reduce((a,s)=>a+((t.stamps[s.id]||[]).length),0)}</b><small>Stamps ›</small></div></div>
+   <div class="card tr-pearls"><div class="row" style="justify-content:space-between;align-items:center"><b>🔮 Wish Pearls</b><span class="small muted">${t.pearls}/${PEARLS_NEED}</span></div>
+     <div class="pearlrow">${pearlRow}</div>
+     ${t.pearls>=PEARLS_NEED?`<button class="btn gold block" style="margin-top:12px" onclick="lumiSummon()">🐉 Summon Lumi the Wish Dragon!</button>`:`<p class="small muted" style="margin:8px 0 0">Collect all ${PEARLS_NEED} to summon Lumi and make a wish. Pearls hide in Gold Chests and every second Daily Chest (finish ${DAILY_ROUNDS} learning rounds in a day).</p>`}</div>
+   <div class="sect"><span>Your chests</span></div>
+   ${t.chests.length?`<div class="tr-chests">${t.chests.map((c,i)=>`<button class="tr-chest" style="--c:${CHESTS[c.type].col};--d:${CHESTS[c.type].dark}" onclick="chestOpen(${i})">${chestSVG(c.type,92,false)}<b>${CHESTS[c.type].n}</b><small>${esc(c.why||'')}</small></button>`).join('')}</div>`
+     :`<div class="card center muted">No chests waiting. Find them halfway through each chapter, by beating bosses, keeping a learning streak, and finishing ${DAILY_ROUNDS} learning rounds a day.</div>`}
+   <div class="card small" style="margin-top:12px"><b>How tickets work:</b> a 🎟️ ticket gives a bonus arcade game when you're out of coins or your 5-game arcade batch is used up — no coins needed.</div>
+   ${trWishReplies(p)}`;
+  trSeenReplies(p)}
+function chestSVG(type,size,open){const C=CHESTS[type],lid=open?`<g transform="translate(14 30) rotate(-28)"><rect x="0" y="-22" width="72" height="24" rx="10" fill="${C.col}" stroke="${C.dark}" stroke-width="4"/></g>`:`<rect x="12" y="20" width="76" height="28" rx="12" fill="${C.col}" stroke="${C.dark}" stroke-width="4"/><rect x="44" y="34" width="12" height="16" rx="3" fill="#fde68a" stroke="${C.dark}" stroke-width="3"/>`;
+  return `<svg viewBox="0 0 100 90" width="${size}" height="${size*.9}">${open?'<circle cx="50" cy="40" r="34" fill="#fef08a" opacity=".7"/>':''}<rect x="12" y="42" width="76" height="40" rx="8" fill="${C.col}" stroke="${C.dark}" stroke-width="4"/><rect x="12" y="52" width="76" height="6" fill="${C.dark}" opacity=".35"/><rect x="24" y="42" width="8" height="40" fill="${C.dark}" opacity=".3"/><rect x="68" y="42" width="8" height="40" fill="${C.dark}" opacity=".3"/>${lid}</svg>`}
+function chestOpen(i){const p=cur(),t=tr(p),c=t.chests[i];if(!c)return;let taps=0;const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
+  el.innerHTML=`<div class="card center pop tr-open" style="max-width:420px"><h2>${CHESTS[c.type].n}</h2><div id="chbox" class="chbox">${chestSVG(c.type,180,false)}</div><p class="muted" id="chtip">Tap the chest 3 times to open it!</p><div id="chout"></div></div>`;document.body.appendChild(el);
+  el.querySelector('#chbox').onclick=()=>{if(taps>=3)return;taps++;const b=el.querySelector('#chbox');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');beep(300+taps*120,.08,'square',.05);
+    if(taps<3){el.querySelector('#chtip').textContent=taps===1?'Again!':'One more!';return}
+    /* open! */
+    const r=chestReward(p,c);t.chests.splice(i,1);save();b.innerHTML=chestSVG(c.type,180,true);el.querySelector('#chtip').textContent='';confetti(c.type==='gold'?140:70);[523,659,784,1047].forEach((f,k)=>setTimeout(()=>beep(f,.14,'triangle',.08),k*90));
+    el.querySelector('#chout').innerHTML=`<div class="tr-rewards">${r.map(x=>`<div class="pop">${x}</div>`).join('')}</div>
+      ${tr(p).pearls>=PEARLS_NEED?`<button class="btn gold block" style="margin-top:12px" onclick="document.getElementById('kqsheet').remove();lumiSummon()">🔮 All 7 pearls! Summon Lumi 🐉</button>`:''}
+      <button class="btn block" style="margin-top:10px" onclick="document.getElementById('kqsheet').remove();treasure()">Great!</button>`}}
+function chestReward(p,c){const t=tr(p),out=[];
+  if(c.type==='wood'){if(Math.random()<.5){t.tickets++;out.push('🎟️ +1 arcade ticket')}else{p.tokens=(p.tokens||0)+3;out.push('🪙 +3 coins')}}
+  else if(c.type==='silver'){t.tickets+=2;p.tokens=(p.tokens||0)+5;out.push('🎟️ +2 arcade tickets','🪙 +5 coins')}
+  else{t.tickets+=3;p.tokens=(p.tokens||0)+5;out.push('🎟️ +3 arcade tickets','🪙 +5 coins')}
+  if(c.pearl&&t.pearls<PEARLS_NEED){t.pearls++;out.push(`🔮 A Wish Pearl! (${t.pearls}/${PEARLS_NEED})`)}
+  return out}
+
+/* ---------- Lumi the Wish Dragon ---------- */
+function lumiSVG(size){return `<svg viewBox="0 0 300 300" width="${size}" height="${size}" class="lumi">
+  <defs><linearGradient id="lmb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#99f6e4"/><stop offset=".55" stop-color="#5eead4"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+  <radialGradient id="lmg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fef9c3" stop-opacity=".9"/><stop offset="1" stop-color="#fef9c3" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="150" cy="140" r="140" fill="url(#lmg)"/>
+  <path d="M60 260 C 20 200, 120 190, 90 140 S 160 60, 200 110 S 260 200, 230 250" fill="none" stroke="url(#lmb)" stroke-width="44" stroke-linecap="round"/>
+  <path d="M60 260 C 20 200, 120 190, 90 140 S 160 60, 200 110 S 260 200, 230 250" fill="none" stroke="#fef3c7" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 18" opacity=".9"/>
+  <path d="M236 248 l26 6 -14 -22 z" fill="#c4b5fd"/>
+  <g fill="#c4b5fd" opacity=".95"><path d="M150 96 q-40 -50 -70 -30 q30 8 34 40z"/><path d="M178 92 q30 -56 66 -42 q-30 10 -40 44z"/></g>
+  <g transform="translate(110 30)"><ellipse cx="45" cy="52" rx="48" ry="40" fill="url(#lmb)"/><ellipse cx="45" cy="70" rx="30" ry="18" fill="#ccfbf1"/>
+   <path d="M18 18 l-6 -26 18 18z M72 18 l6 -26 -18 18z" fill="#fde68a"/>
+   <circle cx="28" cy="46" r="11" fill="#fff"/><circle cx="62" cy="46" r="11" fill="#fff"/><circle cx="30" cy="48" r="6" fill="#1e1b4b"/><circle cx="64" cy="48" r="6" fill="#1e1b4b"/><circle cx="32" cy="45" r="2.2" fill="#fff"/><circle cx="66" cy="45" r="2.2" fill="#fff"/>
+   <circle cx="14" cy="64" r="6" fill="#f9a8d4" opacity=".7"/><circle cx="76" cy="64" r="6" fill="#f9a8d4" opacity=".7"/>
+   <path d="M34 72 q11 9 22 0" stroke="#1e1b4b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+   <circle cx="40" cy="64" r="2" fill="#0f766e"/><circle cx="50" cy="64" r="2" fill="#0f766e"/>
+   <path d="M4 66 q-30 -4 -40 14 M86 66 q30 -4 40 14" stroke="#fde68a" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+  ${[[40,60],[262,70],[30,170],[276,170],[150,280]].map(([x,y],i)=>`<text x="${x}" y="${y}" font-size="22" class="lumi-tw" style="animation-delay:${i*.3}s">✦</text>`).join('')}</svg>`}
+function lumiSummon(){const p=cur(),t=tr(p);if(t.pearls<PEARLS_NEED)return treasure();document.getElementById('kqsheet')?.remove();
+  const el=document.createElement('div');el.id='kqsheet';el.className='lumi-scene';el.innerHTML=`<div class="lumi-pearls">${Array.from({length:7},(_,i)=>`<span style="--a:${i*360/7}deg">🔮</span>`).join('')}</div><div class="lumi-rise">${lumiSVG(Math.min(320,window.innerWidth*.7))}</div><div class="lumi-say" id="lumisay"></div>`;
+  document.body.appendChild(el);[262,330,392,523,659,784,1047].forEach((f,k)=>setTimeout(()=>beep(f,.3,'sine',.07),k*220));
+  setTimeout(()=>{const s=el.querySelector('#lumisay');if(!s)return;s.innerHTML=`<div class="card center pop" style="max-width:460px"><h2>✨ I am Lumi, the Wish Dragon! ✨</h2><p>${esc(p.name)}, you gathered all seven Wish Pearls through hard work. I grant you <b>one wish</b>. Choose wisely!</p>
+    <div class="lumi-wishes">
+      <button onclick="lumiGrant('tickets')"><span>🎟️</span><b>10 arcade tickets</b><small>Lots of bonus games</small></button>
+      <button onclick="lumiGrant('coins')"><span>🪙</span><b>30 coins</b><small>For the arcade</small></button>
+      ${S.wishReal!==false?`<button onclick="lumiAsk()"><span>💌</span><b>Wish to grown-ups</b><small>Ask for something real</small></button>`:''}
+    </div></div>`},2600)}
+function lumiDone(p){const t=tr(p);t.pearls=0;t.wishes++;award(p,'wish1');if(t.wishes>=3)award(p,'wish3');save()}
+function lumiGrant(k){const p=cur(),t=tr(p);if(t.pearls<PEARLS_NEED)return;if(k==='tickets')t.tickets+=10;else p.tokens=(p.tokens||0)+30;lumiDone(p);confetti(160);
+  const s=document.getElementById('lumisay');if(s)s.innerHTML=`<div class="card center pop" style="max-width:420px"><h2>Your wish is granted! 🐉</h2><p>${k==='tickets'?'🎟️ +10 arcade tickets':'🪙 +30 coins'} — enjoy! The pearls scatter across the worlds again… go find them!</p><button class="btn block" onclick="document.getElementById('kqsheet').remove();treasure()">Thank you, Lumi!</button></div>`}
+const WISH_TYPES=[['treat','🍦','A treat'],['outing','🎡','An outing'],['toy','🧸','A toy or book'],['screen','📺','Screen time'],['other','💭','Something else']];
+function lumiAsk(){const s=document.getElementById('lumisay');if(!s)return;s.innerHTML=`<div class="card pop" style="max-width:480px"><h2 class="center">💌 Wish to grown-ups</h2>
+   <p class="small muted center">Lumi will carry your wish to your grown-ups. They'll decide — that's part of the magic!</p>
+   <div class="wish-types">${WISH_TYPES.filter(w=>!S.wishOff||!S.wishOff.includes(w[0])).map(([k,e,n],i)=>`<button class="${i===0?'on':''}" data-k="${k}" onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));this.classList.add('on')">${e} ${n}</button>`).join('')}</div>
+   <textarea id="wishtxt" maxlength="200" rows="3" placeholder="I wish…" style="width:100%;font:inherit;font-size:17px;padding:10px;border-radius:12px;border:2px solid #c7d2fe;margin-top:10px"></textarea>
+   <p class="small muted" style="margin:4px 0 10px">Tip: tap the 🎤 on the iPad keyboard to say your wish.</p>
+   <button class="btn block" onclick="lumiSend()">🐉 Send my wish</button></div>`;setTimeout(()=>document.getElementById('wishtxt')?.focus(),200)}
+function lumiSend(){const p=cur(),t=tr(p),txt=(document.getElementById('wishtxt')?.value||'').trim();if(!txt){miniToast('Write your wish first ✏️');return}if(t.pearls<PEARLS_NEED)return;
+  const type=document.querySelector('.wish-types button.on')?.dataset.k||'other';S.wishes=S.wishes||[];const w={id:'w'+Date.now(),kid:p.id,name:p.name,text:txt,type,at:Date.now(),status:'new'};S.wishes.unshift(w);lumiDone(p);confetti(120);
+  const s=document.getElementById('lumisay');if(s)s.innerHTML=`<div class="card center pop" style="max-width:440px"><h2>Wish sent! 💌</h2><p>It's waiting in the grown-ups' <b>Wish Inbox</b>. If they're not here, send it to their phone too:</p>
+   <button class="btn block" onclick="wishShare('${w.id}')">📤 Send to a grown-up's phone</button>
+   <button class="btn ghost block" style="margin-top:10px" onclick="document.getElementById('kqsheet').remove();treasure()">Done</button></div>`}
+function wishMsg(w){const ty=WISH_TYPES.find(x=>x[0]===w.type)||WISH_TYPES[4];return `🐉 ${w.name} collected all 7 Wish Pearls in Kinquest and made a wish!\n\n${ty[1]} ${ty[2]}: “${w.text}”\n\nOpen Kinquest → Wish Inbox to answer.`}
+async function wishShare(id){const w=(S.wishes||[]).find(x=>x.id===id);if(!w)return;const text=wishMsg(w);
+  try{if(navigator.share){await navigator.share({title:'A wish from '+w.name,text});w.shared=true;save();return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(text);miniToast('Copied! Paste it into WhatsApp or Messages 📋')}catch(e){prompt('Copy this message:',text)}w.shared=true;save()}
+/* ---------- grown-ups' Wish Inbox ---------- */
+function wishGate(go){const x=ri(13,19),y=ri(13,19),a=prompt(`Grown-ups only 🔑\nWhat is ${x} × ${y}?`);if(a==null)return;if(parseInt(a,10)!==x*y){miniToast('Not quite — this part is for grown-ups');return}go()}
+function wishInbox(){const W=S.wishes||[];
+  app().innerHTML=`<div class="top"><button class="back" onclick="home()">‹</button><h1>💌 Wish Inbox</h1></div>
+   ${W.length?W.map(w=>{const ty=WISH_TYPES.find(x=>x[0]===w.type)||WISH_TYPES[4],kid=S.profiles.find(p=>p.id===w.kid);return `<div class="card wishcard ${w.status}">
+     <div class="row" style="gap:10px;align-items:center">${kid?avatar(kid,48):''}<div style="flex:1"><b>${esc(w.name)}</b> <span class="small muted">· ${new Date(w.at).toLocaleDateString('en-SG',{day:'numeric',month:'short'})}</span><div class="small">${ty[1]} ${ty[2]}</div></div><span class="wish-st">${{new:'🆕 New',yes:'✅ Yes',talk:'🤔 Let’s talk',no:'❌ Not this time'}[w.status]}</span></div>
+     <p style="font-size:18px;margin:10px 0">“${esc(w.text)}”</p>
+     <input id="rep-${w.id}" placeholder="Reply to ${esc(w.name)} (optional)" value="${esc(w.reply||'')}" style="width:100%;font:inherit;padding:8px 10px;border-radius:10px;border:2px solid #e2e8f0">
+     <div class="row" style="gap:6px;margin-top:8px"><button class="btn" style="flex:1" onclick="wishAnswer('${w.id}','yes')">✅ Yes</button><button class="btn ghost" style="flex:1" onclick="wishAnswer('${w.id}','talk')">🤔 Let’s talk</button><button class="btn ghost" style="flex:1" onclick="wishAnswer('${w.id}','no')">❌ Not now</button></div></div>`}).join('')
+     :'<div class="card center muted">No wishes yet. When a child collects 7 Wish Pearls they can summon Lumi the Wish Dragon and send a wish here.</div>'}
+   <div class="card"><b>Wish settings</b>
+     <label class="row" style="gap:8px;margin-top:8px"><input type="checkbox" ${S.wishReal!==false?'checked':''} onchange="S.wishReal=this.checked;save()"> Allow real-world wishes to grown-ups</label>
+     <div class="small muted" style="margin:8px 0 4px">Wish types children can choose:</div>
+     <div class="row wrap" style="gap:6px">${WISH_TYPES.map(([k,e,n])=>`<label class="chip" style="background:#eef2ff;color:#1f2a44"><input type="checkbox" ${!(S.wishOff||[]).includes(k)?'checked':''} onchange="S.wishOff=S.wishOff||[];S.wishOff=this.checked?S.wishOff.filter(x=>x!=='${k}'):[...S.wishOff,'${k}'];save()"> ${e} ${n}</label>`).join('')}</div></div>`}
+function wishAnswer(id,st){const w=(S.wishes||[]).find(x=>x.id===id);if(!w)return;w.status=st;w.reply=(document.getElementById('rep-'+id)?.value||'').trim();w.answeredAt=Date.now();w.kidSeen=false;save();miniToast('Answer saved — '+w.name+' will see it next time');wishInbox()}
+function trWishReplies(p){const W=(S.wishes||[]).filter(w=>w.kid===p.id&&w.status!=='new').slice(0,3);if(!W.length)return'';
+  return `<div class="sect"><span>Answers to your wishes</span></div>${W.map(w=>`<div class="card"><b>${{yes:'✅ Yes!',talk:'🤔 Let’s talk about it',no:'❌ Not this time'}[w.status]}</b> — “${esc(w.text)}”${w.reply?`<p style="margin:6px 0 0">💬 ${esc(w.reply)}</p>`:''}</div>`).join('')}`}
+function trSeenReplies(p){let ch=false;(S.wishes||[]).forEach(w=>{if(w.kid===p.id&&w.status!=='new'&&!w.kidSeen){w.kidSeen=true;ch=true}});if(ch)save()}
+function trReplyNudge(p){const w=(S.wishes||[]).find(w=>w.kid===p.id&&w.status!=='new'&&!w.kidSeen);if(!w)return;w.kidSeen=true;save();
+  trToast('💌','Your grown-ups answered your wish!',{yes:'✅ Yes!',talk:'🤔 Let’s talk',no:'❌ Not this time'}[w.status]+(w.reply?' — '+w.reply:''),'treasure()')}
+function trChip(p){const t=tr(p);return `<span class="chip trchip ${t.chests.length?'glow':''}" onclick="treasure()">🎒${t.chests.length?` 🧰${t.chests.length}`:''} 🎟️${t.tickets} 🔮${t.pearls}/${PEARLS_NEED}</span>`}
+BADGES.push({id:'wish1',e:'🐉',n:'Wish Maker',d:'Summon Lumi the Wish Dragon'},{id:'wish3',e:'🌠',n:'Dragon Friend',d:'Summon Lumi three times'});
 
 /* ============ Number Crossword (special maths level) ============ */
 const XN_NEED=5; /* maths stars needed to open it */
