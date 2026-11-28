@@ -1,0 +1,7 @@
+{
+  "appId": "com.kinquest.app",
+  "appName": "Kinquest",
+  "webDir": "../quest-pk",
+  "ios": { "contentInset": "never", "allowsLinkPreview": false, "scrollEnabled": true, "limitsNavigationsToAppBoundDomains": true },
+  "server": { "iosScheme": "capacitor" }
+}

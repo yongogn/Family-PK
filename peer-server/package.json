@@ -1,0 +1,10 @@
+{
+  "name": "kinquest-peer-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Matchmaking (signalling) server for Kinquest two-device play. Stores nothing.",
+  "main": "index.js",
+  "scripts": { "start": "node index.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "peer": "^1.0.2" }
+}

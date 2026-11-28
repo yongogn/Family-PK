@@ -638,6 +638,9 @@ body:has(.arcade-page){height:auto;min-height:100vh}@media(max-width:480px){.arc
 .wishbanner{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:12px 16px;border:0;border-radius:18px;background:linear-gradient(135deg,#ede9fe,#c4b5fd);color:#2e1065;font:inherit;text-align:left;cursor:pointer;box-shadow:0 5px 0 #7c3aed55}
 .wishbanner>span:first-child{font-size:32px}.wishbanner b{display:block}.wishbanner small{opacity:.8}.wishbanner .go{margin-left:auto;font-weight:800;white-space:nowrap}.wishbanner.new{animation:trglow 1.4s infinite}
 .wishcard.yes{border-left:6px solid #22c55e}.wishcard.no{border-left:6px solid #ef4444}.wishcard.talk{border-left:6px solid #f59e0b}.wishcard.new{border-left:6px solid #7c3aed}.wish-st{font-weight:800;font-size:13px}
+.pg-v{font-size:30px;font-weight:800;letter-spacing:4px;min-height:44px;border-bottom:3px solid #c7d2fe;margin:0 auto 10px;width:150px}
+.pg-pad{display:grid!important;grid-template-columns:repeat(3,1fr);gap:8px}.pg-pad button{font-size:22px}.pg-pad .chk{background:#22c55e;color:#fff}
+.card.shake{animation:xnshake .35s}
 </style>
 </head>
 <body>
@@ -2295,7 +2298,7 @@ function map(){if(Q&&!Q.dead)killQuiz();
   const target=document.getElementById('node'+(nextI>=0?nextI:nodes.length-1));
   if(target)setTimeout(()=>{const r=target.getBoundingClientRect();window.scrollTo({top:window.scrollY+r.top-window.innerHeight/2+60})},30);
 }
-function toggleUnlock(){const p=cur();if(!p.unlockAll){const x=ri(13,19),y=ri(13,19),ans=prompt(`Grown-ups only 🔑\nWhat is ${x} × ${y}?`);if(ans==null)return;if(parseInt(ans,10)!==x*y){miniToast('Not quite — ask a grown-up!');return}}p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
+function toggleUnlock(){const p=cur();if(!p.unlockAll&&!toggleUnlock.ok){parentGate(()=>{toggleUnlock.ok=true;toggleUnlock();toggleUnlock.ok=false},'Unlock every level for '+p.name);return}p.unlockAll=!p.unlockAll;if(p.unlockAll)STAGES.forEach(s=>{if(sub(p,s.id).ability==null)sub(p,s.id).ability=p.year});save();map()}
 function tapNode(i){
   const p=cur(),sid=STAGE,n=stageNodes()[i];
   if(!unlockedN(p,sid,n)){miniToast(n.t==='boss'?'🔒 Get a star on all 5 levels of this chapter first':n.l===0&&n.c>0?'🔒 Beat the previous chapter\'s Boss first':n.t==='lvl'&&n.c===0&&n.l===0?'🔒 Do the test first':'🔒 Get at least 1 star on the previous level');return}
@@ -3270,8 +3273,8 @@ function plusSheet(){document.getElementById('kqsheet')?.remove();const el=docum
    <button class="btn block" onclick="buyPlus()">${window.KQ_IAP?'Unlock Plus':'Grown-ups: unlock (test version)'}</button><button class="btn ghost block" style="margin-top:8px" onclick="document.getElementById('kqsheet').remove()">Maybe later</button></div>`;
   document.body.appendChild(el)}
 function buyPlus(){const done=()=>{S.plus=true;save();document.getElementById('kqsheet')?.remove();miniToast('👑 Plus unlocked — dress up time!');if(typeof E!=='undefined'&&E&&E.av)avatarEditor()};
-  if(window.KQ_IAP){window.KQ_IAP('plus').then(ok=>{if(ok)done()});return}
-  const x=ri(13,19),y=ri(13,19),ans=prompt(`Grown-ups only 🔑\nWhat is ${x} × ${y}?`);if(ans==null)return;if(parseInt(ans,10)!==x*y){miniToast('Not quite — ask a grown-up!');return}done()}
+  /* purchases always sit behind the grown-up gate (App Store Kids Category rule) */
+  parentGate(()=>{if(window.KQ_IAP){window.KQ_IAP('plus').then(ok=>{if(ok)done()});return}done()},window.KQ_IAP?'Buy Kinquest Plus':'Unlock Kinquest Plus (test version)')}
 function companionSVG(sp,size,style,av){if(style!=='cuddly'&&ORIG_CELLS[sp]!=null){const n=ORIG_CELLS[sp],L=av?origAccLayers(av,sp):null;return `<svg class="companion-avatar toy-avatar" viewBox="0 0 384 512" width="${size}" height="${size}" overflow="visible" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${sp}">${L?L.defs+L.behind:''}<svg viewBox="${n%4*384} ${Math.floor(n/4)*512} 384 512" width="384" height="512"><image href="assets/companions.png" width="1536" height="1024"/></svg>${L?L.front:''}</svg>`}const key=Object.prototype.hasOwnProperty.call(COMPANION_CELLS,sp)?sp:'fox',file=key==='owl'?'owl-happy':key;return `<svg class="companion-avatar toy-avatar cute-avatar" viewBox="0 0 352 352" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-avatar-species="${key}"><image href="assets/avatars/${file}.webp" width="352" height="352"/></svg>`}
 function owlCompanion(expression='happy',size=72){const mood=Object.prototype.hasOwnProperty.call(OWL_ART,expression)?expression:'happy',label=mood==='sad'?'gently encouraging':mood;return `<img class="owl-companion" data-owl-expression="${mood}" src="assets/avatars/${OWL_ART[mood]}.webp" width="${size}" height="${size}" alt="${label} owl companion" decoding="async">`}
 function thinkingCompanion(){return Q.locked?'':`<div class="q-companion">${owlCompanion('thinking',60)}<span>Let’s work it out together.</span></div>`}
@@ -4013,11 +4016,12 @@ function home(){
    <div class="players">${kids.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'kid')"><span class="quest-add-icon" aria-hidden="true">＋</span>Add player<small>A new adventure awaits</small></button></div>
    <div class="sect"><span>Meet the bosses</span><span class="quest-count">Family rivals</span></div>
    <p class="quest-section-note">Grown-ups, it's your turn. Join as a boss and let the family battles begin.</p>
-   ${(()=>{const W=S.wishes||[],n=W.filter(w=>w.status==='new').length;return W.length||S.profiles.some(p=>p.tr&&p.tr.pearls)?`<button class="wishbanner ${n?'new':''}" onclick="wishGate(wishInbox)"><span>💌</span><span><b>Wish Inbox</b><small>${n?`${n} new wish${n>1?'es':''} from Lumi the Wish Dragon`:'Wishes your children send with their 7 Wish Pearls'}</small></span><span class="go">${n?n+' new':'Open'} ›</span></button>`:''})()}
+   ${(()=>{const W=S.wishes||[],n=W.filter(w=>w.status==='new').length;return W.length||S.profiles.some(p=>p.tr&&p.tr.pearls)?`<button class="wishbanner ${n?'new':''}" onclick="grownups()"><span>💌</span><span><b>Wish Inbox</b><small>${n?`${n} new wish${n>1?'es':''} from Lumi the Wish Dragon`:'Wishes your children send with their 7 Wish Pearls'}</small></span><span class="go">${n?n+' new':'Open'} ›</span></button>`:''})()}
    <div class="players boss-players">${ads.map(card).join('')}<button class="pcard add" onclick="editProfile(null,'adult')"><span class="quest-add-icon" aria-hidden="true">⚔</span>Add boss<small>Bring on the challenge</small></button></div>
    ${soonHome()}
    ${REMOTE_OK?`<section class="quest-remote"><span class="quest-remote-icon" aria-hidden="true">🌍</span><div class="quest-remote-copy"><strong>Same family. Anywhere in the world.</strong><p>Take on a far-away boss in a live PK battle.</p></div><button class="btn purple" onclick="joinScreen('')">Join a remote battle →</button></section>`:''}
    <div class="center homefoot">
+     <button class="back" onclick="grownups()">👪 Grown-ups</button>
      <button class="back" onclick="backupScreen()">💾 Save / restore</button>
      <button class="back" onclick="seasonPicker()">${SEASON.icon} Theme</button>
      ${S.profiles.length&&backupNudge()?'<div class="small" style="color:#ffd27a;margin-top:8px">Tip: save a copy of progress before updating the app</div>':''}
@@ -4940,9 +4944,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.8.3';
+const APP_VERSION='4.9';
 const APP_DATE='28 Nov 2026';
 const CHANGES=[
+  ['4.9','Ready for the App Store kids rules: one grown-up check (keypad sum) in front of purchases, sharing, online play and settings; online play needs a grown-up OK the first time; a friendly note before the microphone is used; new 👪 Grown-ups’ corner with the Wish Inbox, online-play switch and privacy policy.'],
   ['4.8.3','New Kinquest app icon: our fox companion, a treasure chest and a glowing learning star against a warm sunrise.'],
   ['4.8.2','Number Crossword now has working paper (with pen and eraser) for doing sums.'],
   ['4.8.1','Fixed the release date shown at the bottom of the home screen.'],
@@ -5056,8 +5061,11 @@ function backupNudge(){
    questions and sends a "pull" for every right answer. Invite goes by the iPad's Share sheet
    (Messages / Mail / AirDrop) or by reading out a 4-letter room code. */
 const RM={peer:null,conn:null,code:null,role:null,guest:null,host:null,timer:null};
-const REMOTE_OK=typeof window.RTCPeerConnection!=='undefined'&&typeof window.Peer!=='undefined'&&/^https?:/.test(location.protocol);
-const PEER_OPTS=window.PEER_OPTS||{debug:0,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}]}};
+const REMOTE_OK=typeof window.RTCPeerConnection!=='undefined'&&typeof window.Peer!=='undefined'&&/^(https?|capacitor|ionic):/.test(location.protocol);
+/* Matchmaking server for online play. Set KQ_SERVER to your own PeerServer (see /peer-server) before the App Store release;
+   until then the free public PeerJS server is used. */
+const KQ_SERVER=window.KQ_SERVER||null; /* e.g. {host:'kinquest-peer.onrender.com',port:443,path:'/kq',secure:true} */
+const PEER_OPTS=window.PEER_OPTS||Object.assign({debug:0,config:{iceServers:(KQ_SERVER&&KQ_SERVER.ice)||[{urls:'stun:stun.cloudflare.com:3478'},{urls:'stun:stun.l.google.com:19302'}]}},KQ_SERVER?{host:KQ_SERVER.host,port:KQ_SERVER.port||443,path:KQ_SERVER.path||'/',secure:KQ_SERVER.secure!==false}:{});
 const CODE_CHARS='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const newCode=()=>Array.from({length:4},()=>CODE_CHARS[Math.floor(Math.random()*CODE_CHARS.length)]).join('');
 const peerId=c=>'questpk-'+c.toUpperCase();
@@ -6803,7 +6811,6 @@ async function wishShare(id){const w=(S.wishes||[]).find(x=>x.id===id);if(!w)ret
   try{if(navigator.share){await navigator.share({title:'A wish from '+w.name,text});w.shared=true;save();return}}catch(e){if(e&&e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(text);miniToast('Copied! Paste it into WhatsApp or Messages 📋')}catch(e){prompt('Copy this message:',text)}w.shared=true;save()}
 /* ---------- grown-ups' Wish Inbox ---------- */
-function wishGate(go){const x=ri(13,19),y=ri(13,19),a=prompt(`Grown-ups only 🔑\nWhat is ${x} × ${y}?`);if(a==null)return;if(parseInt(a,10)!==x*y){miniToast('Not quite — this part is for grown-ups');return}go()}
 function wishInbox(){const W=S.wishes||[];
   app().innerHTML=`<div class="top"><button class="back" onclick="home()">‹</button><h1>💌 Wish Inbox</h1></div>
    ${W.length?W.map(w=>{const ty=WISH_TYPES.find(x=>x[0]===w.type)||WISH_TYPES[4],kid=S.profiles.find(p=>p.id===w.kid);return `<div class="card wishcard ${w.status}">
@@ -6824,6 +6831,73 @@ function trReplyNudge(p){const w=(S.wishes||[]).find(w=>w.kid===p.id&&w.status!=
   trToast('💌','Your grown-ups answered your wish!',{yes:'✅ Yes!',talk:'🤔 Let’s talk',no:'❌ Not this time'}[w.status]+(w.reply?' — '+w.reply:''),'treasure()')}
 function trChip(p){const t=tr(p);return `<span class="chip trchip ${t.chests.length?'glow':''}" onclick="treasure()">🎒${t.chests.length?` 🧰${t.chests.length}`:''} 🎟️${t.tickets} 🔮${t.pearls}/${PEARLS_NEED}</span>`}
 BADGES.push({id:'wish1',e:'🐉',n:'Wish Maker',d:'Summon Lumi the Wish Dragon'},{id:'wish3',e:'🌠',n:'Dragon Friend',d:'Summon Lumi three times'});
+
+/* ============ GROWN-UPS: parental gate · online-play consent · mic explainer · Grown-ups' corner ============ */
+/* One gate for everything that leaves the child's space (purchases, sharing, online play, settings).
+   Apple's Kids Category asks for a gate a young child can't pass by guessing: a two-digit multiplication typed on a keypad. */
+function parentGate(go,why){document.getElementById('pgate')?.remove();const a=ri(12,19),b=ri(12,19),el=document.createElement('div');el.id='pgate';el.className='modal';el.style.zIndex=10000;let v='',tries=0;
+  const draw=()=>{el.querySelector('#pg-v').textContent=v||' '};
+  el.innerHTML=`<div class="card center pop" style="max-width:380px"><div style="font-size:40px">🔑</div><h2>Grown-ups only</h2>${why?`<p class="small muted">${esc(why)}</p>`:''}
+    <p style="font-size:22px;margin:8px 0"><b>${a} × ${b} = ?</b></p><div id="pg-v" class="pg-v"> </div>
+    <div class="numpad pg-pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-d="${d}">${d}</button>`).join('')}<button data-d="del">⌫</button><button data-d="0">0</button><button data-d="ok" class="chk">OK</button></div>
+    <button class="btn ghost block" style="margin-top:10px" data-d="cancel">Cancel</button></div>`;
+  el.onclick=e=>{const d=e.target.closest('[data-d]')?.dataset.d;if(!d)return;
+    if(d==='cancel'){el.remove();return}if(d==='del'){v=v.slice(0,-1);draw();return}
+    if(d==='ok'){if(parseInt(v,10)===a*b){el.remove();go()}else{tries++;v='';draw();el.querySelector('.card').classList.remove('shake');void el.offsetWidth;el.querySelector('.card').classList.add('shake');if(tries>=3){el.remove();miniToast('Ask a grown-up to help 🙂')}}return}
+    if(v.length<4){v+=d;draw()}};
+  document.body.appendChild(el)}
+/* replaces the old prompt() checks */
+function wishGate(go){parentGate(go,'Open the Grown-ups’ corner')}
+
+/* ---- online play (two-iPad Duel Table and far-away Boss PK) ---- */
+function netAllowed(go,what){if(S.netOff){miniToast('🔒 A grown-up has turned off online play');return}
+  if(S.netOk)return go();document.getElementById('kqsheet')?.remove();const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
+  el.innerHTML=`<div class="card pop" style="max-width:460px"><div class="center" style="font-size:44px">📱🔗📱</div><h2 class="center">Ask a grown-up first</h2>
+    <p>${esc(what||'Playing on two devices')} connects this iPad to another one over the internet.</p>
+    <ul class="small" style="margin:6px 0 12px;padding-left:20px;line-height:1.5"><li>Only a <b>room code</b>, the <b>player names</b> and the <b>game moves</b> are sent — to the other device only.</li><li>A small matchmaking server helps the two devices find each other. Nothing is stored.</li><li>No chat, no strangers: you can only join with the code from the other screen.</li></ul>
+    <button class="btn block" id="net-ok">🔑 Grown-up: allow online play</button><button class="btn ghost block" style="margin-top:8px" onclick="document.getElementById('kqsheet').remove()">Not now</button>
+    <p class="small muted center" style="margin-top:8px">You can turn this off any time in 👪 Grown-ups’ corner.</p></div>`;
+  document.body.appendChild(el);el.querySelector('#net-ok').onclick=()=>parentGate(()=>{S.netOk=true;save();el.remove();go()},'Allow online play on this device')}
+const _duelHostG=duelHost,_duelJoinG=duelJoinScreen,_remoteHostG=remoteHost,_joinScreenG=joinScreen;
+duelHost=function(){netAllowed(()=>_duelHostG(),'Playing on two iPads')};
+duelJoinScreen=function(code){netAllowed(()=>_duelJoinG(code),'Joining a game on another iPad')};
+remoteHost=function(){netAllowed(()=>_remoteHostG(),'A far-away Boss PK')};
+joinScreen=function(code){netAllowed(()=>_joinScreenG(code),'Joining a far-away Boss PK')};
+
+/* ---- microphone: a friendly explanation before iPadOS asks for permission ---- */
+function micExplain(go){if(S.micOk)return go();document.getElementById('kqsheet')?.remove();const el=document.createElement('div');el.id='kqsheet';el.className='modal';el.style.zIndex=9999;
+  el.innerHTML=`<div class="card center pop" style="max-width:420px"><div style="font-size:52px">🎤</div><h2>Say it out loud!</h2>
+    <p>Kinquest uses the microphone so it can hear you say the word. Your iPad will ask if that's OK.</p>
+    <p class="small muted">Your voice is only used to check the word, and is never saved or shared.</p>
+    <button class="btn block" id="mic-go">OK, let's try</button><button class="btn ghost block" style="margin-top:8px" onclick="document.getElementById('kqsheet').remove()">Not now</button></div>`;
+  document.body.appendChild(el);el.querySelector('#mic-go').onclick=()=>{S.micOk=true;save();el.remove();go()}}
+const _listenG=listen,_recStartG=recStart;
+listen=function(){micExplain(()=>_listenG())};
+recStart=function(){micExplain(()=>_recStartG())};
+
+/* ---- sharing a wish leaves the app, so it sits behind the gate ---- */
+const _wishShareG=wishShare;
+wishShare=function(id){parentGate(()=>_wishShareG(id),'Send this wish to a phone')};
+
+/* ---- 👪 Grown-ups' corner: Wish Inbox + settings + privacy ---- */
+function grownups(){parentGate(()=>{wishInbox();grownupsExtra()},'Open the Grown-ups’ corner')}
+function grownupsExtra(){const box=document.createElement('div');box.innerHTML=`
+  <div class="card"><b>Online play</b>
+    <label class="row" style="gap:8px;margin-top:8px"><input type="checkbox" ${S.netOff?'':'checked'} onchange="S.netOff=!this.checked;if(S.netOff)S.netOk=false;save()"> Allow two-iPad games and far-away Boss PK</label>
+    <p class="small muted" style="margin:6px 0 0">${S.netOk?'Allowed on this iPad.':'Children will be asked to fetch a grown-up the first time.'} Only room codes, player names and game moves are sent, between the two devices.</p></div>
+  <div class="card"><b>Kinquest Plus</b><p class="small" style="margin:6px 0">${S.plus?'👑 Plus is unlocked on this iPad.':'Not unlocked. Plus adds every accessory for the Original 3D companions.'}</p></div>
+  <div class="card"><b>Privacy</b><p class="small" style="margin:6px 0">All progress stays on this iPad. No accounts, no ads, no tracking, no data collected.</p><button class="btn ghost" onclick="privacyPage()">Read the privacy policy</button></div>`;
+  app().appendChild(box);const h=app().querySelector('.top h1');if(h)h.textContent='👪 Grown-ups’ corner'}
+function privacyPage(){app().innerHTML=`<div class="top"><button class="back" onclick="grownups()">‹</button><h1>Privacy</h1></div><div class="card" style="line-height:1.55">${PRIVACY_HTML}</div>`}
+const PRIVACY_HTML=`<h2>Kinquest privacy policy</h2><p class="small muted">Last updated 28 November 2026</p>
+<p><b>Kinquest is made for families.</b> We don't collect, sell or share personal information, and there are no ads, no tracking and no accounts.</p>
+<h3>What stays on your device</h3><p>Player names, ages, school years, avatars, progress, stars, badges, wishes and settings are saved only in the app's storage on your device. We never receive them. You can save a copy or delete everything from the app (💾 Save / restore).</p>
+<h3>Online play (optional)</h3><p>Two-device games and far-away Boss PK connect two devices directly. To find each other, the devices use a small matchmaking (signalling) server and standard connection helpers. Only a temporary room code, the players' first names and the game moves are exchanged, and only between the two devices. Nothing is stored. A grown-up must allow online play first, and can turn it off in Grown-ups' corner.</p>
+<h3>Microphone</h3><p>Speaking practice uses the microphone only while the child taps the 🎤 button. Speech checking uses the speech recognition built into the device's operating system. Recordings are not saved or sent to us.</p>
+<h3>Wishes to grown-ups</h3><p>Wishes stay in the app's Wish Inbox. A grown-up can choose to send one to their own phone using the device's share sheet.</p>
+<h3>Purchases</h3><p>Any optional purchase is handled by Apple and sits behind a grown-up check. We never see payment details.</p>
+<h3>Children's privacy</h3><p>Because we collect no personal information, we have nothing to disclose to third parties. Parents can delete all data at any time by deleting the app or using 💾 Save / restore.</p>
+<h3>Contact</h3><p>Questions? Email the developer at the support address on the App Store page.</p>`;
 
 /* ============ Number Crossword (special maths level) ============ */
 const XN_NEED=5; /* maths stars needed to open it */
