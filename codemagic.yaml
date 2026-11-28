@@ -10,9 +10,9 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.kinlight.kinquest
+        bundle_identifier: com.sunnyloop.kinquest
       vars:
-        BUNDLE_ID: com.kinlight.kinquest
+        BUNDLE_ID: com.sunnyloop.kinquest
         APP_STORE_APPLE_ID: 0000000000           # ← replace with the app's Apple ID (App Store Connect → App Information)
         APP_VERSION: 1.0.0                       # the version shown on the App Store
       node: 22

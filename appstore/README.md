@@ -18,7 +18,7 @@ adds the icon, permissions and version, signs it and uploads it to TestFlight.
 **One-time setup**
 1. **Apple Developer Program** — enrol at developer.apple.com (US$99/year). Wait for approval.
 2. **Create the app record** — App Store Connect → Apps → ＋ New App: Platform iOS, Name *Kinquest*,
-   Bundle ID *com.kinlight.kinquest* (register it under Certificates, Identifiers & Profiles → Identifiers first),
+   Bundle ID *com.sunnyloop.kinquest* (register it under Certificates, Identifiers & Profiles → Identifiers first),
    SKU *kinquest-001*. Then open App Information and copy the **Apple ID** number.
 3. **API key** — App Store Connect → Users and Access → Integrations → App Store Connect API → ＋,
    name *Codemagic*, access **App Manager**. Download the .p8 file (only once!) and note the Issuer ID and Key ID.
