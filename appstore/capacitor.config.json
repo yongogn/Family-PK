@@ -1,5 +1,5 @@
 {
-  "appId": "com.yongogn.kinquest",
+  "appId": "com.kinlight.kinquest",
   "appName": "Kinquest",
   "webDir": "../quest-pk",
   "ios": { "contentInset": "never", "allowsLinkPreview": false, "scrollEnabled": true }
