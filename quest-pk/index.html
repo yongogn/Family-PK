@@ -4940,9 +4940,10 @@ function gHoops(){
 }
 
 /* ============ VERSION ============ */
-const APP_VERSION='4.8.1';
+const APP_VERSION='4.8.2';
 const APP_DATE='28 Nov 2026';
 const CHANGES=[
+  ['4.8.2','Number Crossword now has working paper (with pen and eraser) for doing sums.'],
   ['4.8.1','Fixed the release date shown at the bottom of the home screen.'],
   ['4.8','Treasure! 🧰 Find Wooden, Silver and Gold Chests for learning — they hold coins and 🎟️ arcade tickets (bonus games when you run out). 🛂 A World Passport with 8 stamps per world and a Gold Seal for each full page. 🔮 Collect 7 Wish Pearls to summon Lumi the Wish Dragon and make a wish — including a wish to your grown-ups, who answer in the new 💌 Wish Inbox.'],
   ['4.7','New special level in Word Woods: 🔎 Word Search — 12 themes, a fresh grid every time, sized to your reading level. Both special levels now have a badge ladder to collect (7 for the Number Crossword, 8 for Word Search): play more, play faster, play without hints and keep a 3-day streak.'],
@@ -6884,12 +6885,17 @@ function xnDraw(){const X=XN;if(!X)return;const B=X.B,p=X.p,vw=Math.min(window.i
     if(cell.o!=null)g+=`<div class="xn-c op" style="${pos}">${cell.o==='-'?'−':cell.o}</div>`;
     else if(B.blank.has(k)){const v=X.ans[k]??'',st=X.mark&&X.mark[k]||'';g+=`<div class="xn-c in ${X.sel===k?'sel':''} ${st}" style="${pos}" onclick="xnSel('${k}')">${v}</div>`}
     else g+=`<div class="xn-c" style="${pos}">${cell.n}</div>`}
-  const left=[...B.blank].filter(k=>X.ans[k]==null||X.ans[k]==='').length;
-  app().innerHTML=`<div class="top"><button class="back" onclick="xnQuit()">‹</button><div style="flex:1"><h1 style="font-size:20px">🧩 Number Crossword</h1><div class="small" style="opacity:.85">${X.cf.label} · ${left} box${left===1?'':'es'} to fill</div></div>
-    <span class="chip" onclick="xnHint()">💡 Hint ×${X.hints}</span><span class="chip" onclick="xnStart()">🔄 New</span></div>
+  const left=[...B.blank].filter(k=>X.ans[k]==null||X.ans[k]==='').length,sub=`${X.cf.label} · ${left} box${left===1?'':'es'} to fill`,grid=`<div class="xn-grid" style="grid-template-columns:repeat(${B.cols},${sz}px);grid-auto-rows:${sz}px;font-size:${fs}px">${g}</div>`;
+  /* after the first draw only the grid and labels change, so the working paper keeps its writing */
+  if(X.drawn&&document.getElementById('xn-root')){document.getElementById('xn-sub').textContent=sub;document.getElementById('xn-hints').textContent=`💡 Hint ×${X.hints}`;document.getElementById('xn-gridbox').innerHTML=grid;return}
+  if(X.pad==null)X.pad=padDefault(p)!==false;X.drawn=true;
+  app().innerHTML=`<div id="xn-root"><div class="top"><button class="back" onclick="xnQuit()">‹</button><div style="flex:1"><h1 style="font-size:20px">🧩 Number Crossword</h1><div class="small" style="opacity:.85" id="xn-sub">${sub}</div></div>
+    <span class="chip" id="xn-hints" onclick="xnHint()">💡 Hint ×${X.hints}</span><span class="chip" onclick="XN.pad=!XN.pad;XN.drawn=false;xnDraw()">✏️ Paper ${X.pad?'on':'off'}</span><span class="chip" onclick="xnStart()">🔄 New</span></div>
    <div class="card xn-panel"><p class="small muted center" style="margin:0 0 10px">Every row and column is a sum. Tap a yellow box, then type the missing number.</p>
-   <div class="xn-wrap"><div class="xn-grid" style="grid-template-columns:repeat(${B.cols},${sz}px);grid-auto-rows:${sz}px;font-size:${fs}px">${g}</div></div></div>
-   <div class="xn-pad"><div class="numpad">${[1,2,3,4,5,6,7,8,9,0].map(d=>`<button onpointerdown="event.preventDefault();xnKey(${d})">${d}</button>`).join('')}<button class="wide" onpointerdown="event.preventDefault();xnKey('del')">⌫</button><button class="wide chk" onclick="xnCheck()">✓ Check</button></div></div>`}
+   <div class="xn-wrap" id="xn-gridbox">${grid}</div></div>
+   ${X.pad?`<div style="margin:12px 0">${padHTML('xpad',true,false)}</div>`:''}
+   <div class="xn-pad"><div class="numpad">${[1,2,3,4,5,6,7,8,9,0].map(d=>`<button onpointerdown="event.preventDefault();xnKey(${d})">${d}</button>`).join('')}<button class="wide" onpointerdown="event.preventDefault();xnKey('del')">⌫</button><button class="wide chk" onclick="xnCheck()">✓ Check</button></div></div></div>`;
+  if(X.pad)padInit('xpad',()=>{if(!X.padUsed){X.padUsed=true;p.stats.padQs++;save()}})}
 function xnSel(k){if(!XN||XN.done)return;XN.sel=k;if(XN.mark)delete XN.mark[k];xnDraw()}
 function xnKey(d){const X=XN;if(!X||X.done||!X.sel)return;const k=X.sel,cur=String(X.ans[k]??'');if(X.mark)delete X.mark[k];
   if(d==='del')X.ans[k]=cur.slice(0,-1);else if(cur.length<4)X.ans[k]=(cur==='0'?'':cur)+d;beep(600+(+d||0)*20,.04,'sine',.04);xnDraw()}
